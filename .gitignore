@@ -1,0 +1,53 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+*.egg-info/
+.pytest_cache/
+
+# IDEs and editors
+.vscode/
+.idea/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Virtual environment
+venv/
+.venv/
+env/
+.env/
+
+# Jupyter Notebook files
+.ipynb_checkpoints
+
+# Logs and databases
+*.log
+*.db
+*.db-shm
+*.db-wal
+crush.db*
+counties.db*
+courses.db*
+
+# Executables
+*.spec
+build/
+dist/
+__pyinstall__/
+
+# Downloaded files/external dependencies
+downloads/
+server_stdout.log
+ultimo.log
+client/courses.db
+client/condados.csv
+client/dp_condados - ACOPLADO_SCRAPING.csv
+
+# Omitidos directory
+omitidos/
+
+# Gemini files
+.gemini/
