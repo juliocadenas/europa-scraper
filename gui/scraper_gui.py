@@ -1,4 +1,4 @@
-ESTO_ES_UN_ERROR_DELIBERADO#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -200,8 +200,8 @@ class ScraperGUI(ttk.Frame):
         if width > 0:
             sash_pos1 = int(width * 0.2)
             sash_pos2 = int(width * 0.8)
-            self.paned_window.sash_place(0, sash_pos1, 0)
-            self.paned_window.sash_place(1, sash_pos2, 0)
+            self.paned_window.sashpos(0, sash_pos1)
+            self.paned_window.sashpos(1, sash_pos2)
 
     def _create_server_config_tab(self):
         """Crea la pestaña de configuración del servidor"""
