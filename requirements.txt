@@ -9,3 +9,4 @@ asyncio-throttle>=1.0.0
 httpx>=0.25.0
 warcio
 Pillow
+fastapi>=0.111.0 # Añadido por el agente
