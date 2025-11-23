@@ -4,7 +4,8 @@
 """
 Clase del Servidor Principal del Scraper Europa
 ==============================================
-Encapsula la lógica y el estado del servidor FastAPI.
+Encapsula la lógica y el estado del servidor FastAPI, actuando como
+un orquestador de scraping multiproceso.
 """
 
 import os
@@ -12,100 +13,126 @@ import sys
 import asyncio
 import logging
 import socket
-import threading
 import time
-from typing import Dict, Any, Optional
-from fastapi import FastAPI, HTTPException
+import multiprocessing
+from multiprocessing.managers import SyncManager
+from queue import Empty
+from typing import Dict, Any, Optional, List, Tuple
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from pydantic import BaseModel
 import uvicorn
 from contextlib import asynccontextmanager
+import pandas as pd
+import io
 
-# Añadir el directorio raíz al path para importar módulos
+# --- Añadir raíz del proyecto al path ---
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if project_root not in sys.path:
     sys.path.append(project_root)
 
+# --- Importaciones de Módulos del Proyecto ---
 from utils.logger import setup_logger
 from utils.config import Config
+from utils.sqlite_handler import SQLiteHandler
 from controllers.scraper_controller import ScraperController
 from utils.scraper.browser_manager import BrowserManager
 
+# --- Constantes ---
+NUM_PROCESSES = os.cpu_count() or 4  # Usar todos los núcleos disponibles, o 4 como fallback
+BATCH_SIZE = 10  # Número de cursos a procesar por lote
+
 # --- Modelos de Datos (Pydantic) ---
-class ScrapingTask(BaseModel):
+class ScrapingJob(BaseModel):
     from_sic: str
     to_sic: str
-    from_course: str
-    to_course: str
-    min_words: int = 30
     search_engine: str = 'Cordis Europa'
     site_domain: Optional[str] = None
     is_headless: bool = True
+    min_words: int = 30
 
-class CaptchaSolution(BaseModel):
-    captcha_id: str
-    solution: str
+# ==============================================================================
+# FUNCIÓN DEL TRABAJADOR (WORKER) - Se ejecuta en un proceso separado
+# ==============================================================================
+def worker_process(
+    worker_id: int,
+    work_queue: multiprocessing.JoinableQueue,
+    status_dict: Dict,
+    config_path: str
+):
+    """
+    Función principal para cada proceso trabajador del pool.
+    Extrae lotes de la cola de trabajo y ejecuta el scraping.
+    """
+    # Configurar un logger y estado inicial para este trabajador
+    log_dir = os.path.join(project_root, 'logs')
+    os.makedirs(log_dir, exist_ok=True)
+    log_file = os.path.join(log_dir, f'worker_{worker_id}.log')
+    logger = setup_logger(logging.INFO, log_file)
+    status_dict[worker_id] = {'id': worker_id, 'status': 'Idle', 'progress': 0, 'current_task': 'None'}
+    
+    logger.info(f"Worker {worker_id} iniciado.")
 
-# --- Estado del Servidor ---
-class ServerState:
-    """Gestiona el estado concurrente del servidor."""
-    def __init__(self, logger: logging.Logger):
-        self.logger = logger
-        self.is_scraping = False
-        self.status_log: list[str] = []
-        self.progress = 0.0
-        self.current_task_id: Optional[str] = None
-        self.lock = threading.Lock()
-        self.captcha_solution_queue = asyncio.Queue()
-        self.pending_captcha_challenge: Optional[Dict[str, Any]] = None
+    # --- Inicialización de componentes por proceso ---
+    # Cada proceso necesita sus propias instancias para evitar conflictos.
+    config_manager = Config(config_file=config_path)
+    # ServerState es None aquí porque el worker no gestiona el estado global
+    browser_manager = BrowserManager(config_manager=config_manager, server_state=None) 
+    scraper_controller = ScraperController(config_manager=config_manager, browser_manager=browser_manager)
 
-    def start_task(self, task_id: str) -> bool:
-        with self.lock:
-            if self.is_scraping:
-                return False
-            self.is_scraping = True
-            self.current_task_id = task_id
-            self.status_log = ["Scraping task started."]
-            self.progress = 0.0
-            self.pending_captcha_challenge = None
-            return True
+    # El bucle principal del trabajador
+    while True:
+        try:
+            # Obtener un lote de trabajo de la cola
+            batch: List[Tuple[str, str]] = work_queue.get()
+            
+            if batch is None:  # Señal de finalización
+                logger.info(f"Worker {worker_id} recibió señal de finalización.")
+                status_dict[worker_id] = {'id': worker_id, 'status': 'Finished', 'progress': 100, 'current_task': 'None'}
+                break
 
-    def end_task(self, message: str):
-        with self.lock:
-            self.is_scraping = False
-            self.current_task_id = None
-            self.status_log.append(message)
-            self.pending_captcha_challenge = None
-
-    def add_log(self, message: str):
-        with self.lock:
-            self.status_log.append(message)
-
-    def set_progress(self, percentage: float):
-        with self.lock:
-            self.progress = percentage
-
-    def set_pending_captcha_challenge(self, challenge_data: Dict[str, Any]):
-        with self.lock:
-            self.pending_captcha_challenge = challenge_data
-            captcha_id = challenge_data.get('id', '<no-id>')
-            self.logger.info(f"CAPTCHA challenge {captcha_id} set as pending.")
-
-    def clear_pending_captcha_challenge(self):
-        with self.lock:
-            self.pending_captcha_challenge = None
-            self.logger.info("Pending CAPTCHA challenge cleared.")
-
-    def get_status(self) -> Dict[str, Any]:
-        with self.lock:
-            status = {
-                "is_scraping": self.is_scraping,
-                "progress": self.progress,
-                "logs": self.status_log[-20:],
-                "task_id": self.current_task_id
+            batch_id = f"{batch[0][0]}..{batch[-1][0]}"
+            logger.info(f"Worker {worker_id} recibió lote {batch_id} con {len(batch)} cursos.")
+            status_dict[worker_id] = {'id': worker_id, 'status': 'Running', 'progress': 0, 'current_task': batch_id}
+            
+            # --- Lógica de Scraping para el Lote ---
+            # El ScraperController espera un rango, no un lote.
+            # Adaptamos los parámetros para que coincidan.
+            params = {
+                'from_sic': batch[0][0],
+                'to_sic': batch[-1][0],
+                'from_course': batch[0][1],
+                'to_course': batch[-1][1],
+                'is_headless': True # O obtener de config
             }
-            if self.pending_captcha_challenge:
-                status["pending_captcha_challenge"] = self.pending_captcha_challenge
-            return status
+
+            def progress_callback(percentage, message, *args):
+                # Actualizar el progreso del trabajador
+                status_dict[worker_id] = {'id': worker_id, 'status': 'Running', 'progress': percentage, 'current_task': message}
+            
+            # run_scraping es una corutina, necesitamos ejecutarla en un bucle de eventos.
+            # Cada worker tiene su propio bucle.
+            asyncio.run(scraper_controller.run_scraping(
+                params=params,
+                progress_callback=progress_callback,
+                worker_id=worker_id,
+                # Pasamos el lote de cursos para que el controlador sepa exactamente qué procesar
+                course_batch=batch 
+            ))
+
+            logger.info(f"Worker {worker_id} completó el lote {batch_id}.")
+            work_queue.task_done()
+
+        except Empty:
+            # Esto no debería ocurrir con un `get()` bloqueante, pero es una salvaguarda
+            logger.info(f"Worker {worker_id}: Cola de trabajo vacía. Esperando...")
+            time.sleep(1)
+        except Exception:
+            logger.error(f"Worker {worker_id}: Error catastrófico.", exc_info=True)
+            status_dict[worker_id] = {'id': worker_id, 'status': 'Error', 'progress': 0, 'current_task': 'CRASHED'}
+            # Marcar la tarea como hecha para no bloquear la cola si hay un error
+            if 'work_queue' in locals() and isinstance(work_queue, multiprocessing.JoinableQueue):
+                work_queue.task_done()
+
 
 # --- Clase Principal del Servidor ---
 class ScraperServer:
@@ -113,15 +140,21 @@ class ScraperServer:
         self.host = host
         self.port = port
         self.logger = setup_logger(logging.DEBUG, 'logs/server.log')
-        
-        self.config_manager = Config(config_file=os.path.join(project_root, 'client', 'config.json'))
-        self.server_state = ServerState(self.logger)
-        self.browser_manager = BrowserManager(config_manager=self.config_manager, server_state=self.server_state)
-        self.scraper_controller = ScraperController(config_manager=self.config_manager, browser_manager=self.browser_manager)
+        self.config_path = os.path.join(project_root, 'client', 'config.json')
 
+        # --- Gestor de Multiprocesamiento ---
+        # Se necesita un SyncManager para compartir objetos (dict, queue) entre procesos.
+        self.manager: Optional[SyncManager] = None
+        self.worker_pool: List[multiprocessing.Process] = []
+        self.work_queue: Optional[multiprocessing.JoinableQueue] = None
+        self.worker_states: Optional[Dict] = None
+
+        # --- Bandera de Estado Global ---
+        self.is_job_running = False
+        
         self.app = FastAPI(
             title="Europa Scraper Server",
-            version="2.1.0",
+            version="3.0.0",
             lifespan=self._lifespan
         )
         self._setup_routes()
@@ -133,113 +166,189 @@ class ScraperServer:
         await self._shutdown()
 
     async def _startup(self):
-        self.logger.info("Iniciando servidor Europa Scraper...")
-
-        if getattr(sys, 'frozen', False):
-            os.environ['PLAYWRIGHT_BROWSERS_PATH'] = os.path.join(sys._MEIPASS, 'ms-playwright')
-
-        await asyncio.sleep(2)
-
-        self.logger.info("Inicializando instancia global del navegador...")
-        headless_mode = self.config_manager.get("headless_mode", True)
-        self.logger.info(f"El navegador se lanzará con headless={headless_mode}")
-        await self.browser_manager.initialize(headless=headless_mode)
-
-        self._parse_cli_args()
-
-        broadcast_thread = threading.Thread(target=self._broadcast_presence, daemon=True)
-        broadcast_thread.start()
+        self.logger.info("Iniciando servidor y gestor de multiprocesamiento...")
+        # Forzar el método de inicio a 'spawn' para compatibilidad y seguridad
+        multiprocessing.set_start_method('spawn', force=True)
+        self.manager = multiprocessing.Manager()
+        self.worker_states = self.manager.dict()
+        self.work_queue = multiprocessing.JoinableQueue()
+        self.is_job_running = False
+        # No iniciamos el pool aquí, se inicia bajo demanda.
 
     async def _shutdown(self):
-        self.logger.info("Cerrando la instancia global del navegador...")
-        await self.browser_manager.close()
+        self.logger.info("Deteniendo el pool de trabajadores...")
+        self._stop_worker_pool()
+        if self.manager:
+            self.logger.info("Cerrando el gestor de multiprocesamiento...")
+            self.manager.shutdown()
 
-    def _parse_cli_args(self):
-        for i, arg in enumerate(sys.argv):
-            if arg == "--port" and i + 1 < len(sys.argv):
-                try:
-                    self.port = int(sys.argv[i + 1])
-                    self.logger.info(f"Puerto del servidor establecido a {self.port} desde la línea de comandos.")
-                except ValueError:
-                    self.logger.warning(f"Argumento de puerto inválido. Usando el puerto por defecto {self.port}.")
-                break
-
-    def _broadcast_presence(self):
-        BROADCAST_PORT = 6000
-        try:
-            server_ip = socket.gethostbyname(socket.gethostname())
-        except socket.gaierror:
-            self.logger.error("No se pudo obtener la IP del host. La difusión de presencia está desactivada.")
+    def _start_worker_pool(self, num_workers: int):
+        if self.worker_pool:
+            self.logger.warning("El pool de trabajadores ya está en ejecución. No se iniciará de nuevo.")
             return
-            
-        message = f"EUROPA_SCRAPER_SERVER;{server_ip};{self.port}".encode('utf-8')
 
-        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP) as sock:
-            sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            
-            while True:
-                try:
-                    sock.sendto(message, ('255.255.255.255', BROADCAST_PORT))
-                    self.logger.debug(f"Difundiendo presencia en ('255.255.255.255', {BROADCAST_PORT})")
-                    time.sleep(10)
-                except Exception as e:
-                    self.logger.error(f"Error al difundir presencia: {e}")
-                    break
+        self.logger.info(f"Iniciando un pool de {num_workers} procesos trabajadores...")
+        self.worker_pool = [
+            multiprocessing.Process(
+                target=worker_process,
+                args=(i, self.work_queue, self.worker_states, self.config_path)
+            ) for i in range(num_workers)
+        ]
+        for p in self.worker_pool:
+            p.start()
 
+    def _stop_worker_pool(self):
+        if not self.worker_pool:
+            return
+        
+        self.logger.info("Enviando señal de finalización a todos los trabajadores...")
+        for _ in self.worker_pool:
+            self.work_queue.put(None) # Enviar una señal de "veneno" por cada trabajador
+
+        for p in self.worker_pool:
+            p.join(timeout=10) # Esperar a que los procesos terminen
+            if p.is_alive():
+                self.logger.warning(f"El trabajador {p.pid} no terminó a tiempo, forzando terminación.")
+                p.terminate()
+
+        self.worker_pool = []
+        self.is_job_running = False
+        self.logger.info("Pool de trabajadores detenido.")
+        
     def _setup_routes(self):
-        self.app.post("/start_scraping", status_code=202)(self.start_scraping)
-        self.app.post("/stop_scraping")(self.stop_scraping)
-        self.app.get("/status")(self.get_status)
-        self.app.post("/submit_captcha_solution")(self.submit_captcha_solution)
+        self.app.post("/start_scraping", status_code=202)(self.start_scraping_job)
+        self.app.post("/stop_scraping")(self.stop_scraping_job)
+        self.app.get("/detailed_status")(self.get_detailed_status)
+        self.app.post("/upload_courses")(self.upload_courses)
+        self.app.get("/get_all_courses")(self.get_all_courses)
 
-    async def run_scraping_task(self, task_id: str, params: Dict[str, Any]):
-        self.logger.info(f"Procesando tarea: {task_id}")
+    # --- Endpoints de la API ---
 
-        def progress_callback(percentage, message, *args):
-            self.server_state.set_progress(percentage)
-            self.server_state.add_log(message)
+    async def start_scraping_job(self, job_params: ScrapingJob):
+        if self.is_job_running:
+            raise HTTPException(status_code=409, detail="Ya hay un trabajo de scraping en progreso.")
+
+        self.logger.info(f"Recibido nuevo trabajo de scraping: {job_params.model_dump()}")
+        self.is_job_running = True
 
         try:
-            await self.scraper_controller.run_scraping(
-                params=params,
-                progress_callback=progress_callback
-            )
+            # 1. Obtener todos los cursos de la base de datos
+            db_path = os.path.join(project_root, 'courses.db')
+            if not os.path.exists(db_path):
+                raise HTTPException(status_code=404, detail="La base de datos 'courses.db' no existe. Por favor, suba un archivo de cursos primero.")
+            db_handler = SQLiteHandler(db_path)
+            all_courses = db_handler.get_all_courses() # Devuelve lista de tuplas (sic_code, course_name)
+            
+            # 2. Filtrar cursos basados en el rango SIC del trabajo
+            start_index = next((i for i, (sic, _) in enumerate(all_courses) if sic == job_params.from_sic), 0)
+            end_index = next((i for i, (sic, _) in enumerate(all_courses) if sic == job_params.to_sic), len(all_courses) - 1)
+            courses_to_process = all_courses[start_index : end_index + 1]
+            
+            if not courses_to_process:
+                self.is_job_running = False
+                raise HTTPException(status_code=404, detail="No se encontraron cursos en el rango SIC especificado.")
 
-            final_message = "Proceso de scraping detenido por el usuario." if self.scraper_controller.is_stop_requested() else "Proceso de scraping completado con éxito."
-            self.logger.info(f"La tarea {task_id} {'fue detenida' if self.scraper_controller.is_stop_requested() else 'completó normalmente'}.")
-            self.server_state.end_task(final_message)
+            # 3. Dividir el trabajo en lotes pequeños y ponerlos en la cola
+            num_courses = len(courses_to_process)
+            self.logger.info(f"Se procesarán {num_courses} cursos. Dividiendo en lotes de {BATCH_SIZE}.")
+            for i in range(0, num_courses, BATCH_SIZE):
+                batch = courses_to_process[i:i + BATCH_SIZE]
+                self.work_queue.put(batch)
+
+            # 4. Iniciar el pool de trabajadores
+            self._start_worker_pool(NUM_PROCESSES)
+
+            # 5. Iniciar un hilo monitor para saber cuándo ha terminado todo el trabajo
+            monitor_thread = threading.Thread(target=self._monitor_job_completion, daemon=True)
+            monitor_thread.start()
+
+            return {"message": f"Trabajo iniciado. {num_courses} cursos encolados para {NUM_PROCESSES} trabajadores."}
 
         except Exception as e:
-            self.logger.exception(f"Error al procesar la tarea {task_id}")
-            self.server_state.end_task(f"Error durante el scraping: {e}")
+            self.logger.error("Error al iniciar el trabajo de scraping.", exc_info=True)
+            self.is_job_running = False
+            raise HTTPException(status_code=500, detail=f"Error al iniciar el trabajo: {e}")
 
-    async def start_scraping(self, task: ScrapingTask):
-        task_id = f"task_{int(asyncio.get_running_loop().time())}"
-        if not self.server_state.start_task(task_id):
-            raise HTTPException(status_code=409, detail="Ya hay una tarea de scraping en progreso.")
-        
-        self.logger.info(f"Creando tarea de fondo para scraping: {task.model_dump()}")
-        asyncio.create_task(self.run_scraping_task(task_id, task.model_dump()))
-        
-        return {"message": "Tarea de scraping iniciada.", "task_id": task_id}
+    def _monitor_job_completion(self):
+        """Espera en un hilo separado a que la cola se vacíe y luego detiene el pool."""
+        self.work_queue.join() # Bloquea hasta que todas las tareas en la cola estén hechas (task_done)
+        self.logger.info("Todas las tareas de la cola han sido completadas.")
+        self._stop_worker_pool()
 
-    async def stop_scraping(self):
-        if not self.server_state.is_scraping:
-            raise HTTPException(status_code=404, detail="No hay ninguna tarea de scraping en ejecución.")
+    async def stop_scraping_job(self):
+        if not self.is_job_running:
+            raise HTTPException(status_code=404, detail="No hay ningún trabajo de scraping en ejecución.")
         
-        self.logger.info("Se recibió una solicitud para detener el scraping.")
-        self.scraper_controller.request_stop()
+        self.logger.info("Se recibió una solicitud para detener el trabajo de scraping.")
+        self._stop_worker_pool()
+        # Limpiar la cola por si acaso
+        while not self.work_queue.empty():
+            try:
+                self.work_queue.get_nowait()
+            except Empty:
+                break
         
-        return {"message": "Solicitud de detención recibida. El proceso terminará en breve."}
+        return {"message": "Solicitud de detención recibida. El pool de trabajadores ha sido detenido."}
 
-    async def get_status(self):
-        return self.server_state.get_status()
+    async def get_detailed_status(self):
+        return dict(self.worker_states)
 
-    async def submit_captcha_solution(self, captcha_data: CaptchaSolution):
-        await self.server_state.captcha_solution_queue.put(captcha_data.model_dump())
-        self.logger.info(f"Solución de CAPTCHA {captcha_data.captcha_id} recibida del cliente.")
-        return {"message": "Solución de CAPTCHA recibida."}
+    async def get_all_courses(self):
+        try:
+            db_path = os.path.join(project_root, 'courses.db')
+            if not os.path.exists(db_path):
+                self.logger.warning("get_all_courses: courses.db no encontrado.")
+                return []
+            
+            db_handler = SQLiteHandler(db_path)
+            all_courses = db_handler.get_all_courses()
+            return all_courses
+        except Exception as e:
+            self.logger.exception("Error en get_all_courses")
+            raise HTTPException(status_code=500, detail=f"Error interno del servidor al obtener cursos: {e}")
+
+    async def upload_courses(self, file: UploadFile = File(...)):
+        self.logger.info(f"Recibida solicitud para cargar archivo de cursos: {file.filename}")
+        
+        if not file.filename.endswith(('.csv', '.xlsx')):
+            raise HTTPException(status_code=400, detail="Formato de archivo no soportado. Por favor, suba un archivo .csv o .xlsx.")
+
+        try:
+            contents = await file.read()
+            
+            if file.filename.endswith('.csv'):
+                df = pd.read_csv(io.BytesIO(contents))
+            else:
+                df = pd.read_excel(io.BytesIO(contents))
+
+            df.columns = [col.strip().lower() for col in df.columns]
+
+            if 'codigo' in df.columns and 'curso' in df.columns:
+                code_col, course_col = 'codigo', 'curso'
+            elif 'sic_code' in df.columns and 'course' in df.columns:
+                code_col, course_col = 'sic_code', 'course'
+            elif 'sic_code' in df.columns and 'course_name' in df.columns:
+                code_col, course_col = 'sic_code', 'course_name'
+            else:
+                raise HTTPException(status_code=400, detail="El archivo debe contener las columnas 'codigo' y 'curso' (o variantes como 'sic_code' y 'course_name').")
+
+            courses_to_load = df[[code_col, course_col]].values.tolist()
+            self.logger.info(f"Se encontraron {len(courses_to_load)} cursos en el archivo.")
+
+            db_path = os.path.join(project_root, 'courses.db')
+            db_handler = SQLiteHandler(db_path)
+            
+            self.logger.info("Limpiando la tabla de cursos existente...")
+            db_handler.clear_courses_table()
+            
+            self.logger.info("Insertando nuevos cursos en la base de datos...")
+            db_handler.insert_courses(courses_to_load)
+            
+            return {"message": f"Carga exitosa. Se han cargado {len(courses_to_load)} cursos en la base de datos."}
+
+        except Exception as e:
+            self.logger.exception("Error procesando el archivo de cursos cargado.")
+            raise HTTPException(status_code=500, detail=f"Error interno del servidor: {str(e)}")
 
     def run(self):
         os.makedirs("logs", exist_ok=True)
@@ -250,3 +359,4 @@ class ScraperServer:
             port=self.port,
             log_level="info"
         )
+
