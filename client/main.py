@@ -82,6 +82,10 @@ class ClientApp:
             else:
                 ip_port = server_address
             
+            # Fix: Replace 0.0.0.0 with localhost for client connections
+            if ip_port.startswith('0.0.0.0:'):
+                ip_port = ip_port.replace('0.0.0.0:', 'localhost:')
+            
             self.server_base_url = f"http://{ip_port}"
             logger.info(f"Establecida la URL base del servidor: {self.server_base_url}")
 

@@ -15,6 +15,7 @@ import logging
 import socket
 import time
 import multiprocessing
+import threading
 from multiprocessing.managers import SyncManager
 from queue import Empty
 from typing import Dict, Any, Optional, List, Tuple
@@ -173,11 +174,15 @@ class ScraperServer:
         self.worker_states = self.manager.dict()
         self.work_queue = multiprocessing.JoinableQueue()
         self.is_job_running = False
+        
+        # Iniciar broadcasting para descubrimiento de clientes
+        self._start_broadcasting()
         # No iniciamos el pool aquí, se inicia bajo demanda.
 
     async def _shutdown(self):
         self.logger.info("Deteniendo el pool de trabajadores...")
         self._stop_worker_pool()
+        self._stop_broadcasting()
         if self.manager:
             self.logger.info("Cerrando el gestor de multiprocesamiento...")
             self.manager.shutdown()
@@ -214,6 +219,44 @@ class ScraperServer:
         self.worker_pool = []
         self.is_job_running = False
         self.logger.info("Pool de trabajadores detenido.")
+
+    def _start_broadcasting(self):
+        """Inicia el broadcasting para descubrimiento de clientes."""
+        self.broadcast_thread = threading.Thread(target=self._broadcast_server_presence, daemon=True)
+        self.broadcast_thread.start()
+        self.logger.info("Iniciado broadcasting de presencia del servidor")
+
+    def _stop_broadcasting(self):
+        """Detiene el broadcasting."""
+        if hasattr(self, 'broadcast_thread') and self.broadcast_thread.is_alive():
+            self.logger.info("Deteniendo broadcasting del servidor")
+        
+    def _broadcast_server_presence(self):
+        """Envia broadcasts periódicos para que los clientes puedan descubrir el servidor."""
+        BROADCAST_PORT = 6000
+        BROADCAST_INTERVAL = 5  # segundos
+        
+        # Obtener la IP local real para el broadcasting
+        try:
+            # Crear un socket para determinar la IP local
+            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+                s.connect(("8.8.8.8", 80))
+                local_ip = s.getsockname()[0]
+        except Exception:
+            local_ip = "127.0.0.1"
+        
+        message = f"EUROPA_SCRAPER_SERVER;{local_ip};{self.port}"
+        
+        while True:
+            try:
+                with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+                    sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+                    sock.sendto(message.encode('utf-8'), ('<broadcast>', BROADCAST_PORT))
+                    self.logger.debug(f"Broadcast enviado: {message}")
+            except Exception as e:
+                self.logger.error(f"Error enviando broadcast: {e}")
+            
+            time.sleep(BROADCAST_INTERVAL)
         
     def _setup_routes(self):
         self.app.post("/start_scraping", status_code=202)(self.start_scraping_job)
@@ -221,6 +264,13 @@ class ScraperServer:
         self.app.get("/detailed_status")(self.get_detailed_status)
         self.app.post("/upload_courses")(self.upload_courses)
         self.app.get("/get_all_courses")(self.get_all_courses)
+        self.app.get("/")(self.root_endpoint)
+        self.app.get("/ping")(self.ping_endpoint)
+        
+        # Agregar logging para verificar que las rutas se registraron
+        self.logger.info("Rutas registradas:")
+        for route in self.app.routes:
+            self.logger.info(f"  {route.methods} {route.path}")
 
     # --- Endpoints de la API ---
 
@@ -349,6 +399,14 @@ class ScraperServer:
         except Exception as e:
             self.logger.exception("Error procesando el archivo de cursos cargado.")
             raise HTTPException(status_code=500, detail=f"Error interno del servidor: {str(e)}")
+
+    async def root_endpoint(self):
+        """Endpoint raíz para verificar que el servidor está activo."""
+        return {"status": "active", "message": "Europa Scraper Server is running"}
+
+    async def ping_endpoint(self):
+        """Endpoint simple para ping de prueba."""
+        return "EUROPA_SCRAPER_SERVER_PONG"
 
     def run(self):
         os.makedirs("logs", exist_ok=True)
