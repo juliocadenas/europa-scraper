@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+ESTO_ES_UN_ERROR_DELIBERADO#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
