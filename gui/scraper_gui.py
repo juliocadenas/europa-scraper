@@ -101,7 +101,7 @@ class ScraperGUI(ttk.Frame):
     def _setup_ui(self):
         """Configura los componentes de la interfaz de usuario."""
         computer_name = socket.gethostname()
-        self.master.title(f"Europa Scraper - {computer_name}")
+        self.master.title(f"Europa Scraper v3 (CON MONITOR) - {computer_name}")
         self.master.geometry("1200x700")
         self.master.minsize(1000, 600)
         self.master.configure(background="#f0f0f0")
