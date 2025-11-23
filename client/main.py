@@ -23,16 +23,16 @@ import io
 # Add the project root to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from client.scraper_client_gui import ScraperClientGUI
+from gui.scraper_gui import ScraperGUI
 
 logger = logging.getLogger(__name__)
 
 class ClientApp:
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title("Europa Scraper - Cliente v2.0")
+        # El título ahora se establece en la propia clase ScraperGUI
         self.queue = queue.Queue()
-        self.gui = ScraperClientGUI(self.root, self)
+        self.gui = ScraperGUI(self.root, self)
         self.gui.pack(fill="both", expand=True)
         
         self.server_base_url = ""
