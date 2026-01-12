@@ -1,0 +1,13 @@
+services:
+  europa-scraper:
+    build: .
+    ports:
+      - "8001:8001"
+    volumes:
+      - europa_sqlite_db:/app
+      - europa_logs:/app/logs
+    restart: always
+
+volumes:
+  europa_sqlite_db:
+  europa_logs:

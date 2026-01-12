@@ -10,6 +10,7 @@ Interfaz gráfica principal para el scraper de USA.gov
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 import logging
+import sys
 import os
 import threading
 import asyncio
@@ -23,6 +24,11 @@ import webbrowser
 import socket
 import requests
 import json
+
+# Añadir raíz del proyecto al path para permitir imports absolutos
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
 
 from gui.styles import setup_styles
 from gui.timer_manager import TimerManager
@@ -58,12 +64,14 @@ class ScraperGUI(ttk.Frame):
         super().__init__(master)
         print("Inicializando ScraperGUI...")
         self.master = master
-        self.controller = None # En modo cliente/servidor, siempre es None
+        self.controller = controller
+        print(f"DEBUG: ScraperGUI.__init__, self.controller is {self.controller}")
         self.current_task_id = None
         print("ScraperGUI inicializado")
         
         self.proxy_manager = ProxyManager()
-        self.config = Config()
+        config_path = os.path.join(project_root, 'client', 'config.json')
+        self.config = Config(config_path)
         
         self.queue = queue.Queue()
         self.timer_manager = TimerManager(update_callback=self._update_timer_display)
@@ -75,6 +83,9 @@ class ScraperGUI(ttk.Frame):
         setup_styles()
         self._setup_ui()
         
+        # Confirmar que el botón de carga está visible
+        print("✅ Botón 'CARGAR CURSOS (CSV/XLS)' agregado a la pestaña Principal")
+        
         # Conectar al servidor y cargar datos iniciales
         self._connect_and_load_initial_data()
         
@@ -84,7 +95,6 @@ class ScraperGUI(ttk.Frame):
         self.process_queue()
         self.master.bind("<Configure>", self._on_resize)
         self._show_existing_logs()
-        self._start_status_polling()
 
     def _show_existing_logs(self):
         """Muestra los logs existentes en el área de resultados."""
@@ -113,8 +123,8 @@ class ScraperGUI(ttk.Frame):
         self.notebook.add(self.main_frame, text="Principal")
         
         self._create_server_config_tab()
-        self._create_task_management_tab() # Anteriormente 'Programar Rangos'
-        self._create_monitor_tab() # Nueva pestaña de monitorización
+        # self._create_task_management_tab() # ELIMINADO
+        # self._create_monitor_tab() # ELIMINADO
         
         self.config_tab = ConfigTab(self.notebook, self.config)
 
@@ -125,13 +135,18 @@ class ScraperGUI(ttk.Frame):
         self.center_column = ttk.Frame(self.paned_window)
         self.right_column = ttk.Frame(self.paned_window)
         
-        self.paned_window.add(self.left_column, weight=2)
-        self.paned_window.add(self.center_column, weight=6)
+        self.paned_window.add(self.left_column, weight=4)
+        self.paned_window.add(self.center_column, weight=4)
         self.paned_window.add(self.right_column, weight=2)
         
         # --- COLUMNA IZQUIERDA ---
         self.sic_frame = ttk.LabelFrame(self.left_column, text="Selección de Código", padding=10)
         self.sic_frame.pack(fill=tk.BOTH, expand=True, pady=10)
+        self.labels_frame = ttk.Frame(self.sic_frame)
+        self.labels_frame.pack(fill=tk.X, padx=0, pady=(5, 0))
+        ttk.Label(self.labels_frame, text="Curso desde:", font=("TkDefaultFont", 9, "bold")).pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 2.5))
+        ttk.Label(self.labels_frame, text="Curso hasta:", font=("TkDefaultFont", 9, "bold")).pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(2.5, 0))
+
         self.search_frame = ttk.Frame(self.sic_frame)
         self.search_frame.pack(fill=tk.X, padx=0, pady=5)
         self.search_from_entry = ttk.Entry(self.search_frame)
@@ -142,44 +157,78 @@ class ScraperGUI(ttk.Frame):
         self.search_to_entry.bind("<KeyRelease>", self._on_search_to)
         self.sic_listbox_frame = ttk.Frame(self.sic_frame)
         self.sic_listbox_frame.pack(fill=tk.BOTH, expand=True)
-        self.from_sic_listbox = tk.Listbox(self.sic_listbox_frame, exportselection=False)
+        self.from_sic_listbox = tk.Listbox(self.sic_listbox_frame, exportselection=False, font=("TkDefaultFont", 11)) # Fuente más grande
         self.from_sic_scrollbar = ttk.Scrollbar(self.sic_listbox_frame, orient=tk.VERTICAL, command=self.from_sic_listbox.yview)
         self.from_sic_listbox.configure(yscrollcommand=self.from_sic_scrollbar.set)
         self.from_sic_listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=5, pady=5)
         self.from_sic_scrollbar.pack(side=tk.LEFT, fill=tk.Y)
         self.from_sic_listbox.bind('<<ListboxSelect>>', self._on_from_sic_select)
-        self.to_sic_listbox = tk.Listbox(self.sic_listbox_frame, exportselection=False)
+        self.to_sic_listbox = tk.Listbox(self.sic_listbox_frame, exportselection=False, font=("TkDefaultFont", 11)) # Fuente más grande
         self.to_sic_scrollbar = ttk.Scrollbar(self.sic_listbox_frame, orient=tk.VERTICAL, command=self.to_sic_listbox.yview)
         self.to_sic_listbox.configure(yscrollcommand=self.to_sic_scrollbar.set)
         self.to_sic_listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=5, pady=5)
         self.to_sic_scrollbar.pack(side=tk.LEFT, fill=tk.Y)
         self.to_sic_listbox.bind('<<ListboxSelect>>', self._on_to_sic_select)
 
-        # --- COLUMNA CENTRAL ---
+        # --- COLUMNA CENTRAL (AHORA MONITOR) ---
         self.header_frame = ttk.Frame(self.center_column)
         self.header_frame.pack(fill=tk.X, pady=(0, 20))
         self.title_label = ttk.Label(self.header_frame, text=f"Europa Scraper - {computer_name}", style="Heading.TLabel")
         self.title_label.pack(side=tk.LEFT, fill=tk.X, expand=True)
         self.timer_label = ttk.Label(self.header_frame, text="Tiempo: 00:00:00", style="Timer.TLabel")
         self.timer_label.pack(side=tk.RIGHT, padx=10)
-        self.course_tree_frame = ttk.LabelFrame(self.center_column, text="Cursos Disponibles", padding=10)
-        self.course_tree_frame.pack(fill=tk.BOTH, expand=True, pady=10)
-        self.course_tree = ttk.Treeview(self.course_tree_frame, columns=("sic_code", "course_name"), show="headings")
-        self.course_tree.heading("sic_code", text="Código")
-        self.course_tree.heading("course_name", text="Nombre del Curso")
-        self.course_tree.column("sic_code", width=100, anchor=tk.W)
-        self.course_tree.column("course_name", width=300, anchor=tk.W)
-        self.course_tree_scrollbar = ttk.Scrollbar(self.course_tree_frame, orient=tk.VERTICAL, command=self.course_tree.yview)
-        self.course_tree.configure(yscrollcommand=self.course_tree_scrollbar.set)
-        self.course_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        self.course_tree_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        
+        # --- BOTÓN CARGAR CURSOS ---
+        self.load_courses_button = ttk.Button(
+            self.center_column,
+            text="📁 CARGAR CURSOS (CSV/XLS)",
+            command=self._upload_courses_file,
+            style="Accent.TButton",
+            width=50   # Hacer el botón más ancho
+        )
+        self.load_courses_button.pack(fill=tk.X, pady=10, ipadx=20, ipady=10)  # Más padding para hacerlo más visible
+        
+        # --- MONITOR DE TAREAS (REEMPLAZA TABLA DE CURSOS) ---
+        self.monitor_frame = ttk.LabelFrame(self.center_column, text="Monitor de Progreso en Tiempo Real", padding=10)
+        self.monitor_frame.pack(fill=tk.BOTH, expand=True, pady=10)
+
+        # Botones de control del monitor (Footer) - Se empaquetan PRIMERO con side=BOTTOM
+        self.monitor_buttons_frame = ttk.Frame(self.monitor_frame)
+        self.monitor_buttons_frame.pack(fill=tk.X, pady=5, side=tk.BOTTOM)
+        
+        self.details_button = ttk.Button(self.monitor_buttons_frame, text="Ver Detalles de Worker", command=self._show_worker_details)
+        self.details_button.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True) # EXPANDIDO
+
+        self.force_reset_button = ttk.Button(self.monitor_buttons_frame, text="Forzar Reinicio de Estado", command=self._force_reset_client_state)
+        self.force_reset_button.pack(side=tk.RIGHT, padx=5, fill=tk.X, expand=True) # EXPANDIDO
+        
+        # Treeview para mostrar el estado de los workers (Content)
+        self.worker_tree = ttk.Treeview(self.monitor_frame, columns=('ID', 'Status', 'Task', 'Progress'), show='headings')
+        self.worker_tree.heading('ID', text='Worker ID')
+        self.worker_tree.heading('Status', text='Estado')
+        self.worker_tree.heading('Task', text='Tarea Actual')
+        self.worker_tree.heading('Progress', text='Progreso')
+
+        self.worker_tree.column('ID', width=60, anchor=tk.CENTER)
+        self.worker_tree.column('Status', width=100)
+        self.worker_tree.column('Task', width=300) # Ajustado
+        self.worker_tree.column('Progress', width=120)
+        
+        # Scrollbar para el monitor
+        self.monitor_scrollbar = ttk.Scrollbar(self.monitor_frame, orient=tk.VERTICAL, command=self.worker_tree.yview)
+        self.worker_tree.configure(yscrollcommand=self.monitor_scrollbar.set)
+        
+        self.monitor_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.worker_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        # Configuración de motor y controles de inicio (se mantienen igual)
         self.engine_frame = ttk.Frame(self.center_column)
         self.engine_frame.pack(fill=tk.X, pady=5)
         ttk.Label(self.engine_frame, text="Motor de Búsqueda:").pack(side=tk.LEFT, padx=(0, 5))
         self.search_engine_var = tk.StringVar()
-        self.search_engine_combo = ttk.Combobox(self.engine_frame, textvariable=self.search_engine_var, values=["Google", "DuckDuckGo", "Cordis Europa", "Common Crawl", "Wayback Machine"], state="readonly")
+        self.search_engine_combo = ttk.Combobox(self.engine_frame, textvariable=self.search_engine_var, values=["Cordis Europa", "Google", "DuckDuckGo", "Common Crawl", "Wayback Machine"], state="readonly")
         self.search_engine_combo.pack(side=tk.LEFT, fill=tk.X, expand=True)
-        self.search_engine_var.set(self.config.get("search_engine", "DuckDuckGo"))
+        self.search_engine_var.set(self.config.get("search_engine", "Cordis Europa"))
         self.control_frame = ControlFrame(self.center_column, on_start=self._on_start_scraping, on_stop=self._on_stop_scraping)
         self.control_frame.pack(fill=tk.X, pady=2)
         self.progress_frame = ProgressFrame(self.center_column)
@@ -194,12 +243,12 @@ class ScraperGUI(ttk.Frame):
         self.export_button.pack(side=tk.LEFT, padx=5, pady=5, fill=tk.X, expand=True)
         self.open_folder_button = ttk.Button(self.results_buttons_frame, text="Abrir Carpeta de Resultados", command=self._on_open_results_folder, style="TButton")
         self.open_folder_button.pack(side=tk.LEFT, padx=5, pady=5, fill=tk.X, expand=True)
-        
+
         self.paned_window.update()
         width = self.paned_window.winfo_width()
         if width > 0:
-            sash_pos1 = int(width * 0.2)
-            sash_pos2 = int(width * 0.8)
+            sash_pos1 = int(width * 0.40)
+            sash_pos2 = int(width * 0.80)
             self.paned_window.sashpos(0, sash_pos1)
             self.paned_window.sashpos(1, sash_pos2)
 
@@ -210,7 +259,7 @@ class ScraperGUI(ttk.Frame):
         config_frame = ttk.LabelFrame(self.server_frame, text="Configuración", padding=10)
         config_frame.pack(fill=tk.X, pady=10)
         ttk.Label(config_frame, text="URL del Servidor:").grid(row=0, column=0, sticky=tk.W, pady=5)
-        self.server_url = tk.StringVar(value="http://localhost:8001")
+        self.server_url = tk.StringVar(value="http://localhost:8002")
         self.server_url_entry = ttk.Entry(config_frame, textvariable=self.server_url, width=50)
         self.server_url_entry.grid(row=0, column=1, padx=10, pady=5, sticky=tk.EW)
         self.connect_button = ttk.Button(config_frame, text="Conectar", command=self._connect_to_server)
@@ -219,114 +268,59 @@ class ScraperGUI(ttk.Frame):
         self.connection_status_label.grid(row=3, column=1, padx=10, sticky=tk.E)
         config_frame.columnconfigure(1, weight=1)
 
-    def _create_task_management_tab(self):
-        """Crea la pestaña de gestión de tareas y datos."""
-        self.task_management_frame = ttk.Frame(self.notebook, padding="10")
-        self.notebook.add(self.task_management_frame, text="Gestión de Tareas")
+    # _create_task_management_tab y _create_monitor_tab eliminados por refactorización de accesibilidad
 
-        # --- Frame para carga de datos ---
-        data_load_frame = ttk.LabelFrame(self.task_management_frame, text="Gestión de Datos de Cursos", padding="10")
-        data_load_frame.pack(fill=tk.X, pady=10, padx=5)
-
-        self.upload_button = ttk.Button(data_load_frame, text="Cargar Cursos desde Archivo (CSV/Excel)...", command=self._upload_courses_file)
-        self.upload_button.pack(side=tk.LEFT, padx=5, pady=5)
-        
-        self.refresh_courses_button = ttk.Button(data_load_frame, text="Refrescar Lista de Cursos", command=self._refresh_courses_from_server)
-        self.refresh_courses_button.pack(side=tk.LEFT, padx=5, pady=5)
-
-        # --- Frame para asignación de rangos ---
-        range_assignment_frame = ttk.LabelFrame(self.task_management_frame, text="Asignar Nuevo Trabajo de Scraping", padding="10")
-        range_assignment_frame.pack(fill=tk.X, pady=10, padx=5)
-
-        ttk.Label(range_assignment_frame, text="Desde SIC:").grid(row=0, column=0, padx=5, pady=5, sticky=tk.W)
-        self.from_sic_entry_task = ttk.Entry(range_assignment_frame)
-        self.from_sic_entry_task.grid(row=0, column=1, padx=5, pady=5, sticky=tk.EW)
-
-        ttk.Label(range_assignment_frame, text="Hasta SIC:").grid(row=1, column=0, padx=5, pady=5, sticky=tk.W)
-        self.to_sic_entry_task = ttk.Entry(range_assignment_frame)
-        self.to_sic_entry_task.grid(row=1, column=1, padx=5, pady=5, sticky=tk.EW)
-
-        self.assign_button = ttk.Button(range_assignment_frame, text="Asignar Trabajo al Servidor", command=self._assign_task_to_server)
-        self.assign_button.grid(row=3, column=0, columnspan=2, padx=5, pady=10)
-        range_assignment_frame.columnconfigure(1, weight=1)
-
-    def _create_monitor_tab(self):
-        """Crea la nueva pestaña para monitorizar los trabajadores."""
-        self.monitor_frame = ttk.Frame(self.notebook, padding="10")
-        self.notebook.add(self.monitor_frame, text="Monitor de Tareas")
-
-        # Treeview para mostrar el estado de los workers
-        self.worker_tree = ttk.Treeview(self.monitor_frame, columns=('ID', 'Status', 'Task', 'Progress'), show='headings')
-        self.worker_tree.heading('ID', text='Worker ID')
-        self.worker_tree.heading('Status', text='Estado')
-        self.worker_tree.heading('Task', text='Tarea Actual')
-        self.worker_tree.heading('Progress', text='Progreso')
-
-        self.worker_tree.column('ID', width=80, anchor=tk.CENTER)
-        self.worker_tree.column('Status', width=120)
-        self.worker_tree.column('Task', width=250)
-        self.worker_tree.column('Progress', width=200)
-
-        # Crear un estilo para la barra de progreso dentro del Treeview
-        s = ttk.Style()
-        s.layout("LabeledProgressbar",
-                 [('LabeledProgressbar.trough',
-                   {'children': [('LabeledProgressbar.pbar',
-                                 {'side': 'left', 'sticky': 'ns'}),
-                                ("LabeledProgressbar.label",
-                                 {"sticky": ""})],
-                    'sticky': 'nswe'})])
-        s.configure("LabeledProgressbar", text="0 %")
-
-        self.worker_tree.pack(fill=tk.BOTH, expand=True)
+    # _create_monitor_tab eliminado por refactorización de accesibilidad
 
     def _start_status_polling(self):
-        """Inicia el sondeo periódico para obtener el estado detallado de los trabajadores."""
-        self._update_worker_status()
-        self.master.after(2000, self._start_status_polling) # Polling cada 2 segundos
+        """Este método ya no es necesario aquí, la ClientApp se encarga del polling."""
+        pass # La ClientApp gestiona ahora el polling y llama a _render_worker_status
 
-    def _update_worker_status(self):
-        """Obtiene y renderiza el estado detallado de los trabajadores."""
-        if not hasattr(self, 'server_url'): # Asegurarse de que la GUI está lista
-            return
+    def _render_worker_status(self, worker_states):
+        """Recibe y renderiza el estado detallado de los trabajadores en la GUI."""
+        print(f"DEBUG GUI RENDER: Recibiendo del servidor: {worker_states}")
+        # Limpiar el treeview
+        # Primero, obtener una lista de los IDs de los workers que están actualmente en el treeview.
+        existing_worker_ids = set(self.worker_tree.get_children())
 
-        server_url = self.server_url.get().rstrip('/')
-        if not server_url or self.connection_status_label.cget("text") != "Conectado":
-            return # No hacer polling si no estamos conectados
+        # Iterar sobre los estados de worker recibidos y actualizar/insertar
+        updated_worker_ids = set()
+        for worker_id, state in worker_states.items():
+            worker_id_str = str(worker_id)
+            values = (
+                worker_id_str,
+                state.get('status', 'N/A').capitalize(),
+                state.get('current_task', 'N/A'),
+                f"{state.get('progress', 0):.2f}%"
+            )
 
-        try:
-            response = requests.get(f"{server_url}/detailed_status", timeout=1.5)
-            if response.status_code == 200:
-                worker_states = response.json()
+            if worker_id_str in existing_worker_ids:
+                # Actualizar item existente
+                self.worker_tree.item(worker_id_str, values=values)
+            else:
+                # Insertar nuevo item
+                self.worker_tree.insert("", tk.END, iid=worker_id_str, values=values)
+            updated_worker_ids.add(worker_id_str)
+            
+        # Eliminar workers que ya no están presentes en el estado recibido
+        for worker_id_to_remove in existing_worker_ids - updated_worker_ids:
+            self.worker_tree.delete(worker_id_to_remove)
+            
+        self.current_worker_states = worker_states # Actualizar el estado interno de la GUI
 
-                # Limpiar el treeview
-                current_items = {self.worker_tree.item(i, "values")[0]: i for i in self.worker_tree.get_children()}
-
-                for worker_id, state in worker_states.items():
-                    worker_id_str = str(worker_id)
-                    values = (
-                        worker_id_str,
-                        state.get('status', 'N/A'),
-                        state.get('current_task', 'N/A'),
-                        f"{state.get('progress', 0):.2f}%"
-                    )
-
-                    if worker_id_str in current_items:
-                        # Actualizar item existente
-                        self.worker_tree.item(current_items[worker_id_str], values=values)
-                    else:
-                        # Insertar nuevo item
-                        self.worker_tree.insert("", tk.END, iid=worker_id_str, values=values)
-
-        except requests.exceptions.RequestException as e:
-            # Silencioso para no molestar con popups si el servidor cae temporalmente
-            logger.debug(f"Error en polling de estado: {e}")
-        except Exception as e:
-            logger.error(f"Error inesperado actualizando estado de workers: {e}")
+        # Calcular progreso general promedio
+        if worker_states:
+            total_progress = sum(state.get('progress', 0) for state in worker_states.values())
+            avg_progress = total_progress / len(worker_states)
+            self.progress_frame.update_progress(avg_progress, f"Progreso General: {avg_progress:.1f}%")
+        else:
+            self.progress_frame.update_progress(0, "Esperando inicio...")
 
     def _upload_courses_file(self):
         """Abre el diálogo para seleccionar un archivo y lo sube al servidor."""
+        print("DEBUG GUI: _upload_courses_file llamada")
         if self.connection_status_label.cget("text") != "Conectado":
+            print("DEBUG GUI: No conectado")
             messagebox.showerror("No Conectado", "Por favor, conéctese a un servidor primero.")
             return
 
@@ -334,16 +328,23 @@ class ScraperGUI(ttk.Frame):
             title="Seleccione un archivo de cursos",
             filetypes=[("Archivos Excel", "*.xlsx"), ("Archivos CSV", "*.csv"), ("Todos los archivos", "*.*")]
         )
+        print(f"DEBUG GUI: Archivo seleccionado: {filepath}")
         if not filepath:
+            print("DEBUG GUI: Selección cancelada")
             return
 
         server_url = self.server_url.get().rstrip('/')
+        print(f"DEBUG GUI: URL del servidor: {server_url}")
         self.results_frame.add_log(f"Subiendo archivo {os.path.basename(filepath)} al servidor...")
 
         try:
+            print("DEBUG GUI: Iniciando request POST...")
             with open(filepath, 'rb') as f:
                 files = {'file': (os.path.basename(filepath), f)}
                 response = requests.post(f"{server_url}/upload_courses", files=files, timeout=30)
+            
+            print(f"DEBUG GUI: Respuesta recibida. Status: {response.status_code}")
+            print(f"DEBUG GUI: Body: {response.text}")
 
             if response.status_code == 200:
                 message = response.json().get("message", "Carga exitosa.")
@@ -357,9 +358,11 @@ class ScraperGUI(ttk.Frame):
                 self.results_frame.add_log(f"Error en la subida: {error_detail}")
 
         except requests.exceptions.RequestException as e:
+            print(f"DEBUG GUI: Excepción de request: {e}")
             messagebox.showerror("Error de Red", f"No se pudo comunicar con el servidor: {e}")
             self.results_frame.add_log(f"Error de red: {e}")
         except Exception as e:
+            print(f"DEBUG GUI: Excepción general: {e}")
             messagebox.showerror("Error Inesperado", f"Ocurrió un error: {e}")
             self.results_frame.add_log(f"Error inesperado: {e}")
 
@@ -396,13 +399,21 @@ class ScraperGUI(ttk.Frame):
                 return
           
             # Limpiar widgets antes de cargar nuevos datos
-            self.course_tree.delete(*self.course_tree.get_children())
+            # self.course_tree.delete(*self.course_tree.get_children()) # ELIMINADO
             self.from_sic_listbox.delete(0, tk.END)
             self.to_sic_listbox.delete(0, tk.END)
 
             # Poblar la tabla (Treeview) y los Listbox
-            for sic_code, course_name in self.detailed_sic_codes_with_courses:
-                self.course_tree.insert("", tk.END, values=(sic_code, course_name))
+            for item in self.detailed_sic_codes_with_courses:
+                # Manejar tanto diccionarios (nuevo formato) como tuplas (viejo formato local)
+                if isinstance(item, dict):
+                    sic_code = item.get('sic_code', '')
+                    course_name = item.get('course_name', '')
+                else:
+                    sic_code = item[0]
+                    course_name = item[1]
+                
+                # self.course_tree.insert("", tk.END, values=(sic_code, course_name)) # ELIMINADO
                 display_text = f"{sic_code} - {course_name}"
                 self.from_sic_listbox.insert(tk.END, display_text)
                 self.to_sic_listbox.insert(tk.END, display_text)
@@ -503,43 +514,126 @@ class ScraperGUI(ttk.Frame):
         if selection:
             selected_text = self.from_sic_listbox.get(selection[0])
             sic_code = selected_text.split(' - ')[0]
-            self.from_sic_entry.delete(0, tk.END)
-            self.from_sic_entry.insert(0, sic_code)
-            self.from_sic_entry_task.delete(0, tk.END)
-            self.from_sic_entry_task.insert(0, sic_code)
+            # Actualizar solo si es necesario, por ahora no hay entry que actualizar
+            pass
 
     def _on_to_sic_select(self, event):
         selection = self.to_sic_listbox.curselection()
         if selection:
             selected_text = self.to_sic_listbox.get(selection[0])
             sic_code = selected_text.split(' - ')[0]
-            self.to_sic_entry.delete(0, tk.END)
-            self.to_sic_entry.insert(0, sic_code)
-            self.to_sic_entry_task.delete(0, tk.END)
-            self.to_sic_entry_task.insert(0, sic_code)
+            # Actualizar solo si es necesario, por ahora no hay entry que actualizar
+            pass
 
     def _on_search_from(self, event):
         search_term = self.search_from_entry.get().lower()
         self.from_sic_listbox.delete(0, tk.END)
-        for sic_code, course_name in self.detailed_sic_codes_with_courses:
-            display_text = f"{sic_code} - {course_name}"
-            if search_term in display_text.lower():
-                self.from_sic_listbox.insert(tk.END, display_text)
+        # Verificar si hay cursos cargados antes de intentar buscar
+        if hasattr(self, 'detailed_sic_codes_with_courses') and self.detailed_sic_codes_with_courses:
+            for sic_code, course_name in self.detailed_sic_codes_with_courses:
+                display_text = f"{sic_code} - {course_name}"
+                if search_term in display_text.lower():
+                    self.from_sic_listbox.insert(tk.END, display_text)
 
     def _on_search_to(self, event):
-        search_term = self.to_sic_entry.get().lower()
+        search_term = self.search_to_entry.get().lower()
         self.to_sic_listbox.delete(0, tk.END)
-        for sic_code, course_name in self.detailed_sic_codes_with_courses:
-            display_text = f"{sic_code} - {course_name}"
-            if search_term in display_text.lower():
-                self.to_sic_listbox.insert(tk.END, display_text)
+        # Verificar si hay cursos cargados antes de intentar buscar
+        if hasattr(self, 'detailed_sic_codes_with_courses') and self.detailed_sic_codes_with_courses:
+            for sic_code, course_name in self.detailed_sic_codes_with_courses:
+                display_text = f"{sic_code} - {course_name}"
+                if search_term in display_text.lower():
+                    self.to_sic_listbox.insert(tk.END, display_text)
 
     def _update_timer_display(self, time_str):
         self.queue.put(('update_timer', time_str))
 
     def _on_start_scraping(self):
-        """Maneja el clic del botón de inicio de scraping (OBSOLETO)."""
-        messagebox.showinfo("Acción no disponible", "Esta función ha sido reemplazada por el sistema de 'Gestión de Tareas'.\n\nPor favor, use la pestaña 'Gestión de Tareas' para asignar un trabajo al servidor.")
+        """Maneja el clic del botón de inicio de scraping desde la pestaña Principal."""
+        # Obtener configuración de todas las pestañas
+        try:
+
+            # PRIORIDAD ÚNICA: Usar listas laterales (Accesibilidad)
+            from_selection = self.from_sic_listbox.curselection()
+            to_selection = self.to_sic_listbox.curselection()
+            
+            if not from_selection or not to_selection:
+                # Si no hay selección, usar cursos cargados o valores por defecto
+                if hasattr(self, 'detailed_sic_codes_with_courses') and self.detailed_sic_codes_with_courses:
+                    from_sic = self.detailed_sic_codes_with_courses[0][0]  # Primer código
+                    to_sic = self.detailed_sic_codes_with_courses[-1][0]  # Último código
+                    print(f"🔍 DEPURACIÓN: Usando cursos cargados desde archivo - from_sic='{from_sic}', to_sic='{to_sic}'")
+                else:
+                    # Último recurso - valores por defecto
+                    from_sic = "01.0"
+                    to_sic = "011903.0"
+                    print(f"🔍 DEPURACIÓN: Usando valores por defecto - from_sic='{from_sic}', to_sic='{to_sic}'")
+                    messagebox.showinfo("Selección Automática", f"No se encontraron cursos cargados. Usando rango por defecto:\nDesde: {from_sic}\nHasta: {to_sic}")
+            else:
+                # Extraer códigos SIC de las listas laterales
+                from_sic = self.from_sic_listbox.get(from_selection[0]).split(' - ')[0]
+                to_sic = self.to_sic_listbox.get(to_selection[0]).split(' - ')[0]
+                
+                # DEPURACIÓN: Mostrar los valores extraídos
+                print(f"🔍 DEPURACIÓN: from_sic='{from_sic}', to_sic='{to_sic}'")
+            
+            # Obtener configuración de la pestaña de configuración
+            scraping_config = {
+                'query': f"{from_sic} a {to_sic}",  # Para compatibilidad con el servidor
+                'job_params': {
+                    'from_sic': from_sic,
+                    'to_sic': to_sic,
+                    'min_words': self.config.get('min_words', 30),
+                    'num_workers': int(self.config.get('num_workers', 4)), # Enviar número de workers
+                    'search_engine': self.search_engine_var.get(),
+                    'proxy_enabled': self.config.get('proxy_enabled', False),
+                    'proxy_rotation': self.config.get('proxy_rotation', False),
+                    'captcha_solving_enabled': self.config.get('captcha_solving_enabled', False),
+                    'captcha_service': self.config.get('captcha_service', 'manual'),
+                    'request_delay': self.config.get('request_delay', 1.0),
+                    'page_timeout': self.config.get('page_timeout', 30),
+                    'output_format': self.config.get('output_format', 'CSV'),
+                    'headless_mode': self.config.get('headless_mode', True)
+                }
+            }
+            
+            # Enviar tarea al servidor
+            print(f"🔍 DEPURACIÓN FINAL: Enviando configuración: {scraping_config}")
+            self._send_scraping_task_to_server(scraping_config)
+            
+        except Exception as e:
+            error_msg = f"Error al iniciar el scraping: {str(e)}"
+            messagebox.showerror("Error", error_msg)
+            logger.error(f"Error iniciando scraping desde Principal: {str(e)}")
+            print(f"❌ ERROR FINAL: {error_msg}")
+            # Mostrar el error exacto para depuración
+            print(f"❌ ERROR DETALLADO: {error_msg}")
+            print(f"🔍 CONFIGURACIÓN ENVIADA: {scraping_config}")
+    
+    def _send_scraping_task_to_server(self, config):
+        """Envía la tarea de scraping al controlador principal (ClientApp)."""
+        print(f"DEBUG: _send_scraping_task_to_server, self.controller is {self.controller}")
+        if self.connection_status_label.cget("text") != "Conectado":
+            messagebox.showerror("No Conectado", "Por favor, conéctese al servidor primero desde la pestaña 'Configuración del Servidor'.")
+            return
+        
+        if not self.controller:
+            messagebox.showerror("Error de Arquitectura", "El controlador del cliente no está disponible. La GUI no puede enviar tareas.")
+            logger.error("Se intentó enviar una tarea pero self.controller es None.")
+            return
+
+        server_url_with_http = self.server_url.get().rstrip('/')
+        # El controlador espera la dirección en formato 'host:port' o similar, no la URL completa.
+        server_address = server_url_with_http.replace("http://", "").replace("https://", "")
+        
+        job_params = config.get('job_params', {})
+        
+        # El controlador se encargará de la lógica de 'is_scraping', logging y el hilo.
+        # Ya no se maneja aquí.
+        self.controller.start_scraping_on_server(server_address, job_params)
+        
+        # Cambiamos a la pestaña de monitor para ver el progreso que reportará el controlador.
+        # self.notebook.select(self.monitor_frame) # ELIMINADO: Ya está en la pantalla principal
 
     def _on_stop_scraping(self):
         """Maneja el clic del botón de detención de scraping."""
@@ -550,8 +644,61 @@ class ScraperGUI(ttk.Frame):
         except requests.exceptions.RequestException as e:
             messagebox.showerror("Error de Red", f"No se pudo enviar la solicitud de detención: {e}")
 
+    def _show_worker_details(self):
+        """Muestra una ventana con los detalles de la tarea de un worker seleccionado."""
+        selected_item = self.worker_tree.focus() # Obtiene el ID del item seleccionado
+        if not selected_item:
+            messagebox.showwarning("Selección", "Por favor, seleccione un worker de la lista para ver sus detalles.")
+            return
+
+        worker_id = selected_item # 'selected_item' es directamente el iid del item del treeview
+        
+        if not hasattr(self, 'current_worker_states') or worker_id not in self.current_worker_states:
+            messagebox.showerror("Error", f"No se encontraron detalles para el worker ID: {worker_id}")
+            return
+
+        details = self.current_worker_states[worker_id]
+
+        detail_window = tk.Toplevel(self.master)
+        detail_window.title(f"Detalles del Worker {worker_id}")
+        detail_window.transient(self.master) # Hace que la ventana de detalles sea hija de la principal
+        detail_window.grab_set() # Captura todos los eventos hasta que se cierre
+
+        ttk.Label(detail_window, text=f"Worker ID: {worker_id}", font=("TkDefaultFont", 10, "bold")).pack(pady=5)
+        ttk.Label(detail_window, text=f"Estado: {details.get('status', 'N/A').capitalize()}").pack()
+        ttk.Label(detail_window, text=f"Tarea Actual: {details.get('current_task', 'N/A')}").pack()
+        ttk.Label(detail_window, text=f"Progreso: {details.get('progress', 0):.2f}%").pack()
+        ttk.Label(detail_window, text=f"--- Estadísticas Finales ---", font=("TkDefaultFont", 9, "bold")).pack(pady=5)
+        ttk.Label(detail_window, text=f"Procesados: {details.get('processed_count', 0)}").pack()
+        ttk.Label(detail_window, text=f"Omitidos: {details.get('omitted_count', 0)}").pack()
+        ttk.Label(detail_window, text=f"Errores: {details.get('error_count', 0)}").pack()
+        
+        ttk.Button(detail_window, text="Cerrar", command=detail_window.destroy).pack(pady=10)
+
+        # Centrar la ventana
+        detail_window.update_idletasks()
+        x = self.master.winfo_x() + (self.master.winfo_width() // 2) - (detail_window.winfo_width() // 2)
+        y = self.master.winfo_y() + (self.master.winfo_height() // 2) - (detail_window.winfo_height() // 2)
+        detail_window.geometry(f"+{x}+{y}")
+
+    def _force_reset_client_state(self):
+        """Llama al controlador para forzar el reseteo del estado del cliente."""
+        if messagebox.askyesno("Confirmar", "¿Está seguro de que desea forzar el reinicio del estado del cliente? Esto debería usarse solo si el cliente se ha quedado atascado en el estado 'en progreso'."):
+            if self.controller:
+                self.controller.force_reset_state()
+            else:
+                messagebox.showerror("Error", "El controlador no está disponible para reiniciar el estado.")
+
+    def handle_scraping_finished(self):
+        """Maneja el evento de finalización de scraping, actualizando la GUI."""
+        self.timer_manager.stop()
+        self.control_frame.start_button.config(state=tk.NORMAL)
+        self.control_frame.stop_button.config(state=tk.DISABLED)
+        self.progress_frame.update_progress(100, "Proceso completado.")
+
     def _on_export_results(self):
         pass # La lógica de exportación podría requerir un nuevo enfoque
+
 
     def _on_open_results_folder(self):
         results_dir = os.path.abspath("results")
@@ -562,6 +709,78 @@ class ScraperGUI(ttk.Frame):
             elif os.name == 'posix': subprocess.run(['xdg-open', results_dir])
         except Exception as e:
             logger.error(f"Error abriendo carpeta de resultados: {str(e)}")
+
+    def _load_courses_from_file(self):
+        """Carga cursos desde un archivo CSV o XLS con 2 columnas"""
+        try:
+            filepath = filedialog.askopenfilename(
+                title="Seleccionar archivo de cursos",
+                filetypes=[
+                    ("Archivos Excel", "*.xlsx *.xls"),
+                    ("Archivos CSV", "*.csv"),
+                    ("Todos los archivos", "*.*")
+                ]
+            )
+            
+            if not filepath:
+                return
+            
+            self.results_frame.add_log(f"Cargando cursos desde: {os.path.basename(filepath)}")
+            
+            # Procesar según el tipo de archivo
+            if filepath.endswith(('.xlsx', '.xls')):
+                import pandas as pd
+                df = pd.read_excel(filepath, header=None)
+                courses_data = [(str(row[0]), str(row[1])) for index, row in df.iterrows() if pd.notna(row[0]) and pd.notna(row[1])]
+            else:
+                # CSV
+                import csv
+                with open(filepath, 'r', encoding='utf-8') as f:
+                    reader = csv.reader(f)
+                    courses_data = [(str(row[0]), str(row[1])) for row in reader if len(row) >= 2 and row[0] and row[1]]
+            
+            if not courses_data:
+                messagebox.showwarning("Archivo Vacío", "No se encontraron cursos válidos en el archivo.")
+                return
+            
+            # Actualizar la interfaz con los nuevos cursos
+            self._update_ui_with_loaded_courses(courses_data)
+            
+            self.results_frame.add_log(f"✅ Cargados {len(courses_data)} cursos exitosamente")
+            messagebox.showinfo("Éxito", f"Se cargaron {len(courses_data)} cursos desde el archivo.")
+            
+        except ImportError as e:
+            if 'pandas' in str(e):
+                messagebox.showerror("Error", "Para archivos Excel necesita instalar pandas:\npip install pandas openpyxl")
+            else:
+                messagebox.showerror("Error", f"Falta una librería: {e}")
+        except Exception as e:
+            messagebox.showerror("Error", f"Error al cargar el archivo: {str(e)}")
+            self.results_frame.add_log(f"❌ Error cargando archivo: {str(e)}")
+    
+    def _update_ui_with_loaded_courses(self, courses_data):
+        """Actualiza la UI con los cursos cargados desde archivo"""
+        try:
+            # Limpiar widgets existentes
+            self.course_tree.delete(*self.course_tree.get_children())
+            self.from_sic_listbox.delete(0, tk.END)
+            self.to_sic_listbox.delete(0, tk.END)
+            
+            # Guardar datos para búsquedas
+            self.detailed_sic_codes_with_courses = courses_data
+            
+            # Poblar la tabla y listas
+            for sic_code, course_name in courses_data:
+                self.course_tree.insert("", tk.END, values=(sic_code, course_name))
+                display_text = f"{sic_code} - {course_name}"
+                self.from_sic_listbox.insert(tk.END, display_text)
+                self.to_sic_listbox.insert(tk.END, display_text)
+            
+            logger.info(f"UI actualizada con {len(courses_data)} cursos desde archivo")
+            
+        except Exception as e:
+            logger.error(f"Error actualizando UI con cursos cargados: {e}")
+            messagebox.showerror("Error", f"Error actualizando la interfaz: {str(e)}")
 
     def _log_callback(self, log_entry):
         self.queue.put(('log', log_entry))
@@ -578,3 +797,18 @@ class ScraperGUI(ttk.Frame):
             pass
         finally:
             self.master.after(200, self.process_queue)
+
+if __name__ == "__main__":
+    # Este bloque ahora asegura que la aplicación se inicie correctamente,
+    # incluso si este script se ejecuta directamente.
+    try:
+        # Importar aquí para evitar dependencias circulares en el ámbito global
+        from client.main import ClientApp
+        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+        app = ClientApp()
+        app.run()
+    except Exception as e:
+        try:
+            messagebox.showerror("Error Crítico", f"Error al iniciar la aplicación:\n{str(e)}")
+        except:
+            print(f"Error crítico: {e}")

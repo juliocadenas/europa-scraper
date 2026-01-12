@@ -1,0 +1,34 @@
+# COMANDOS PARA INICIAR EL SERVIDOR EN WSL
+# =====================================
+
+## OPCIÓN 1: Usar el script creado (RECOMENDADO)
+```bash
+wsl bash /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/iniciar_servidor_wsl.sh
+```
+
+## OPCIÓN 2: Comando directo en WSL
+```bash
+wsl -e bash -c "cd /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX && source venv_wsl/bin/activate && python server/main.py"
+```
+
+## OPCIÓN 3: Entrar en WSL y ejecutar manualmente
+```bash
+wsl
+cd /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX
+source venv_wsl/bin/activate
+python server/main.py
+```
+
+## OPCIÓN 4: Desde PowerShell/CMD
+```powershell
+wsl bash /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/iniciar_servidor_wsl.sh
+```
+
+## VERIFICACIÓN
+El servidor iniciará en: http://0.0.0.0:8001
+Puedes verificarlo abriendo: http://localhost:8001/docs en tu navegador Windows
+
+## IMPORTANTE
+- Asegúrate de que el entorno virtual venv_wsl esté configurado
+- El servidor escuchará en todas las interfaces (0.0.0.0) para que el cliente Windows pueda conectarse
+- El cliente Windows debe conectar a: http://localhost:8001 o http://127.0.0.1:8001

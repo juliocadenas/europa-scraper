@@ -1,6 +1,3 @@
-
-        
-
 import logging
 import asyncio
 import random
@@ -536,7 +533,7 @@ class SearchEngine:
                         score += 0.15
 
                     # Token-level boosts (short tokens ignored)
-                    tokens = [t for t in re.findall(r'\w+', q_lower) if len(t) > 2]
+                    tokens = [t for t in re.findall(r"\w+", q_lower) if len(t) > 2]
                     for t in tokens:
                         if re.search(r'\b' + re.escape(t) + r'\b', title):
                             score += 0.08
@@ -777,6 +774,143 @@ class SearchEngine:
 
         return False
 
+    async def search_cordis_europa(self, query: str, max_pages: int = 100) -> List[Dict[str, Any]]:
+        """
+        Searches cordis.europa.eu for the given query and navigates through pages.
+        This version is adapted from the old, working V2.6 scraper.
+        """
+        page = None
+        all_results = []
+        unique_urls = set()
+        
+        try:
+            # Prepare query and URL
+            filtered_query = self.text_processor.filter_stop_words(query)
+            logger.info(f"Original query: '{query}', Filtered query for URL: '{filtered_query}'")
+            encoded_query = self.url_utils.quote_plus(filtered_query)
+            base_url = "https://cordis.europa.eu/search"
+
+            page = await self.browser_manager.new_page()
+            page.set_default_timeout(60000)
+
+            # --- Page loading and preparation logic ---
+            async def load_and_prepare_page(url: str, is_first_page: bool = False):
+                logger.info(f"Navigating to: {url}")
+                await page.goto(url, wait_until='domcontentloaded')
+
+                if is_first_page:
+                    try:
+                        logger.info("Looking for cookie consent button with selector: 'button.wt-ecl-cookie-consent-banner__accept-button'")
+                        accept_button = page.locator('button.wt-ecl-cookie-consent-banner__accept-button')
+                        await accept_button.wait_for(state='visible', timeout=10000)
+                        await accept_button.click()
+                        logger.info("Cookie consent button clicked successfully.")
+                        # Wait a bit for the banner to disappear
+                        await asyncio.sleep(2)
+                    except Exception as e:
+                        logger.info(f"Cookie consent banner not found or failed to click (this might be ok): {e}")
+
+                try:
+                    await page.wait_for_selector('app-card-search', timeout=30000)
+                    logger.info("Search results container 'app-card-search' is visible.")
+                except Exception:
+                    logger.warning(f"Timeout waiting for results container 'app-card-search' on {url}. The page might be empty.")
+
+
+            # --- Main execution ---
+            # Load the first page (using num=10 to match user's successful manual search)
+            first_page_url = f"{base_url}?q={encoded_query}&p=1&num=10&srt=Relevance:decreasing&archived=true"
+            logger.info(f"Generated Cordis URL: {first_page_url}")
+            await load_and_prepare_page(first_page_url, is_first_page=True)
+
+            # Handle potential CAPTCHA on the first page
+            if hasattr(self.browser_manager, 'captcha_solver') and await self.browser_manager.captcha_solver.is_captcha_present(page):
+                logger.warning(f"CAPTCHA detected on the first page for query: '{query}'")
+                captcha_handled = await self.browser_manager.captcha_solver.handle_captcha(page)
+                if not captcha_handled:
+                    logger.error("Failed to handle CAPTCHA. Aborting search for this query.")
+                    return []
+                # Re-check for results after handling captcha
+                await page.wait_for_selector('app-card-search', timeout=30000)
+
+            # Loop through pages
+            current_page = 1
+            consecutive_empty_pages = 0
+            
+            while current_page <= max_pages:
+                if current_page > 1:
+                    page_url = f"{base_url}?q={encoded_query}&p={current_page}&num=10&srt=Relevance:decreasing&archived=true"
+                    await load_and_prepare_page(page_url)
+                
+                # --- Extract results from the current page ---
+                js_code = '''
+                () => {
+                    const results = [];
+                    document.querySelectorAll('app-card-search').forEach(element => {
+                        try {
+                            const titleElement = element.querySelector('a.c-card-search__title');
+                            const descriptionElement = element.querySelector('div.c-card-search__block');
+
+                            if (titleElement && titleElement.href) {
+                                const title = titleElement.textContent.trim();
+                                const url = titleElement.href;
+                                let description = '';
+                                if (descriptionElement) {
+                                    description = descriptionElement.innerText.trim().replace(/\s+/g, ' ');
+                                }
+                                results.push({ title, url, description });
+                            }
+                        } catch (e) {
+                            console.error('Error processing a result element:', e);
+                        }
+                    });
+                    return results;
+                }
+                '''
+                extracted_results = await page.evaluate(js_code)
+
+                if not extracted_results:
+                    consecutive_empty_pages += 1
+                    logger.warning(f"No results extracted on page {current_page}. ({consecutive_empty_pages} consecutive empty pages)")
+                    if consecutive_empty_pages >= 3:
+                        logger.info("Stopping search after 3 consecutive empty pages.")
+                        break
+                    current_page += 1
+                    continue
+                
+                consecutive_empty_pages = 0
+                new_results_on_page = 0
+                for result in extracted_results:
+                    if result['url'] not in unique_urls:
+                        unique_urls.add(result['url'])
+                        all_results.append(result)
+                        new_results_on_page += 1
+                
+                logger.info(f"Found {len(extracted_results)} results on page {current_page} ({new_results_on_page} new). Total unique: {len(all_results)}")
+                
+                # Check for "no new unique results" condition
+                if new_results_on_page == 0 and current_page > 1:
+                    logger.info("No new unique results on this page. Assuming end of results.")
+                    break
+
+                current_page += 1
+
+        except Exception as e:
+            logger.error(f"CRITICAL error in search_cordis_europa: {str(e)}", exc_info=True)
+            if page:
+                await page.screenshot(path="critical_error_cordis.png")
+            return []
+        
+        finally:
+            if page:
+                await self.browser_manager.release_page(page)
+            logger.info(f"Search for '{query}' on Cordis finished. Total unique results: {len(all_results)}.")
+            # Cache the results
+            if query.lower() not in self._search_cache:
+                self._search_cache[query.lower()] = all_results
+
+        return all_results
+        
     def __getstate__(self):
         """
         Prepara el estado para el 'pickling'.
@@ -799,3 +933,77 @@ class SearchEngine:
         Permite usar 'in' para verificar si una consulta está en la caché.
         """
         return self.is_query_cached(query)
+    
+    async def search_duckduckgo(self, query: str, site_domain: str = None) -> List[Dict[str, Any]]:
+        """
+        Realiza búsqueda en DuckDuckGo.
+        """
+        try:
+            search_url = f"https://duckduckgo.com/html/?q={query}"
+            if site_domain:
+                search_url += f" site:{site_domain}"
+            
+            logger.info(f"Realizando búsqueda en DuckDuckGo: {query}")
+            
+            # Verificar que el navegador esté disponible
+            if not await self.browser_manager.check_playwright_browser():
+                logger.error("Navegador no disponible para búsqueda DuckDuckGo")
+                return []
+            
+            # Usar playwright para obtener resultados
+            page = await self.browser_manager.new_page()
+            try:
+                print(f"\n[DEBUG-DDG-1] INICIO BÚSQUEDA DDG. URL: {search_url}")
+                await page.goto(search_url, wait_until="domcontentloaded", timeout=30000)
+                print(f"\n[DEBUG-DDG-2] NAVEGACIÓN DDG EXITOSA. URL: {search_url}")
+                
+                # Esperar a que cargue la página
+                await asyncio.sleep(2)
+                
+                # Extraer resultados de búsqueda
+                results = await page.evaluate('''
+                    () => {
+                        const results = [];
+                        const searchResults = document.querySelectorAll('.result__body');
+                        
+                        searchResults.forEach(result => {
+                            const titleElement = result.querySelector('h2.result__title a');
+                            const linkElement = result.querySelector('h2.result__title a');
+                            const snippetElement = result.querySelector('.result__snippet');
+                            
+                            if (linkElement && titleElement) {
+                                const title = titleElement.textContent.trim();
+                                const url = linkElement.href;
+                                const description = snippetElement ? snippetElement.textContent.trim() : '';
+                                
+                                if (url) {
+                                    results.push({
+                                        'url': url,
+                                        'title': title,
+                                        'description': description,
+                                        'mediatype': 'web',
+                                        'format': None
+                                    });
+                                }
+                            }
+                        });
+                        
+                        return results;
+                    }
+                ''')
+                
+                logger.info(f"Se encontraron {len(results)} resultados en DuckDuckGo")
+                return results
+                
+            except Exception as e:
+                logger.error(f"Error en búsqueda DuckDuckGo: {str(e)}")
+                return []
+            finally:
+                try:
+                    await self.browser_manager.release_page(page)
+                except Exception as e:
+                    logger.error(f"Error liberando página: {str(e)}")
+                
+        except Exception as e:
+            logger.error(f"Error general en búsqueda DuckDuckGo: {str(e)}")
+            return []

@@ -247,131 +247,67 @@ class BrowserManager:
   async def new_page(self) -> Page:
       """
       Creates a new page or reuses one from the pool with optimized settings.
-      
-      Returns:
-          Page instance
       """
+      logger.debug("[NP_D] 1 - Entering new_page function.")
       if not self.is_initialized:
+          logger.error("[NP_D] CRITICAL: Browser not initialized. Cannot create a new page.")
           raise Exception("Browser is not initialized. Cannot create a new page.")
       
+      logger.debug("[NP_D] 2 - Attempting to acquire lock.")
       async with self._lock:  # Use lock to prevent race conditions
+          logger.debug("[NP_D] 3 - Lock acquired.")
           # Check if we have pages in the pool
           if self.page_pool:
               page = self.page_pool.pop()
-              logger.debug("Reusing page from pool")
+              logger.debug("[NP_D] 4a - Reusing page from pool.")
               
               # Reset page state
               try:
-                  # Navigate to blank page to clear previous state
+                  logger.debug("[NP_D] 5a - Navigating to about:blank to clear state.")
                   await page.goto("about:blank", wait_until="domcontentloaded")
+                  logger.debug("[NP_D] 6a - Navigation to about:blank successful.")
                   
                   # Set a random user agent for each reused page
                   user_agent = self.user_agent_manager.get_random_user_agent()
                   await page.set_extra_http_headers({
                       "User-Agent": user_agent,
                       "Accept-Language": "en-US,en;q=0.9,es;q=0.8",
-                      "Referer": "https://www.google.com/",
-                      "Sec-Fetch-Dest": "document",
-                      "Sec-Fetch-Mode": "navigate",
-                      "Sec-Fetch-Site": "cross-site",
-                      "Sec-Fetch-User": "?1",
-                      "Upgrade-Insecure-Requests": "1",
                   })
+                  logger.debug("[NP_D] 7a - Extra HTTP headers set.")
+
+                  # Stealth is disabled for diagnostics
+                  # await Stealth().apply_stealth_async(page)
                   
-                  # Try to clear JavaScript state, but don't fail if it doesn't work
-                  try:
-                      await page.evaluate("""() => { if (window.localStorage) localStorage.clear(); if (window.sessionStorage) sessionStorage.clear(); }""",)
-                  except Exception as e:
-                      logger.debug(f"Non-critical error clearing page storage: {str(e)}")
-                  
+                  logger.debug("[NP_D] 8a - Returning reused page.")
                   return page
               except Exception as e:
-                  logger.warning(f"Error resetting page state: {str(e)}")
-                  # If resetting fails, close the page and create a new one
+                  logger.warning(f"[NP_D] 9a - Error resetting page state: {str(e)}. Closing page and creating new.")
                   try:
                       await page.close()
                   except:
-                      pass
+                      pass # Ignore errors on close
           
-          # Crear un nuevo contexto con un proxy diferente si está disponible
-          if self.proxy_manager and self.proxy_manager.proxies and len(self.proxy_manager.proxies) > 0:
-              try:
-                  # Obtener un proxy diferente para esta página (rotación)
-                  proxy_url = self.proxy_manager.get_next_proxy()  # Usar rotación secuencial
-                  
-                  if proxy_url:
-                      # Parsear la URL del proxy
-                      proxy_parts = proxy_url.split('://')
-                      if len(proxy_parts) > 1:
-                          proxy_protocol = proxy_parts[0]
-                          proxy_address = proxy_parts[1]
-                          
-                          # Configurar opciones de proxy para el nuevo contexto
-                          proxy_options = {
-                              "server": f"{proxy_protocol}://{proxy_address}",
-                          }
-                          
-                          # Si el proxy tiene autenticación, añadir credenciales
-                          if '@' in proxy_address:
-                              auth_parts = proxy_address.split('@')[0].split('://')[-1]
-                              if ':' in auth_parts:
-                                  username, password = auth_parts.split(':', 1)
-                                  proxy_options["username"] = username
-                                  proxy_options["password"] = password
-                          
-                          # Obtener un user agent aleatorio
-                          user_agent = self.user_agent_manager.get_random_user_agent()
-                          
-                          # Crear un nuevo contexto con este proxy
-                          logger.info(f"Creando nuevo contexto con proxy: {self.proxy_manager._mask_proxy_password(proxy_url)}")
-                          
-                          # Crear contexto con el proxy
-                          context_options = {
-                              "user_agent": user_agent,
-                              "ignore_https_errors": True,
-                              "viewport": {"width": 1280, "height": 800},
-                              "java_script_enabled": True,
-                              "bypass_csp": True,
-                              "proxy": proxy_options,
-                              "extra_http_headers": {
-                                  "Accept-Language": "en-US,en;q=0.9,es;q=0.8",
-                                  "Referer": "https://www.google.com/",
-                                  "Sec-Fetch-Dest": "document",
-                                  "Sec-Fetch-Mode": "navigate",
-                                  "Sec-Fetch-Site": "cross-site",
-                                  "Sec-Fetch-User": "?1",
-                                  "Upgrade-Insecure-Requests": "1",
-                              }
-                          }
-                          
-                          # Crear un nuevo contexto con el proxy
-                          new_context = await self.browser.new_context(**context_options)
-                          
-                          # Crear una nueva página en este contexto
-                          page = await new_context.new_page()
-                          logger.debug(f"Creada nueva página con proxy: {self.proxy_manager._mask_proxy_password(proxy_url)}")
-                          return page
-              except Exception as e:
-                  logger.error(f"Error al crear contexto con proxy: {str(e)}")
-                  logger.info("Continuando con el contexto predeterminado")
-          
-          # Si no se pudo crear un contexto con proxy o no hay proxies, usar el contexto predeterminado
-          page = await self.context.new_page()
+          # If pool is empty or reuse failed, create a new page
+          logger.debug("[NP_D] 4b - Pool empty or reuse failed. Creating new page.")
+          try:
+              page = await self.context.new_page()
+              logger.debug("[NP_D] 5b - self.context.new_page() successful.")
+          except Exception as e:
+              logger.error(f"[NP_D] CRITICAL: self.context.new_page() failed: {e}", exc_info=True)
+              raise
+
+          # Stealth is disabled for diagnostics
+          # await Stealth().apply_stealth_async(page)
           
           # Set a random user agent
           user_agent = self.user_agent_manager.get_random_user_agent()
           await page.set_extra_http_headers({
               "User-Agent": user_agent,
               "Accept-Language": "en-US,en;q=0.9,es;q=0.8",
-              "Referer": "https://www.google.com/",
-              "Sec-Fetch-Dest": "document",
-              "Sec-Fetch-Mode": "navigate",
-              "Sec-Fetch-Site": "cross-site",
-              "Sec-Fetch-User": "?1",
-              "Upgrade-Insecure-Requests": "1",
           })
+          logger.debug("[NP_D] 6b - Extra HTTP headers set for new page.")
           
-          logger.debug("Created new page with default context")
+          logger.debug("[NP_D] 7b - Returning new page.")
           return page
   
   async def release_page(self, page: Page):
@@ -596,17 +532,32 @@ class BrowserManager:
               logger.info("Creating browser context with enhanced fingerprinting protection...")
               logger.info(f"Using locale: {selected_locale}, timezone: {selected_timezone}")
 
+                  record_har_path="network_trace.zip",
+                  record_har_mode="full"
+              )
+
+              # Configurar Proxy si está disponible
+              proxy_config = None
+              if self.proxy_manager and self.proxy_manager.is_enabled():
+                  proxy = self.proxy_manager.get_next_proxy()
+                  if proxy:
+                      proxy_config = self.proxy_manager.get_proxy_for_playwright(proxy)
+                      logger.info(f"Usando proxy para el contexto: {proxy['host']}:{proxy['port']}")
+              
               self.context = await self.browser.new_context(
                   user_agent=self.user_agent_manager.get_random_user_agent(),
                   ignore_https_errors=True,
                   viewport=viewport,
                   java_script_enabled=True,
                   bypass_csp=True,
+                  proxy=proxy_config, # Inyectar configuración de proxy
                   # More varied and human-like environment settings
                   locale=selected_locale,
                   timezone_id=selected_timezone,
                   geolocation=selected_location,
-                  permissions=['geolocation']
+                  permissions=['geolocation'],
+                  record_har_path="network_trace.zip",
+                  record_har_mode="full"
               )
               
               self.is_initialized = True

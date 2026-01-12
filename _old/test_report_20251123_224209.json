@@ -1,0 +1,14 @@
+{
+  "server_discovery": true,
+  "task_submission": false,
+  "task_execution": false,
+  "results_retrieval": false,
+  "errors": [
+    "❌ Error enviando tarea: 409 - {\"detail\":\"Ya hay un trabajo de scraping en progreso.\"}"
+  ],
+  "start_time": "2025-11-23T22:42:03.148635",
+  "end_time": "2025-11-23T22:42:09.376693",
+  "task_id": null,
+  "scraped_results": [],
+  "duration_seconds": 6.228058
+}

@@ -147,6 +147,7 @@ class ScraperController(ScraperControllerBase):
                   return None
 
               if not full_content:
+                  logger.warning(f"Content extraction failed for {content_extraction_url}. See content_extractor.log for details.")
                   self.stats['failed_content_extraction'] += 1
                   self.stats['files_not_saved'] += 1
                   self.omitted_results.append({'sic_code': sic_code, 'course_name': course_name, 'title': title, 'url': url, 'description': description, 'omission_reason': 'Error en extracción de contenido'})
@@ -317,7 +318,7 @@ class ScraperController(ScraperControllerBase):
           current_course_info = f"{sic_code} - {course_name}"
         
           if progress_callback:
-              progress_callback(0, f"Buscando curso {current_course} de {total_courses} - {current_course_info}")
+              progress_callback(0, f"Buscando curso {current_course} de {total_courses} - {current_course_info}", self.stats)
           
           search_term = course_name if course_name else sic_code
           logger.info(f"Buscando '{search_term}' con código SIC {sic_code} ({current_course}/{total_courses})")
@@ -340,7 +341,7 @@ class ScraperController(ScraperControllerBase):
                   logger.warning(f"ACCIÓN REQUERIDA: Se ha detectado un CAPTCHA para '{search_term}'.")
                   logger.warning("El scraping se ha pausado. Por favor, resuelva el CAPTCHA en el navegador y reanude el proceso desde el cliente.")
                   if progress_callback:
-                      progress_callback(0, f"PAUSADO: Resuelve el CAPTCHA para '{search_term}' y reanuda.")
+                      progress_callback(0, f"PAUSADO: Resuelve el CAPTCHA para '{search_term}' y reanuda.", self.stats)
                   
                   self.pause_scraping()
                   await self._is_paused.wait()
@@ -363,7 +364,7 @@ class ScraperController(ScraperControllerBase):
               logger.info(f"Encontrados {len(search_results)} resultados para '{search_term}'")
               
               if progress_callback:
-                  progress_callback(0, f"Buscando curso {current_course} de {total_courses} - {current_course_info} | Encontrados: {len(search_results)} resultados")
+                  progress_callback(0, f"Buscando curso {current_course} de {total_courses} - {current_course_info} | Encontrados: {len(search_results)} resultados", self.stats)
               
               if not search_results:
                   logger.info(f"No se encontraron resultados para '{search_term}' con código SIC {sic_code}")
@@ -1055,7 +1056,7 @@ class ScraperController(ScraperControllerBase):
                   course_name,
                   total_results=self.total_results_to_process
               )
-              progress_callback(progress_percentage, tabulation_message)
+              progress_callback(progress_percentage, tabulation_message, self.stats)
           
           for j in range(0, len(course_results), self._batch_size):
               if self.stop_requested:
@@ -1116,7 +1117,7 @@ class ScraperController(ScraperControllerBase):
                       course_name,
                       total_results=self.total_results_to_process
                   )
-                  progress_callback(progress_percentage, tabulation_message)
+                  progress_callback(progress_percentage, tabulation_message, self.stats)
               
               if j % (self._batch_size * 5) == 0:
                   self._clean_memory()

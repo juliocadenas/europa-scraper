@@ -1,0 +1,33 @@
+EUROPA SCRAPER - INSTRUCCIONES FINALES
+===================================
+
+ESTADO ACTUAL:
+- Servidor funcionando en WSL (FastAPI instalado y corriendo)
+- Cliente en Windows no conecta a localhost:8001
+- NECESITAS USAR LA IP DE WSL
+
+PASOS PARA CONECTAR:
+
+1. ABRIR TERMINAL WSL:
+   - Ejecuta: wsl
+   - Ve al directorio: cd /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX
+
+2. OBTENER IP DE WSL:
+   Ejecuta: ip route show | grep default | awk "{print $3}"
+   Anota esa IP (ej: 172.20.144.1)
+
+3. INICIAR SERVIDOR:
+   Ejecuta: ./iniciar_servidor_wsl_simple.sh
+   Espera a que diga "Uvicorn running on http://0.0.0.0:8001"
+
+4. INICIAR CLIENTE EN WINDOWS:
+   - En otra terminal de Windows, ve a la carpeta client
+   - Ejecuta: python main.py
+   - En la GUI, busca el campo de direccion del servidor
+   - Ingresa: IP_DEL_PASO_2:8001 (ej: 172.20.144.1:8001)
+
+EJEMPLO COMPLETO:
+Si IP obtenida: 172.20.144.1
+En el cliente ingresas: 172.20.144.1:8001
+
+ESTO ES TODO. NADA MAS.

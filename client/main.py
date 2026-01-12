@@ -35,12 +35,37 @@ class ClientApp:
         self.gui = ScraperGUI(self.root, self)
         self.gui.pack(fill="both", expand=True)
         
-        self.server_base_url = ""
+        # Cargar configuración del servidor
+        self.server_base_url = self._load_server_config()
+        self.server_base_url = self._load_server_config()
         self.is_scraping = False
-        self.status_poll_thread = None
+        self.scraping_start_time = None # Inicializar variable para evitar AttributeError
+        self.stop_polling = threading.Event()
+        self.status_poll_thread = threading.Thread(target=self._poll_status, daemon=True)
+        self.status_poll_thread.start()
         self.stop_polling = threading.Event()
 
         self.root.protocol("WM_DELETE_WINDOW", self._on_closing)
+
+    def _load_server_config(self):
+        """Cargar configuración del servidor desde server_config.json"""
+        try:
+            config_path = os.path.join(os.path.dirname(__file__), 'server_config.json')
+            if os.path.exists(config_path):
+                with open(config_path, 'r') as f:
+                    config = json.load(f)
+                    server_config = config.get('server', {})
+                    host = server_config.get('host') or 'localhost'
+                    port = server_config.get('port', 8001)
+                    url = f"http://{host}:{port}"
+                    print(f"🔧 Configuración del servidor cargada: {url}")
+                    return url
+            else:
+                print("⚠️  No se encontró server_config.json, usando localhost:8001")
+                return "http://localhost:8001"
+        except Exception as e:
+            print(f"❌ Error cargando configuración del servidor: {e}")
+            return "http://localhost:8001"
 
     def run(self):
         self.process_queue()
@@ -66,6 +91,8 @@ class ClientApp:
                 elif message_type == 'discovery_finished':
                     self.gui.refresh_servers_button.config(state=tk.NORMAL)
                     self.gui.discovery_status_label.config(text="Búsqueda finalizada.")
+                elif message_type == 'update_worker_status':
+                    self.gui._render_worker_status(data)
 
         except queue.Empty:
             pass
@@ -73,6 +100,10 @@ class ClientApp:
             self.root.after(100, self.process_queue)
 
     def start_scraping_on_server(self, server_address, params):
+        if self.is_scraping:
+            self.queue.put(('log', "❌ Error: Ya hay un trabajo de scraping en progreso."))
+            return
+
         # Extraer IP y puerto de la dirección del servidor
         try:
             if ' (' in server_address and ')' in server_address:
@@ -102,6 +133,7 @@ class ClientApp:
             
             data = response.json()
             self.is_scraping = True
+            self.scraping_start_time = time.time()
             self.queue.put(('log', f"Tarea de scraping iniciada. ID: {data.get('task_id')}"))
             
             # Iniciar el sondeo de estado
@@ -131,47 +163,44 @@ class ClientApp:
             self.stop_polling.set() # Detener el sondeo
 
     def _poll_status(self):
-        last_logs = []
         while not self.stop_polling.is_set():
             try:
-                response = requests.get(f"{self.server_base_url}/status", timeout=30)
-                if response.status_code == 200:
-                    status = response.json()
-                    
-                    # Actualizar barra de progreso
-                    self.queue.put(('update_progress', status.get('progress', 0)))
-                    
-                    # Actualizar logs del servidor
-                    current_logs = status.get('logs', [])
-                    new_logs = [log for log in current_logs if log not in last_logs]
-                    for log_msg in new_logs:
-                        self.queue.put(('server_log', log_msg))
-                    last_logs = current_logs
+                response = requests.get(f"{self.server_base_url}/detailed_status", timeout=10)
+                response.raise_for_status()
+                worker_states = response.json()
 
-                    # Manejar desafío CAPTCHA pendiente
-                    pending_captcha = status.get('pending_captcha_challenge')
-                    if pending_captcha:
-                        # La GUI ahora espera el diccionario completo
-                        self.gui.show_manual_captcha_input(pending_captcha, self._send_captcha_response)
+                if not worker_states:
+                    time.sleep(2)
+                    continue
 
-                    # Comprobar si el scraping ha terminado
-                    if not status.get('is_scraping') and self.is_scraping:
+                # Enviar el estado completo a la GUI para que lo procese
+                self.queue.put(('update_worker_status', worker_states))
+
+                # Comprobar si todas las tareas han terminado
+                is_job_running = any(
+                    data.get('status') in ['working', 'Initializing']
+                    for data in worker_states.values()
+                )
+
+                # Grace period: Don't stop polling in the first 10 seconds even if workers are idle
+                # This allows time for workers to pick up tasks
+                # Grace period: Don't stop polling in the first 10 seconds even if workers are idle
+                # This allows time for workers to pick up tasks
+                if self.is_scraping and self.scraping_start_time:
+                    elapsed_time = time.time() - self.scraping_start_time
+                    if not is_job_running and elapsed_time > 10:
                         self.is_scraping = False
-                        final_log = next((log for log in reversed(current_logs) if "completed" in log or "stopped" in log or "Error" in log), "Scraping finalizado.")
-                        if "stopped" in final_log:
-                            self.queue.put(('scraping_stopped', final_log))
-                        else:
-                            self.queue.put(('scraping_done', None))
-                        self.stop_polling.set() # Detener el sondeo
+                        self.queue.put(('scraping_done', None))
+                        self.stop_polling.set()
+                        logger.info("Todos los workers han finalizado. Deteniendo sondeo.")
                         break
-                else:
-                    logger.warning(f"El servidor devolvió un estado no esperado: {response.status_code}")
 
             except requests.exceptions.RequestException as e:
                 logger.error(f"Error al obtener el estado del servidor: {e}")
-                time.sleep(5) # Esperar antes de reintentar en caso de error de red
+                self.queue.put(('log', f"Error de conexión con el servidor: {e}. Reintentando..."))
+                time.sleep(5)
             
-            time.sleep(2) # Esperar 2 segundos entre sondeos
+            time.sleep(2)
 
     def _send_captcha_response(self, captcha_id, solution):
         try:
@@ -186,6 +215,16 @@ class ClientApp:
             error_message = f"Error al enviar la solución de CAPTCHA {captcha_id}: {e}"
             logger.error(error_message)
             self.queue.put(('log', error_message))
+
+    def force_reset_state(self):
+        """Forza el reseteo del estado de scraping del cliente."""
+        logger.warning("Forzando el reseteo del estado del cliente.")
+        self.is_scraping = False
+        self.stop_polling.set()
+        self.queue.put(('log', "⚠️ El estado del cliente ha sido forzado a 'Inactivo'."))
+        # También se podría notificar a la GUI para que actualice los botones si es necesario
+        self.gui.control_frame.start_button.config(state=tk.NORMAL)
+        self.gui.control_frame.stop_button.config(state=tk.DISABLED)
 
     def _on_closing(self):
         self.stop_polling.set()

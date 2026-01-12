@@ -317,3 +317,100 @@ class SQLiteHandler:
         finally:
             if conn:
                 conn.close()
+
+    def get_all_courses(self) -> List[Tuple[str, str]]:
+        """
+        Obtiene todos los cursos de la base de datos como lista de tuplas (sic_code, course_name).
+        
+        Returns:
+            List[Tuple[str, str]]: Lista de tuplas (sic_code, course_name)
+        """
+        conn = None
+        try:
+            conn = self._connect()
+            cursor = conn.cursor()
+            
+            cursor.execute("SELECT sic_code, course_name FROM courses ORDER BY sic_code")
+            rows = cursor.fetchall()
+            
+            # Convertir a lista de tuplas (sic_code, course_name)
+            courses = [(row[0] if row[0] is not None else "",
+                       row[1] if row[1] is not None else "") for row in rows]
+            
+            logger.info(f"Obtenidos {len(courses)} cursos desde la base de datos SQLite")
+            return courses
+            
+        except Exception as e:
+            logger.error(f"Error obteniendo todos los cursos desde SQLite: {e}")
+            return []
+        finally:
+            if conn:
+                conn.close()
+
+    def clear_courses_table(self) -> bool:
+        """
+        Limpia completamente la tabla de cursos.
+        
+        Returns:
+            True si la operación fue exitosa, False en caso contrario.
+        """
+        conn = None
+        try:
+            conn = self._connect()
+            cursor = conn.cursor()
+            
+            cursor.execute("DELETE FROM courses")
+            conn.commit()
+            
+            logger.info("Tabla 'courses' limpiada exitosamente.")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Error limpiando la tabla 'courses': {e}")
+            if conn:
+                conn.rollback()
+            return False
+        finally:
+            if conn:
+                conn.close()
+
+    def insert_courses(self, courses: List[Tuple[str, str]]) -> bool:
+        """
+        Inserta múltiples cursos en la base de datos.
+        
+        Args:
+            courses: Lista de tuplas (sic_code, course_name) para insertar.
+            
+        Returns:
+            True si la inserción fue exitosa, False en caso contrario.
+        """
+        conn = None
+        try:
+            conn = self._connect()
+            cursor = conn.cursor()
+            
+            # Preparar datos para inserción masiva
+            courses_to_insert = []
+            for sic_code, course_name in courses:
+                # Asegurarse de que los valores no sean None
+                sic_code = sic_code if sic_code is not None else ""
+                course_name = course_name if course_name is not None else ""
+                courses_to_insert.append((sic_code, course_name))
+            
+            cursor.executemany(
+                "INSERT INTO courses (sic_code, course_name) VALUES (?, ?)",
+                courses_to_insert
+            )
+            conn.commit()
+            
+            logger.info(f"Insertados {len(courses_to_insert)} cursos en la base de datos SQLite.")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Error insertando cursos en SQLite: {e}")
+            if conn:
+                conn.rollback()
+            return False
+        finally:
+            if conn:
+                conn.close()

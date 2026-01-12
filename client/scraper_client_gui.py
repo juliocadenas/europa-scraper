@@ -29,6 +29,7 @@ from gui.components.gui_components import ProgressFrame, ResultsFrame, ControlFr
 from utils.sqlite_handler import SQLiteHandler
 from utils.logger import get_global_log_handler
 from gui.config_tab import ConfigTab
+from gui.components.worker_status_frame import WorkerStatusFrame
 from utils.config import Config
 
 logger = logging.getLogger(__name__)
@@ -152,6 +153,9 @@ class ScraperClientGUI(ttk.Frame):
         
         self.progress_frame = ProgressFrame(controls_main_frame)
         self.progress_frame.pack(fill=tk.X, pady=2)
+
+        self.worker_status_frame = WorkerStatusFrame(controls_main_frame)
+        self.worker_status_frame.pack(fill=tk.BOTH, expand=True, pady=5)
 
     def _on_search_engine_change(self, event):
         selected_engine = self.search_engine_combo.get()

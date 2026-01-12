@@ -12,6 +12,7 @@ import os
 from typing import Dict, Any, Optional, List, Callable
 import threading
 import time
+import multiprocessing
 
 from utils.config import Config
 from gui.captcha_config import CaptchaConfigWindow
@@ -149,6 +150,8 @@ class ConfigTab:
         
         ttk.Button(proxy_buttons_frame, text="Cargar desde archivo", 
                   command=self._load_proxies_from_file).pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Button(proxy_buttons_frame, text="Guardar Configuración de Proxies", 
+                  command=self._apply_config).pack(side=tk.LEFT, padx=5)
         ttk.Button(proxy_buttons_frame, text="Probar proxies", 
                   command=self._test_proxies).pack(side=tk.LEFT, padx=5)
         ttk.Button(proxy_buttons_frame, text="Limpiar lista", 
@@ -201,6 +204,24 @@ class ConfigTab:
         ttk.Label(words_frame, text="Palabras mínimas por página:").pack(side=tk.LEFT)
         self.min_words_var = tk.StringVar(value="30")
         ttk.Entry(words_frame, textvariable=self.min_words_var, width=10).pack(side=tk.LEFT, padx=(5, 0))
+        
+        # Número de Workers
+        workers_frame = ttk.Frame(scraping_frame)
+        workers_frame.pack(fill=tk.X, pady=2)
+        ttk.Label(workers_frame, text="Número de Workers (Hilos):").pack(side=tk.LEFT)
+        
+        max_workers = multiprocessing.cpu_count()
+        self.num_workers_var = tk.StringVar(value=str(max_workers))
+        
+        workers_spinbox = ttk.Spinbox(
+            workers_frame, 
+            from_=1, 
+            to=250, 
+            textvariable=self.num_workers_var, 
+            width=5
+        )
+        workers_spinbox.pack(side=tk.LEFT, padx=(5, 0))
+        ttk.Label(workers_frame, text=f"(Máx: 250)").pack(side=tk.LEFT, padx=5)
         
         # Delay entre requests
         delay_frame = ttk.Frame(scraping_frame)
@@ -618,6 +639,8 @@ class ConfigTab:
             
             # General
             "min_words": self.min_words_var.get(),
+            "min_words": self.min_words_var.get(),
+            "num_workers": self.num_workers_var.get(),
             "request_delay": self.request_delay_var.get(),
             "page_timeout": self.page_timeout_var.get(),
             "user_agent": self.user_agent_var.get(),
@@ -643,7 +666,14 @@ class ConfigTab:
             self.proxy_rotation_var.set(self.config.get("proxy_rotation", True))
             self.proxy_timeout_var.set(self.config.get("proxy_timeout", "30"))
             
+            # Cargar lista de proxies en el widget de texto
+            proxy_list = self.config.get("proxy_list", "")
+            self.proxy_text.delete("1.0", tk.END)
+            self.proxy_text.insert("1.0", proxy_list)
+            
             self.min_words_var.set(self.config.get("min_words", "30"))
+            self.min_words_var.set(self.config.get("min_words", "30"))
+            self.num_workers_var.set(self.config.get("num_workers", str(multiprocessing.cpu_count())))
             self.request_delay_var.set(self.config.get("request_delay", "1.0"))
             self.page_timeout_var.set(self.config.get("page_timeout", "30"))
             self.output_dir_var.set(self.config.get("output_dir", "results"))
@@ -687,7 +717,7 @@ class ConfigTab:
         """Valida la configuración antes de aplicarla."""
         try:
             # Validar valores numéricos
-            numeric_fields = ["proxy_timeout", "min_words", "request_delay", "page_timeout"]
+            numeric_fields = ["proxy_timeout", "min_words", "request_delay", "page_timeout", "num_workers"]
             
             for field in numeric_fields:
                 if field in config:

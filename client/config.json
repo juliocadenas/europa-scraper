@@ -9,7 +9,7 @@
     "captcha_api_key": "",
     "proxy_enabled": false,
     "proxy_rotation": true,
-    "proxy_timeout": 30,
+    "proxy_timeout": "30",
     "proxy_list": "",
     "min_words": "3",
     "request_delay": "3.0",
@@ -37,5 +37,11 @@
         "default_table": "courses",
         "connection_timeout": 30,
         "max_connections": 5
-    }
+    },
+    "server": {
+        "host": "localhost",
+        "port": 8001,
+        "auto_detect_wsl": true
+    },
+    "num_workers": "8"
 }

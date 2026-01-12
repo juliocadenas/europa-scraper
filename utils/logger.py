@@ -71,6 +71,14 @@ def setup_logger(log_level=logging.INFO, log_file=None):
     file_handler.setLevel(log_level)
     root_logger.addHandler(file_handler)
     
+    # Crear handler para content_extractor
+    content_extractor_log_file = os.path.join(log_dir, "content_extractor.log")
+    content_extractor_handler = logging.FileHandler(content_extractor_log_file, encoding='utf-8')
+    content_extractor_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(message)s')
+    content_extractor_handler.setFormatter(content_extractor_formatter)
+    content_extractor_handler.setLevel(logging.DEBUG)
+    logging.getLogger('utils.scraper.content_extractor').addHandler(content_extractor_handler)
+    
     # Crear handler para consola
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(name)s - %(message)s'))

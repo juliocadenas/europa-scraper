@@ -60,9 +60,12 @@ class Config:
     def save_config(self) -> bool:
         """Save configuration to file"""
         try:
+            abs_path = os.path.abspath(self.config_file)
+            print(f"DEBUG: Intentando guardar configuración en: {abs_path}")
             with open(self.config_file, 'w') as f:
                 json.dump(self.config, f, indent=4)
             
+            print(f"DEBUG: Configuración guardada exitosamente en: {abs_path}")
             self.logger.info(f"Saved configuration to {self.config_file}")
             return True
         
