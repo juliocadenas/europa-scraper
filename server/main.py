@@ -15,7 +15,7 @@ project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
-from server import ScraperServer
+from server.server import ScraperServer
 
 if __name__ == "__main__":
     # Crea una instancia del servidor. El puerto puede ser sobrescrito
