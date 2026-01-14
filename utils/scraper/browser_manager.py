@@ -532,10 +532,6 @@ class BrowserManager:
               logger.info("Creating browser context with enhanced fingerprinting protection...")
               logger.info(f"Using locale: {selected_locale}, timezone: {selected_timezone}")
 
-                  record_har_path="network_trace.zip",
-                  record_har_mode="full"
-              )
-
               # Configurar Proxy si está disponible
               proxy_config = None
               if self.proxy_manager and self.proxy_manager.is_enabled():
