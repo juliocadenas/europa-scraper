@@ -143,7 +143,15 @@ def worker_process(
                 
                 try:
                     # Usar el parámetro 'is_headless' del trabajo recibido
-                    is_headless = job_params.get('is_headless', True)
+                    # Usar el parámetro 'is_headless' del trabajo recibido, pero forzar True en Linux
+                    is_headless_param = job_params.get('is_headless', True)
+                    if sys.platform.startswith('linux'):
+                        is_headless = True
+                        if not is_headless_param:
+                            logger.warning(f"Worker {worker_id}: Forzando headless=True en Linux (solicitado: {is_headless_param})")
+                    else:
+                        is_headless = is_headless_param
+
                     logger.info(f"Worker {worker_id}: Modo headless = {is_headless}")
                     loop.run_until_complete(browser_manager.initialize(headless=is_headless))
                     logger.info(f"Worker {worker_id}: Navegador inicializado correctamente")
