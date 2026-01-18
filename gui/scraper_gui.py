@@ -205,16 +205,17 @@ class ScraperGUI(ttk.Frame):
         self.force_reset_button.pack(side=tk.RIGHT, padx=5, fill=tk.X, expand=True) # EXPANDIDO
         
         # Treeview para mostrar el estado de los workers (Content)
-        self.worker_tree = ttk.Treeview(self.monitor_frame, columns=('ID', 'Status', 'Task', 'Progress'), show='headings')
-        self.worker_tree.heading('ID', text='Worker ID')
-        self.worker_tree.heading('Status', text='Estado')
-        self.worker_tree.heading('Task', text='Tarea Actual')
+        # REFACTORIZACIÓN UI: Unificación de Estado y Limpieza de Tarea
+        self.worker_tree = ttk.Treeview(self.monitor_frame, columns=('ID', 'Status', 'Course', 'Progress'), show='headings')
+        self.worker_tree.heading('ID', text='Worker')
+        self.worker_tree.heading('Status', text='Estado / Acción')
+        self.worker_tree.heading('Course', text='Curso / Tarea')
         self.worker_tree.heading('Progress', text='Progreso')
 
-        self.worker_tree.column('ID', width=60, anchor=tk.CENTER)
-        self.worker_tree.column('Status', width=100)
-        self.worker_tree.column('Task', width=300) # Ajustado
-        self.worker_tree.column('Progress', width=120)
+        self.worker_tree.column('ID', width=50, anchor=tk.CENTER)
+        self.worker_tree.column('Status', width=120)
+        self.worker_tree.column('Course', width=350)
+        self.worker_tree.column('Progress', width=80, anchor=tk.CENTER)
         
         # Scrollbar para el monitor
         self.monitor_scrollbar = ttk.Scrollbar(self.monitor_frame, orient=tk.VERTICAL, command=self.worker_tree.yview)
@@ -222,6 +223,16 @@ class ScraperGUI(ttk.Frame):
         
         self.monitor_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.worker_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        
+        # Bind para mostrar detalles al seleccionar
+        self.worker_tree.bind('<<TreeviewSelect>>', self._on_tree_select)
+
+        # --- PANEL DE DETALLES (NUEVO) ---
+        self.details_frame = ttk.LabelFrame(self.center_column, text="Detalles del Proceso Seleccionado", padding=5)
+        self.details_frame.pack(fill=tk.X, pady=(0, 10))
+        
+        self.details_text = tk.Text(self.details_frame, height=3, font=("Consolas", 9), state=tk.DISABLED, bg="#f0f0f0")
+        self.details_text.pack(fill=tk.X, expand=True)
 
         # Configuración de motor y controles de inicio (se mantienen igual)
         self.engine_frame = ttk.Frame(self.center_column)
@@ -278,79 +289,138 @@ class ScraperGUI(ttk.Frame):
         """Este método ya no es necesario aquí, la ClientApp se encarga del polling."""
         pass # La ClientApp gestiona ahora el polling y llama a _render_worker_status
 
+    def _on_tree_select(self, event):
+        """Muestra los detalles completos del worker seleccionado en el panel inferior."""
+        selection = self.worker_tree.selection()
+        if not selection:
+            return
+        
+        row_id = selection[0]
+        # Recuperar detalles guardados en el mapa
+        full_details = getattr(self, 'row_details_map', {}).get(row_id, "Sin detalles disponibles.")
+        
+        self.details_text.config(state=tk.NORMAL)
+        self.details_text.delete(1.0, tk.END)
+        self.details_text.insert(tk.END, full_details)
+        self.details_text.config(state=tk.DISABLED)
+
     def _render_worker_status(self, worker_states):
         """Recibe y renderiza el estado detallado de los trabajadores en la GUI."""
         
-        # Inicializar mapa de seguimiento de filas si no existe
+        # Inicializar mapas de seguimiento si no existen
         if not hasattr(self, 'worker_last_row_id'):
-            self.worker_last_row_id = {} # Map: worker_id -> last_row_iid
+            self.worker_last_row_id = {} 
+        if not hasattr(self, 'row_details_map'):
+            self.row_details_map = {}
 
         for worker_id, state in worker_states.items():
             worker_id_str = str(worker_id)
-            current_task = state.get('current_task', 'N/A')
-            status = state.get('status', 'N/A').capitalize()
+            raw_task = state.get('current_task', 'N/A')
+            server_status = state.get('status', 'N/A').capitalize()
 
-            # 1. Identificar si es una tarea "Transitoria" (Iniciando, Esperando...) o "Real" (Scraping)
-            is_transient = "Iniciando" in current_task or "Esperando" in current_task or "Shutdown" in current_task
+            # --- PARSING INTELIGENTE DE STRINGS PARA UI LIMPIA ---
             
-            # 2. Generar Firma Estable del ID
-            if is_transient:
-                # ID genérico para estados transitorios de este worker
-                stable_id = "TRANSIENT_STATE"
-            elif '|' in current_task:
-                 clean = current_task.split('|')[0].strip()
-                 if ' - ' in clean:
-                     parts = clean.split(' - ', 1)
-                     stable_id = parts[1].strip() if len(parts) > 1 else clean
-                 else:
-                     stable_id = clean
+            # 1. Determinar STATUS (Acción) y COURSE (Tarea Limpia)
+            display_status = server_status # Valor por defecto
+            display_course = raw_task      # Valor por defecto
+            details_text = raw_task        # Valor por defecto para el panel
+            
+            # Limpiar estadísticas dinámicas del nombre del curso
+            clean_task_text = raw_task.split('|')[0].strip() if '|' in raw_task else raw_task.strip()
+            
+            if "Iniciando" in raw_task:
+                 display_status = "Iniciando"
+                 display_course = "Preparando navegador..."
+                 is_transient = True
+            elif "Esperando" in raw_task:
+                 display_status = "Inactivo"
+                 display_course = "Esperando tareas..."
+                 is_transient = True
+            elif "Completado:" in raw_task:
+                 display_status = "Completado"
+                 # Extraer lote: "Completado: 10..20. Total..." -> "Lote 10..20"
+                 try:
+                     parts = raw_task.split('.')
+                     if len(parts) > 2:
+                         display_course = f"Lote Finalizado ({clean_task_text.split('.')[0].replace('Completado: ', '')})"
+                     else:
+                         display_course = "Lote Finalizado"
+                 except:
+                     display_course = "Lote Finalizado"
+                 is_transient = False
+            elif "Buscando" in raw_task:
+                 display_status = "Buscando"
+                 # "Buscando curso 1 de 1 - 10.0 - METAL..." -> "10.0 - METAL..."
+                 if ' - ' in clean_task_text:
+                     parts = clean_task_text.split(' - ', 1)
+                     display_course = parts[1].strip() if len(parts) > 1 else clean_task_text
+                 is_transient = False
+            elif "Tabulando" in raw_task:
+                 display_status = "Tabulando"
+                 if ' - ' in clean_task_text:
+                     parts = clean_task_text.split(' - ', 1)
+                     display_course = parts[1].strip() if len(parts) > 1 else clean_task_text
+                 is_transient = False
             else:
-                 # Lógica de fallback similar
-                 if ' - ' in current_task:
-                     parts = current_task.split(' - ', 1)
-                     stable_id = parts[1].strip() if len(parts) > 1 else current_task
-                 else:
-                     stable_id = current_task.strip()
+                 is_transient = False
+
+            # 2. Generar ID Estable (Ignorando estado Buscando/Tabulando)
+            if is_transient:
+                stable_id = "TRANSIENT_STATE"
+            else:
+                stable_id = display_course # El nombre del curso ES el ID estable
             
-            # Hash del ID Estable
             task_hash = hashlib.md5(f"{worker_id_str}_{stable_id}".encode()).hexdigest()
             current_row_id = f"{worker_id_str}_{task_hash}"
 
-            # 3. Datos a mostrar
+            # 3. Formatear Progreso
+            progress_val = state.get('progress', 0)
+            progress_str = f"{int(progress_val)}%"
+
+            # 4. Datos visuales para las columnas
             values = (
                 worker_id_str,
-                status,
-                current_task,
-                f"{state.get('progress', 0):.2f}%"
+                display_status,
+                display_course,
+                progress_str
             )
+            
+            # 5. Guardar detalles completos para el panel inferior
+            # Si hay pipe, usarlos como detalles extra
+            if '|' in raw_task:
+                stats_part = raw_task.split('|')[1].strip()
+                full_details_str = f"Curso: {display_course}\nEstado: {display_status}\nEstadísticas: {stats_part}"
+            elif "Completado" in raw_task:
+                full_details_str = raw_task.replace('. ', '.\n') # Formatear mejor
+            else:
+                full_details_str = raw_task
 
-            # 4. Lógica de Reemplazo Inteligente
+            self.row_details_map[current_row_id] = full_details_str
+
+            # 6. Lógica de Reemplazo (Borrar transitorios anteriores)
             last_recorded_id = self.worker_last_row_id.get(worker_id_str)
-
             if last_recorded_id and last_recorded_id != current_row_id:
-                # El ID ha cambiado.
-                # Si el anterior era transitorio, LO BORRAMOS para que no ensucie (User Request: "No repitas el registro")
-                # O si queremos ser estrictos: Si el Worker cambia de tarea, evaluamos.
-                
-                # Verificamos si la fila anterior existe en el Tree
                 if self.worker_tree.exists(last_recorded_id):
-                    # Recuperar valores para ver si era transitoria (por si reiniciamos GUI)
                     try:
                         old_vals = self.worker_tree.item(last_recorded_id, 'values')
-                        if old_vals and ("Iniciando" in old_vals[2] or "Esperando" in old_vals[2]):
-                            # Era basura transitoria -> BORRAR
+                        # Si lo anterior era Iniciando/Inactivo/Esperando, borrarlo
+                        if old_vals and (old_vals[1] in ["Iniciando", "Inactivo", "Esperando"]):
                              self.worker_tree.delete(last_recorded_id)
                     except:
-                        pass # Si falla, ignoramos
+                        pass
             
-            # 5. Insertar o Actualizar
+            # 7. Insertar o Actualizar
             if self.worker_tree.exists(current_row_id):
                 self.worker_tree.item(current_row_id, values=values)
             else:
                 self.worker_tree.insert("", tk.END, iid=current_row_id, values=values)
                 self.worker_tree.yview_moveto(1)
+                
+            # Actualizar si este es el actual seleccionado (Refresh en tiempo real del panel)
+            selected = self.worker_tree.selection()
+            if selected and selected[0] == current_row_id:
+                self._on_tree_select(None)
             
-            # Actualizar el registro del último ID para este worker
             self.worker_last_row_id[worker_id_str] = current_row_id
 
         self.current_worker_states = worker_states
