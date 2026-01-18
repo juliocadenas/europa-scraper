@@ -287,30 +287,36 @@ class ScraperGUI(ttk.Frame):
             worker_id_str = str(worker_id)
             current_task = state.get('current_task', 'N/A')
             
-            # Generar un ID único basado en el Worker ID Y la Tarea Actual
-            # Esto asegura que si cambia la tarea (nuevo curso), se cree una nueva fila
-            # y la anterior (ya completada) quede como registro histórico.
-            task_hash = hashlib.md5(f"{worker_id_str}_{current_task}".encode()).hexdigest()
+            # --- CORRECCIÓN CRÍTICA PARA EVITAR DUPLICADOS ---
+            # El servidor envía actualizaciones con el progreso en el texto (ej: "... | Tabulados 90 de 100").
+            # Si usamos todo el string como ID, cada actualización crea una fila nueva.
+            # SOLUCIÓN: Usamos solo la parte "Estable" del texto (antes del caracter '|') como identificador.
+            if '|' in current_task:
+                stable_task_signature = current_task.split('|')[0].strip()
+            else:
+                stable_task_signature = current_task.strip()
+            
+            # Generar un ID único basado en el Worker ID Y la Firma Estable
+            task_hash = hashlib.md5(f"{worker_id_str}_{stable_task_signature}".encode()).hexdigest()
             row_id = f"{worker_id_str}_{task_hash}"
 
             values = (
                 worker_id_str,
                 state.get('status', 'N/A').capitalize(),
-                current_task,
+                current_task, # Aquí SÍ mostramos el texto completo con el progreso dinámico
                 f"{state.get('progress', 0):.2f}%"
             )
 
             if self.worker_tree.exists(row_id):
-                # Actualizar item existente (misma tarea)
+                # Actualizar item existente (misma tarea, nuevo progreso)
                 self.worker_tree.item(row_id, values=values)
             else:
-                # Insertar nuevo item (nueva tarea)
+                # Insertar nuevo item (nueva tarea real)
                 self.worker_tree.insert("", tk.END, iid=row_id, values=values)
                 # Auto-scroll al final para ver lo nuevo
                 self.worker_tree.yview_moveto(1)
             
-        # NOTA: Hemos eliminado el bucle de "limpieza" que borraba filas antiguas.
-        # Esto cumple con el requerimiento de dejar el registro de tareas completadas.
+        # NOTA: Hemos eliminado el bucle de "limpieza" que borraba filas antiguas (History Log).
         
         self.current_worker_states = worker_states # Actualizar el estado interno de la GUI
 
