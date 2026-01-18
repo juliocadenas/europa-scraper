@@ -287,16 +287,29 @@ class ScraperGUI(ttk.Frame):
             worker_id_str = str(worker_id)
             current_task = state.get('current_task', 'N/A')
             
-            # --- CORRECCIÓN CRÍTICA PARA EVITAR DUPLICADOS ---
-            # El servidor envía actualizaciones con el progreso en el texto (ej: "... | Tabulados 90 de 100").
-            # Si usamos todo el string como ID, cada actualización crea una fila nueva.
-            # SOLUCIÓN: Usamos solo la parte "Estable" del texto (antes del caracter '|') como identificador.
+            # --- CORRECCIÓN DEFINITIVA PARA IDENTIFICAR TAREA ÚNICA ---
+            # 1. Eliminar estadísticas dinámicas (después del pipe '|')
             if '|' in current_task:
-                stable_task_signature = current_task.split('|')[0].strip()
+                clean_task_text = current_task.split('|')[0].strip()
             else:
-                stable_task_signature = current_task.strip()
+                clean_task_text = current_task.strip()
+
+            # 2. Eliminar prefijo de acción variable (ej: "Buscando curso 1 de 1" vs "Tabulando curso...")
+            # La parte constante del curso empieza después del primer separador " - ".
+            # Ej: "Buscando curso 1 de 1 - 10.0 - METAL MINING" -> ID: "10.0 - METAL MINING"
+            # Ej: "Tabulando curso 1 de 1 - 10.0 - METAL MINING" -> ID: "10.0 - METAL MINING"
+            if ' - ' in clean_task_text:
+                # Dividimos solo en la primera ocurrencia de " - "
+                parts = clean_task_text.split(' - ', 1)
+                if len(parts) > 1:
+                    stable_task_signature = parts[1].strip()
+                else:
+                    stable_task_signature = clean_task_text
+            else:
+                # Si no tiene el formato estándar, usamos el texto limpio completo
+                stable_task_signature = clean_task_text
             
-            # Generar un ID único basado en el Worker ID Y la Firma Estable
+            # Generar un ID único basado en el Worker ID Y la Firma Estable del Curso
             task_hash = hashlib.md5(f"{worker_id_str}_{stable_task_signature}".encode()).hexdigest()
             row_id = f"{worker_id_str}_{task_hash}"
 
