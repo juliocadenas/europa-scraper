@@ -7,6 +7,7 @@ GUI Principal del Scraper
 Interfaz gráfica principal para el scraper de USA.gov
 """
 
+import hashlib
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 import logging
@@ -24,6 +25,7 @@ import webbrowser
 import socket
 import requests
 import json
+
 
 # Añadir raíz del proyecto al path para permitir imports absolutos
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -239,7 +241,7 @@ class ScraperGUI(ttk.Frame):
         self.results_frame.pack(fill=tk.BOTH, expand=True)
         self.results_buttons_frame = ttk.Frame(self.right_column)
         self.results_buttons_frame.pack(fill=tk.X, pady=5)
-        self.export_button = ttk.Button(self.results_buttons_frame, text="Exportar Resultados", command=self._on_export_results, state=tk.DISABLED, style="TButton")
+        self.export_button = ttk.Button(self.results_buttons_frame, text="Exportar Resultados (ZIP)", command=self._on_export_results, state=tk.NORMAL, style="TButton")
         self.export_button.pack(side=tk.LEFT, padx=5, pady=5, fill=tk.X, expand=True)
         self.open_folder_button = ttk.Button(self.results_buttons_frame, text="Abrir Carpeta de Resultados", command=self._on_open_results_folder, style="TButton")
         self.open_folder_button.pack(side=tk.LEFT, padx=5, pady=5, fill=tk.X, expand=True)
@@ -278,34 +280,38 @@ class ScraperGUI(ttk.Frame):
 
     def _render_worker_status(self, worker_states):
         """Recibe y renderiza el estado detallado de los trabajadores en la GUI."""
-        print(f"DEBUG GUI RENDER: Recibiendo del servidor: {worker_states}")
-        # Limpiar el treeview
-        # Primero, obtener una lista de los IDs de los workers que están actualmente en el treeview.
-        existing_worker_ids = set(self.worker_tree.get_children())
-
+        # print(f"DEBUG GUI RENDER: Recibiendo del servidor: {worker_states}")
+        
         # Iterar sobre los estados de worker recibidos y actualizar/insertar
-        updated_worker_ids = set()
         for worker_id, state in worker_states.items():
             worker_id_str = str(worker_id)
+            current_task = state.get('current_task', 'N/A')
+            
+            # Generar un ID único basado en el Worker ID Y la Tarea Actual
+            # Esto asegura que si cambia la tarea (nuevo curso), se cree una nueva fila
+            # y la anterior (ya completada) quede como registro histórico.
+            task_hash = hashlib.md5(f"{worker_id_str}_{current_task}".encode()).hexdigest()
+            row_id = f"{worker_id_str}_{task_hash}"
+
             values = (
                 worker_id_str,
                 state.get('status', 'N/A').capitalize(),
-                state.get('current_task', 'N/A'),
+                current_task,
                 f"{state.get('progress', 0):.2f}%"
             )
 
-            if worker_id_str in existing_worker_ids:
-                # Actualizar item existente
-                self.worker_tree.item(worker_id_str, values=values)
+            if self.worker_tree.exists(row_id):
+                # Actualizar item existente (misma tarea)
+                self.worker_tree.item(row_id, values=values)
             else:
-                # Insertar nuevo item
-                self.worker_tree.insert("", tk.END, iid=worker_id_str, values=values)
-            updated_worker_ids.add(worker_id_str)
+                # Insertar nuevo item (nueva tarea)
+                self.worker_tree.insert("", tk.END, iid=row_id, values=values)
+                # Auto-scroll al final para ver lo nuevo
+                self.worker_tree.yview_moveto(1)
             
-        # Eliminar workers que ya no están presentes en el estado recibido
-        for worker_id_to_remove in existing_worker_ids - updated_worker_ids:
-            self.worker_tree.delete(worker_id_to_remove)
-            
+        # NOTA: Hemos eliminado el bucle de "limpieza" que borraba filas antiguas.
+        # Esto cumple con el requerimiento de dejar el registro de tareas completadas.
+        
         self.current_worker_states = worker_states # Actualizar el estado interno de la GUI
 
         # Calcular progreso general promedio
@@ -697,7 +703,48 @@ class ScraperGUI(ttk.Frame):
         self.progress_frame.update_progress(100, "Proceso completado.")
 
     def _on_export_results(self):
-        pass # La lógica de exportación podría requerir un nuevo enfoque
+        """Descarga los resultados en un archivo ZIP desde el servidor."""
+        if self.connection_status_label.cget("text") != "Conectado":
+            messagebox.showerror("No Conectado", "Por favor, conéctese al servidor primero.")
+            return
+
+        server_url = self.server_url.get().rstrip('/')
+        
+        filepath = filedialog.asksaveasfilename(
+            defaultextension=".zip",
+            filetypes=[("Archivos ZIP", "*.zip"), ("Todos los archivos", "*.*")],
+            title="Guardar Resultados (ZIP)"
+        )
+        
+        if not filepath:
+            return
+
+        self.results_frame.add_log(f"Descargando resultados a: {filepath}...")
+        
+        try:
+            # Petición GET al endpoint de descarga. Usar stream=True para descargas grandes.
+            with requests.get(f"{server_url}/download_results", stream=True, timeout=120) as r:
+                if r.status_code == 200:
+                    with open(filepath, 'wb') as f:
+                        for chunk in r.iter_content(chunk_size=8192):
+                            f.write(chunk)
+                    
+                    messagebox.showinfo("Descarga Exitosa", f"Archivo guardado correctamente en:\n{filepath}")
+                    self.results_frame.add_log(f"✅ Descarga completada: {filepath}")
+                elif r.status_code == 404:
+                     messagebox.showwarning("Sin Resultados", "El servidor indica que no hay resultados para descargar.")
+                     self.results_frame.add_log("⚠️ El servidor no tiene resultados.")
+                else:
+                    error_detail = r.json().get("detail", r.text) if r.headers.get('content-type') == 'application/json' else r.text
+                    messagebox.showerror("Error de Descarga", f"El servidor devolvió un error:\n{error_detail}")
+                    self.results_frame.add_log(f"❌ Error en la descarga: {error_detail}")
+
+        except requests.exceptions.RequestException as e:
+            messagebox.showerror("Error de Red", f"No se pudo descargar el archivo: {e}")
+            self.results_frame.add_log(f"❌ Error de red durante descarga: {e}")
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error inesperado: {e}")
+            self.results_frame.add_log(f"❌ Error inesperado: {e}")
 
 
     def _on_open_results_folder(self):

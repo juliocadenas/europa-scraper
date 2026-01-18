@@ -20,12 +20,14 @@ from multiprocessing.managers import SyncManager
 from queue import Empty
 from typing import Dict, Any, Optional, List, Tuple
 from fastapi import FastAPI, HTTPException, UploadFile, File
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import uvicorn
 from contextlib import asynccontextmanager
 import pandas as pd
 import io
-import random # <--- Añadido para corregir NameError
+import random
+import zipfile
 
 # --- Añadir raíz del proyecto al path ---
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -409,6 +411,7 @@ class ScraperServer:
         self.app.get("/detailed_status")(self.get_detailed_status)
         self.app.post("/upload_courses")(self.upload_courses)
         self.app.get("/get_all_courses")(self.get_all_courses)
+        self.app.get("/download_results")(self.download_results)
         self.app.get("/")(self.root_endpoint)
         self.app.get("/ping")(self.ping_endpoint)
         
@@ -609,6 +612,40 @@ class ScraperServer:
         except Exception as e:
             self.logger.exception("Error procesando el archivo de cursos cargado.")
             raise HTTPException(status_code=500, detail=f"Error interno del servidor: {str(e)}")
+
+    async def download_results(self):
+        """Descarga todos los archivos de la carpeta results como un ZIP."""
+        results_dir = os.path.join(project_root, 'results')
+        if not os.path.exists(results_dir):
+            raise HTTPException(status_code=404, detail="No hay resultados para descargar (carpeta vacía o inexistente).")
+            
+        # Crear un archivo ZIP en memoria o temporal
+        zip_filename = "resultados_europa.zip"
+        zip_path = os.path.join(project_root, zip_filename)
+        
+        try:
+            with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+                # Recorrer todos los archivos en results
+                files_found = False
+                for root, dirs, files in os.walk(results_dir):
+                    for file in files:
+                        files_found = True
+                        file_path = os.path.join(root, file)
+                        # Agregar al zip con nombre relativo
+                        zipf.write(file_path, os.path.relpath(file_path, os.path.join(results_dir, '..')))
+                
+                if not files_found:
+                     # Si no hay archivos, crear al menos un archivo de texto vacío
+                     zipf.writestr("leeme.txt", "No se encontraron archivos en la carpeta results.")
+
+            if not os.path.exists(zip_path):
+                 raise HTTPException(status_code=500, detail="Error creando el archivo ZIP.")
+                 
+            return FileResponse(zip_path, media_type='application/zip', filename=zip_filename)
+            
+        except Exception as e:
+            self.logger.error(f"Error generando ZIP de resultados: {e}")
+            raise HTTPException(status_code=500, detail=f"Error generando descarga: {str(e)}")
 
     async def root_endpoint(self):
         """Endpoint raíz para verificar que el servidor está activo."""
