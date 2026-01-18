@@ -35,3 +35,5 @@ ENV PYTHONUNBUFFERED=1
 
 # Comando para iniciar el servidor
 CMD ["python", "server/main.py"]
+
+# Force rebuild trigger
