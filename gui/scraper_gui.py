@@ -280,58 +280,80 @@ class ScraperGUI(ttk.Frame):
 
     def _render_worker_status(self, worker_states):
         """Recibe y renderiza el estado detallado de los trabajadores en la GUI."""
-        # print(f"DEBUG GUI RENDER: Recibiendo del servidor: {worker_states}")
         
-        # Iterar sobre los estados de worker recibidos y actualizar/insertar
+        # Inicializar mapa de seguimiento de filas si no existe
+        if not hasattr(self, 'worker_last_row_id'):
+            self.worker_last_row_id = {} # Map: worker_id -> last_row_iid
+
         for worker_id, state in worker_states.items():
             worker_id_str = str(worker_id)
             current_task = state.get('current_task', 'N/A')
-            
-            # --- CORRECCIÓN DEFINITIVA PARA IDENTIFICAR TAREA ÚNICA ---
-            # 1. Eliminar estadísticas dinámicas (después del pipe '|')
-            if '|' in current_task:
-                clean_task_text = current_task.split('|')[0].strip()
-            else:
-                clean_task_text = current_task.strip()
+            status = state.get('status', 'N/A').capitalize()
 
-            # 2. Eliminar prefijo de acción variable (ej: "Buscando curso 1 de 1" vs "Tabulando curso...")
-            # La parte constante del curso empieza después del primer separador " - ".
-            # Ej: "Buscando curso 1 de 1 - 10.0 - METAL MINING" -> ID: "10.0 - METAL MINING"
-            # Ej: "Tabulando curso 1 de 1 - 10.0 - METAL MINING" -> ID: "10.0 - METAL MINING"
-            if ' - ' in clean_task_text:
-                # Dividimos solo en la primera ocurrencia de " - "
-                parts = clean_task_text.split(' - ', 1)
-                if len(parts) > 1:
-                    stable_task_signature = parts[1].strip()
-                else:
-                    stable_task_signature = clean_task_text
-            else:
-                # Si no tiene el formato estándar, usamos el texto limpio completo
-                stable_task_signature = clean_task_text
+            # 1. Identificar si es una tarea "Transitoria" (Iniciando, Esperando...) o "Real" (Scraping)
+            is_transient = "Iniciando" in current_task or "Esperando" in current_task or "Shutdown" in current_task
             
-            # Generar un ID único basado en el Worker ID Y la Firma Estable del Curso
-            task_hash = hashlib.md5(f"{worker_id_str}_{stable_task_signature}".encode()).hexdigest()
-            row_id = f"{worker_id_str}_{task_hash}"
+            # 2. Generar Firma Estable del ID
+            if is_transient:
+                # ID genérico para estados transitorios de este worker
+                stable_id = "TRANSIENT_STATE"
+            elif '|' in current_task:
+                 clean = current_task.split('|')[0].strip()
+                 if ' - ' in clean:
+                     parts = clean.split(' - ', 1)
+                     stable_id = parts[1].strip() if len(parts) > 1 else clean
+                 else:
+                     stable_id = clean
+            else:
+                 # Lógica de fallback similar
+                 if ' - ' in current_task:
+                     parts = current_task.split(' - ', 1)
+                     stable_id = parts[1].strip() if len(parts) > 1 else current_task
+                 else:
+                     stable_id = current_task.strip()
+            
+            # Hash del ID Estable
+            task_hash = hashlib.md5(f"{worker_id_str}_{stable_id}".encode()).hexdigest()
+            current_row_id = f"{worker_id_str}_{task_hash}"
 
+            # 3. Datos a mostrar
             values = (
                 worker_id_str,
-                state.get('status', 'N/A').capitalize(),
-                current_task, # Aquí SÍ mostramos el texto completo con el progreso dinámico
+                status,
+                current_task,
                 f"{state.get('progress', 0):.2f}%"
             )
 
-            if self.worker_tree.exists(row_id):
-                # Actualizar item existente (misma tarea, nuevo progreso)
-                self.worker_tree.item(row_id, values=values)
+            # 4. Lógica de Reemplazo Inteligente
+            last_recorded_id = self.worker_last_row_id.get(worker_id_str)
+
+            if last_recorded_id and last_recorded_id != current_row_id:
+                # El ID ha cambiado.
+                # Si el anterior era transitorio, LO BORRAMOS para que no ensucie (User Request: "No repitas el registro")
+                # O si queremos ser estrictos: Si el Worker cambia de tarea, evaluamos.
+                
+                # Verificamos si la fila anterior existe en el Tree
+                if self.worker_tree.exists(last_recorded_id):
+                    # Recuperar valores para ver si era transitoria (por si reiniciamos GUI)
+                    try:
+                        old_vals = self.worker_tree.item(last_recorded_id, 'values')
+                        if old_vals and ("Iniciando" in old_vals[2] or "Esperando" in old_vals[2]):
+                            # Era basura transitoria -> BORRAR
+                             self.worker_tree.delete(last_recorded_id)
+                    except:
+                        pass # Si falla, ignoramos
+            
+            # 5. Insertar o Actualizar
+            if self.worker_tree.exists(current_row_id):
+                self.worker_tree.item(current_row_id, values=values)
             else:
-                # Insertar nuevo item (nueva tarea real)
-                self.worker_tree.insert("", tk.END, iid=row_id, values=values)
-                # Auto-scroll al final para ver lo nuevo
+                self.worker_tree.insert("", tk.END, iid=current_row_id, values=values)
                 self.worker_tree.yview_moveto(1)
             
-        # NOTA: Hemos eliminado el bucle de "limpieza" que borraba filas antiguas (History Log).
-        
-        self.current_worker_states = worker_states # Actualizar el estado interno de la GUI
+            # Actualizar el registro del último ID para este worker
+            self.worker_last_row_id[worker_id_str] = current_row_id
+
+        self.current_worker_states = worker_states
 
         # Calcular progreso general promedio
         if worker_states:
