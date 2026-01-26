@@ -580,7 +580,16 @@ class ScraperServer:
             contents = await file.read()
             
             if file.filename.endswith('.csv'):
-                df = pd.read_csv(io.BytesIO(contents))
+                # Detectar automáticamente el separador (coma, punto y coma, o pipe)
+                sample = contents[:2048].decode('utf-8', errors='ignore')
+                first_line = sample.split('\n')[0] if '\n' in sample else sample
+                
+                # Contar ocurrencias de posibles separadores en la primera línea
+                separators = {',': first_line.count(','), ';': first_line.count(';'), '|': first_line.count('|')}
+                detected_sep = max(separators, key=separators.get)
+                self.logger.info(f"Separador detectado: '{detected_sep}' (ocurrencias: {separators})")
+                
+                df = pd.read_csv(io.BytesIO(contents), sep=detected_sep)
             else:
                 df = pd.read_excel(io.BytesIO(contents))
 
