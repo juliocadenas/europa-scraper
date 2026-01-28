@@ -14,6 +14,7 @@ from utils.scraper.browser_manager import BrowserManager
 from utils.scraper.text_processor import TextProcessor
 from utils.scraper.url_utils import URLUtils
 from utils.captcha_solver import CaptchaSolver
+from utils.scraper.cordis_api_client import CordisApiClient
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +33,27 @@ class SearchEngine:
         self.url_utils = URLUtils()
         self._search_cache = {}
         self.captcha_solver = CaptchaSolver(config_manager) if config_manager else None
+        self.cordis_api_client = CordisApiClient()
 
+    # ... (existing methods) ...
+
+    async def get_search_results(self, search_term: str, search_engine: str, site_domain: Optional[str] = None) -> List[Dict[str, Any]]:
+        """
+        Obtiene los resultados de búsqueda utilizando el motor especificado.
+        """
+        if search_engine == 'Google':
+            return await self.search_google(search_term, site_domain)
+        elif search_engine == 'DuckDuckGo':
+            return await self.search_duckduckgo(search_term, site_domain)
+        elif search_engine == 'Cordis Europa':
+            return await self.search_cordis_europa(search_term)
+        elif search_engine == 'Cordis Europa API':
+             return await self.cordis_api_client.search_projects_and_publications(search_term)
+        elif search_engine == 'Wayback Machine':
+            return await self.search_wayback(search_term, site_domain)
+        else:
+            logger.warning(f"Motor de búsqueda no soportado: {search_engine}")
+            return []
     async def search_google(self, query: str, site_domain: str = None, max_pages: int = 100) -> List[Dict[str, Any]]:
         """
         Performs a highly stealthy and human-like Google search.

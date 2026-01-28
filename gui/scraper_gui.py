@@ -239,7 +239,7 @@ class ScraperGUI(ttk.Frame):
         self.engine_frame.pack(fill=tk.X, pady=5)
         ttk.Label(self.engine_frame, text="Motor de Búsqueda:").pack(side=tk.LEFT, padx=(0, 5))
         self.search_engine_var = tk.StringVar()
-        self.search_engine_combo = ttk.Combobox(self.engine_frame, textvariable=self.search_engine_var, values=["Cordis Europa", "Google", "DuckDuckGo", "Common Crawl", "Wayback Machine"], state="readonly")
+        self.search_engine_combo = ttk.Combobox(self.engine_frame, textvariable=self.search_engine_var, values=["Cordis Europa", "Cordis Europa API", "Google", "DuckDuckGo", "Common Crawl", "Wayback Machine"], state="readonly")
         self.search_engine_combo.pack(side=tk.LEFT, fill=tk.X, expand=True)
         self.search_engine_var.set(self.config.get("search_engine", "Cordis Europa"))
         self.control_frame = ControlFrame(self.center_column, on_start=self._on_start_scraping, on_stop=self._on_stop_scraping)
