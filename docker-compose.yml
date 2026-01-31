@@ -1,13 +1,19 @@
 services:
   europa-scraper:
     build: .
+    container_name: europa-scraper-prod
     ports:
       - "8001:8001"
+      - "6000:6000/udp"
     volumes:
-      - europa_sqlite_db:/app
-      - europa_logs:/app/logs
+      - ./courses.db:/app/courses.db
+      - ./counties.db:/app/counties.db
+      - ./results:/app/results
+      - ./logs:/app/logs
+      - ./client/config.json:/app/client/config.json
+    shm_size: '4gb' # Importante para múltiples instancias de Chromium
     restart: always
-
-volumes:
-  europa_sqlite_db:
-  europa_logs:
+    deploy:
+      resources:
+        limits:
+          memory: 250G # Reservar gran parte de la memoria pero dejar margen
