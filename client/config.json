@@ -39,7 +39,7 @@
         "max_connections": 5
     },
     "server": {
-        "host": "212.227.232.56",
+        "host": "2.139.235.38",
         "port": 8001,
         "auto_detect_wsl": false
     },
