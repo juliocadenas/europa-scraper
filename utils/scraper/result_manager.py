@@ -104,6 +104,46 @@ class ResultManager:
             logger.error(f"Error adding result: {str(e)}")
             return False
     
+    def cleanup_if_empty(self) -> bool:
+        """
+        Checks if the output CSV file contains only headers (or is empty) and deletes it.
+        Returns True if deleted, False otherwise.
+        """
+        if not self.output_file or not os.path.exists(self.output_file):
+            return False
+            
+        try:
+            # columns used in initialize
+            columns = [
+                'sic_code', 'course_name', 'title', 
+                'description', 'url', 'total_words'
+            ]
+            expected_header = ",".join(columns)
+            
+            with open(self.output_file, 'r', encoding='utf-8') as f:
+                content = f.read().strip()
+            
+            # Check if content is empty or matches header exactly
+            if not content or content == expected_header:
+                logger.info(f"🗑️ Deleting empty file (headers only): {self.output_file}")
+                os.remove(self.output_file)
+                return True
+                
+            # Also check line count as backup
+            with open(self.output_file, 'r', encoding='utf-8') as f:
+                lines = f.readlines()
+            
+            if len(lines) <= 1:
+                logger.info(f"🗑️ Deleting empty file (<=1 line): {self.output_file}")
+                os.remove(self.output_file)
+                return True
+                
+            return False
+            
+        except Exception as e:
+            logger.error(f"Error cleaning up empty file: {e}")
+            return False
+
     def add_omitted_result(self, result: Dict[str, Any], reason: str) -> None:
         """
         Adds a result to the omitted results list.
