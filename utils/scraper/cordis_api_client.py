@@ -38,15 +38,23 @@ class CordisApiClient:
     def _translate_to_english(self, spanish_term: str) -> str:
         """Extract key technical terms and translate them."""
         words = spanish_term.lower().split()
-        # Extract only the important technical terms (metals, minerals, processes)
-        key_terms = []
+        
+        # Separate metals from other terms
+        metals = []
+        other_terms = []
+        
         for word in words:
             if word in self.translations:
                 translated = self.translations[word]
-                # Only add metals and key nouns, skip generic words
-                if translated in ['iron', 'copper', 'metals', 'metal', 'mining', 'ore', 
-                                 'aluminum', 'gold', 'silver', 'zinc', 'lead']:
-                    key_terms.append(translated)
+                # Metals should come first
+                if translated in ['iron', 'copper', 'aluminum', 'gold', 'silver', 'zinc', 'lead']:
+                    metals.append(translated)
+                # Then mining/ore/processing terms
+                elif translated in ['mining', 'ore', 'metal', 'metals']:
+                    other_terms.append(translated)
+        
+        # Combine: metals first, then other terms (e.g., "iron ore" not "ore iron")
+        key_terms = metals + other_terms
         
         # If we found key terms, use them; otherwise use first translated word
         if key_terms:
