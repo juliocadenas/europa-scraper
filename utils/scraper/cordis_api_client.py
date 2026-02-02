@@ -24,17 +24,37 @@ class CordisApiClient:
             'hierro': 'iron',
             'cobre': 'copper',
             'metales': 'metals',
+            'metal': 'metal',
             'preparación': 'preparation',
             'procesamiento': 'processing',
             'extracción': 'extraction',
-            'de': 'of'
+            'aluminio': 'aluminum',
+            'oro': 'gold',
+            'plata': 'silver',
+            'zinc': 'zinc',
+            'plomo': 'lead'
         }
     
     def _translate_to_english(self, spanish_term: str) -> str:
-        """Simple word-by-word translation for search terms."""
+        """Extract key technical terms and translate them."""
         words = spanish_term.lower().split()
-        translated_words = [self.translations.get(word, word) for word in words]
-        return ' '.join(translated_words)
+        # Extract only the important technical terms (metals, minerals, processes)
+        key_terms = []
+        for word in words:
+            if word in self.translations:
+                translated = self.translations[word]
+                # Only add metals and key nouns, skip generic words
+                if translated in ['iron', 'copper', 'metals', 'metal', 'mining', 'ore', 
+                                 'aluminum', 'gold', 'silver', 'zinc', 'lead']:
+                    key_terms.append(translated)
+        
+        # If we found key terms, use them; otherwise use first translated word
+        if key_terms:
+            return ' '.join(key_terms[:2])  # Use max 2 key terms
+        else:
+            # Fallback: translate all words
+            translated_words = [self.translations.get(word, word) for word in words]
+            return ' '.join(translated_words[:2])
 
     async def search_projects_and_publications(self, query_term: str, max_results: int = 20) -> List[Dict[str, Any]]:
         """
