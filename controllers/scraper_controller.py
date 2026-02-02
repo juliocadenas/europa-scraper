@@ -1459,7 +1459,13 @@ class ScraperController(ScraperControllerBase):
               try:
                   with open(output_file, 'r', encoding='utf-8') as f:
                       line_count = sum(1 for line in f)
-                      logger.info(f"📈 Líneas en el archivo CSV: {line_count - 1 if line_count > 1 else 0}")  # -1 for header
+                  
+                  logger.info(f"📈 Líneas en el archivo CSV: {line_count - 1 if line_count > 1 else 0}")
+
+                  if line_count <= 1:
+                      logger.warning(f"🗑️ Eliminando archivo vacío (solo cabecera): {os.path.basename(output_file)}")
+                      os.remove(output_file)
+                      logger.info("Archivo eliminado para evitar archivos vacíos en el export.")
               except Exception as e:
                   logger.error(f"❌ Error leyendo el archivo CSV: {e}")
           else:
