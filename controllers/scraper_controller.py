@@ -1385,6 +1385,16 @@ class ScraperController(ScraperControllerBase):
       
           if total_courses == 0:
               logger.warning("No se encontraron cursos en el rango especificado")
+                # Cleanup empty file if exists (Auto-fix)
+                if os.path.exists(output_file):
+                    try:
+                        with open(output_file, "r", encoding="utf-8") as f:
+                            content_lines = f.readlines()
+                        if len(content_lines) <= 1:
+                            logger.info(f"🗑️ Eliminando archivo vacío durante early exit: {output_file}")
+                            os.remove(output_file)
+                    except Exception as e:
+                        logger.error(f"Error cleaning up empty file: {e}")
               return []
 
           server_id = self.config.get('server_id', 'UNKNOWN_SERVER')
@@ -1405,6 +1415,16 @@ class ScraperController(ScraperControllerBase):
       
           if not all_search_results:
               logger.warning("No se encontraron resultados para procesar")
+                # Cleanup empty file if exists (Auto-fix)
+                if os.path.exists(output_file):
+                    try:
+                        with open(output_file, "r", encoding="utf-8") as f:
+                            content_lines = f.readlines()
+                        if len(content_lines) <= 1:
+                            logger.info(f"🗑️ Eliminando archivo vacío durante early exit: {output_file}")
+                            os.remove(output_file)
+                    except Exception as e:
+                        logger.error(f"Error cleaning up empty file: {e}")
               if progress_callback:
                   progress_callback(100, "No se encontraron resultados para procesar")
               return []
