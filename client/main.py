@@ -20,6 +20,16 @@ import base64
 from PIL import Image, ImageTk
 import io
 
+def get_resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
 # Add the project root to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -50,7 +60,12 @@ class ClientApp:
     def _load_server_config(self):
         """Cargar configuración del servidor desde server_config.json"""
         try:
-            config_path = os.path.join(os.path.dirname(__file__), 'server_config.json')
+            # Primero intentar cargar la configuración empotrada o local
+            config_path = get_resource_path(os.path.join('client', 'server_config.json'))
+            if not os.path.exists(config_path):
+                # Fallback por si acaso estamos en dev
+                config_path = os.path.join(os.path.dirname(__file__), 'server_config.json')
+            
             if os.path.exists(config_path):
                 with open(config_path, 'r') as f:
                     config = json.load(f)
@@ -117,7 +132,12 @@ class ClientApp:
             if ip_port.startswith('0.0.0.0:'):
                 ip_port = ip_port.replace('0.0.0.0:', 'localhost:')
             
-            self.server_base_url = f"http://{ip_port}"
+            # Soporte para HTTPS y HTTP explícitos
+            if ip_port.startswith("http://") or ip_port.startswith("https://"):
+                self.server_base_url = ip_port
+            else:
+                self.server_base_url = f"http://{ip_port}"
+            
             logger.info(f"Establecida la URL base del servidor: {self.server_base_url}")
 
         except Exception as e:

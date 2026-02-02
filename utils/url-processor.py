@@ -428,12 +428,13 @@ class URLProcessor:
         return titles, urls, descriptions
     
     
-    async def extract_full_content(self, url: str) -> str:
+    async def extract_full_content(self, url: str, allow_browser: bool = True) -> str:
         """
         Extrae el contenido completo de una URL.
         
         Args:
             url: URL para extraer contenido
+            allow_browser: Si es True, permite usar el navegador para extracción. Si es False, solo usa métodos estáticos.
         
         Returns:
             Contenido textual completo de la página
@@ -460,7 +461,8 @@ class URLProcessor:
                 logger.warning(f"No se pudo extraer contenido del archivo en {url}, intentando como página web")
     
         # Si no es un archivo o no se pudo extraer contenido, proceder como página web
-            await self._ensure_browser()
+            if allow_browser:
+                await self._ensure_browser()
         
         # Crear una nueva página
             page = await self.context.new_page()
@@ -475,6 +477,25 @@ class URLProcessor:
             # Verificar el tipo de contenido antes de navegar
                 async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
                     try:
+                        # Si no se permite navegador, intentar obtener el contenido directamente
+                        if not allow_browser:
+                             async with session.get(url, allow_redirects=True, timeout=30) as response:
+                                if response.status == 200:
+                                    # Intentar extraer texto simple de la respuesta
+                                    text = await response.text()
+                                    # Limpieza básica
+                                    from bs4 import BeautifulSoup
+                                    soup = BeautifulSoup(text, 'html.parser')
+                                    # Eliminar scripts y estilos
+                                    for script in soup(["script", "style"]):
+                                        script.decompose()
+                                    content = soup.get_text(separator=' ', strip=True)
+                                    logger.info(f"Contenido extraído sin navegador de {url}: {len(content)} caracteres")
+                                    return content
+                                else:
+                                    logger.warning(f"Error {response.status} al obtener {url} sin navegador")
+                                    return ""
+
                     # Hacer una solicitud HEAD para obtener los headers
                         async with session.head(url, allow_redirects=True, timeout=30) as response:
                             content_type = response.headers.get('Content-Type', '').lower()

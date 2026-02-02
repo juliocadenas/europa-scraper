@@ -12,6 +12,7 @@ from utils.csv_handler import CSVHandler
 from utils.url_processor import URLProcessor
 from utils.content_analyzer import ContentAnalyzer
 from utils.text_sanitizer import sanitize_filename
+from utils.scraper.cordis_api_client import CordisApiClient
 
 # Añadir estas importaciones al inicio del archivo
 import os
@@ -38,6 +39,7 @@ class ScraperController:
         self.csv_handler = CSVHandler()
         self.url_processor = URLProcessor()
         self.content_analyzer = ContentAnalyzer()
+        self.cordis_api_client = CordisApiClient()
         
         self.stop_requested = False
         self.results = []
@@ -377,12 +379,19 @@ class ScraperController:
             Lista de diccionarios de resultados
         """
         try:
-            # Verificar si el navegador está disponible
-            if not await self._check_playwright_browser():
-                logger.error("Navegador no disponible, no se puede realizar el scraping")
-                if progress_callback:
-                    progress_callback(100, "Error: Navegador no disponible", {'total_errors': 1}, 0, 0)
-                return []
+            # Extract search engine preference
+            search_engine = params.get('search_engine')
+            use_api_mode = search_engine == 'Cordis Europa API'
+            
+            # Verificar si el navegador está disponible (SOLO SI NO ES MODO API)
+            if not use_api_mode:
+                if not await self._check_playwright_browser():
+                    logger.error("Navegador no disponible, no se puede realizar el scraping")
+                    if progress_callback:
+                        progress_callback(100, "Error: Navegador no disponible", {'total_errors': 1}, 0, 0)
+                    return []
+            else:
+                 logger.info("Modo API activado: Saltando verificación de navegador.")
             # Reiniciar estado
             self.stop_requested = False
             self.results = []
@@ -515,9 +524,16 @@ class ScraperController:
                 
                 # Realizar búsqueda con timeout
                 try:
-                    # Establecer un timeout para la búsqueda
-                    search_task = self.url_processor.search_cordis_europa(search_term)
-                    search_results = await asyncio.wait_for(search_task, timeout=300)  # 5 minutos de timeout
+                    search_results = []
+                    if use_api_mode:
+                        # Usar cliente API directo
+                        logger.info(f"Usando Cordis API para buscar '{search_term}'")
+                        search_results = await self.cordis_api_client.search_projects_and_publications(search_term)
+                    else:
+                        # Modo web scraping normal con navegador
+                        # Establecer un timeout para la búsqueda
+                        search_task = self.url_processor.search_cordis_europa(search_term)
+                        search_results = await asyncio.wait_for(search_task, timeout=300)  # 5 minutos de timeout
                     
                     # Guardar los resultados con su información de curso
                     for result in search_results:
@@ -673,7 +689,10 @@ class ScraperController:
                     
                     try:
                         # Establecer un timeout para la extracción de contenido
-                        extract_task = self.url_processor.extract_full_content(url)
+                        # Si estamos en modo API, NO permitir uso de navegador
+                        allow_browser_extraction = not use_api_mode
+                        
+                        extract_task = self.url_processor.extract_full_content(url, allow_browser=allow_browser_extraction)
                         full_content = await asyncio.wait_for(extract_task, timeout=180)  # 3 minutos de timeout
                         
                         if not full_content:
