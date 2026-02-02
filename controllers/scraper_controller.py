@@ -1395,7 +1395,7 @@ class ScraperController(ScraperControllerBase):
                           os.remove(output_file)
                   except Exception as e:
                       logger.error(f"Error cleaning up empty file: {e}")
-            return []
+              return []
 
           server_id = self.config.get('server_id', 'UNKNOWN_SERVER')
           logger.info(f"Marcando {len(courses_in_range)} cursos como 'PROCESANDO' en el servidor {server_id}...")
