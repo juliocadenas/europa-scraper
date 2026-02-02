@@ -69,16 +69,26 @@ class CordisApiClient:
         Searches for projects and publications related to the query term using SPARQL.
         
         Args:
-            query_term: The term to search for (e.g., "Education").
+            query_term: The term to search for (in any language).
             max_results: Maximum number of results to return.
             
         Returns:
             A list of dictionaries containing formatted results (url, title, description).
         """
-        # Translate Spanish terms to English for better Cordis API results
-        english_term = self._translate_to_english(query_term)
-        logger.info(f"Translated '{query_term}' to '{english_term}' for Cordis API search")
+        # First, try searching in the original language (e.g., Spanish)
+        logger.info(f"Searching Cordis API with original term: '{query_term}'")
+        results = await self._execute_sparql_search(query_term, max_results)
         
+        # If no results and term looks like Spanish, try English translation
+        if not results and any(word in query_term.lower() for word in ['minería', 'mineral', 'preparación', 'de']):
+            english_term = self._translate_to_english(query_term)
+            logger.info(f"No results with original term, trying English: '{english_term}'")
+            results = await self._execute_sparql_search(english_term, max_results)
+        
+        logger.info(f"Cordis API returned {len(results)} valid results for '{query_term}'")
+        return results
+    
+    async def _execute_sparql_search(self, search_term: str, max_results: int) -> List[Dict[str, Any]]:
         sparql_query = f"""
         PREFIX eurio: <http://data.europa.eu/s66#>
         
@@ -90,8 +100,8 @@ class CordisApiClient:
             OPTIONAL {{ ?project eurio:description ?description }}
             OPTIONAL {{ ?project eurio:hasWebpage ?url }}
             
-            FILTER(CONTAINS(LCASE(STR(?title)), "{english_term.lower()}") || 
-                   CONTAINS(LCASE(STR(?description)), "{english_term.lower()}"))
+            FILTER(CONTAINS(LCASE(STR(?title)), "{search_term.lower()}") || 
+                   CONTAINS(LCASE(STR(?description)), "{search_term.lower()}"))
           }}
           UNION
           {{
@@ -104,13 +114,13 @@ class CordisApiClient:
                 ?proj eurio:description ?description
             }}
             
-            FILTER(CONTAINS(LCASE(STR(?title)), "{english_term.lower()}"))
+            FILTER(CONTAINS(LCASE(STR(?title)), "{search_term.lower()}"))
           }}
         }}
         LIMIT {max_results}
         """
         
-        logger.info(f"Executing SPARQL query for term: '{english_term}' on {self.SPARQL_ENDPOINT}")
+        logger.info(f"Executing SPARQL query for term: '{search_term}' on {self.SPARQL_ENDPOINT}")
         logger.debug(f"Query payload: {sparql_query}")
         
         # Use requests via executor to avoid blocking and ensure compatibility
@@ -145,15 +155,15 @@ class CordisApiClient:
                 # Only include results that have a title
                 if title and title != 'No Title':
                     formatted_results.append({
-                        'url': url if url else f"https://cordis.europa.eu/search?q={query_term}",
+                        'url': url if url else f"https://cordis.europa.eu/search?q={search_term}",
                         'title': title,
                         'description': description[:500] if description else f"Cordis project/publication: {title}",
                         'source': 'Cordis Europa API',
                         'mediatype': 'project'
                     })
             
-            logger.info(f"Cordis API returned {len(formatted_results)} valid results for '{query_term}'")
             return formatted_results
+
 
         except Exception as e:
             logger.error(f"Error querying Cordis API: {e}")
