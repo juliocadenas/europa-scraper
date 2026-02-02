@@ -338,15 +338,12 @@ class ScraperGUI(ttk.Frame):
                  is_transient = True
             elif "Completado:" in raw_task:
                  display_status = "Completado"
-                 # Extraer lote: "Completado: 10..20. Total..." -> "Lote 10..20"
-                 try:
-                     parts = raw_task.split('.')
-                     if len(parts) > 2:
-                         display_course = f"Lote Finalizado ({clean_task_text.split('.')[0].replace('Completado: ', '')})"
-                     else:
-                         display_course = "Lote Finalizado"
-                 except:
-                     display_course = "Lote Finalizado"
+                 # Extract course name from "Completado: X..Y. Total... - COURSE_NAME"
+                 if ' - ' in clean_task_text:
+                     parts = clean_task_text.split(' - ', 1)
+                     display_course = parts[1].strip() if len(parts) > 1 else clean_task_text
+                 else:
+                     display_course = clean_task_text.replace('Completado:', '').strip()
                  is_transient = False
             elif "Buscando" in raw_task:
                  display_status = "Buscando"
