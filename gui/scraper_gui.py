@@ -364,14 +364,9 @@ class ScraperGUI(ttk.Frame):
             else:
                  is_transient = False
 
-            # 2. Generar ID Estable (Ignorando estado Buscando/Tabulando)
-            if is_transient:
-                stable_id = "TRANSIENT_STATE"
-            else:
-                stable_id = display_course # El nombre del curso ES el ID estable
-            
-            task_hash = hashlib.md5(f"{worker_id_str}_{stable_id}".encode()).hexdigest()
-            current_row_id = f"{worker_id_str}_{task_hash}"
+            # 2. Generar ID Estable basado SOLO en worker_id
+            # Esto asegura que cada worker tenga UNA SOLA fila que se actualiza
+            current_row_id = f"worker_{worker_id_str}"
 
             # 3. Formatear Progreso
             progress_val = state.get('progress', 0)
@@ -397,19 +392,7 @@ class ScraperGUI(ttk.Frame):
 
             self.row_details_map[current_row_id] = full_details_str
 
-            # 6. Lógica de Reemplazo (Borrar transitorios anteriores)
-            last_recorded_id = self.worker_last_row_id.get(worker_id_str)
-            if last_recorded_id and last_recorded_id != current_row_id:
-                if self.worker_tree.exists(last_recorded_id):
-                    try:
-                        old_vals = self.worker_tree.item(last_recorded_id, 'values')
-                        # Si lo anterior era Iniciando/Inactivo/Esperando, borrarlo
-                        if old_vals and (old_vals[1] in ["Iniciando", "Inactivo", "Esperando"]):
-                             self.worker_tree.delete(last_recorded_id)
-                    except:
-                        pass
-            
-            # 7. Insertar o Actualizar
+            # 6. Insertar o Actualizar (siempre la misma fila por worker)
             if self.worker_tree.exists(current_row_id):
                 self.worker_tree.item(current_row_id, values=values)
             else:

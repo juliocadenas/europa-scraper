@@ -919,6 +919,31 @@ class ScraperController(ScraperControllerBase):
               if not url:
                   return None
 
+              # For Cordis API, we already have all the data - no need to extract content
+              if search_engine == 'Cordis Europa API':
+                  logger.info(f"Cordis API result - using existing data: {title}")
+                  
+                  # Use title + description as the "content"
+                  full_content = f"{title} {description}"
+                  total_words = self.text_processor.count_all_words(full_content)
+                  word_counts = self.text_processor.estimate_keyword_occurrences(full_content, search_term)
+                  
+                  # Format and save
+                  formatted_word_counts = self.text_processor.format_word_counts(total_words, word_counts)
+                  clean_description = self.text_processor.clean_description(description)
+                  
+                  result_data = {
+                      'sic_code': sic_code,
+                      'course_name': course_name,
+                      'title': title,
+                      'description': clean_description,
+                      'url': url,
+                      'total_words': formatted_word_counts
+                  }
+                  
+                  logger.info(f"✅ Cordis API result saved: {title} - {url}")
+                  return result_data
+
               content_extraction_url = result.get('wayback_url', url) if search_engine == 'Wayback Machine' else url
 
               try:
@@ -942,6 +967,7 @@ class ScraperController(ScraperControllerBase):
 
                       # Create minimal content to pass word checks
                       full_content = f"{title} {description}"
+                      total_words = self.text_processor.count_all_words(full_content)
                       word_counts = {search_term: 1}  # Mark as having at least 1 occurrence
 
                       # Skip further checks and proceed to keep this result
