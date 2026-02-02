@@ -17,6 +17,24 @@ class CordisApiClient:
             'Accept': 'application/sparql-results+json, application/json, text/javascript',
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
         }
+        # Simple translation dictionary for common mining/metal terms
+        self.translations = {
+            'minería': 'mining',
+            'mineral': 'ore',
+            'hierro': 'iron',
+            'cobre': 'copper',
+            'metales': 'metals',
+            'preparación': 'preparation',
+            'procesamiento': 'processing',
+            'extracción': 'extraction',
+            'de': 'of'
+        }
+    
+    def _translate_to_english(self, spanish_term: str) -> str:
+        """Simple word-by-word translation for search terms."""
+        words = spanish_term.lower().split()
+        translated_words = [self.translations.get(word, word) for word in words]
+        return ' '.join(translated_words)
 
     async def search_projects_and_publications(self, query_term: str, max_results: int = 20) -> List[Dict[str, Any]]:
         """
@@ -29,6 +47,10 @@ class CordisApiClient:
         Returns:
             A list of dictionaries containing formatted results (url, title, description).
         """
+        # Translate Spanish terms to English for better Cordis API results
+        english_term = self._translate_to_english(query_term)
+        logger.info(f"Translated '{query_term}' to '{english_term}' for Cordis API search")
+        
         sparql_query = f"""
         PREFIX eurio: <http://data.europa.eu/s66#>
         
@@ -40,8 +62,8 @@ class CordisApiClient:
             OPTIONAL {{ ?project eurio:description ?description }}
             OPTIONAL {{ ?project eurio:hasWebpage ?url }}
             
-            FILTER(CONTAINS(LCASE(STR(?title)), "{query_term.lower()}") || 
-                   CONTAINS(LCASE(STR(?description)), "{query_term.lower()}"))
+            FILTER(CONTAINS(LCASE(STR(?title)), "{english_term.lower()}") || 
+                   CONTAINS(LCASE(STR(?description)), "{english_term.lower()}"))
           }}
           UNION
           {{
@@ -54,13 +76,13 @@ class CordisApiClient:
                 ?proj eurio:description ?description
             }}
             
-            FILTER(CONTAINS(LCASE(STR(?title)), "{query_term.lower()}"))
+            FILTER(CONTAINS(LCASE(STR(?title)), "{english_term.lower()}"))
           }}
         }}
         LIMIT {max_results}
         """
         
-        logger.info(f"Executing SPARQL query for term: '{query_term}' on {self.SPARQL_ENDPOINT}")
+        logger.info(f"Executing SPARQL query for term: '{english_term}' on {self.SPARQL_ENDPOINT}")
         logger.debug(f"Query payload: {sparql_query}")
         
         # Use requests via executor to avoid blocking and ensure compatibility
