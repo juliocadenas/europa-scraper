@@ -32,19 +32,30 @@ class CordisApiClient:
         sparql_query = f"""
         PREFIX eurio: <http://data.europa.eu/s66#>
         
-        SELECT ?pubTitle ?pubUrl ?projectTitle ?projectDesc WHERE {{
-          ?pub a eurio:ProjectPublication .
-          ?pub eurio:title ?pubTitle .
-          
-          OPTIONAL {{ ?pub eurio:hasDownloadURL ?pubUrl }}
-          
-          OPTIONAL {{ 
-              ?pub eurio:hasProject ?proj .
-              ?proj eurio:title ?projectTitle .
-              OPTIONAL {{ ?proj eurio:description ?projectDesc }}
+        SELECT DISTINCT ?title ?url ?description WHERE {{
+          {{
+            # Search in Projects
+            ?project a eurio:Project .
+            ?project eurio:title ?title .
+            OPTIONAL {{ ?project eurio:description ?description }}
+            OPTIONAL {{ ?project eurio:hasWebpage ?url }}
+            
+            FILTER(CONTAINS(LCASE(STR(?title)), "{query_term.lower()}") || 
+                   CONTAINS(LCASE(STR(?description)), "{query_term.lower()}"))
           }}
-          
-          FILTER(CONTAINS(LCASE(STR(?pubTitle)), "{query_term.lower()}"))
+          UNION
+          {{
+            # Search in Publications
+            ?pub a eurio:ProjectPublication .
+            ?pub eurio:title ?title .
+            OPTIONAL {{ ?pub eurio:hasDownloadURL ?url }}
+            OPTIONAL {{ 
+                ?pub eurio:hasProject ?proj .
+                ?proj eurio:description ?description
+            }}
+            
+            FILTER(CONTAINS(LCASE(STR(?title)), "{query_term.lower()}"))
+          }}
         }}
         LIMIT {max_results}
         """
@@ -77,19 +88,18 @@ class CordisApiClient:
             
             formatted_results = []
             for item in bindings:
-                pub_url = item.get('pubUrl', {}).get('value')
-                pub_title = item.get('pubTitle', {}).get('value', 'No Title')
-                project_title = item.get('projectTitle', {}).get('value', '')
-                project_desc = item.get('projectDesc', {}).get('value', '')
+                url = item.get('url', {}).get('value')
+                title = item.get('title', {}).get('value', 'No Title')
+                description = item.get('description', {}).get('value', '')
                 
-                # Only include results that have a download URL or some substantial info
-                if pub_url or pub_title:
-                        formatted_results.append({
-                        'url': pub_url if pub_url else f"cordis://{pub_title}", # Fallback URL
-                        'title': pub_title,
-                        'description': f"Project: {project_title}. {project_desc[:200]}...",
+                # Only include results that have a title
+                if title and title != 'No Title':
+                    formatted_results.append({
+                        'url': url if url else f"https://cordis.europa.eu/search?q={query_term}",
+                        'title': title,
+                        'description': description[:500] if description else f"Cordis project/publication: {title}",
                         'source': 'Cordis Europa API',
-                        'mediatype': 'publication'
+                        'mediatype': 'project'
                     })
             
             logger.info(f"Cordis API returned {len(formatted_results)} valid results for '{query_term}'")
