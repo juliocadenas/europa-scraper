@@ -1,6 +1,6 @@
 {
     "server": {
-        "host": "2.139.235.38",
-        "port": 8001
+        "host": "usr-brief-essex-moss.trycloudflare.com",
+        "port": 443
     }
 }

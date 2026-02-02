@@ -1198,7 +1198,7 @@ class ScraperController(ScraperControllerBase):
       
           file_path = custom_path if custom_path else self.omitted_file
       
-            if not file_path:
+          if not file_path:
               timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
               # Save in results/omitidos so it gets zipped by download_results
               project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

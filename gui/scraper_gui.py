@@ -272,7 +272,7 @@ class ScraperGUI(ttk.Frame):
         config_frame = ttk.LabelFrame(self.server_frame, text="Configuración", padding=10)
         config_frame.pack(fill=tk.X, pady=10)
         ttk.Label(config_frame, text="URL del Servidor:").grid(row=0, column=0, sticky=tk.W, pady=5)
-        self.server_url = tk.StringVar(value="http://localhost:8002")
+        self.server_url = tk.StringVar(value="https://usr-brief-essex-moss.trycloudflare.com")
         self.server_url_entry = ttk.Entry(config_frame, textvariable=self.server_url, width=50)
         self.server_url_entry.grid(row=0, column=1, padx=10, pady=5, sticky=tk.EW)
         self.connect_button = ttk.Button(config_frame, text="Conectar", command=self._connect_to_server)
