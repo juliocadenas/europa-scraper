@@ -14,6 +14,10 @@ echo "📦 Actualizando paquetes del sistema..."
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release git
 
+# 1.5 Descargar últimos cambios del repositorio
+echo "⬇️ Descargando actualizaciones del repositorio..."
+git pull origin main || echo "⚠️ No se pudo hacer git pull (quizás no es un repo git), continuando..."
+
 # 2. Instalar Docker y Docker Compose si no están presentes
 if ! command -v docker &> /dev/null; then
     echo "🐳 Instalando Docker..."
