@@ -1198,9 +1198,11 @@ class ScraperController(ScraperControllerBase):
       
           file_path = custom_path if custom_path else self.omitted_file
       
-          if not file_path:
+            if not file_path:
               timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-              omitted_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'omitidos')
+              # Save in results/omitidos so it gets zipped by download_results
+              project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+              omitted_dir = os.path.join(project_root, 'results', 'omitidos')
               os.makedirs(omitted_dir, exist_ok=True)
               file_path = os.path.join(omitted_dir, f"omitidos_{timestamp}.xlsx")
               logger.info(f"No se especificó archivo para omitidos, usando: {file_path}")
