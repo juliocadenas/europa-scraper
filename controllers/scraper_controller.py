@@ -26,6 +26,7 @@ from utils.scraper.result_manager import ResultManager
 from utils.scraper.progress_reporter import ProgressReporter
 from utils.scraper.url_utils import URLUtils
 from utils.scraper.search_engine import ManualCaptchaPendingError
+from utils.scraper.cordis_api_client import CordisApiClient
 
 logger = logging.getLogger(__name__)
 
@@ -53,6 +54,7 @@ class ScraperController(ScraperControllerBase):
       self.result_manager = ResultManager()
       self.progress_reporter = ProgressReporter()
       self.url_utils = URLUtils()
+      self.cordis_api_client = CordisApiClient()
       # Usar la base de datos SQLite en lugar del CSV
       from utils.sqlite_handler import SQLiteHandler
       db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'courses.db')
@@ -1006,6 +1008,54 @@ class ScraperController(ScraperControllerBase):
           return None
 
 
+  async def _process_cordis_api_phase(self, courses_in_range: List[Tuple[str, str, str, str]], progress_callback: Optional[Callable] = None) -> List[Dict[str, Any]]:
+      """
+      Ejecuta la fase de búsqueda usando la API de Cordis Europa.
+      """
+      all_search_results = []
+      total_courses = len(courses_in_range)
+      current_course = 0
+      
+      logger.info(f"=== FASE 1: BÚSQUEDA DE RESULTADOS con CORDIS EUROPA API ====")
+      logger.info(f"Total de cursos a procesar en búsqueda: {total_courses}")
+      
+      for sic_code, course_name, status, server in courses_in_range:
+          if self.stop_requested:
+              logger.info("Scraping detenido por el usuario durante la fase de búsqueda")
+              break
+              
+          current_course += 1
+          self.progress_reporter.set_course_counts(current_course, total_courses)
+          current_course_info = f"{sic_code} - {course_name}"
+          
+          if progress_callback:
+              progress_callback(0, f"Buscando curso {current_course} de {total_courses} - {current_course_info}", self.stats)
+          
+          search_term = course_name if course_name else sic_code
+          logger.info(f"Buscando en Cordis API: '{search_term}' (curso {current_course}/{total_courses})")
+          
+          try:
+              results = await self.cordis_api_client.search_projects_and_publications(search_term)
+              
+              for r in results:
+                  r['sic_code'] = sic_code
+                  r['course_name'] = course_name
+                  r['search_term'] = search_term
+                  all_search_results.append(r)
+                  
+              self.stats['total_urls_found'] += len(results)
+              logger.info(f"Encontrados {len(results)} resultados en Cordis API para '{search_term}'")
+              
+              if progress_callback:
+                  progress_callback(0, f"Buscando curso {current_course} de {total_courses} - {current_course_info} | Encontrados: {len(results)} resultados", self.stats)
+                  
+          except Exception as e:
+              logger.error(f"Error en búsqueda Cordis API para '{search_term}': {e}")
+              self.stats['total_errors'] += 1
+              continue
+              
+      return all_search_results
+
   async def _process_tabulation_phase(self, all_search_results: List[Dict[str, Any]], total_courses: int, min_words: int, search_engine: str, progress_callback: Optional[Callable] = None) -> List[Dict[str, Any]]:
       """
       Ejecuta la fase de tabulación del scraping.
@@ -1214,8 +1264,8 @@ class ScraperController(ScraperControllerBase):
           site_domain = params.get('site_domain') if isinstance(params, dict) else None
           
           # Decide whether browser is needed based on requested search engine
-          # Browser is NOT required for 'Wayback Machine' (API-only) searches.
-          if search_engine not in ['Wayback Machine']:
+          # Browser is NOT required for 'Wayback Machine' or 'Cordis Europa API' (API-only) searches.
+          if search_engine not in ['Wayback Machine', 'Cordis Europa API']:
               browser_available = await self.browser_manager.check_playwright_browser()
               logger.info(f"Resultado de check_playwright_browser: {browser_available}")
               if not browser_available:
@@ -1224,7 +1274,7 @@ class ScraperController(ScraperControllerBase):
                       progress_callback(100, "Error: Navegador no disponible para el motor solicitado")
                   return []
           else:
-              logger.info("Modo API-only seleccionado para Wayback Machine; omitiendo verificación de navegador.")
+              logger.info(f"Modo API-only seleccionado para {search_engine}; omitiendo verificación de navegador.")
           
           self.processed_records = set()
           self.stats = {
@@ -1320,6 +1370,8 @@ class ScraperController(ScraperControllerBase):
           elif search_engine == 'Wayback Machine':
               # Pass gov_only flag to the wayback phase
               all_search_results = await self._process_wayback_machine_search_phase(courses_in_range, site_domain, progress_callback, gov_only=gov_only)
+          elif search_engine == 'Cordis Europa API':
+               all_search_results = await self._process_cordis_api_phase(courses_in_range, progress_callback)
           else:
               all_search_results = await self._process_search_phase(courses_in_range, progress_callback, search_engine, site_domain)
       

@@ -147,6 +147,8 @@ def worker_process(
                     # Usar el parámetro 'is_headless' del trabajo recibido
                     # Usar el parámetro 'is_headless' del trabajo recibido, pero forzar True en Linux
                     is_headless_param = job_params.get('is_headless', True)
+                    search_engine_param = job_params.get('search_engine', 'Cordis Europa')
+                    
                     if sys.platform.startswith('linux'):
                         is_headless = True
                         if not is_headless_param:
@@ -154,9 +156,12 @@ def worker_process(
                     else:
                         is_headless = is_headless_param
 
-                    logger.info(f"Worker {worker_id}: Modo headless = {is_headless}")
-                    loop.run_until_complete(browser_manager.initialize(headless=is_headless))
-                    logger.info(f"Worker {worker_id}: Navegador inicializado correctamente")
+                    if search_engine_param == 'Cordis Europa API':
+                        logger.info(f"Worker {worker_id}: Modo API detectado ({search_engine_param}). Omitiendo inicialización de navegador.")
+                    else:
+                        logger.info(f"Worker {worker_id}: Modo headless = {is_headless}")
+                        loop.run_until_complete(browser_manager.initialize(headless=is_headless))
+                        logger.info(f"Worker {worker_id}: Navegador inicializado correctamente")
                 except Exception as e:
                     logger.error(f"Worker {worker_id}: Error inicializando navegador: {e}", exc_info=True)
                     # Si el navegador falla, no podemos continuar
