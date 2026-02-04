@@ -72,7 +72,17 @@ class ScraperGUI(ttk.Frame):
         print("ScraperGUI inicializado")
         
         self.proxy_manager = ProxyManager()
-        config_path = os.path.join(project_root, 'client', 'config.json')
+        
+        # Determinar la ruta de configuración persistente
+        if getattr(sys, 'frozen', False):
+            # Si estamos corriendo como ejecutable (PyInstaller), usar el directorio del exe
+            base_path = os.path.dirname(sys.executable)
+        else:
+            # Si estamos en desarrollo, usar la carpeta client del proyecto
+            base_path = os.path.join(project_root, 'client')
+            
+        config_path = os.path.join(base_path, 'config.json')
+        logger.info(f"Usando archivo de configuración en: {config_path}")
         self.config = Config(config_path)
         
         self.queue = queue.Queue()
