@@ -1,112 +1,213 @@
 import logging
 import aiohttp
 import asyncio
+import time
 from typing import List, Dict, Any, Optional
 
 logger = logging.getLogger(__name__)
 
 class CordisApiClient:
     """
-    Client for interacting with the Cordis Europa SPARQL API.
+    Client for interacting with the Cordis Europa Data Extraction Tool (DET) API.
+    
+    This API provides access to ALL Cordis data including archived content,
+    unlike the SPARQL endpoint which has limited data.
+    
+    API Documentation: https://cordis.europa.eu/dataextractions/api-docs-ui
     """
 
+    # DET API endpoints
+    DET_BASE_URL = "https://cordis.europa.eu"
+    DET_CREATE_EXTRACTION = "/api/dataextractions/getExtraction"
+    DET_GET_STATUS = "/api/dataextractions/getExtractionStatus"
+    
+    # Fallback SPARQL endpoint (limited data, but no API key required)
     SPARQL_ENDPOINT = "https://cordis.europa.eu/datalab/sparql"
     
-    def __init__(self):
-        self.headers = {
-            'Accept': 'application/sparql-results+json, application/json, text/javascript',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-        }
-        # Simple translation dictionary for common mining/metal terms
-        self.translations = {
-            'minería': 'mining',
-            'mineral': 'ore',
-            'hierro': 'iron',
-            'cobre': 'copper',
-            'metales': 'metals',
-            'metal': 'metal',
-            'preparación': 'preparation',
-            'procesamiento': 'processing',
-            'extracción': 'extraction',
-            'aluminio': 'aluminum',
-            'oro': 'gold',
-            'plata': 'silver',
-            'zinc': 'zinc',
-            'plomo': 'lead'
-        }
-    
-    def _translate_to_english(self, spanish_term: str) -> str:
-        """Extract key technical terms and translate them."""
-        words = spanish_term.lower().split()
-        
-        # Separate metals from other terms
-        metals = []
-        other_terms = []
-        
-        for word in words:
-            if word in self.translations:
-                translated = self.translations[word]
-                # Metals should come first
-                if translated in ['iron', 'copper', 'aluminum', 'gold', 'silver', 'zinc', 'lead']:
-                    metals.append(translated)
-                # Then mining/ore/processing terms
-                elif translated in ['mining', 'ore', 'metal', 'metals']:
-                    other_terms.append(translated)
-        
-        # Combine: metals first, then other terms (e.g., "iron ore" not "ore iron")
-        key_terms = metals + other_terms
-        
-        # If we found key terms, use them; otherwise use first translated word
-        if key_terms:
-            return ' '.join(key_terms[:2])  # Use max 2 key terms
-        else:
-            # Fallback: translate all words
-            translated_words = [self.translations.get(word, word) for word in words]
-            return ' '.join(translated_words[:2])
-
-    async def search_projects_and_publications(self, query_term: str, max_results: int = 20) -> List[Dict[str, Any]]:
+    def __init__(self, api_key: str = None):
         """
-        Searches for projects and publications related to the query term using SPARQL.
+        Initialize the Cordis API client.
         
         Args:
-            query_term: The term to search for (in any language).
+            api_key: Optional API key for DET API. If not provided, falls back to SPARQL.
+        """
+        self.api_key = api_key
+        self.headers = {
+            'Accept': 'application/json',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
+        
+    async def search_projects_and_publications(self, query_term: str, max_results: int = 100) -> List[Dict[str, Any]]:
+        """
+        Searches for projects and publications related to the query term.
+        
+        Uses DET API if API key is available, otherwise falls back to SPARQL.
+        
+        Args:
+            query_term: The term to search for.
             max_results: Maximum number of results to return.
             
         Returns:
             A list of dictionaries containing formatted results (url, title, description).
         """
-        # First, try searching in the original language (e.g., Spanish)
-        logger.info(f"Searching Cordis API with original term: '{query_term}'")
-        results = await self._execute_sparql_search(query_term, max_results)
+        # Try DET API first if we have an API key
+        if self.api_key:
+            logger.info(f"Using DET API with archived=true for '{query_term}'")
+            results = await self._search_with_det_api(query_term, max_results)
+            if results:
+                return results
+            logger.warning("DET API returned no results, falling back to SPARQL")
         
-        # If no results and term looks like Spanish, try English translation
-        if not results and any(word in query_term.lower() for word in ['minería', 'mineral', 'preparación', 'de']):
-            english_term = self._translate_to_english(query_term)
-            logger.info(f"No results with original term, trying English: '{english_term}'")
-            results = await self._execute_sparql_search(english_term, max_results)
+        # Fallback to SPARQL (limited data but no API key required)
+        logger.info(f"Using SPARQL endpoint for '{query_term}'")
+        return await self._execute_sparql_search(query_term, max_results)
+    
+    async def _search_with_det_api(self, search_term: str, max_results: int) -> List[Dict[str, Any]]:
+        """
+        Search using the DET API which includes ALL archived content.
         
-        logger.info(f"Cordis API returned {len(results)} valid results for '{query_term}'")
-        return results
+        The DET API works asynchronously:
+        1. Create extraction task with getExtraction
+        2. Poll getExtractionStatus until complete
+        3. Download results from destinationFileUri
+        """
+        try:
+            # Format query for Cordis search syntax
+            query = f"'{search_term}'"
+            
+            # Step 1: Create extraction task
+            create_url = f"{self.DET_BASE_URL}{self.DET_CREATE_EXTRACTION}"
+            params = {
+                'query': query,
+                'key': self.api_key,
+                'outputFormat': 'json',
+                'archived': 'true'  # CRITICAL: Include archived content!
+            }
+            
+            loop = asyncio.get_running_loop()
+            
+            def _create_extraction():
+                import requests
+                return requests.get(create_url, params=params, headers=self.headers, timeout=30)
+            
+            response = await loop.run_in_executor(None, _create_extraction)
+            
+            if response.status_code != 200:
+                logger.error(f"DET API create extraction failed: {response.status_code}")
+                logger.error(f"Response: {response.text[:500]}")
+                return []
+            
+            data = response.json()
+            if not data.get('status'):
+                logger.error(f"DET API returned error: {data}")
+                return []
+            
+            task_id = data.get('payload', {}).get('taskID')
+            if not task_id:
+                logger.error(f"DET API did not return taskID: {data}")
+                return []
+            
+            logger.info(f"DET extraction task created: {task_id}")
+            
+            # Step 2: Poll for completion
+            status_url = f"{self.DET_BASE_URL}{self.DET_GET_STATUS}"
+            max_wait_time = 60  # seconds
+            poll_interval = 2  # seconds
+            elapsed = 0
+            
+            while elapsed < max_wait_time:
+                def _get_status():
+                    import requests
+                    return requests.get(status_url, params={'key': self.api_key, 'taskId': task_id}, headers=self.headers, timeout=30)
+                
+                status_response = await loop.run_in_executor(None, _get_status)
+                
+                if status_response.status_code != 200:
+                    logger.error(f"DET API status check failed: {status_response.status_code}")
+                    break
+                
+                status_data = status_response.json()
+                payload = status_data.get('payload', {})
+                progress = payload.get('progress', '')
+                
+                logger.info(f"DET extraction progress: {progress}")
+                
+                if progress == '100':
+                    # Extraction complete - download results
+                    file_uri = payload.get('destinationFileUri')
+                    if file_uri:
+                        return await self._download_det_results(file_uri, max_results)
+                    break
+                
+                await asyncio.sleep(poll_interval)
+                elapsed += poll_interval
+            
+            logger.warning(f"DET extraction timed out or failed")
+            return []
+            
+        except Exception as e:
+            logger.error(f"DET API error: {e}")
+            return []
+    
+    async def _download_det_results(self, file_uri: str, max_results: int) -> List[Dict[str, Any]]:
+        """Download and parse results from DET extraction."""
+        try:
+            loop = asyncio.get_running_loop()
+            
+            def _download():
+                import requests
+                return requests.get(file_uri, headers=self.headers, timeout=60)
+            
+            response = await loop.run_in_executor(None, _download)
+            
+            if response.status_code != 200:
+                logger.error(f"Failed to download DET results: {response.status_code}")
+                return []
+            
+            data = response.json()
+            
+            # Parse JSON results into our format
+            formatted_results = []
+            items = data if isinstance(data, list) else data.get('results', data.get('items', []))
+            
+            for item in items[:max_results]:
+                title = item.get('title', item.get('acronym', 'No Title'))
+                description = item.get('objective', item.get('description', ''))
+                url = item.get('url', item.get('id', ''))
+                
+                # Build Cordis URL if only ID provided
+                if url and not url.startswith('http'):
+                    url = f"https://cordis.europa.eu/project/id/{url}"
+                
+                if title and title != 'No Title':
+                    formatted_results.append({
+                        'url': url,
+                        'title': title,
+                        'description': description[:500] if description else f"Cordis project: {title}",
+                        'source': 'Cordis Europa DET API',
+                        'mediatype': 'project'
+                    })
+            
+            logger.info(f"DET API returned {len(formatted_results)} results")
+            return formatted_results
+            
+        except Exception as e:
+            logger.error(f"Error downloading DET results: {e}")
+            return []
     
     async def _execute_sparql_search(self, search_term: str, max_results: int) -> List[Dict[str, Any]]:
-        # Split search term into individual keywords for broader matching
-        # "Beryllium ore mining" -> ["beryllium", "mining"] (skip common words like "ore")
-        stop_words = {'ore', 'ores', 'mining', 'farms', 'of', 'and', 'the', 'for', 'in', 'to', 'a', 'an'}
+        """
+        Fallback SPARQL search (limited data but no API key required).
+        """
+        # Extract primary keyword for broader matching
+        stop_words = {'ore', 'ores', 'mining', 'farms', 'of', 'and', 'the', 'for', 'in', 'to', 'a', 'an', 'production', 'crops'}
         keywords = [word.lower().strip() for word in search_term.split() if len(word) > 2]
-        
-        # Use the most specific keyword (longest non-stop word) for primary search
         significant_keywords = [k for k in keywords if k not in stop_words]
         
-        if not significant_keywords:
-            # Fallback: use all keywords if no significant ones
-            significant_keywords = keywords[:2]  # Take first 2
-        
-        # Build FILTER clause with OR for each keyword
         if significant_keywords:
-            # Use the primary keyword (most specific/longest)
-            primary_keyword = max(significant_keywords, key=len) if significant_keywords else search_term.lower()
+            primary_keyword = max(significant_keywords, key=len)
         else:
-            primary_keyword = search_term.lower()
+            primary_keyword = keywords[0] if keywords else search_term.lower()
         
         logger.info(f"SPARQL search: original='{search_term}', primary_keyword='{primary_keyword}'")
         
@@ -115,7 +216,6 @@ class CordisApiClient:
         
         SELECT DISTINCT ?title ?url ?description WHERE {{
           {{
-            # Search in Projects
             ?project a eurio:Project .
             ?project eurio:title ?title .
             OPTIONAL {{ ?project eurio:description ?description }}
@@ -126,7 +226,6 @@ class CordisApiClient:
           }}
           UNION
           {{
-            # Search in Publications
             ?pub a eurio:ProjectPublication .
             ?pub eurio:title ?title .
             OPTIONAL {{ ?pub eurio:hasDownloadURL ?url }}
@@ -141,11 +240,6 @@ class CordisApiClient:
         LIMIT {max_results}
         """
         
-        logger.info(f"Executing SPARQL query for term: '{primary_keyword}' on {self.SPARQL_ENDPOINT}")
-        logger.debug(f"Query payload: {sparql_query}")
-        
-        # Use requests via executor to avoid blocking and ensure compatibility
-        # (aiohttp was having issues with this specific endpoint)
         loop = asyncio.get_running_loop()
         
         def _execute_request():
@@ -153,7 +247,7 @@ class CordisApiClient:
             return requests.post(
                 self.SPARQL_ENDPOINT, 
                 data={'query': sparql_query}, 
-                headers=self.headers, 
+                headers={'Accept': 'application/sparql-results+json', **self.headers}, 
                 timeout=30
             )
 
@@ -161,7 +255,7 @@ class CordisApiClient:
             response = await loop.run_in_executor(None, _execute_request)
             
             if response.status_code != 200:
-                logger.error(f"Cordis API returned status {response.status_code}")
+                logger.error(f"SPARQL returned status {response.status_code}")
                 return []
             
             data = response.json()
@@ -173,19 +267,18 @@ class CordisApiClient:
                 title = item.get('title', {}).get('value', 'No Title')
                 description = item.get('description', {}).get('value', '')
                 
-                # Only include results that have a title
                 if title and title != 'No Title':
                     formatted_results.append({
                         'url': url if url else f"https://cordis.europa.eu/search?q={search_term}",
                         'title': title,
-                        'description': description[:500] if description else f"Cordis project/publication: {title}",
-                        'source': 'Cordis Europa API',
+                        'description': description[:500] if description else f"Cordis project: {title}",
+                        'source': 'Cordis Europa SPARQL',
                         'mediatype': 'project'
                     })
             
+            logger.info(f"SPARQL returned {len(formatted_results)} results (limited dataset)")
             return formatted_results
 
-
         except Exception as e:
-            logger.error(f"Error querying Cordis API: {e}")
+            logger.error(f"SPARQL error: {e}")
             return []

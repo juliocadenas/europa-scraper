@@ -54,7 +54,9 @@ class ScraperController(ScraperControllerBase):
       self.result_manager = ResultManager()
       self.progress_reporter = ProgressReporter()
       self.url_utils = URLUtils()
-      self.cordis_api_client = CordisApiClient()
+      # Get Cordis API key from config if available
+      cordis_api_key = self.config.get('cordis_api_key') if hasattr(self.config, 'get') else None
+      self.cordis_api_client = CordisApiClient(api_key=cordis_api_key)
       # Usar la base de datos SQLite en lugar del CSV
       from utils.sqlite_handler import SQLiteHandler
       db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'courses.db')
