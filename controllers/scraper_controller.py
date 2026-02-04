@@ -1058,6 +1058,11 @@ class ScraperController(ScraperControllerBase):
               progress_callback(0, f"Buscando curso {current_course} de {total_courses} - {current_course_info}", self.stats)
           
           search_term = course_name if course_name else sic_code
+          
+          # SANITIZACIÓN CRITICA: Eliminar prefijos tipo "101.0 - " o "123 - " que rompen la búsqueda exacta
+          # El usuario tiene cursos como "101.0 - Iron ore mining". Buscamos solo "Iron ore mining".
+          search_term = re.sub(r'^[\d\.]+\s*[-–]\s*', '', search_term).strip()
+          
           logger.info(f"Buscando en Cordis API: '{search_term}' (curso {current_course}/{total_courses})")
           
           try:
