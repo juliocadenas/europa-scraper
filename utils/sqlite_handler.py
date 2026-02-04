@@ -390,11 +390,20 @@ class SQLiteHandler:
             
             # Preparar datos para inserción masiva
             courses_to_insert = []
+            skipped_count = 0
             for sic_code, course_name in courses:
                 # Asegurarse de que los valores no sean None
                 sic_code = sic_code if sic_code is not None else ""
                 course_name = course_name if course_name is not None else ""
-                courses_to_insert.append((sic_code, course_name))
+                
+                # Filtrar cursos con nombres vacíos (evita violación de NOT NULL)
+                if course_name.strip():  # Solo insertar si course_name no está vacío
+                    courses_to_insert.append((sic_code, course_name))
+                else:
+                    skipped_count += 1
+            
+            if skipped_count > 0:
+                logger.warning(f"Se omitieron {skipped_count} cursos con nombres vacíos")
             
             cursor.executemany(
                 "INSERT INTO courses (sic_code, course_name) VALUES (?, ?)",
