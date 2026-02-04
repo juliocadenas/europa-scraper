@@ -506,7 +506,14 @@ class ScraperServer:
             self.logger.info(f"¡¡¡TAREAS PUESTAS EN LA COLA!!! Tamaño de la cola: {self.work_queue.qsize()}")
 
             # 5. Iniciar el pool de trabajadores
-            self._start_worker_pool(num_workers)
+            # Si el pool ya existe pero tiene un número diferente de workers, reiniciarlo.
+            if self.worker_pool and len(self.worker_pool) != num_workers:
+                self.logger.info(f"Reiniciando pool: Solicitados {num_workers}, Activos {len(self.worker_pool)}")
+                self._stop_worker_pool()
+            
+            # Si el pool no está corriendo (o lo acabamos de detener), iniciarlo.
+            if not self.worker_pool:
+                self._start_worker_pool(num_workers)
 
             # 5. Iniciar un hilo monitor para saber cuándo ha terminado todo el trabajo
             monitor_thread = threading.Thread(target=self._monitor_job_completion, daemon=True)

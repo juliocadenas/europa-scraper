@@ -59,9 +59,27 @@ class WorkerStatusFrame(ttk.LabelFrame):
 
             tag = "working" if state_display == "Working" else "idle"
 
+            # LÓGICA DE PERSISTENCIA:
+            # Si el worker ya tiene una fila, revisamos si su tarea anterior TERMINÓ.
+            # Si terminó (estaba en 'Completed' o 'Finished') y ahora viene una nueva actualización (Working),
+            # entonces "olvidamos" la fila anterior (dejándola como historial visible) y creamos una nueva.
+            if worker_id in self.workers:
+                item_id = self.workers[worker_id]
+                try:
+                    current_values = self.tree.item(item_id, "values")
+                    prev_status = current_values[1] # La columna "Estado" es la índice 1
+                    
+                    # Si antes estaba completado y ahora está trabajando de nuevo, es una NUEVA tarea.
+                    # Dejamos la fila vieja como constancia y forzamos crear una nueva.
+                    if "Completed" in prev_status or "Finished" in prev_status:
+                        if state_display == "Working":
+                            del self.workers[worker_id] 
+                except Exception:
+                    pass # Si hay error leyendo, asumimos que no hay fila válida
+
             if worker_id not in self.workers:
-                # Insertar nueva fila
-                item_id = self.tree.insert("", "end", iid=worker_id, values=(
+                # Insertar nueva fila (al final de la lista)
+                item_id = self.tree.insert("", "end", iid=None, values=( # iid=None para autogenerar ID único
                     worker_id,
                     state_display,
                     task_display,
@@ -69,7 +87,7 @@ class WorkerStatusFrame(ttk.LabelFrame):
                 ), tags=(tag,))
                 self.workers[worker_id] = item_id
             else:
-                # Actualizar fila existente
+                # Actualizar fila existente (misma tarea en progreso)
                 self.tree.item(self.workers[worker_id], values=(
                     worker_id,
                     state_display,
