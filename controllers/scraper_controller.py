@@ -1061,9 +1061,10 @@ class ScraperController(ScraperControllerBase):
           
           # SANITIZACIÓN CRITICA: Eliminar prefijos tipo "101.0 - " o "123 - " que rompen la búsqueda exacta
           # El usuario tiene cursos como "101.0 - Iron ore mining". Buscamos solo "Iron ore mining".
-          search_term = re.sub(r'^[\d\.]+\s*[-–]\s*', '', search_term).strip()
+          # ACTUALIZADO: El guión es opcional para casos como "101.0 Iron mining"
+          search_term = re.sub(r'^[\d\.]+\s*[-–]?\s*', '', search_term).strip()
           
-          logger.info(f"Buscando en Cordis API: '{search_term}' (curso {current_course}/{total_courses})")
+          logger.info(f"Buscando en Cordis API: '{search_term}' (Original: '{course_name if course_name else sic_code}')")
           
           try:
               results = await self.cordis_api_client.search_projects_and_publications(search_term)

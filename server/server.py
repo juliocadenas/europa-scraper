@@ -261,9 +261,12 @@ def worker_process(
             cumulative_stats['error_count'] += batch_error
 
             # Crear mensaje de estado final detallado
+            # USA EL NOMBRE DEL CURSO, NO EL CODIGO
+            course_name_display = batch[0][1] if batch and len(batch) > 0 else "Desconocido"
+            
             finished_task_description = (
-                f"Completado: {batch_id}. "
-                f"Total Procesados: {cumulative_stats['processed_count']}, Total Omitidos: {cumulative_stats['omitted_count']}, Total Errores: {cumulative_stats['error_count']}."
+                f"{course_name_display}. "
+                f"Procesados: {cumulative_stats['processed_count']}, Omitidos: {cumulative_stats['omitted_count']}."
             )
 
             status_dict[worker_id] = {
