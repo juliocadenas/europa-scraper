@@ -58,20 +58,9 @@ class ConfigTab:
     
     def _create_interface(self):
         """Crea la interfaz de la pestaña de configuración."""
-        # Crear notebook para sub-pestañas
-        self.config_notebook = ttk.Notebook(self.main_frame)
-        self.config_notebook.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
-        
-        # Crear las sub-pestañas
-        self._create_proxy_tab()
-        self._create_captcha_tab()
-        self._create_general_tab()
-        self._create_database_tab()
-        self._create_presets_tab()
-        
-        # Frame para botones principales
+        # Frame para botones principales (Empaquetar PRIMERO al fondo para asegurar visibilidad)
         button_frame = ttk.Frame(self.main_frame)
-        button_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
+        button_frame.pack(side=tk.BOTTOM, fill=tk.X, padx=10, pady=(10, 10))
         
         # Botones principales
         ttk.Button(button_frame, text="Aplicar Configuración", 
@@ -82,6 +71,17 @@ class ConfigTab:
                   command=self._import_config).pack(side=tk.LEFT, padx=5)
         ttk.Button(button_frame, text="Exportar", 
                   command=self._export_config).pack(side=tk.LEFT, padx=5)
+
+        # Crear notebook para sub-pestañas (Empaquetar después para llenar el resto)
+        self.config_notebook = ttk.Notebook(self.main_frame)
+        self.config_notebook.pack(side=tk.TOP, fill=tk.BOTH, expand=True, padx=10, pady=(10, 0))
+        
+        # Crear las sub-pestañas
+        self._create_proxy_tab()
+        self._create_captcha_tab()
+        self._create_general_tab()
+        self._create_database_tab()
+        self._create_presets_tab()
     
     def _create_proxy_tab(self):
         """Crea la pestaña de configuración de proxies."""

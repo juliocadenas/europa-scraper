@@ -89,6 +89,27 @@ class CordisApiClient:
         return results
     
     async def _execute_sparql_search(self, search_term: str, max_results: int) -> List[Dict[str, Any]]:
+        # Split search term into individual keywords for broader matching
+        # "Beryllium ore mining" -> ["beryllium", "mining"] (skip common words like "ore")
+        stop_words = {'ore', 'ores', 'mining', 'farms', 'of', 'and', 'the', 'for', 'in', 'to', 'a', 'an'}
+        keywords = [word.lower().strip() for word in search_term.split() if len(word) > 2]
+        
+        # Use the most specific keyword (longest non-stop word) for primary search
+        significant_keywords = [k for k in keywords if k not in stop_words]
+        
+        if not significant_keywords:
+            # Fallback: use all keywords if no significant ones
+            significant_keywords = keywords[:2]  # Take first 2
+        
+        # Build FILTER clause with OR for each keyword
+        if significant_keywords:
+            # Use the primary keyword (most specific/longest)
+            primary_keyword = max(significant_keywords, key=len) if significant_keywords else search_term.lower()
+        else:
+            primary_keyword = search_term.lower()
+        
+        logger.info(f"SPARQL search: original='{search_term}', primary_keyword='{primary_keyword}'")
+        
         sparql_query = f"""
         PREFIX eurio: <http://data.europa.eu/s66#>
         
@@ -100,8 +121,8 @@ class CordisApiClient:
             OPTIONAL {{ ?project eurio:description ?description }}
             OPTIONAL {{ ?project eurio:hasWebpage ?url }}
             
-            FILTER(CONTAINS(LCASE(STR(?title)), "{search_term.lower()}") || 
-                   CONTAINS(LCASE(STR(?description)), "{search_term.lower()}"))
+            FILTER(CONTAINS(LCASE(STR(?title)), "{primary_keyword}") || 
+                   CONTAINS(LCASE(STR(?description)), "{primary_keyword}"))
           }}
           UNION
           {{
@@ -114,13 +135,13 @@ class CordisApiClient:
                 ?proj eurio:description ?description
             }}
             
-            FILTER(CONTAINS(LCASE(STR(?title)), "{search_term.lower()}"))
+            FILTER(CONTAINS(LCASE(STR(?title)), "{primary_keyword}"))
           }}
         }}
         LIMIT {max_results}
         """
         
-        logger.info(f"Executing SPARQL query for term: '{search_term}' on {self.SPARQL_ENDPOINT}")
+        logger.info(f"Executing SPARQL query for term: '{primary_keyword}' on {self.SPARQL_ENDPOINT}")
         logger.debug(f"Query payload: {sparql_query}")
         
         # Use requests via executor to avoid blocking and ensure compatibility
