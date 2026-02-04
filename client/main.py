@@ -72,7 +72,11 @@ class ClientApp:
                     server_config = config.get('server', {})
                     host = server_config.get('host') or 'localhost'
                     port = server_config.get('port', 8001)
-                    url = f"http://{host}:{port}"
+                    
+                    # Detect scheme based on port
+                    scheme = "https" if port == 443 else "http"
+                    url = f"{scheme}://{host}:{port}"
+                    
                     print(f"🔧 Configuración del servidor cargada: {url}")
                     return url
             else:

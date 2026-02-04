@@ -361,9 +361,21 @@ class ScraperGUI(ttk.Frame):
             else:
                  is_transient = False
 
-            # 2. Generar ID Estable basado SOLO en worker_id
-            # Esto asegura que cada worker tenga UNA SOLA fila que se actualiza
-            current_row_id = f"worker_{worker_id_str}"
+            # 2. Generar ID Estable (NUEVA LÓGICA: Basada en Tarea/SIC para historial)
+            # Extraer SIC code si existe (e.g. "1234.0 - Nombre...")
+            # Detecta patrones como "109901.1" al inicio
+            match = re.search(r'^(\d+(\.\d+)?)', clean_task_text)
+            
+            if match and display_status != "Inactivo" and display_status != "Iniciando":
+                # Si tenemos un curso real, usar SIC como ID. 
+                # Esto crea una nueva fila para cada nuevo curso, dejando la anterior intacta.
+                sic_id = match.group(1)
+                current_row_id = f"task_{sic_id}_{worker_id_str}" # Incluir worker_id para evitar colisiones si 2 workers hacen lo mismo (raro)
+            else:
+                # Fallback a worker_id para estados transitorios (Iniciando, Esperando)
+                # O si no podemos parsear el curso.
+                current_row_id = f"worker_{worker_id_str}"
+
 
             # 3. Formatear Progreso
             progress_val = state.get('progress', 0)
@@ -389,10 +401,28 @@ class ScraperGUI(ttk.Frame):
 
             self.row_details_map[current_row_id] = full_details_str
 
-            # 6. Insertar o Actualizar (siempre la misma fila por worker)
+            # 6. Lógica de Historial: Detectar cambio de tarea
+            last_row_for_worker = self.worker_last_row_id.get(worker_id_str)
+            
+            # Si el worker cambió de tarea (y la tarea anterior era válida/diferente)
+            if last_row_for_worker and last_row_for_worker != current_row_id:
+                # Marcar la fila ANTERIOR como finalizada (visualmente) para que no quede "colgada"
+                if self.worker_tree.exists(last_row_for_worker):
+                    # Solo marcar si no está ya completada
+                     curr_values = self.worker_tree.item(last_row_for_worker)['values']
+                     # curr_values es una lista/tupla: (id, status, course, prog)
+                     if "Completado" not in str(curr_values[1]) and "Finalizado" not in str(curr_values[1]):
+                         # Actualizar status de la fila vieja
+                         new_vals = list(curr_values)
+                         new_vals[1] = "Finalizado"
+                         new_vals[3] = "100%"
+                         self.worker_tree.item(last_row_for_worker, values=new_vals)
+
+            # 7. Insertar o Actualizar la fila ACTUAL
             if self.worker_tree.exists(current_row_id):
                 self.worker_tree.item(current_row_id, values=values)
             else:
+                # Nueva fila! (Nuevo curso)
                 self.worker_tree.insert("", tk.END, iid=current_row_id, values=values)
                 self.worker_tree.yview_moveto(1)
                 
@@ -423,7 +453,7 @@ class ScraperGUI(ttk.Frame):
 
         filepath = filedialog.askopenfilename(
             title="Seleccione un archivo de cursos",
-            filetypes=[("Archivos Excel", "*.xlsx"), ("Archivos CSV", "*.csv"), ("Todos los archivos", "*.*")]
+            filetypes=[("Archivos CSV", "*.csv"), ("Archivos Excel", "*.xlsx"), ("Todos los archivos", "*.*")]
         )
         print(f"DEBUG GUI: Archivo seleccionado: {filepath}")
         if not filepath:
@@ -491,8 +521,9 @@ class ScraperGUI(ttk.Frame):
             logger.info(f"Cargados {len(self.detailed_sic_codes_with_courses)} cursos para la tabla")
 
             if not self.detailed_sic_codes_with_courses:
-                logger.warning("El servidor no devolvió cursos.")
-                messagebox.showwarning("Advertencia", "No se encontraron cursos en el servidor.")
+                logger.warning("El servidor devolvió lista vacía de cursos.")
+                # No mostrar popup bloqueante, solo log. 
+                # El usuario ya ve '0 cursos cargados' en el log panel.
                 return
           
             # Limpiar widgets antes de cargar nuevos datos

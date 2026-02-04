@@ -6,7 +6,7 @@ services:
       - "8001:8001"
       - "6000:6000/udp"
     volumes:
-      - ./courses.db:/app/courses.db
+      # - ./courses.db:/app/courses.db # COMENTADO PARA EVITAR PROBLEMAS DE PERMISOS/DIRECTORIOS
       - ./counties.db:/app/counties.db
       - ./results:/app/results
       - ./logs:/app/logs

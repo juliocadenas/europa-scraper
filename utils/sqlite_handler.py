@@ -326,7 +326,8 @@ class SQLiteHandler:
             List[Tuple[str, str]]: Lista de tuplas (sic_code, course_name)
         """
         conn = None
-        try:
+        # try:  <-- DESHABILITADO PARA DEPURACIÓN (Dejar que el error suba)
+        if True:
             conn = self._connect()
             cursor = conn.cursor()
             
@@ -337,12 +338,12 @@ class SQLiteHandler:
             courses = [(row[0] if row[0] is not None else "",
                        row[1] if row[1] is not None else "") for row in rows]
             
-            logger.info(f"Obtenidos {len(courses)} cursos desde la base de datos SQLite")
+            logger.info(f"Obtenidos {len(courses)} cursos desde la base de datos SQLite en: {self.db_path}")
             return courses
             
-        except Exception as e:
-            logger.error(f"Error obteniendo todos los cursos desde SQLite: {e}")
-            return []
+        # except Exception as e:
+        #     logger.error(f"Error obteniendo todos los cursos desde SQLite: {e}")
+        #     return []
         finally:
             if conn:
                 conn.close()

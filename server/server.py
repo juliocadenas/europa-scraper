@@ -619,9 +619,21 @@ class ScraperServer:
             db_handler.clear_courses_table()
             
             self.logger.info("Insertando nuevos cursos en la base de datos...")
-            db_handler.insert_courses(courses_to_load)
+            success = db_handler.insert_courses(courses_to_load)
             
-            return {"message": f"Carga exitosa. Se han cargado {len(courses_to_load)} cursos en la base de datos."}
+            if success:
+                 # VERIFICACIÓN INMEDIATA
+                 verify_courses = db_handler.get_all_courses()
+                 verify_count = len(verify_courses)
+                 self.logger.info(f"VERIFICACIÓN: Leídos {verify_count} cursos de la DB inmediatamente después de insertar.")
+                 
+                 if verify_count == 0:
+                     self.logger.error("ALERTA CRÍTICA: La base de datos está vacía después de una inserción supuestamente exitosa.")
+                     raise HTTPException(status_code=500, detail="Error Crítico: Los cursos se procesaron pero no se guardaron en la base de datos (0 filas encontradas).")
+
+                 return {"message": f"Carga exitosa. Se han cargado {len(courses_to_load)} cursos en la base de datos. Verificación: {verify_count} registros."}
+            else:
+                 raise HTTPException(status_code=500, detail="Error interno: No se pudieron guardar los cursos en la base de datos (SQLite error).")
 
         except Exception as e:
             self.logger.exception("Error procesando el archivo de cursos cargado.")

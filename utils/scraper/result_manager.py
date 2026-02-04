@@ -113,28 +113,22 @@ class ResultManager:
             return False
             
         try:
-            # columns used in initialize
-            columns = [
-                'sic_code', 'course_name', 'title', 
-                'description', 'url', 'total_words'
-            ]
-            expected_header = ",".join(columns)
-            
-            with open(self.output_file, 'r', encoding='utf-8') as f:
-                content = f.read().strip()
-            
-            # Check if content is empty or matches header exactly
-            if not content or content == expected_header:
-                logger.info(f"🗑️ Deleting empty file (headers only): {self.output_file}")
-                os.remove(self.output_file)
-                return True
+            # Robust check using pandas
+            # If the CSV only has headers, pd.read_csv will return an empty DataFrame
+            try:
+                # Use on_bad_lines='skip' to avoid parsing errors for broken files
+                df = pd.read_csv(self.output_file, on_bad_lines='skip')
                 
-            # Also check line count as backup
-            with open(self.output_file, 'r', encoding='utf-8') as f:
-                lines = f.readlines()
-            
-            if len(lines) <= 1:
-                logger.info(f"🗑️ Deleting empty file (<=1 line): {self.output_file}")
+                if df.empty:
+                    logger.info(f"🗑️ Deleting empty file (via pandas check): {self.output_file}")
+                    # Close file handles implicitly by letting df go out of scope, but os.remove handles it
+                    del df
+                    os.remove(self.output_file)
+                    return True
+                    
+            except pd.errors.EmptyDataError:
+                # File is completely empty (no headers)
+                logger.info(f"🗑️ Deleting completely empty file: {self.output_file}")
                 os.remove(self.output_file)
                 return True
                 

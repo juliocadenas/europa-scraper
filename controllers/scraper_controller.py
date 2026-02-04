@@ -1345,6 +1345,12 @@ class ScraperController(ScraperControllerBase):
           
           logger.info(f"Creando tarea de fondo para scraping: {{'de_sic': '{from_sic}', 'a_sic': '{to_sic}', 'de_curso': '{from_course}', 'a_curso': '{to_course}', 'min_palabras': {min_words}, 'motor': '{search_engine}', 'dominio': '{site_domain}'}}")
           
+          # UPDATE SEMAPHORE WITH USER CONFIG (Fix for concurrency issue)
+          num_workers = params.get('num_workers', 4)
+          if num_workers > 0:
+              logger.info(f"🚀 Estableciendo concurrencia a {num_workers} workers (Solicitado por usuario)")
+              self._processing_semaphore = asyncio.Semaphore(num_workers)
+          
           output_file, omitted_file = self.result_manager.initialize_output_files(
               from_sic, to_sic, from_course, to_course, search_engine, worker_id=worker_id
           )
