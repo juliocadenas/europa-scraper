@@ -392,9 +392,9 @@ class SQLiteHandler:
             courses_to_insert = []
             skipped_count = 0
             for sic_code, course_name in courses:
-                # Asegurarse de que los valores no sean None
-                sic_code = sic_code if sic_code is not None else ""
-                course_name = course_name if course_name is not None else ""
+                # Convertir a string y asegurarse de que los valores no sean None
+                sic_code = str(sic_code) if sic_code is not None else ""
+                course_name = str(course_name) if course_name is not None else ""
                 
                 # Filtrar cursos con nombres vacíos (evita violación de NOT NULL)
                 if course_name.strip():  # Solo insertar si course_name no está vacío
