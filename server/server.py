@@ -179,12 +179,15 @@ def worker_process(
                 continue
             
             batch_id = f"{batch[0][0]}..{batch[-1][0]}"
+            # Use Course Name for display from the very beginning
+            course_name_display = batch[0][1] if batch and len(batch) > 0 else "Desconocido"
+            
             logger.info(f"Worker {worker_id} recibió lote {batch_id} con {len(batch)} cursos y parámetros: {job_params}")
             status_dict[worker_id] = {
                 'id': worker_id, 
                 'status': 'working', 
                 'progress': 0, 
-                'current_task': batch_id,
+                'current_task': course_name_display, # Show name immediately
                 'processed_count': cumulative_stats['processed_count'],
                 'omitted_count': cumulative_stats['omitted_count'],
                 'error_count': cumulative_stats['error_count']
