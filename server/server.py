@@ -203,11 +203,21 @@ def worker_process(
 
             def progress_callback(percentage, message, *args):
                 # Actualizar el progreso del trabajador
+                # Mejorar el mensaje para que sea más descriptivo en la GUI
+                # Si el mensaje contiene "Buscando curso X de Y - ", extraemos solo la info del curso
+                display_msg = message
+                if " - " in message and "Buscando curso" in message:
+                    try:
+                        # Extraer todo después del guión " - "
+                        display_msg = message.split(" - ", 1)[1]
+                    except:
+                        pass
+                
                 current_status = {
                     'id': worker_id, 
                     'status': 'working', 
                     'progress': percentage, 
-                    'current_task': message
+                    'current_task': display_msg
                 }
                 
                 # Si se pasan estadísticas (desde scraper_controller), actualizarlas sumando acumulados

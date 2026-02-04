@@ -51,9 +51,13 @@ class WorkerStatusFrame(ttk.LabelFrame):
             else:
                 task_display = current_task
 
+            # Truncar si es demasiado largo para evitar fila gigante
+            if len(task_display) > 100:
+                task_display = task_display[:97] + "..."
+
             # Determinar el estado para la visualización
             state_display = "Working" if status.lower() == "working" else "Idle"
-
+            
             # Formatear el progreso
             progress_str = f"{progress:.0f}%"
 
