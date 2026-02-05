@@ -160,12 +160,24 @@ def worker_process(
                         logger.info(f"Worker {worker_id}: Modo API detectado ({search_engine_param}). Omitiendo inicialización de navegador.")
                     else:
                         logger.info(f"Worker {worker_id}: Modo headless = {is_headless}")
+                        # Añadir un pequeño retraso aleatorio para evitar race conditions al iniciar múltiples navegadores
+                        delay = random.uniform(0.5, 3.0)
+                        logger.info(f"Worker {worker_id}: Esperando {delay:.2f}s antes de inicializar navegador...")
+                        loop.run_until_complete(asyncio.sleep(delay))
+                        
                         loop.run_until_complete(browser_manager.initialize(headless=is_headless))
                         logger.info(f"Worker {worker_id}: Navegador inicializado correctamente")
                 except Exception as e:
-                    logger.error(f"Worker {worker_id}: Error inicializando navegador: {e}", exc_info=True)
-                    # Si el navegador falla, no podemos continuar
-                    status_dict[worker_id] = {'id': worker_id, 'status': 'Error', 'progress': 0, 'current_task': 'Browser Init Failed'}
+                    import traceback
+                    error_detail = f"Error inicializando navegador: {str(e)}"
+                    logger.error(f"Worker {worker_id}: {error_detail}", exc_info=True)
+                    # Enviar el error detallado al status_dict para que el usuario lo vea en la GUI
+                    status_dict[worker_id] = {
+                        'id': worker_id, 
+                        'status': 'Error', 
+                        'progress': 0, 
+                        'current_task': error_detail
+                    }
                     work_queue.task_done()
                     continue
 
@@ -175,7 +187,8 @@ def worker_process(
             # Si el navegador no se inicializó, no podemos continuar
             if not scraper_controller or not browser_manager:
                 logger.error(f"Worker {worker_id}: Controlador o BrowserManager no inicializados, saltando lote.")
-                work_queue.task_done()
+                if 'work_queue' in locals():
+                    work_queue.task_done()
                 continue
             
             batch_id = f"{batch[0][0]}..{batch[-1][0]}"
@@ -429,6 +442,7 @@ class ScraperServer:
     def _setup_routes(self):
         self.app.post("/start_scraping", status_code=202)(self.start_scraping_job)
         self.app.post("/stop_scraping")(self.stop_scraping_job)
+        self.app.post("/force_reset")(self.force_reset_state)
         self.app.get("/detailed_status")(self.get_detailed_status)
         self.app.post("/upload_courses")(self.upload_courses)
         self.app.get("/get_all_courses")(self.get_all_courses)
@@ -451,6 +465,14 @@ class ScraperServer:
 
         self.logger.info(f"Recibido nuevo trabajo de scraping: {request_data}")
         self.is_job_running = True
+        
+        # Generar un ID de tarea real
+        task_id = f"task_{int(time.time())}"
+
+        # LIMPIEZA DE ESTADO: Resetear worker_states para que la GUI no muestre datos antiguos
+        if self.worker_states is not None:
+            self.logger.info("Limpiando estados previos de los trabajadores...")
+            self.worker_states.clear()
 
         try:
             # Manejar múltiples formatos de entrada del frontend
@@ -473,7 +495,17 @@ class ScraperServer:
                     search_engine = request_data.search_engine
                     min_words = int(request_data.min_words) # Convertir a entero
                     is_headless = request_data.is_headless
-                    num_workers = request_data.num_workers or NUM_PROCESSES
+                    
+                    # LIMITACIÓN DE RECURSOS: Si no se especifica o es muy alto, limitar num_workers
+                    MAX_DEFAULT_WORKERS = min(8, NUM_PROCESSES)
+                    requested_workers = request_data.num_workers
+                    if not requested_workers or int(requested_workers) <= 0:
+                        num_workers = MAX_DEFAULT_WORKERS
+                    else:
+                        num_workers = int(requested_workers)
+                        # Si pide mas de 24, avisar pero permitir por ahora (o podrías capar)
+                        if num_workers > 24:
+                            self.logger.warning(f"Solicitados {num_workers} workers. Esto puede causar inestabilidad.")
                 else:
                     # Si es un diccionario directo
                     from_sic = request_data.get('from_sic', '01.0')
@@ -481,7 +513,13 @@ class ScraperServer:
                     search_engine = request_data.get('search_engine', 'Cordis Europa')
                     min_words = int(request_data.get('min_words', 30)) # Convertir a entero
                     is_headless = request_data.get('headless_mode', True)
-                    num_workers = int(request_data.get('num_workers', NUM_PROCESSES))
+                    
+                    MAX_DEFAULT_WORKERS = min(8, NUM_PROCESSES)
+                    requested_workers = request_data.get('num_workers')
+                    if not requested_workers:
+                        num_workers = MAX_DEFAULT_WORKERS
+                    else:
+                        num_workers = int(requested_workers)
                 self.logger.info(f"Usando formato directo: {from_sic} a {to_sic}")
 
             # 1. Obtener todos los cursos de la base de datos
@@ -535,7 +573,10 @@ class ScraperServer:
             monitor_thread = threading.Thread(target=self._monitor_job_completion, daemon=True)
             monitor_thread.start()
 
-            return {"message": f"Trabajo iniciado. {num_courses} cursos encolados para {NUM_PROCESSES} trabajadores."}
+            return {
+                "message": f"Trabajo iniciado. {num_courses} cursos encolados para {num_workers} trabajadores.",
+                "task_id": task_id
+            }
 
         except Exception as e:
             self.logger.error("Error al iniciar el trabajo de scraping.", exc_info=True)
@@ -580,6 +621,29 @@ class ScraperServer:
         
         self.is_job_running = False
         return {"message": "Solicitud de detención recibida. El pool de trabajadores ha sido detenido."}
+
+    async def force_reset_state(self):
+        """Forza el reseteo del estado global del servidor, deteniendo todo."""
+        self.logger.warning("SOLICITUD DE REINICIO FORZADO RECIBIDA.")
+        
+        # 1. Detener el pool de trabajadores
+        self._stop_worker_pool()
+        
+        # 2. Limpiar la cola de trabajo
+        try:
+            while not self.work_queue.empty():
+                self.work_queue.get_nowait()
+        except Exception:
+            pass
+            
+        # 3. Resetear banderas
+        self.is_job_running = False
+        
+        # 4. Limpiar los estados de los workers para la GUI
+        if self.worker_states is not None:
+            self.worker_states.clear()
+            
+        return {"message": "Servidor reiniciado forzosamente. El estado ahora es 'Inactivo'."}
 
     async def get_detailed_status(self):
         return dict(self.worker_states)

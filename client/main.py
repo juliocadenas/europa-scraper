@@ -152,13 +152,21 @@ class ClientApp:
 
     def _start_scraping_thread(self, params):
         try:
-            response = requests.post(f"{self.server_base_url}/start_scraping", json=params, timeout=10)
-            response.raise_for_status()  # Lanza excepción para errores HTTP
+            url = f"{self.server_base_url}/start_scraping"
+            logger.info(f"🚀 Enviando solicitud POST a: {url}")
+            logger.info(f"📦 Parámetros: {json.dumps(params, indent=2)}")
+            
+            response = requests.post(url, json=params, timeout=10)
+            response.raise_for_status()  
             
             data = response.json()
+            task_id = data.get('task_id', 'N/A')
+            message = data.get('message', 'Sin mensaje del servidor')
+            
             self.is_scraping = True
             self.scraping_start_time = time.time()
-            self.queue.put(('log', f"Tarea de scraping iniciada. ID: {data.get('task_id')}"))
+            self.queue.put(('log', f"✅ {message}"))
+            self.queue.put(('log', f"🆔 Tarea iniciada. ID: {task_id}"))
             
             # Iniciar el sondeo de estado
             self.stop_polling.clear()
@@ -166,7 +174,7 @@ class ClientApp:
             self.status_poll_thread.start()
 
         except requests.exceptions.RequestException as e:
-            error_message = f"Error al iniciar el scraping: {e}"
+            error_message = f"❌ Error al iniciar el scraping: {e}"
             logger.error(error_message)
             self.queue.put(('log', error_message))
             self.is_scraping = False
@@ -241,14 +249,25 @@ class ClientApp:
             self.queue.put(('log', error_message))
 
     def force_reset_state(self):
-        """Forza el reseteo del estado de scraping del cliente."""
-        logger.warning("Forzando el reseteo del estado del cliente.")
+        """Forza el reseteo del estado de scraping del cliente y del servidor."""
+        logger.warning("Forzando el reseteo del estado del cliente y servidor.")
         self.is_scraping = False
         self.stop_polling.set()
-        self.queue.put(('log', "⚠️ El estado del cliente ha sido forzado a 'Inactivo'."))
-        # También se podría notificar a la GUI para que actualice los botones si es necesario
-        self.gui.control_frame.start_button.config(state=tk.NORMAL)
-        self.gui.control_frame.stop_button.config(state=tk.DISABLED)
+        
+        # Intentar notificar al servidor del reseteo
+        try:
+            url = f"{self.server_base_url}/force_reset"
+            requests.post(url, timeout=5)
+            logger.info("Solicitud de reseteo enviada al servidor.")
+        except Exception as e:
+            logger.error(f"No se pudo notificar al servidor del reseteo: {e}")
+
+        self.queue.put(('log', "⚠️ Sistema reiniciado (Cliente + Servidor). El estado ahora es 'Inactivo'."))
+        
+        # Notificar a la GUI para que actualice los botones
+        if self.gui:
+            self.gui.control_frame.start_button.config(state=tk.NORMAL)
+            self.gui.control_frame.stop_button.config(state=tk.DISABLED)
 
     def _on_closing(self):
         self.stop_polling.set()

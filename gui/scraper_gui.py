@@ -217,10 +217,10 @@ class ScraperGUI(ttk.Frame):
         # Treeview para mostrar el estado de los workers (Content)
         # REFACTORIZACIÓN UI: Unificación de Estado y Limpieza de Tarea
         self.worker_tree = ttk.Treeview(self.monitor_frame, columns=('ID', 'Status', 'Course', 'Progress'), show='headings')
-        self.worker_tree.heading('ID', text='Worker')
-        self.worker_tree.heading('Status', text='Estado / Acción')
-        self.worker_tree.heading('Course', text='Curso / Tarea')
-        self.worker_tree.heading('Progress', text='Progreso')
+        self.worker_tree.heading('ID', text='Worker', command=lambda: self.treeview_sort_column(self.worker_tree, 'ID', False))
+        self.worker_tree.heading('Status', text='Estado / Acción', command=lambda: self.treeview_sort_column(self.worker_tree, 'Status', False))
+        self.worker_tree.heading('Course', text='Curso / Tarea', command=lambda: self.treeview_sort_column(self.worker_tree, 'Course', False))
+        self.worker_tree.heading('Progress', text='Progreso', command=lambda: self.treeview_sort_column(self.worker_tree, 'Progress', False))
 
         self.worker_tree.column('ID', width=50, anchor=tk.CENTER)
         self.worker_tree.column('Status', width=120)
@@ -236,6 +236,11 @@ class ScraperGUI(ttk.Frame):
         
         # Bind para mostrar detalles al seleccionar
         self.worker_tree.bind('<<TreeviewSelect>>', self._on_tree_select)
+        
+        # --- MENÚ CONTEXTUAL PARA EL MONITOR ---
+        self.monitor_menu = tk.Menu(self.master, tearoff=0)
+        self.monitor_menu.add_command(label="Eliminar registro", command=self._delete_selected_records)
+        self.worker_tree.bind("<Button-3>", self._show_context_menu) # Clic derecho en Windows
 
         # --- PANEL DE DETALLES (NUEVO) ---
         self.details_frame = ttk.LabelFrame(self.center_column, text="Detalles del Proceso Seleccionado", padding=5)
@@ -824,8 +829,77 @@ class ScraperGUI(ttk.Frame):
         if messagebox.askyesno("Confirmar", "¿Está seguro de que desea forzar el reinicio del estado del cliente? Esto debería usarse solo si el cliente se ha quedado atascado en el estado 'en progreso'."):
             if self.controller:
                 self.controller.force_reset_state()
+                messagebox.showinfo("Reinicio Forzado", "El estado del cliente ha sido reiniciado.")
+                
+                # LIMPIEZA DE VISTA: Limpiar el monitor al forzar reinicio
+                for item in self.worker_tree.get_children():
+                    self.worker_tree.delete(item)
+                if hasattr(self, 'row_details_map'):
+                    self.row_details_map.clear()
+                if hasattr(self, 'worker_last_row_id'):
+                    self.worker_last_row_id.clear()
             else:
                 messagebox.showerror("Error", "El controlador no está disponible para reiniciar el estado.")
+
+    def treeview_sort_column(self, tv, col, reverse):
+        """Ordena el contenido de una columna de Treeview."""
+        l = [(tv.set(k, col), k) for k in tv.get_children('')]
+        
+        # Intentar ordenación numérica si es posible (para ID y Progreso)
+        try:
+            if col in ['ID', 'Progress']:
+                def parse_val(val):
+                    val = val.replace('%', '').strip()
+                    return float(val) if val and val != "N/A" else 0.0
+                l = [(parse_val(val), k) for val, k in l]
+            else:
+                # Ordenación alfabética para el resto (ignorando mayúsculas)
+                l = [(val.lower(), k) for val, k in l]
+        except (ValueError, TypeError):
+            pass
+
+        l.sort(reverse=reverse)
+
+        # Reordenar elementos
+        for index, (val, k) in enumerate(l):
+            tv.move(k, '', index)
+
+        # Cambiar el comando del encabezado para que la próxima vez sea inverso
+        tv.heading(col, command=lambda: self.treeview_sort_column(tv, col, not reverse))
+
+    def _show_context_menu(self, event):
+        """Muestra el menú contextual en la posición del ratón."""
+        item = self.worker_tree.identify_row(event.y)
+        if item:
+            # Si el elemento sobre el que se hace clic no está ya seleccionado,
+            # cambiar la selección a solo ese elemento.
+            # Si YA está seleccionado (parte de una multiselección), no tocamos la selección
+            # para no des-sombrear los demás.
+            if item not in self.worker_tree.selection():
+                self.worker_tree.selection_set(item)
+            
+            self.monitor_menu.post(event.x_root, event.y_root)
+
+    def _delete_selected_records(self):
+        """Elimina los registros seleccionados del monitor."""
+        selected_items = self.worker_tree.selection()
+        if not selected_items:
+            return
+            
+        if messagebox.askyesno("Confirmar eliminación", f"¿Estás seguro de que deseas eliminar {len(selected_items)} registros de la vista?"):
+            for item in selected_items:
+                # Limpiar del mapa de detalles si existe
+                if hasattr(self, 'row_details_map') and item in self.row_details_map:
+                    del self.row_details_map[item]
+                
+                # Eliminar del treeview
+                self.worker_tree.delete(item)
+            
+            # Limpiar detalles si no queda nada seleccionado
+            if not self.worker_tree.selection():
+                self.details_text.config(state=tk.NORMAL)
+                self.details_text.delete(1.0, tk.END)
+                self.details_text.config(state=tk.DISABLED)
 
     def handle_scraping_finished(self):
         """Maneja el evento de finalización de scraping, actualizando la GUI."""
