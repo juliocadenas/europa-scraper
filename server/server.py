@@ -160,8 +160,8 @@ def worker_process(
                         logger.info(f"Worker {worker_id}: Modo API detectado ({search_engine_param}). Omitiendo inicialización de navegador.")
                     else:
                         logger.info(f"Worker {worker_id}: Modo headless = {is_headless}")
-                        # Añadir un pequeño retraso aleatorio para evitar race conditions al iniciar múltiples navegadores
-                        delay = random.uniform(0.5, 3.0)
+                        # Añadir un retraso aleatorio para evitar race conditions al iniciar múltiples navegadores
+                        delay = random.uniform(2.0, 8.0)
                         logger.info(f"Worker {worker_id}: Esperando {delay:.2f}s antes de inicializar navegador...")
                         loop.run_until_complete(asyncio.sleep(delay))
                         
