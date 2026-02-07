@@ -195,6 +195,7 @@ class ClientApp:
             self.stop_polling.set() # Detener el sondeo
 
     def _poll_status(self):
+        last_logged_tasks = {}  # Track what we've already logged
         while not self.stop_polling.is_set():
             try:
                 response = requests.get(f"{self.server_base_url}/detailed_status", timeout=10)
@@ -207,6 +208,25 @@ class ClientApp:
 
                 # Enviar el estado completo a la GUI para que lo procese
                 self.queue.put(('update_worker_status', worker_states))
+                
+                # Log worker activities to results panel (only new activities)
+                for worker_id, state in worker_states.items():
+                    current_task = state.get('current_task', '')
+                    status = state.get('status', '')
+                    
+                    # Only log if task changed for this worker
+                    if last_logged_tasks.get(worker_id) != current_task and current_task:
+                        last_logged_tasks[worker_id] = current_task
+                        # Format log message
+                        if 'Completado' in current_task or 'guardados' in current_task:
+                            log_msg = f"✅ Worker {worker_id}: {current_task}"
+                        elif 'Buscando' in current_task:
+                            log_msg = f"🔍 Worker {worker_id}: {current_task}"
+                        elif 'Error' in current_task:
+                            log_msg = f"❌ Worker {worker_id}: {current_task}"
+                        else:
+                            log_msg = f"⚙️ Worker {worker_id}: {current_task}"
+                        self.queue.put(('log', log_msg))
 
                 # Comprobar si todas las tareas han terminado
                 is_job_running = any(
