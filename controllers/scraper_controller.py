@@ -139,14 +139,27 @@ class ScraperController(ScraperControllerBase):
                   return None
 
               content_extraction_url = result.get('wayback_url', url) if search_engine == 'Wayback Machine' else url
-
-              try:
-                  full_content = await asyncio.wait_for(self.content_extractor.extract_full_content(content_extraction_url), timeout=60.0)
-              except asyncio.TimeoutError:
-                  self.stats['failed_content_extraction'] += 1
-                  self.stats['files_not_saved'] += 1
-                  self.omitted_results.append({'sic_code': sic_code, 'course_name': course_name, 'title': title, 'url': url, 'description': description, 'omission_reason': 'Timeout en extracción de contenido'})
-                  return None
+              
+              # SOLUCIÓN CRÍTICA PARA CORDIS:
+              # Los resultados de Cordis SPARQL ya incluyen título + descripción detallada
+              # Las URLs son páginas de resumen con poco texto extraíble
+              # Usar el contenido de la API directamente evita 1,700+ omisiones
+              source = result.get('source', '')
+              is_cordis = 'cordis' in source.lower() or 'sparql' in source.lower()
+              
+              if is_cordis and description and len(description) > 50:
+                  # Usar contenidodel API directamente para Cordis
+                  logger.info(f"Using Cordis API metadata for {title[:50]}... (skipping URL extraction)")
+                  full_content = f"{title}\n\n{description}"
+              else:
+                  # Para otras fuentes, extraer contenido de la URL normalmente
+                  try:
+                      full_content = await asyncio.wait_for(self.content_extractor.extract_full_content(content_extraction_url), timeout=60.0)
+                  except asyncio.TimeoutError:
+                      self.stats['failed_content_extraction'] += 1
+                      self.stats['files_not_saved'] += 1
+                      self.omitted_results.append({'sic_code': sic_code, 'course_name': course_name, 'title': title, 'url': url, 'description': description, 'omission_reason': 'Timeout en extracción de contenido'})
+                      return None
 
               if not full_content:
                   logger.warning(f"Content extraction failed for {content_extraction_url}. See content_extractor.log for details.")

@@ -388,26 +388,26 @@ class ScraperGUI(ttk.Frame):
                  is_transient = False
 
             
-            # 2. Generar ID Único por Tarea (Volver a lógica de historial)
-            # El usuario pide EXPRESAMENTE ver cada paso y no solapar.
             
-            clean_course_id = display_course.replace(' ', '_').replace('.', '_')
+            # 2. Generar ID Único BASADO EN SIC CODE (NO EN EL NOMBRE DEL CURSO)
+            # CRÍTICO: El SIC code es el único identificador estable que NO cambia entre estados
+            # Extraer el SIC code del mensaje (siempre tiene formato XX.X o XXX.X)
             import re
-            clean_course_id = re.sub(r'[^a-zA-Z0-9_]', '', clean_course_id)
+            sic_match = re.search(r'(\d+\.\d+)\s*-', raw_task)
             
-            # Generar ID basado en el contenido REAL de la tarea y timestamp aproximado (timestamp via worker state?)
-            # O mejor: task_scic_code si es posible.
-            # Usar clean_course_id es lo mas estable
-            
-            if is_transient or not clean_course_id or "Esperando" in display_course:
+            if sic_match:
+                # Usar el SIC code como ID único
+                sic_code = sic_match.group(1).replace('.', '_')
+                current_row_id = f"sic_{sic_code}"
+            elif is_transient or not clean_course_id or "Esperando" in display_course:
                  # Mensajes de sistema van a fila worker fija
                  current_row_id = f"worker_msg_{worker_id_str}" 
-            elif "Completado" in display_status:
-                 # Tareas completadas: Usar un ID unico final
-                 current_row_id = f"done_{clean_course_id}"
             else:
-                 # Tareas activas: ID unico
-                 current_row_id = f"active_{clean_course_id}"
+                 # Fallback: usar el nombre del curso limpio
+                 # (solo si no pudimos extraer el SIC code)
+                 clean_course_id = display_course.replace(' ', '_').replace('.', '_')
+                 clean_course_id = re.sub(r'[^a-zA-Z0-9_]', '', clean_course_id)
+                 current_row_id = f"course_{clean_course_id}"
 
             # 3. Formatear Progreso
             progress_val = state.get('progress', 0)
@@ -428,46 +428,23 @@ class ScraperGUI(ttk.Frame):
             
             self.row_details_map[current_row_id] = full_details_str
 
-            # 6. Insertar o Actualizar
-            # Lógica Anti-Solapamiento:
-            # Si una tarea estaba "Activa" y ahora viene "Completada", borrar la activa y poner la completada
-            active_id = f"active_{clean_course_id}"
-            done_id = f"done_{clean_course_id}"
-            
-            if current_row_id == done_id:
-                if self.worker_tree.exists(active_id):
-                    self.worker_tree.delete(active_id)
-                
-                # Si ya existe como completada, actualizar (por si llegan msjs repetidos)
-                if self.worker_tree.exists(done_id):
-                    self.worker_tree.item(done_id, values=values)
-                else:
-                    self.worker_tree.insert('', 'end', iid=done_id, values=values)
-            
-            elif current_row_id == active_id:
-                # Si esta activa, actualizar
-                if self.worker_tree.exists(active_id):
-                    self.worker_tree.item(active_id, values=values)
-                # Si ya existe como completada (raro per posible), ignorar o borrar completada vieja?
-                # Asumimos que si esta activa es lo que vale
-                else:
-                    self.worker_tree.insert('', '0', iid=active_id, values=values) # Insertar al inicio!
-
+            # 6. Insertar o Actualizar fila
+            # Como ahora usamos un solo ID por curso, simplemente actualizamos o insertamos
+            if self.worker_tree.exists(current_row_id):
+                self.worker_tree.item(current_row_id, values=values)
             else:
-                # Mensajes transitorios (worker_msg_)
-                if self.worker_tree.exists(current_row_id):
-                    self.worker_tree.item(current_row_id, values=values)
-                else:
-                    self.worker_tree.insert('', 'end', iid=current_row_id, values=values)
+                # Insertar al inicio si es tarea real, al final si es mensaje de sistema
+                position = '0' if not is_transient else 'end'
+                self.worker_tree.insert('', position, iid=current_row_id, values=values)
             
             self.worker_last_row_id[worker_id_str] = current_row_id
             
-        # 7. Limpieza Automática de Historial (Max 50 filas completadas)
+        # 7. Limpieza Automática de Historial (Max 50 filas de cursos)
         all_items = self.worker_tree.get_children()
-        completed_items = [item for item in all_items if item.startswith("done_")]
-        if len(completed_items) > 50:
-            # Borrar las más viejas (las primeras en la lista asumimos)
-            for item in completed_items[:-50]:
+        course_items = [item for item in all_items if item.startswith("course_")]
+        if len(course_items) > 50:
+            # Borrar las más viejas (las primeras en la lista)
+            for item in course_items[:-50]:
                 self.worker_tree.delete(item)
 
         self.current_worker_states = worker_states

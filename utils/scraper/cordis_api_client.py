@@ -211,68 +211,99 @@ class CordisApiClient:
             logger.info(f"SPARQL search (BROAD): '{search_term}', OR filter with parts: {query_parts}")
         
         
-        # 3. SOLUCIÓN: LÍMITE MASIVO.
-        sparql_limit = max(2000, max_results * 50) 
-
-        sparql_query = f"""
-        PREFIX eurio: <http://data.europa.eu/s66#>
+        # 3. EJECUCIÓN PAGINADA (Bypass de límites + V25 EXTREME BROAD SEARCH)
+        # V25 - NUCLEAR OPTION: Removed ALL type filters.
+        # Direct text search on Title/Description regardless of entity type.
+        # This mimics the website "global search" behavior to find the elusive 18,000 results.
         
-        SELECT DISTINCT ?title ?url ?description (LANG(?title) as ?lang) WHERE {{
-          {{
-            SELECT DISTINCT ?project WHERE {{
-               ?project a eurio:Project .
-               ?project eurio:title ?t .
-               OPTIONAL {{ ?project eurio:description ?d }}
-               
-               FILTER({full_filter})
+        all_formatted_results = []
+        limit_per_batch = 2000
+        current_offset = 0
+        
+        # Increased safety limit for huge result sets
+        safety_max = max(50000, max_results * 10) if max_results else 50000
+        
+        logger.info(f"*** V25 ACTIVADA ***: Iniciando búsqueda TEXTUAL PURA en Cordis (Sin filtro de tipos) para '{search_term}'")
+
+        while len(all_formatted_results) < safety_max:
+            # BROAD QUERY V25: No ?type filter. Just find items with matching text.
+            # Using REGEX is slower but catches everything.
+            sparql_query = f"""
+            PREFIX eurio: <http://data.europa.eu/s66#>
+            
+            SELECT DISTINCT ?title ?url ?description (LANG(?title) as ?lang) WHERE {{
+              {{
+                SELECT DISTINCT ?item WHERE {{
+                   ?item eurio:title ?t .
+                   OPTIONAL {{ ?item eurio:description ?d }}
+                   
+                   # Applying the filter generated above directly
+                   FILTER({full_filter})
+                }}
+                ORDER BY ?item
+                LIMIT {limit_per_batch}
+                OFFSET {current_offset}
+              }}
+              
+              ?item eurio:title ?title .
+              OPTIONAL {{ ?item eurio:description ?description . FILTER(LANG(?description) = LANG(?title)) }}
+              OPTIONAL {{ ?item eurio:hasWebpage ?url }}
             }}
-            LIMIT {sparql_limit}
-          }}
-          
-          ?project eurio:title ?title .
-          OPTIONAL {{ ?project eurio:description ?description . FILTER(LANG(?description) = LANG(?title)) }}
-          OPTIONAL {{ ?project eurio:hasWebpage ?url }}
-        }}
-        """
-        
-        loop = asyncio.get_running_loop()
-        def _execute_request():
-            import requests
-            return requests.post(
-                self.SPARQL_ENDPOINT, 
-                data={'query': sparql_query}, 
-                headers={'Accept': 'application/sparql-results+json', **self.headers}, 
-                timeout=30
-            )
+            """
+            
+            loop = asyncio.get_running_loop()
+            def _execute_request():
+                import requests
+                return requests.post(
+                    self.SPARQL_ENDPOINT, 
+                    data={'query': sparql_query}, 
+                    headers={'Accept': 'application/sparql-results+json', **self.headers}, 
+                    timeout=90  # Increased timeout for heaver regex query
+                )
 
-        try:
-            response = await loop.run_in_executor(None, _execute_request)
-            if response.status_code != 200:
-                return []
-            
-            data = response.json()
-            bindings = data.get('results', {}).get('bindings', [])
-            
-            formatted_results = []
-            for item in bindings:
-                url = item.get('url', {}).get('value')
-                # Extract title and its language
-                title_item = item.get('title', {})
-                title = title_item.get('value', 'No Title')
-                lang = item.get('lang', {}).get('value', 'en') # Default to 'en' if missing
+            try:
+                response = await loop.run_in_executor(None, _execute_request)
+                if response.status_code != 200:
+                    logger.error(f"Error SPARQL (Status {response.status_code}): {response.text}")
+                    break
                 
-                desc = item.get('description', {}).get('value', '')
+                data = response.json()
+                bindings = data.get('results', {}).get('bindings', [])
                 
-                if title and title != 'No Title':
-                    formatted_results.append({
-                        'url': url if url else f"https://cordis.europa.eu/search?q={search_term}",
-                        'title': title,
-                        'description': desc[:500] if desc else "Cordis project",
-                        'source': 'Cordis Europa SPARQL',
-                        'mediatype': 'project',
-                        'lang': lang
-                    })
-            return formatted_results
-        except Exception as e:
-            logger.error(f"SPARQL error: {e}")
-            return []
+                if not bindings:
+                    logger.info(f"No más resultados encontrados para '{search_term}' en offset {current_offset}")
+                    break
+                    
+                batch_count = 0
+                for item in bindings:
+                    url = item.get('url', {}).get('value')
+                    title_item = item.get('title', {})
+                    title = title_item.get('value', 'No Title')
+                    lang = item.get('lang', {}).get('value', 'en')
+                    
+                    desc = item.get('description', {}).get('value', '')
+                    
+                    if title and title != 'No Title':
+                        all_formatted_results.append({
+                            'url': url if url else f"https://cordis.europa.eu/search?q={search_term}",
+                            'title': title,
+                            'description': desc[:500] if desc else "Cordis item",
+                            'source': 'Cordis Europa SPARQL V25',
+                            'mediatype': 'mixed',
+                            'lang': lang
+                        })
+                        batch_count += 1
+                
+                logger.info(f"Lote Cordis V25 (Offset {current_offset}): Encontrados {batch_count} resultados (Total acumulado: {len(all_formatted_results)})")
+                
+                if batch_count < limit_per_batch:
+                    break
+                    
+                current_offset += limit_per_batch
+                await asyncio.sleep(1.0) # More delay for heavy queries
+                
+            except Exception as e:
+                logger.error(f"Error en lote Cordis SPARQL V25 (offset {current_offset}): {e}")
+                break
+                
+        return all_formatted_results
