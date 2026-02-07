@@ -377,26 +377,27 @@ class ScraperGUI(ttk.Frame):
                  is_transient = False
 
             # 2. Generar ID Estable (NUEVA LÓGICA: Basada en Tarea/SIC para historial)
-            # Extraer SIC code si existe (e.g. "1234.0 - Nombre...")
-            # Detecta patrones como "109901.1" al inicio
-            match = re.search(r'^(\d+(\.\d+)?)', clean_task_text)
+            # El usuario exige que CADA PROCESO sea ÚNICO y no se reemplace.
+            # Usamos el nombre del curso o SIC como clave única de la fila.
             
-            if match and display_status != "Inactivo" and display_status != "Iniciando":
-                # Si tenemos un curso real, usar SIC como ID. 
-                # Esto crea una nueva fila para cada nuevo curso, dejando la anterior intacta.
-                sic_id = match.group(1)
-                current_row_id = f"task_{sic_id}_{worker_id_str}" # Incluir worker_id para evitar colisiones si 2 workers hacen lo mismo (raro)
+            # Limpiar nombre de curso para usarlo como ID
+            clean_course_id = display_course.replace(' ', '_').replace('.', '_')
+            # Evitar caracteres extraños en ID
+            import re
+            clean_course_id = re.sub(r'[^a-zA-Z0-9_]', '', clean_course_id)
+            
+            # Si no hay curso válido (ej: "Preparando navegador"), usamos worker_id temporalmente
+            if is_transient or not clean_course_id or "Esperando" in display_course:
+                 current_row_id = f"worker_{worker_id_str}"
             else:
-                # Fallback a worker_id para estados transitorios (Iniciando, Esperando)
-                # O si no podemos parsear el curso.
-                current_row_id = f"worker_{worker_id_str}"
-
+                 current_row_id = f"task_{clean_course_id}"
 
             # 3. Formatear Progreso
             progress_val = state.get('progress', 0)
             progress_str = f"{int(progress_val)}%"
 
             # 4. Datos visuales para las columnas
+            # Si es persistente (task_), el ID sera el worker que lo ejecuto por ultima vez
             values = (
                 worker_id_str,
                 display_status,
@@ -405,12 +406,11 @@ class ScraperGUI(ttk.Frame):
             )
             
             # 5. Guardar detalles completos para el panel inferior
-            # Si hay pipe, usarlos como detalles extra
             if '|' in raw_task:
                 stats_part = raw_task.split('|')[1].strip()
                 full_details_str = f"Curso: {display_course}\nEstado: {display_status}\nEstadísticas: {stats_part}"
             elif "Completado" in raw_task:
-                full_details_str = raw_task.replace('. ', '.\n') # Formatear mejor
+                full_details_str = raw_task.replace('. ', '.\n')
             else:
                 full_details_str = raw_task
 
@@ -421,32 +421,23 @@ class ScraperGUI(ttk.Frame):
             
             # Si el worker cambió de tarea (y la tarea anterior era válida/diferente)
             if last_row_for_worker and last_row_for_worker != current_row_id:
-                # Marcar la fila ANTERIOR como finalizada (visualmente) para que no quede "colgada"
-                if self.worker_tree.exists(last_row_for_worker):
-                    # Solo marcar si no está ya completada
-                     curr_values = self.worker_tree.item(last_row_for_worker)['values']
-                     # curr_values es una lista/tupla: (id, status, course, prog)
-                     if "Completado" not in str(curr_values[1]) and "Finalizado" not in str(curr_values[1]):
-                         # Actualizar status de la fila vieja
-                         new_vals = list(curr_values)
-                         new_vals[1] = "Finalizado"
-                         new_vals[3] = "100%"
-                         self.worker_tree.item(last_row_for_worker, values=new_vals)
+                # Si la fila anterior era transitoria (worker_), borrarla
+                if last_row_for_worker.startswith("worker_") and not current_row_id.startswith("worker_"):
+                     if self.worker_tree.exists(last_row_for_worker):
+                         self.worker_tree.delete(last_row_for_worker)
+                
+                # Si la fila anterior era una tarea REAL (task_), marcarla como finalizada
+                elif last_row_for_worker.startswith("task_"):
+                    if self.worker_tree.exists(last_row_for_worker):
+                         curr_values = self.worker_tree.item(last_row_for_worker)['values']
+                         # Solo marcar si no está ya como completado/finalizado
+                         if "Completado" not in str(curr_values[1]) and "Finalizado" not in str(curr_values[1]):
+                             new_vals = list(curr_values)
+                             new_vals[1] = "Finalizado / Liberado" # Indicar que el worker ya no está aquí
+                             new_vals[3] = "100%"
+                             self.worker_tree.item(last_row_for_worker, values=new_vals)
 
             # 7. Insertar o Actualizar la fila ACTUAL
-            if self.worker_tree.exists(current_row_id):
-                self.worker_tree.item(current_row_id, values=values)
-            else:
-                # Nueva fila! (Nuevo curso)
-                self.worker_tree.insert("", tk.END, iid=current_row_id, values=values)
-                self.worker_tree.yview_moveto(1)
-                
-            # Actualizar si este es el actual seleccionado (Refresh en tiempo real del panel)
-            selected = self.worker_tree.selection()
-            if selected and selected[0] == current_row_id:
-                self._on_tree_select(None)
-            
-            self.worker_last_row_id[worker_id_str] = current_row_id
 
         self.current_worker_states = worker_states
 
@@ -532,31 +523,36 @@ class ScraperGUI(ttk.Frame):
     def _populate_ui_with_course_data(self, courses_data):
         """Puebla los widgets de la UI con la lista de cursos."""
         try:
-            self.detailed_sic_codes_with_courses = courses_data
+            # Convertir a formato consistente (tuplas de strings)
+            clean_data = []
+            
+            for item in courses_data:
+                # Manejar tanto diccionarios (servidor) como tuplas (local)
+                if isinstance(item, dict):
+                    code = str(item.get('sic_code', '')).strip()
+                    name = str(item.get('course_name', '')).strip()
+                else:
+                    code = str(item[0]).strip() if len(item) > 0 else ''
+                    name = str(item[1]).strip() if len(item) > 1 else ''
+                
+                # NO SANITIZAR - Datos tal cual del servidor
+                clean_data.append((code, name))
+            
+            # Guardar datos sin modificar
+            self.detailed_sic_codes_with_courses = clean_data
+            
             logger.info(f"Cargados {len(self.detailed_sic_codes_with_courses)} cursos para la tabla")
 
             if not self.detailed_sic_codes_with_courses:
                 logger.warning("El servidor devolvió lista vacía de cursos.")
-                # No mostrar popup bloqueante, solo log. 
-                # El usuario ya ve '0 cursos cargados' en el log panel.
                 return
           
             # Limpiar widgets antes de cargar nuevos datos
-            # self.course_tree.delete(*self.course_tree.get_children()) # ELIMINADO
             self.from_sic_listbox.delete(0, tk.END)
             self.to_sic_listbox.delete(0, tk.END)
 
             # Poblar la tabla (Treeview) y los Listbox
-            for item in self.detailed_sic_codes_with_courses:
-                # Manejar tanto diccionarios (nuevo formato) como tuplas (viejo formato local)
-                if isinstance(item, dict):
-                    sic_code = item.get('sic_code', '')
-                    course_name = item.get('course_name', '')
-                else:
-                    sic_code = item[0]
-                    course_name = item[1]
-                
-                # self.course_tree.insert("", tk.END, values=(sic_code, course_name)) # ELIMINADO
+            for sic_code, course_name in self.detailed_sic_codes_with_courses:
                 display_text = f"{sic_code} - {course_name}"
                 self.from_sic_listbox.insert(tk.END, display_text)
                 self.to_sic_listbox.insert(tk.END, display_text)
@@ -981,17 +977,53 @@ class ScraperGUI(ttk.Frame):
             self.results_frame.add_log(f"Cargando cursos desde: {os.path.basename(filepath)}")
             
             # Procesar según el tipo de archivo
+            # FIX DEFINITIVO: Usar openpyxl directamente para leer celdas como TEXTO
             if filepath.endswith(('.xlsx', '.xls')):
-                import pandas as pd
-                df = pd.read_excel(filepath, header=None)
-                courses_data = [(str(row[0]), str(row[1])) for index, row in df.iterrows() if pd.notna(row[0]) and pd.notna(row[1])]
+                try:
+                    from openpyxl import load_workbook
+                    wb = load_workbook(filepath, data_only=True)
+                    ws = wb.active
+                    
+                    courses_data = []
+                    for row in ws.iter_rows(min_row=1, values_only=False):
+                        if len(row) >= 2:
+                            # Obtener el valor de la celda como STRING PURO
+                            cell_code = row[0]
+                            cell_name = row[1]
+                            
+                            # Obtener valor como está almacenado en Excel
+                            code_val = cell_code.value
+                            name_val = cell_name.value
+                            
+                            if code_val is not None and name_val is not None:
+                                # Convertir a string exactamente como aparece
+                                code_str = str(code_val).strip()
+                                name_str = str(name_val).strip()
+                                
+                                # Saltar si es la fila de encabezado
+                                if code_str.lower() not in ['code', 'sic', 'sic_code', 'curso']:
+                                    courses_data.append((code_str, name_str))
+                    
+                    wb.close()
+                except ImportError:
+                    messagebox.showerror("Error", "Para archivos Excel necesita instalar openpyxl:\\npip install openpyxl")
+                    return
             else:
-                # CSV
+                # CSV - El formato es: id, sic_code, course_name
+                # Necesitamos columna 1 (sic_code) y columna 2 (course_name)
                 import csv
                 with open(filepath, 'r', encoding='utf-8') as f:
                     reader = csv.reader(f)
-                    courses_data = [(str(row[0]), str(row[1])) for row in reader if len(row) >= 2 and row[0] and row[1]]
+                    courses_data = []
+                    for row in reader:
+                        # Saltar header si existe
+                        if len(row) >= 3 and row[1] and row[2]:
+                            # row[1] = sic_code, row[2] = course_name
+                            if row[1].lower() not in ['sic_code', 'code', 'sic']:
+                                courses_data.append((str(row[1]), str(row[2])))
             
+            # La sanitización ahora se hace en _update_ui_with_loaded_courses
+
             if not courses_data:
                 messagebox.showwarning("Archivo Vacío", "No se encontraron cursos válidos en el archivo.")
                 return
@@ -1012,8 +1044,16 @@ class ScraperGUI(ttk.Frame):
             self.results_frame.add_log(f"❌ Error cargando archivo: {str(e)}")
     
     def _update_ui_with_loaded_courses(self, courses_data):
-        """Actualiza la UI con los cursos cargados desde archivo"""
+        """Actualiza la UI con los cursos cargados desde archivo o servidor"""
         try:
+            # Convertir a formato consistente (tuplas de strings)
+            # NO SANITIZAR NADA - Mostrar datos exactamente como vienen del CSV
+            clean_data = []
+            for code, name in courses_data:
+                clean_data.append((str(code).strip(), str(name).strip()))
+            
+            courses_data = clean_data
+
             # Limpiar widgets existentes
             self.course_tree.delete(*self.course_tree.get_children())
             self.from_sic_listbox.delete(0, tk.END)
@@ -1023,9 +1063,13 @@ class ScraperGUI(ttk.Frame):
             self.detailed_sic_codes_with_courses = courses_data
             
             # Poblar la tabla y listas
+            # FIX CRÍTICO: Tkinter Treeview convierte "01.0" a 1.0 automáticamente
+            # Solución: Añadir un espacio de ancho cero (U+200B) al inicio para forzar string
             for sic_code, course_name in courses_data:
-                self.course_tree.insert("", tk.END, values=(sic_code, course_name))
-                display_text = f"{sic_code} - {course_name}"
+                # Añadir zero-width space para prevenir conversión numérica
+                display_code = '\u200b' + sic_code  # U+200B = zero-width space
+                self.course_tree.insert("", tk.END, values=(display_code, course_name))
+                display_text = f"{sic_code} - {course_name}"  # En listbox NO necesita el fix
                 self.from_sic_listbox.insert(tk.END, display_text)
                 self.to_sic_listbox.insert(tk.END, display_text)
             

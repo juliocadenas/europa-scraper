@@ -679,24 +679,66 @@ class ScraperServer:
                 # Contar ocurrencias de posibles separadores en la primera línea
                 separators = {',': first_line.count(','), ';': first_line.count(';'), '|': first_line.count('|')}
                 detected_sep = max(separators, key=separators.get)
-                self.logger.info(f"Separador detectado: '{detected_sep}' (ocurrencias: {separators})")
+                # Fallback a coma si no hay separadores claros
+                if separators[detected_sep] == 0:
+                     detected_sep = ','
+                     
+                self.logger.info(f"Separador detectado: '{detected_sep}'")
                 
-                df = pd.read_csv(io.BytesIO(contents), sep=detected_sep)
+                # LEER TODO COMO STRING PARA NO PERDER CEROS INICIALES ("01.0")
+                # header=None para evitar que la primera fila se pierda si el usuario no pone cabeceras estandar
+                # Pero si tiene cabeceras, la primera fila sera basura. Mas adelante lo limpiamos.
+                # ESTRATEGIA: Leer con cabecera (default) y luego tratar.
+                df = pd.read_csv(io.BytesIO(contents), sep=detected_sep, dtype=str)
             else:
-                df = pd.read_excel(io.BytesIO(contents))
+                # Excel: Leer todo como texto
+                df = pd.read_excel(io.BytesIO(contents), dtype=str)
 
-            df.columns = [col.strip().lower() for col in df.columns]
-
-            if 'codigo' in df.columns and 'curso' in df.columns:
-                code_col, course_col = 'codigo', 'curso'
-            elif 'sic_code' in df.columns and 'course' in df.columns:
-                code_col, course_col = 'sic_code', 'course'
-            elif 'sic_code' in df.columns and 'course_name' in df.columns:
-                code_col, course_col = 'sic_code', 'course_name'
+            # ESTRATEGIA DE COLUMNAS FLEXIBLE (PeticiÃ³n del usuario: "No importa como se llame")
+            # Simplemente tomamos las dos primeras columnas, sean cuales sean.
+            if len(df.columns) < 2:
+                raise HTTPException(status_code=400, detail="El archivo requiere al menos 2 columnas (CÃ³digo y Nombre).")
+            
+            # Renombrar columnas internamente para estandarizar
+            # CSV FORMATO: id, sic_code, course_name (3 columnas) O sic_code, course_name (2 columnas)
+            if len(df.columns) >= 3:
+                # Formato con ID: columnas 1 y 2
+                code_col_orig = df.columns[1]
+                course_col_orig = df.columns[2]
+                col_indices = [1, 2]
             else:
-                raise HTTPException(status_code=400, detail="El archivo debe contener las columnas 'codigo' y 'curso' (o variantes como 'sic_code' y 'course_name').")
+                # Formato sin ID: columnas 0 y 1
+                code_col_orig = df.columns[0]
+                course_col_orig = df.columns[1]
+                col_indices = [0, 1]
+            
+            # Si la primera fila parece un encabezado repetido o no vÃ¡lido, podrÃ­amos querer saltarla,
+            # pero es difÃ­cil saberlo. Respetamos la data tal cual.
+            # Limpiar espacios
+            df[code_col_orig] = df[code_col_orig].astype(str).str.strip()
+            df[course_col_orig] = df[course_col_orig].astype(str).str.strip()
+            
+            # --- SANITIZACIÓN SIC CODE (ANTI-EXCEL) ---
+            # Excel guarda 01.0 como "1.0" en CSV. Recuperamos el cero perdido.
+            def sanitize_sic(code):
+                # Caso: "1.0" -> "01.0"
+                # Si tiene formato D.D (un digito punto algo), agregamos cero.
+                # SIC codes de agricultura son 01-09. Mineria es 10+.
+                import re
+                if re.match(r'^\d\.', code):
+                    return "0" + code
+                return code
+            
+            df[code_col_orig] = df[code_col_orig].apply(sanitize_sic)
+            # ------------------------------------------
 
-            courses_to_load = df[[code_col, course_col]].values.tolist()
+            self.logger.info(f"Usando columna 0 ('{code_col_orig}') como CÃ³digo y columna 1 ('{course_col_orig}') como Curso.")
+
+            courses_to_load = df.iloc[:, col_indices].values.tolist()
+            
+            # Limpieza extra: Eliminar filas vacÃ­as o con 'nan'
+            courses_to_load = [c for c in courses_to_load if c[0] and c[1] and c[0].lower() != 'nan']
+            
             self.logger.info(f"Se encontraron {len(courses_to_load)} cursos en el archivo.")
 
             db_path = os.path.join(project_root, 'courses.db')

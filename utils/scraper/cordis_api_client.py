@@ -1,7 +1,5 @@
 import logging
-import aiohttp
 import asyncio
-import time
 from typing import List, Dict, Any, Optional
 
 logger = logging.getLogger(__name__)
@@ -10,195 +8,165 @@ class CordisApiClient:
     """
     Client for interacting with the Cordis Europa Data Extraction Tool (DET) API.
     
-    This API provides access to ALL Cordis data including archived content,
-    unlike the SPARQL endpoint which has limited data.
-    
-    API Documentation: https://cordis.europa.eu/dataextractions/api-docs-ui
+    This API provides access to ALL Cordis data including archived content.
+    Documentation: https://cordis.europa.eu/dataextractions/api-docs-ui
     """
 
-    # DET API endpoints
     DET_BASE_URL = "https://cordis.europa.eu"
     DET_CREATE_EXTRACTION = "/api/dataextractions/getExtraction"
     DET_GET_STATUS = "/api/dataextractions/getExtractionStatus"
-    
-    # Fallback SPARQL endpoint (limited data, but no API key required)
     SPARQL_ENDPOINT = "https://cordis.europa.eu/datalab/sparql"
     
     def __init__(self, api_key: str = None):
-        """
-        Initialize the Cordis API client.
-        
-        Args:
-            api_key: Optional API key for DET API. If not provided, falls back to SPARQL.
-        """
         self.api_key = api_key
         self.headers = {
             'Accept': 'application/json',
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
         }
         
-    async def search_projects_and_publications(self, query_term: str, max_results: int = 100) -> List[Dict[str, Any]]:
+    async def request_extraction(self, search_term: str) -> Optional[int]:
         """
-        Searches for projects and publications related to the query term.
-        
-        Uses DET API if API key is available, otherwise falls back to SPARQL.
-        
-        Args:
-            query_term: The term to search for.
-            max_results: Maximum number of results to return.
+        Requests a new extraction from CORDIS. 
+        Note: Only ONE extraction can be active at a time per API key.
+        """
+        if not self.api_key:
+            return None
             
-        Returns:
-            A list of dictionaries containing formatted results (url, title, description).
-        """
-        # Try DET API first if we have an API key
-        if self.api_key:
-            logger.info(f"Using DET API with archived=true for '{query_term}'")
-            results = await self._search_with_det_api(query_term, max_results)
-            if results:
-                return results
-            logger.warning("DET API returned no results, falling back to SPARQL")
-        
-        # Fallback to SPARQL (limited data but no API key required)
-        logger.info(f"Using SPARQL endpoint for '{query_term}'")
-        return await self._execute_sparql_search(query_term, max_results)
-    
-    async def _search_with_det_api(self, search_term: str, max_results: int) -> List[Dict[str, Any]]:
-        """
-        Search using the DET API which includes ALL archived content.
-        
-        The DET API works asynchronously:
-        1. Create extraction task with getExtraction
-        2. Poll getExtractionStatus until complete
-        3. Download results from destinationFileUri
-        """
         try:
             # Format query for Cordis search syntax
             query = f"'{search_term}'"
-            
-            # Step 1: Create extraction task
             create_url = f"{self.DET_BASE_URL}{self.DET_CREATE_EXTRACTION}"
             params = {
                 'query': query,
                 'key': self.api_key,
                 'outputFormat': 'json',
-                'archived': 'true'  # CRITICAL: Include archived content!
+                'archived': 'true'
             }
             
             loop = asyncio.get_running_loop()
-            
-            def _create_extraction():
+            def _create():
                 import requests
                 return requests.get(create_url, params=params, headers=self.headers, timeout=30)
             
-            response = await loop.run_in_executor(None, _create_extraction)
-            
+            response = await loop.run_in_executor(None, _create)
             if response.status_code != 200:
-                logger.error(f"DET API create extraction failed: {response.status_code}")
-                logger.error(f"Response: {response.text[:500]}")
-                return []
-            
+                logger.error(f"DET creation failed ({response.status_code}): {response.text[:200]}")
+                return None
+                
             data = response.json()
             if not data.get('status'):
-                logger.error(f"DET API returned error: {data}")
-                return []
-            
+                logger.error(f"DET API error response: {data}")
+                return None
+                
             task_id = data.get('payload', {}).get('taskID')
-            if not task_id:
-                logger.error(f"DET API did not return taskID: {data}")
-                return []
-            
-            logger.info(f"DET extraction task created: {task_id}")
-            
-            # Step 2: Poll for completion
-            status_url = f"{self.DET_BASE_URL}{self.DET_GET_STATUS}"
-            max_wait_time = 60  # seconds
-            poll_interval = 2  # seconds
-            elapsed = 0
-            
-            while elapsed < max_wait_time:
-                def _get_status():
-                    import requests
-                    return requests.get(status_url, params={'key': self.api_key, 'taskId': task_id}, headers=self.headers, timeout=30)
-                
-                status_response = await loop.run_in_executor(None, _get_status)
-                
-                if status_response.status_code != 200:
-                    logger.error(f"DET API status check failed: {status_response.status_code}")
-                    break
-                
-                status_data = status_response.json()
-                payload = status_data.get('payload', {})
-                progress = payload.get('progress', '')
-                
-                logger.info(f"DET extraction progress: {progress}")
-                
-                if progress == '100':
-                    # Extraction complete - download results
-                    file_uri = payload.get('destinationFileUri')
-                    if file_uri:
-                        return await self._download_det_results(file_uri, max_results)
-                    break
-                
-                await asyncio.sleep(poll_interval)
-                elapsed += poll_interval
-            
-            logger.warning(f"DET extraction timed out or failed")
-            return []
+            logger.info(f"DET extraction requested: TaskID={task_id} for '{search_term}'")
+            return task_id
             
         except Exception as e:
-            logger.error(f"DET API error: {e}")
-            return []
-    
-    async def _download_det_results(self, file_uri: str, max_results: int) -> List[Dict[str, Any]]:
-        """Download and parse results from DET extraction."""
+            logger.error(f"Error requesting DET extraction: {e}")
+            return None
+
+    async def get_extraction_status(self, task_id: int) -> Dict[str, Any]:
+        """
+        Checks the status of an extraction task.
+        Returns a dict with 'progress', 'status' (Finished/Ongoing/Failed), and 'file_uri'.
+        """
+        if not self.api_key:
+            return {'status': 'Failed', 'progress': '0'}
+            
+        try:
+            status_url = f"{self.DET_BASE_URL}{self.DET_GET_STATUS}"
+            loop = asyncio.get_running_loop()
+            def _check():
+                import requests
+                return requests.get(status_url, params={'key': self.api_key, 'taskId': task_id}, headers=self.headers, timeout=30)
+                
+            response = await loop.run_in_executor(None, _check)
+            if response.status_code != 200:
+                return {'status': 'Failed', 'progress': '0'}
+                
+            data = response.json()
+            payload = data.get('payload', {})
+            progress = payload.get('progress', '0')
+            
+            status = 'Ongoing'
+            if progress == '100':
+                status = 'Finished'
+            elif progress == '-1': # Hypothetical failed status based on common patterns
+                status = 'Failed'
+                
+            return {
+                'status': status,
+                'progress': progress,
+                'file_uri': payload.get('destinationFileUri'),
+                'count': payload.get('numberOfRecords', '0')
+            }
+            
+        except Exception as e:
+            logger.error(f"Error checking DET status: {e}")
+            return {'status': 'Error', 'progress': '0'}
+
+    async def download_results(self, file_uri: str, max_results: int = 100) -> List[Dict[str, Any]]:
+        """Downloads and parses the JSON result file."""
         try:
             loop = asyncio.get_running_loop()
-            
             def _download():
                 import requests
                 return requests.get(file_uri, headers=self.headers, timeout=60)
-            
+                
             response = await loop.run_in_executor(None, _download)
-            
             if response.status_code != 200:
-                logger.error(f"Failed to download DET results: {response.status_code}")
+                logger.error(f"Error downloading file {file_uri}: Status {response.status_code}")
                 return []
-            
+                
             data = response.json()
+            # Handle different payload structures
+            # Sometimes it's a list, sometimes {'results': [...]}, sometimes {'payload': {'results': [...]}}
+            items = []
+            if isinstance(data, list):
+                items = data
+            elif isinstance(data, dict):
+                items = data.get('results', data.get('items', data.get('payload', {}).get('results', [])))
             
-            # Parse JSON results into our format
-            formatted_results = []
-            items = data if isinstance(data, list) else data.get('results', data.get('items', []))
+            logger.info(f"Downloaded JSON contains {len(items)} items")
             
-            for item in items[:max_results]:
-                title = item.get('title', item.get('acronym', 'No Title'))
-                description = item.get('objective', item.get('description', ''))
-                url = item.get('url', item.get('id', ''))
+            formatted = []
+            # REMOVED slicing [:max_results] to get ALL results
+            for item in items:
+                title = item.get('title', item.get('acronym', item.get('projectAcronym', 'No Title')))
+                desc = item.get('objective', item.get('description', item.get('teaser', '')))
                 
-                # Build Cordis URL if only ID provided
-                if url and not url.startswith('http'):
-                    url = f"https://cordis.europa.eu/project/id/{url}"
+                # Robust ID extraction
+                proj_id = str(item.get('id', item.get('rcn', item.get('projectID', item.get('projectRcn', '')))))
                 
-                if title and title != 'No Title':
-                    formatted_results.append({
-                        'url': url,
-                        'title': title,
-                        'description': description[:500] if description else f"Cordis project: {title}",
-                        'source': 'Cordis Europa DET API',
-                        'mediatype': 'project'
-                    })
-            
-            logger.info(f"DET API returned {len(formatted_results)} results")
-            return formatted_results
+                # If still no ID, use hash of title to ensure uniqueness and avoid 'skipped_duplicates'
+                if not proj_id:
+                     import hashlib
+                     proj_id = hashlib.md5(title.encode()).hexdigest()[:10]
+                
+                url = f"https://cordis.europa.eu/project/id/{proj_id}"
+                
+                formatted.append({
+                    'url': url,
+                    'title': title,
+                    'description': desc[:1000] if desc else f"Cordis project: {title}",
+                    'source': 'Cordis Europa DET API',
+                    'mediatype': 'project'
+                })
+                
+            logger.info(f"Parsed {len(formatted)} formatted results")
+            return formatted
             
         except Exception as e:
-            logger.error(f"Error downloading DET results: {e}")
+            logger.error(f"Error downloading results: {e}")
             return []
-    
+
+    # Keeping this for legacy/fallback support
+    async def search_projects_and_publications(self, query_term: str, max_results: int = 20) -> List[Dict[str, Any]]:
+        """Fallback to SPARQL if no API key or manual quick search wanted."""
+        return await self._execute_sparql_search(query_term, max_results)
+
     async def _execute_sparql_search(self, search_term: str, max_results: int) -> List[Dict[str, Any]]:
-        """
-        Fallback SPARQL search (limited data but no API key required).
-        """
         # Extract primary keyword for broader matching
         stop_words = {'ore', 'ores', 'mining', 'farms', 'of', 'and', 'the', 'for', 'in', 'to', 'a', 'an', 'production', 'crops'}
         keywords = [word.lower().strip() for word in search_term.split() if len(word) > 2]
@@ -241,7 +209,6 @@ class CordisApiClient:
         """
         
         loop = asyncio.get_running_loop()
-        
         def _execute_request():
             import requests
             return requests.post(
@@ -253,9 +220,7 @@ class CordisApiClient:
 
         try:
             response = await loop.run_in_executor(None, _execute_request)
-            
             if response.status_code != 200:
-                logger.error(f"SPARQL returned status {response.status_code}")
                 return []
             
             data = response.json()
@@ -265,20 +230,17 @@ class CordisApiClient:
             for item in bindings:
                 url = item.get('url', {}).get('value')
                 title = item.get('title', {}).get('value', 'No Title')
-                description = item.get('description', {}).get('value', '')
+                desc = item.get('description', {}).get('value', '')
                 
                 if title and title != 'No Title':
                     formatted_results.append({
                         'url': url if url else f"https://cordis.europa.eu/search?q={search_term}",
                         'title': title,
-                        'description': description[:500] if description else f"Cordis project: {title}",
+                        'description': desc[:500] if desc else "Cordis project",
                         'source': 'Cordis Europa SPARQL',
                         'mediatype': 'project'
                     })
-            
-            logger.info(f"SPARQL returned {len(formatted_results)} results (limited dataset)")
             return formatted_results
-
         except Exception as e:
             logger.error(f"SPARQL error: {e}")
             return []

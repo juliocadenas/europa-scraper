@@ -231,6 +231,15 @@ class ScraperController(ScraperControllerBase):
           self.progress_reporter.set_course_counts(current_course, total_courses)
           current_course_info = f"{sic_code} - {course_name}"
         
+          # 1. CHECK PERSISTENCE: Skip if already completed or processed
+          # Note: 'status' comes from initial range query, but we double-check specific logic if needed
+          # In web scraping, we trust the DB 'COMPLETED' status to skip.
+          if status == 'COMPLETED':
+               if progress_callback:
+                   progress_callback(0, f"SALTANDO (Completado): {current_course_info}", self.stats)
+               logger.info(f"Saltando curso completado: {current_course_info}")
+               continue
+
           if progress_callback:
               progress_callback(0, f"Buscando curso {current_course} de {total_courses} - {current_course_info}", self.stats)
           
@@ -240,7 +249,9 @@ class ScraperController(ScraperControllerBase):
           logger.info(f"DEBUG: Motor de búsqueda seleccionado: '{search_engine}', Dominio: '{site_domain}'")
 
           server_id = self.config.get('server_id', 'UNKNOWN_SERVER')
-          self.csv_handler.update_course_status(sic_code, course_name, "procesando", server_id)
+          
+          # 2. MARK AS PROCESSING: Persist state before starting
+          self.csv_handler.update_course_status(sic_code, course_name, "PROCESANDO", server_id)
           
           try:
               if self.stop_requested:
@@ -252,6 +263,7 @@ class ScraperController(ScraperControllerBase):
               try:
                   search_results = await self.search_engine.get_search_results(search_term, search_engine, site_domain)
               except ManualCaptchaPendingError:
+                  # ... (Captcha handling logic remains same)
                   logger.warning(f"ACCIÓN REQUERIDA: Se ha detectado un CAPTCHA para '{search_term}'.")
                   logger.warning("El scraping se ha pausado. Por favor, resuelva el CAPTCHA en el navegador y reanude el proceso desde el cliente.")
                   if progress_callback:
@@ -282,6 +294,12 @@ class ScraperController(ScraperControllerBase):
               
               if not search_results:
                   logger.info(f"No se encontraron resultados para '{search_term}' con código SIC {sic_code}")
+                  # Optional: Mark as FAILED or COMPLETED_ZERO? For now keep PROCESANDO or mark COMPLETED
+                  # If we trust 0 results is a valid "Complete" state:
+                  self.csv_handler.update_course_status(sic_code, course_name, "COMPLETED", server_id)
+              else:
+                   # 3. MARK AS COMPLETED: Persist success
+                   self.csv_handler.update_course_status(sic_code, course_name, "COMPLETED", server_id)
               
               if current_course % 5 == 0:
                   self._clean_memory()
@@ -289,11 +307,13 @@ class ScraperController(ScraperControllerBase):
           except asyncio.TimeoutError:
               logger.error(f"Timeout durante la búsqueda de '{search_term}'. Continuando con el siguiente curso.")
               self.stats['total_errors'] += 1
+              self.csv_handler.update_course_status(sic_code, course_name, "FAILED", server_id)
               continue
           except Exception as e:
               logger.error(f"Error durante la búsqueda de '{search_term}': {str(e)}")
               logger.error(traceback.format_exc())
               self.stats['total_errors'] += 1
+              self.csv_handler.update_course_status(sic_code, course_name, "FAILED", server_id)
               continue
       
       return all_search_results
@@ -800,59 +820,99 @@ class ScraperController(ScraperControllerBase):
           return None
 
 
-  async def _process_cordis_api_phase(self, courses_in_range: List[Tuple[str, str, str, str]], progress_callback: Optional[Callable] = None) -> List[Dict[str, Any]]:
-      """
-      Ejecuta la fase de búsqueda usando la API de Cordis Europa.
-      """
-      all_search_results = []
-      total_courses = len(courses_in_range)
-      current_course = 0
-      
-      logger.info(f"=== FASE 1: BÚSQUEDA DE RESULTADOS con CORDIS EUROPA API ====")
-      logger.info(f"Total de cursos a procesar en búsqueda: {total_courses}")
-      
-      for sic_code, course_name, status, server in courses_in_range:
-          if self.stop_requested:
-              logger.info("Scraping detenido por el usuario durante la fase de búsqueda")
-              break
-              
-          current_course += 1
-          self.progress_reporter.set_course_counts(current_course, total_courses)
-          current_course_info = f"{sic_code} - {course_name}"
-          
-          if progress_callback:
-              progress_callback(0, f"Buscando curso {current_course} de {total_courses} - {current_course_info}", self.stats)
-          
-          search_term = course_name if course_name else sic_code
-          
-          # SANITIZACIÓN CRITICA: Eliminar prefijos tipo "101.0 - " o "123 - " que rompen la búsqueda exacta
-          # El usuario tiene cursos como "101.0 - Iron ore mining". Buscamos solo "Iron ore mining".
-          # ACTUALIZADO: El guión es opcional para casos como "101.0 Iron mining"
-          search_term = re.sub(r'^[\d\.]+\s*[-–]?\s*', '', search_term).strip()
-          
-          logger.info(f"Buscando en Cordis API: '{search_term}' (Original: '{course_name if course_name else sic_code}')")
-          
-          try:
-              results = await self.cordis_api_client.search_projects_and_publications(search_term)
-              
-              for r in results:
-                  r['sic_code'] = sic_code
-                  r['course_name'] = course_name
-                  r['search_term'] = search_term
-                  all_search_results.append(r)
-                  
-              self.stats['total_urls_found'] += len(results)
-              logger.info(f"Encontrados {len(results)} resultados en Cordis API para '{search_term}'")
-              
-              if progress_callback:
-                  progress_callback(0, f"Buscando curso {current_course} de {total_courses} - {current_course_info} | Encontrados: {len(results)} resultados", self.stats)
-                  
-          except Exception as e:
-              logger.error(f"Error en búsqueda Cordis API para '{search_term}': {e}")
-              self.stats['total_errors'] += 1
-              continue
-              
-      return all_search_results
+    async def _process_cordis_api_phase(self, courses_in_range: List[Tuple[str, str, str, str]], progress_callback: Optional[Callable] = None) -> List[Dict[str, Any]]:
+        """
+        Ejecuta la fase de búsqueda usando la API de Cordis Europa con persistencia y filtrado por rango.
+        """
+        all_search_results = []
+        total_courses = len(courses_in_range)
+        
+        logger.info(f"=== FASE 1: BÚSQUEDA PERSISTENTE con CORDIS DET API ====")
+        
+        # 1. Recuperar tareas que ya están en curso (EXTRACTING) dentro del rango
+        unfinished = self.csv_handler.get_pending_tasks('EXTRACTING')
+        range_set = {(c[0], c[1]) for c in courses_in_range}
+        
+        unfinished_in_range = [t for t in unfinished if (t[0], t[1]) in range_set]
+        if unfinished_in_range:
+            logger.info(f"Recuperando {len(unfinished_in_range)} tareas interrumpidas en el rango...")
+            for sic, name, tid in unfinished_in_range:
+                results = await self._wait_and_download_cordis(tid, sic, name, progress_callback)
+                all_search_results.extend(results)
+
+        # 2. Procesar tareas PENDIENTES dentro del rango
+        pending = self.csv_handler.get_pending_tasks('PENDING')
+        pending_in_range = [t for t in pending if (t[0], t[1]) in range_set]
+        
+        current_count = total_courses - len(pending_in_range)
+        
+        for sic_code, course_name, _ in pending_in_range:
+            if self.stop_requested: break
+            
+            current_count += 1
+            search_term = re.sub(r'^[\d\.]+\s*[-–]?\s*', '', course_name).strip()
+            
+            if progress_callback:
+                progress_callback(0, f"Solicitando a Cordis: {search_term} ({current_count}/{total_courses})", self.stats)
+            
+            # Solicitar extracción
+            task_id = await self.cordis_api_client.request_extraction(search_term)
+            if not task_id:
+                logger.error(f"Falla al solicitar extracción para {search_term}")
+                self.csv_handler.update_task_metadata(sic_code, course_name, 'FAILED')
+                continue
+                
+            # Guardar en DB inmediatamente para persistencia
+            self.csv_handler.update_task_metadata(sic_code, course_name, 'EXTRACTING', task_id)
+            
+            # Esperar y descargar
+            results = await self._wait_and_download_cordis(task_id, sic_code, course_name, progress_callback)
+            all_search_results.extend(results)
+            
+        return all_search_results
+
+    async def _wait_and_download_cordis(self, task_id, sic_code, course_name, progress_callback) -> List[Dict[str, Any]]:
+        """Pollea el estado de Cordis y descarga cuando esté listo."""
+        max_retries = 120 # 120 * 10s = 20 minutos por curso (ajustable)
+        retry_count = 0
+        
+        while retry_count < max_retries and not self.stop_requested:
+            status_info = await self.cordis_api_client.get_extraction_status(task_id)
+            status = status_info.get('status')
+            progress = status_info.get('progress', '0')
+            
+            if progress_callback:
+                progress_callback(0, f"Cordis procesando '{course_name}': {progress}%", self.stats)
+            
+            if status == 'Finished':
+                file_uri = status_info.get('file_uri')
+                if file_uri:
+                    results = await self.cordis_api_client.download_results(file_uri)
+                    # Enriquecer resultados
+                    # IMPORTANTE: Reconstruir search_term limpio igual que en _process_cordis_api_phase
+                    clean_search_term = re.sub(r'^[\d\.]+\s*[-–]?\s*', '', course_name).strip()
+                    
+                    for r in results:
+                        r.update({
+                            'sic_code': sic_code, 
+                            'course_name': course_name,
+                            'search_term': clean_search_term
+                        })
+                    
+                    # Marcar como completado en DB
+                    self.csv_handler.update_task_metadata(sic_code, course_name, 'COMPLETED')
+                    self.stats['total_urls_found'] += len(results)
+                    return results
+                break
+            elif status == 'Failed':
+                logger.error(f"Cordis reportó fallo para tarea {task_id}")
+                break
+                
+            await asyncio.sleep(10)
+            retry_count += 1
+            
+        self.csv_handler.update_task_metadata(sic_code, course_name, 'FAILED')
+        return []
 
   async def _process_tabulation_phase(self, all_search_results: List[Dict[str, Any]], total_courses: int, min_words: int, search_engine: str, progress_callback: Optional[Callable] = None) -> List[Dict[str, Any]]:
       """

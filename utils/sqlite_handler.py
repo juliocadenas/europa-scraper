@@ -41,8 +41,10 @@ class SQLiteHandler:
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     sic_code TEXT NOT NULL,
                     course_name TEXT NOT NULL,
-                    status TEXT,
-                    server TEXT
+                    status TEXT DEFAULT 'PENDING',
+                    server TEXT,
+                    task_id TEXT,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
                 """)
                 logger.info("Tabla 'courses' creada con el nuevo esquema.")
@@ -53,9 +55,9 @@ class SQLiteHandler:
             cursor.execute("PRAGMA table_info(courses);")
             columns_info = {info[1]: info for info in cursor.fetchall()}
 
-            # Si las columnas 'course' o 'name' existen, se necesita migración
-            if 'course' in columns_info or 'name' in columns_info:
-                logger.info("Detectado esquema antiguo. Iniciando migración de la tabla 'courses'...")
+            # Verificar si faltan las nuevas columnas
+            if 'task_id' not in columns_info or 'updated_at' not in columns_info or 'course' in columns_info or 'name' in columns_info:
+                logger.info("Detectada necesidad de migración/actualización de esquema en 'courses'...")
 
                 # 3. Renombrar tabla antigua
                 cursor.execute("ALTER TABLE courses RENAME TO courses_old;")
@@ -66,24 +68,28 @@ class SQLiteHandler:
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     sic_code TEXT NOT NULL,
                     course_name TEXT NOT NULL,
-                    status TEXT,
-                    server TEXT
+                    status TEXT DEFAULT 'PENDING',
+                    server TEXT,
+                    task_id TEXT,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
                 """)
 
                 # 5. Copiar datos, mapeando columnas antiguas a nuevas
-                old_columns = columns_info.keys()
+                old_columns = list(columns_info.keys())
                 id_col = 'id'
                 sic_col = 'course' if 'course' in old_columns else 'sic_code'
                 name_col = 'name' if 'name' in old_columns else 'course_name'
                 status_col = 'status'
                 
-                # Manejar el caso en que la columna 'server' no exista en la tabla antigua
-                server_col = 'server' if 'server' in old_columns else '""' 
+                # Manejar el caso en que las columnas no existan en la tabla antigua
+                server_col = 'server' if 'server' in old_columns else '""'
+                task_id_col = 'task_id' if 'task_id' in old_columns else '""'
+                updated_at_col = 'updated_at' if 'updated_at' in old_columns else 'CURRENT_TIMESTAMP'
 
                 copy_query = f"""
-                INSERT INTO courses (id, sic_code, course_name, status, server)
-                SELECT {id_col}, {sic_col}, {name_col}, {status_col}, {server_col} FROM courses_old;
+                INSERT INTO courses (id, sic_code, course_name, status, server, task_id, updated_at)
+                SELECT {id_col}, {sic_col}, {name_col}, {status_col}, {server_col}, {task_id_col}, {updated_at_col} FROM courses_old;
                 """
                 cursor.execute(copy_query)
                 logger.info("Datos copiados al nuevo esquema de tabla.")
@@ -406,7 +412,7 @@ class SQLiteHandler:
                 logger.warning(f"Se omitieron {skipped_count} cursos con nombres vacíos")
             
             cursor.executemany(
-                "INSERT INTO courses (sic_code, course_name) VALUES (?, ?)",
+                "INSERT INTO courses (sic_code, course_name, status) VALUES (?, ?, 'PENDING')",
                 courses_to_insert
             )
             conn.commit()
@@ -419,6 +425,42 @@ class SQLiteHandler:
             if conn:
                 conn.rollback()
             return False
+        finally:
+            if conn:
+                conn.close()
+
+    def get_pending_tasks(self, status: str = 'PENDING') -> List[Tuple[str, str, str]]:
+        """Obtiene cursos con un estado específico (ej: PENDING, EXTRACTING)."""
+        conn = None
+        try:
+            conn = self._connect()
+            cursor = conn.cursor()
+            cursor.execute("SELECT sic_code, course_name, task_id FROM courses WHERE status = ?", (status,))
+            return cursor.fetchall()
+        except Exception as e:
+            logger.error(f"Error obteniendo tareas pendientes: {e}")
+            return []
+        finally:
+            if conn:
+                conn.close()
+
+    def update_task_metadata(self, sic_code: str, course_name: str, status: str, task_id: Optional[str] = None):
+        """Actualiza estado y task_id de forma atómica."""
+        conn = None
+        try:
+            conn = self._connect()
+            cursor = conn.cursor()
+            query = "UPDATE courses SET status = ?, updated_at = CURRENT_TIMESTAMP"
+            params = [status]
+            if task_id is not None:
+                query += ", task_id = ?"
+                params.append(task_id)
+            query += " WHERE sic_code = ? AND course_name = ?"
+            params.extend([sic_code, course_name])
+            cursor.execute(query, tuple(params))
+            conn.commit()
+        except Exception as e:
+            logger.error(f"Error actualizando metadata: {e}")
         finally:
             if conn:
                 conn.close()
