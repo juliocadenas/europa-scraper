@@ -54,6 +54,8 @@ class ScrapingJob(BaseModel):
     site_domain: Optional[str] = None
     is_headless: bool = True
     min_words: int = 30
+    search_mode: str = "broad"
+    require_keywords: bool = False
     num_workers: Optional[int] = None
 
 # ==============================================================================
@@ -447,6 +449,7 @@ class ScraperServer:
         self.app.post("/upload_courses")(self.upload_courses)
         self.app.get("/get_all_courses")(self.get_all_courses)
         self.app.get("/download_results")(self.download_results)
+        self.app.get("/cleanup_files")(self.cleanup_files_endpoint)
         self.app.get("/")(self.root_endpoint)
         self.app.get("/ping")(self.ping_endpoint)
         
@@ -482,10 +485,10 @@ class ScraperServer:
                 from_sic = job_params.get('from_sic', '01.0')
                 to_sic = job_params.get('to_sic', '011903.0')
                 search_engine = job_params.get('search_engine', 'Cordis Europa')
-                min_words = int(job_params.get('min_words', 30))  # Convertir a entero
-                is_headless = job_params.get('headless_mode', True)
                 num_workers = int(job_params.get('num_workers', NUM_PROCESSES))
-                self.logger.info(f"Usando formato anidado: {from_sic} a {to_sic}, workers={num_workers}")
+                search_mode = job_params.get('search_mode', 'broad')
+                require_keywords = job_params.get('require_keywords', False)
+                self.logger.info(f"Usando formato anidado: {from_sic} a {to_sic}, workers={num_workers}, mode={search_mode}")
             else:
                 # Formato directo (antiguo) o modelo ScrapingJob
                 if isinstance(request_data, ScrapingJob):
@@ -495,6 +498,8 @@ class ScraperServer:
                     search_engine = request_data.search_engine
                     min_words = int(request_data.min_words) # Convertir a entero
                     is_headless = request_data.is_headless
+                    search_mode = request_data.search_mode
+                    require_keywords = request_data.require_keywords
                     
                     # LIMITACIÓN DE RECURSOS: Si no se especifica o es muy alto, limitar num_workers
                     MAX_DEFAULT_WORKERS = min(8, NUM_PROCESSES)
@@ -513,6 +518,8 @@ class ScraperServer:
                     search_engine = request_data.get('search_engine', 'Cordis Europa')
                     min_words = int(request_data.get('min_words', 30)) # Convertir a entero
                     is_headless = request_data.get('headless_mode', True)
+                    search_mode = request_data.get('search_mode', 'broad')
+                    require_keywords = request_data.get('require_keywords', False)
                     
                     MAX_DEFAULT_WORKERS = min(8, NUM_PROCESSES)
                     requested_workers = request_data.get('num_workers')
@@ -544,7 +551,9 @@ class ScraperServer:
                 'to_sic': to_sic,
                 'search_engine': search_engine,
                 'min_words': min_words,
-                'is_headless': is_headless
+                'is_headless': is_headless,
+                'search_mode': search_mode,
+                'require_keywords': require_keywords
             }
             
             # 4. Poner cada curso como una tarea individual en la cola
@@ -788,6 +797,51 @@ class ScraperServer:
                         file_path = os.path.join(root, file)
                         # Agregar al zip con nombre relativo
                         zipf.write(file_path, os.path.relpath(file_path, os.path.join(results_dir, '..')))
+                        
+            if not files_found:
+                 self.logger.warning("No se encontraron archivos en la carpeta 'results' para descargar.")
+                 raise HTTPException(status_code=404, detail="Carpeta de resultados está vacía.")
+                 
+            return FileResponse(zip_path, filename="resultados.zip", media_type="application/zip")
+            
+        except Exception as e:
+            self.logger.error(f"Error comprimiendo resultados: {e}")
+            raise HTTPException(status_code=500, detail=f"Error creando el archivo ZIP: {str(e)}")
+
+    async def cleanup_files_endpoint(self):
+        """Elimina el contenido de las carpetas 'results' y 'omitidos'."""
+        try:
+            results_dir = os.path.join(project_root, 'results')
+            omitted_dir = os.path.join(project_root, 'omitidos')
+            
+            deleted_files = 0
+            
+            # Helper to clear directory contents (files and subdirs)
+            def clear_directory(directory_path):
+                count = 0
+                if os.path.exists(directory_path):
+                    for item in os.listdir(directory_path):
+                        item_path = os.path.join(directory_path, item)
+                        try:
+                            if os.path.isfile(item_path) or os.path.islink(item_path):
+                                os.unlink(item_path)
+                                count += 1
+                            elif os.path.isdir(item_path):
+                                shutil.rmtree(item_path)
+                                count += 1
+                        except Exception as e:
+                            self.logger.error(f"Error borrando {item_path}: {e}")
+                return count
+
+            deleted_files += clear_directory(results_dir)
+            deleted_files += clear_directory(omitted_dir)
+            
+            self.logger.info(f"Endpoint /cleanup_files ejecutado. {deleted_files} elementos eliminados.")
+            return {"message": f"Limpieza completada. Se eliminaron {deleted_files} archivos/carpetas de resultados y omitidos."}
+            
+        except Exception as e:
+            self.logger.error(f"Error en cleanup_files: {e}")
+            raise HTTPException(status_code=500, detail=f"Error limpiando archivos: {str(e)}")
                 
                 if not files_found:
                      # Si no hay archivos, crear al menos un archivo de texto vacío

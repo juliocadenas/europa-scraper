@@ -64,7 +64,7 @@ class ResultManager:
         # Create empty CSV file with predefined columns
         columns = [
             'sic_code', 'course_name', 'title', 
-            'description', 'url', 'total_words'
+            'description', 'url', 'total_words', 'lang'
         ]
         pd.DataFrame(columns=columns).to_csv(self.output_file, index=False)
         
@@ -86,7 +86,7 @@ class ResultManager:
     
     def add_result(self, result: Dict[str, Any]) -> bool:
         """
-        Adds a result to the results list and CSV file.
+        Adds a result to the results list and CSV file, routing to language folder if needed.
         
         Args:
             result: Result dictionary
@@ -103,58 +103,55 @@ class ResultManager:
         except Exception as e:
             logger.error(f"Error adding result: {str(e)}")
             return False
-    
-    def cleanup_if_empty(self) -> bool:
-        """
-        Checks if the output CSV file contains only headers (or is empty) and deletes it.
-        Returns True if deleted, False otherwise.
-        """
-        if not self.output_file or not os.path.exists(self.output_file):
-            return False
+
+    def _get_file_path_for_lang(self, lang: str) -> str:
+        """Helper to get or create file path for a specific language."""
+        lang = lang.lower() if lang else 'en'
+        
+        # English goes to main file
+        if lang == 'en':
+            return self.output_file
             
+        # Check if we already have a path for this lang
+        if not hasattr(self, 'lang_files'):
+            self.lang_files = {}
+            
+        if lang in self.lang_files:
+            return self.lang_files[lang]
+            
+        # Create new path: results/ES/results_..._es.csv
         try:
-            # Robust check using pandas
-            # If the CSV only has headers, pd.read_csv will return an empty DataFrame
-            try:
-                # Use on_bad_lines='skip' to avoid parsing errors for broken files
-                df = pd.read_csv(self.output_file, on_bad_lines='skip')
+            # Base directory
+            base_dir = os.path.dirname(self.output_file)
+            lang_dir = os.path.join(base_dir, lang.upper())
+            os.makedirs(lang_dir, exist_ok=True)
+            
+            # Construct filename based on main filename
+            main_name = os.path.basename(self.output_file)
+            name_parts = os.path.splitext(main_name)
+            new_name = f"{name_parts[0]}_{lang}{name_parts[1]}"
+            
+            lang_file_path = os.path.join(lang_dir, new_name)
+            
+            # Initialize with headers if new
+            if not os.path.exists(lang_file_path):
+                columns = [
+                    'sic_code', 'course_name', 'title', 
+                    'description', 'url', 'total_words', 'lang'
+                ]
+                pd.DataFrame(columns=columns).to_csv(lang_file_path, index=False)
+                logger.info(f"Created new language result file: {lang_file_path}")
                 
-                if df.empty:
-                    logger.info(f"🗑️ Deleting empty file (via pandas check): {self.output_file}")
-                    # Close file handles implicitly by letting df go out of scope, but os.remove handles it
-                    del df
-                    os.remove(self.output_file)
-                    return True
-                    
-            except pd.errors.EmptyDataError:
-                # File is completely empty (no headers)
-                logger.info(f"🗑️ Deleting completely empty file: {self.output_file}")
-                os.remove(self.output_file)
-                return True
-                
-            return False
+            self.lang_files[lang] = lang_file_path
+            return lang_file_path
             
         except Exception as e:
-            logger.error(f"Error cleaning up empty file: {e}")
-            return False
+            logger.error(f"Error creating file for lang {lang}: {e}")
+            return self.output_file # Fallback to main
 
-    def add_omitted_result(self, result: Dict[str, Any], reason: str) -> None:
-        """
-        Adds a result to the omitted results list.
-        
-        Args:
-            result: Result dictionary
-            reason: Reason for omission
-        """
-        # Add reason to result
-        result['omission_reason'] = reason
-        
-        # Add to omitted results list
-        self.omitted_results.append(result)
-    
     def append_to_csv(self, result: Dict[str, Any]) -> bool:
         """
-        Appends a result to the CSV file.
+        Appends a result to the appropriate CSV file based on language.
         
         Args:
             result: Result dictionary
@@ -163,8 +160,16 @@ class ResultManager:
             True if successful, False otherwise
         """
         try:
+            lang = result.get('lang', 'en')
+            target_file = self._get_file_path_for_lang(lang)
+            
             df = pd.DataFrame([result])
-            df.to_csv(self.output_file, mode='a', header=False, index=False)
+            # Ensure 'lang' column exists in dataframe used for appending
+            if 'lang' not in df.columns:
+                 df['lang'] = lang
+            
+            # Append without writing header
+            df.to_csv(target_file, mode='a', header=False, index=False)
             return True
         except Exception as e:
             logger.error(f"Error appending to CSV: {str(e)}")

@@ -40,6 +40,7 @@ from gui.components.gui_components import (
 from gui.proxy_config import ProxyConfigWindow
 from gui.captcha_config import CaptchaConfigWindow
 from gui.config_tab import ConfigTab
+from gui.search_config_tab import SearchConfigTab
 from utils.logger import setup_logger, get_global_log_handler
 from utils.text_sanitizer import sanitize_filename
 from utils.proxy_manager import ProxyManager
@@ -139,6 +140,7 @@ class ScraperGUI(ttk.Frame):
         # self._create_monitor_tab() # ELIMINADO
         
         self.config_tab = ConfigTab(self.notebook, self.config)
+        self.search_config_tab = SearchConfigTab(self.notebook, self.config)
 
         self.paned_window = ttk.PanedWindow(self.main_frame, orient=tk.HORIZONTAL)
         self.paned_window.pack(fill=tk.BOTH, expand=True)
@@ -272,6 +274,15 @@ class ScraperGUI(ttk.Frame):
         self.open_folder_button = ttk.Button(self.results_buttons_frame, text="Abrir Carpeta de Resultados", command=self._on_open_results_folder, style="TButton")
         self.open_folder_button.pack(side=tk.LEFT, padx=5, pady=5, fill=tk.X, expand=True)
 
+        # BUTTON CLEANUP: "Limpiar Archivos"
+        self.cleanup_button = ttk.Button(
+            self.results_buttons_frame, 
+            text="Limpiar Archivos", 
+            command=self._cleanup_files_action, 
+            state=tk.NORMAL
+        )
+        self.cleanup_button.pack(side=tk.LEFT, padx=5, pady=5, fill=tk.X, expand=True)
+
         self.paned_window.update()
         width = self.paned_window.winfo_width()
         if width > 0:
@@ -376,28 +387,33 @@ class ScraperGUI(ttk.Frame):
             else:
                  is_transient = False
 
-            # 2. Generar ID Estable (NUEVA LÓGICA: Basada en Tarea/SIC para historial)
-            # El usuario exige que CADA PROCESO sea ÚNICO y no se reemplace.
-            # Usamos el nombre del curso o SIC como clave única de la fila.
             
-            # Limpiar nombre de curso para usarlo como ID
+            # 2. Generar ID Único por Tarea (Volver a lógica de historial)
+            # El usuario pide EXPRESAMENTE ver cada paso y no solapar.
+            
             clean_course_id = display_course.replace(' ', '_').replace('.', '_')
-            # Evitar caracteres extraños en ID
             import re
             clean_course_id = re.sub(r'[^a-zA-Z0-9_]', '', clean_course_id)
             
-            # Si no hay curso válido (ej: "Preparando navegador"), usamos worker_id temporalmente
+            # Generar ID basado en el contenido REAL de la tarea y timestamp aproximado (timestamp via worker state?)
+            # O mejor: task_scic_code si es posible.
+            # Usar clean_course_id es lo mas estable
+            
             if is_transient or not clean_course_id or "Esperando" in display_course:
-                 current_row_id = f"worker_{worker_id_str}"
+                 # Mensajes de sistema van a fila worker fija
+                 current_row_id = f"worker_msg_{worker_id_str}" 
+            elif "Completado" in display_status:
+                 # Tareas completadas: Usar un ID unico final
+                 current_row_id = f"done_{clean_course_id}"
             else:
-                 current_row_id = f"task_{clean_course_id}"
+                 # Tareas activas: ID unico
+                 current_row_id = f"active_{clean_course_id}"
 
             # 3. Formatear Progreso
             progress_val = state.get('progress', 0)
             progress_str = f"{int(progress_val)}%"
 
-            # 4. Datos visuales para las columnas
-            # Si es persistente (task_), el ID sera el worker que lo ejecuto por ultima vez
+            # 4. Datos visuales
             values = (
                 worker_id_str,
                 display_status,
@@ -405,47 +421,75 @@ class ScraperGUI(ttk.Frame):
                 progress_str
             )
             
-            # 5. Guardar detalles completos para el panel inferior
+            # 5. Guardar detalles
+            full_details_str = raw_task
             if '|' in raw_task:
-                stats_part = raw_task.split('|')[1].strip()
-                full_details_str = f"Curso: {display_course}\nEstado: {display_status}\nEstadísticas: {stats_part}"
-            elif "Completado" in raw_task:
-                full_details_str = raw_task.replace('. ', '.\n')
-            else:
-                full_details_str = raw_task
-
+                 full_details_str = f"Curso: {display_course}\nEstado: {display_status}\n{raw_task.split('|')[1].strip()}"
+            
             self.row_details_map[current_row_id] = full_details_str
 
-            # 6. Lógica de Historial: Detectar cambio de tarea
-            last_row_for_worker = self.worker_last_row_id.get(worker_id_str)
+            # 6. Insertar o Actualizar
+            # Lógica Anti-Solapamiento:
+            # Si una tarea estaba "Activa" y ahora viene "Completada", borrar la activa y poner la completada
+            active_id = f"active_{clean_course_id}"
+            done_id = f"done_{clean_course_id}"
             
-            # Si el worker cambió de tarea (y la tarea anterior era válida/diferente)
-            if last_row_for_worker and last_row_for_worker != current_row_id:
-                # Si la fila anterior era transitoria (worker_), borrarla
-                if last_row_for_worker.startswith("worker_") and not current_row_id.startswith("worker_"):
-                     if self.worker_tree.exists(last_row_for_worker):
-                         self.worker_tree.delete(last_row_for_worker)
+            if current_row_id == done_id:
+                if self.worker_tree.exists(active_id):
+                    self.worker_tree.delete(active_id)
                 
-                # Si la fila anterior era una tarea REAL (task_), marcarla como finalizada
-                elif last_row_for_worker.startswith("task_"):
-                    if self.worker_tree.exists(last_row_for_worker):
-                         curr_values = self.worker_tree.item(last_row_for_worker)['values']
-                         # Solo marcar si no está ya como completado/finalizado
-                         if "Completado" not in str(curr_values[1]) and "Finalizado" not in str(curr_values[1]):
-                             new_vals = list(curr_values)
-                             new_vals[1] = "Finalizado / Liberado" # Indicar que el worker ya no está aquí
-                             new_vals[3] = "100%"
-                             self.worker_tree.item(last_row_for_worker, values=new_vals)
+                # Si ya existe como completada, actualizar (por si llegan msjs repetidos)
+                if self.worker_tree.exists(done_id):
+                    self.worker_tree.item(done_id, values=values)
+                else:
+                    self.worker_tree.insert('', 'end', iid=done_id, values=values)
+            
+            elif current_row_id == active_id:
+                # Si esta activa, actualizar
+                if self.worker_tree.exists(active_id):
+                    self.worker_tree.item(active_id, values=values)
+                # Si ya existe como completada (raro per posible), ignorar o borrar completada vieja?
+                # Asumimos que si esta activa es lo que vale
+                else:
+                    self.worker_tree.insert('', '0', iid=active_id, values=values) # Insertar al inicio!
 
-            # 7. Insertar o Actualizar la fila ACTUAL
+            else:
+                # Mensajes transitorios (worker_msg_)
+                if self.worker_tree.exists(current_row_id):
+                    self.worker_tree.item(current_row_id, values=values)
+                else:
+                    self.worker_tree.insert('', 'end', iid=current_row_id, values=values)
+            
+            self.worker_last_row_id[worker_id_str] = current_row_id
+            
+        # 7. Limpieza Automática de Historial (Max 50 filas completadas)
+        all_items = self.worker_tree.get_children()
+        completed_items = [item for item in all_items if item.startswith("done_")]
+        if len(completed_items) > 50:
+            # Borrar las más viejas (las primeras en la lista asumimos)
+            for item in completed_items[:-50]:
+                self.worker_tree.delete(item)
 
         self.current_worker_states = worker_states
 
         # Calcular progreso general promedio
         if worker_states:
-            total_progress = sum(state.get('progress', 0) for state in worker_states.values())
-            avg_progress = total_progress / len(worker_states)
-            self.progress_frame.update_progress(avg_progress, f"Progreso General: {avg_progress:.1f}%")
+            active_workers = [s for s in worker_states.values() if s.get('status') != 'Idle']
+            if active_workers:
+                total_progress = sum(state.get('progress', 0) for state in active_workers)
+                avg_progress = total_progress / len(active_workers)
+                self.progress_frame.update_progress(avg_progress, f"Progreso General: {avg_progress:.1f}%")
+            else:
+                 self.progress_frame.update_progress(100, "Proceso completado")
+                 
+            # Actualizar estado de botones si hay actividad
+            is_working = any(s.get('status') != 'Idle' for s in worker_states.values())
+            if is_working:
+                self.control_frame.start_button.config(state=tk.DISABLED)
+                self.control_frame.stop_button.config(state=tk.NORMAL)
+            else:
+                self.control_frame.start_button.config(state=tk.NORMAL)
+                self.control_frame.stop_button.config(state=tk.DISABLED)
         else:
             self.progress_frame.update_progress(0, "Esperando inicio...")
 
@@ -725,6 +769,8 @@ class ScraperGUI(ttk.Frame):
                     'min_words': self.config.get('min_words', 30),
                     'num_workers': int(self.config.get('num_workers', 4)), # Enviar número de workers
                     'search_engine': self.search_engine_var.get(),
+                    'search_mode': self.config.get('search_mode', 'broad'),
+                    'require_keywords': self.config.get('require_keywords', False),
                     'proxy_enabled': self.config.get('proxy_enabled', False),
                     'proxy_rotation': self.config.get('proxy_rotation', False),
                     'captcha_solving_enabled': self.config.get('captcha_solving_enabled', False),
@@ -948,6 +994,21 @@ class ScraperGUI(ttk.Frame):
             messagebox.showerror("Error", f"Ocurrió un error inesperado: {e}")
             self.results_frame.add_log(f"❌ Error inesperado: {e}")
 
+
+    def _cleanup_files_action(self):
+        """Llama al endpoint /cleanup_files."""
+        if messagebox.askyesno("Confirmar Limpieza", "¿Estás seguro? Esto borrará TODOS los resultados y archivos omitidos en el servidor."):
+            try:
+                server_url = self.server_url.get().rstrip('/')
+                response = requests.get(f"{server_url}/cleanup_files", timeout=10)
+                if response.status_code == 200:
+                    data = response.json()
+                    messagebox.showinfo("Limpieza Exitosa", data.get("message", "Limpieza ok"))
+                    self.add_log("Limpieza de archivos solicitada y completada.")
+                else:
+                    messagebox.showerror("Error", f"Error en limpieza: {response.status_code}")
+            except Exception as e:
+                messagebox.showerror("Error", f"Fallo al conectar para limpieza: {e}")
 
     def _on_open_results_folder(self):
         results_dir = os.path.abspath("results")

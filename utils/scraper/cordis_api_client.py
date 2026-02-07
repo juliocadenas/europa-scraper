@@ -162,50 +162,77 @@ class CordisApiClient:
             return []
 
     # Keeping this for legacy/fallback support
-    async def search_projects_and_publications(self, query_term: str, max_results: int = 20) -> List[Dict[str, Any]]:
+    async def search_projects_and_publications(self, query_term: str, search_mode: str = 'broad', max_results: int = 1000) -> List[Dict[str, Any]]:
         """Fallback to SPARQL if no API key or manual quick search wanted."""
-        return await self._execute_sparql_search(query_term, max_results)
+        return await self._execute_sparql_search(query_term, max_results, search_mode)
 
-    async def _execute_sparql_search(self, search_term: str, max_results: int) -> List[Dict[str, Any]]:
-        # Extract primary keyword for broader matching
-        stop_words = {'ore', 'ores', 'mining', 'farms', 'of', 'and', 'the', 'for', 'in', 'to', 'a', 'an', 'production', 'crops'}
+    async def _execute_sparql_search(self, search_term: str, max_results: int, search_mode: str = 'broad') -> List[Dict[str, Any]]:
+        # 1. Preparación de Keywords
+        # En modo 'broad' (Vacuum), somos permisivos con stop words para captar más.
+        # En modo 'exact', somos más estrictos para reducir ruido.
+        if search_mode == 'exact':
+            stop_words = {'and', 'the', 'of', 'in', 'for', 'to', 'a', 'an', 'or', 'by', 'with', 'on', 'at', 'from', 'is', 'are'}
+        else:
+            stop_words = {'and', 'the', 'of', 'in', 'for', 'to', 'a', 'an', 'or', 'by', 'with'}
+
         keywords = [word.lower().strip() for word in search_term.split() if len(word) > 2]
         significant_keywords = [k for k in keywords if k not in stop_words]
         
         if significant_keywords:
-            primary_keyword = max(significant_keywords, key=len)
+            query_parts = significant_keywords
         else:
-            primary_keyword = keywords[0] if keywords else search_term.lower()
+            query_parts = [keywords[0]] if keywords else [search_term.lower()]
+
+        # 2. Construcción de Filtros (AND vs OR)
+        filter_clauses = []
         
-        logger.info(f"SPARQL search: original='{search_term}', primary_keyword='{primary_keyword}'")
+        if search_mode == 'exact':
+            # Lógica EXACTA (AND): Todas las partes deben estar presentes
+            # Se aplica el filtro iterativamente para que Cummulatively restrinja resultados
+            # (FILTER (contains A) && FILTER (contains B))
+            pass # Se maneja abajo construyendo un solo string grande con &&
+            
+            # Para SPARQL, es mejor: (clause1) && (clause2) ...
+            temp_clauses = []
+            for part in query_parts:
+                # Buscamos en título O descripción, pero CADA parte debe estar en uno u otro
+                clause = f'(CONTAINS(LCASE(STR(?t)), "{part}") || CONTAINS(LCASE(STR(?d)), "{part}"))'
+                temp_clauses.append(clause)
+            full_filter = " && ".join(temp_clauses)
+            logger.info(f"SPARQL search (EXACT): '{search_term}', AND filter with parts: {query_parts}")
+
+        else:
+            # Lógica AMPLIA (OR) - Default / Vacuum Mode
+            # Basta con que CUALQUIERA de las partes aparezca
+            for part in query_parts:
+                clause = f'(CONTAINS(LCASE(STR(?t)), "{part}") || CONTAINS(LCASE(STR(?d)), "{part}"))'
+                filter_clauses.append(clause)
+            full_filter = " || ".join(filter_clauses)
+            logger.info(f"SPARQL search (BROAD): '{search_term}', OR filter with parts: {query_parts}")
         
+        
+        # 3. SOLUCIÓN: LÍMITE MASIVO.
+        sparql_limit = max(2000, max_results * 50) 
+
         sparql_query = f"""
         PREFIX eurio: <http://data.europa.eu/s66#>
         
-        SELECT DISTINCT ?title ?url ?description WHERE {{
+        SELECT DISTINCT ?title ?url ?description (LANG(?title) as ?lang) WHERE {{
           {{
-            ?project a eurio:Project .
-            ?project eurio:title ?title .
-            OPTIONAL {{ ?project eurio:description ?description }}
-            OPTIONAL {{ ?project eurio:hasWebpage ?url }}
-            
-            FILTER(CONTAINS(LCASE(STR(?title)), "{primary_keyword}") || 
-                   CONTAINS(LCASE(STR(?description)), "{primary_keyword}"))
-          }}
-          UNION
-          {{
-            ?pub a eurio:ProjectPublication .
-            ?pub eurio:title ?title .
-            OPTIONAL {{ ?pub eurio:hasDownloadURL ?url }}
-            OPTIONAL {{ 
-                ?pub eurio:hasProject ?proj .
-                ?proj eurio:description ?description
+            SELECT DISTINCT ?project WHERE {{
+               ?project a eurio:Project .
+               ?project eurio:title ?t .
+               OPTIONAL {{ ?project eurio:description ?d }}
+               
+               FILTER({full_filter})
             }}
-            
-            FILTER(CONTAINS(LCASE(STR(?title)), "{primary_keyword}"))
+            LIMIT {sparql_limit}
           }}
+          
+          ?project eurio:title ?title .
+          OPTIONAL {{ ?project eurio:description ?description . FILTER(LANG(?description) = LANG(?title)) }}
+          OPTIONAL {{ ?project eurio:hasWebpage ?url }}
         }}
-        LIMIT {max_results}
         """
         
         loop = asyncio.get_running_loop()
@@ -229,7 +256,11 @@ class CordisApiClient:
             formatted_results = []
             for item in bindings:
                 url = item.get('url', {}).get('value')
-                title = item.get('title', {}).get('value', 'No Title')
+                # Extract title and its language
+                title_item = item.get('title', {})
+                title = title_item.get('value', 'No Title')
+                lang = item.get('lang', {}).get('value', 'en') # Default to 'en' if missing
+                
                 desc = item.get('description', {}).get('value', '')
                 
                 if title and title != 'No Title':
@@ -238,7 +269,8 @@ class CordisApiClient:
                         'title': title,
                         'description': desc[:500] if desc else "Cordis project",
                         'source': 'Cordis Europa SPARQL',
-                        'mediatype': 'project'
+                        'mediatype': 'project',
+                        'lang': lang
                     })
             return formatted_results
         except Exception as e:

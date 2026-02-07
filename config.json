@@ -1,11 +1,13 @@
 {
     "data_dir": "data",
     "log_dir": "logs",
-    "max_results_per_search": 10,
+    "max_results_per_search": 1000,
     "relevance_threshold": 0.5,
     "concurrent_searches": 3,
     "captcha_solving_enabled": false,
     "captcha_service": "manual",
     "captcha_api_key": "",
-    "headless_mode": true
+    "headless_mode": true,
+    "search_mode": "broad",
+    "require_keywords": false
 }
