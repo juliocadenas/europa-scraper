@@ -27,7 +27,7 @@ class CordisApiClient:
             'Accept-Language': 'en-US,en;q=0.9',
         }
     
-    async def search_projects_and_publications(self, query_term: str, search_mode: str = 'broad', max_results: int = 50000) -> List[Dict[str, Any]]:
+    async def search_projects_and_publications(self, query_term: str, search_mode: str = 'broad', max_results: int = 1000) -> List[Dict[str, Any]]:
         """
         V27 - Uses the official Cordis JSON endpoint.
         
