@@ -170,9 +170,9 @@ class CordisApiClient:
                     logger.info(f"V27 - Reached safety limit ({max_results}). Stopping.")
                     break
                 
-                # Check if this was the last page
-                if page_count < results_per_page:
-                    logger.info(f"V27 - Last page reached (got {page_count} < {results_per_page})")
+                # Check if this was the last page (NO results on this page)
+                if page_count == 0:
+                    logger.info(f"V27 - No more results on page {page}. Stopping.")
                     break
                 
                 page += 1
