@@ -842,19 +842,6 @@ class ScraperServer:
         except Exception as e:
             self.logger.error(f"Error en cleanup_files: {e}")
             raise HTTPException(status_code=500, detail=f"Error limpiando archivos: {str(e)}")
-                
-                if not files_found:
-                     # Si no hay archivos, crear al menos un archivo de texto vacío
-                     zipf.writestr("leeme.txt", "No se encontraron archivos en la carpeta results.")
-
-            if not os.path.exists(zip_path):
-                 raise HTTPException(status_code=500, detail="Error creando el archivo ZIP.")
-                 
-            return FileResponse(zip_path, media_type='application/zip', filename=zip_filename)
-            
-        except Exception as e:
-            self.logger.error(f"Error generando ZIP de resultados: {e}")
-            raise HTTPException(status_code=500, detail=f"Error generando descarga: {str(e)}")
 
     async def root_endpoint(self):
         """Endpoint raíz para verificar que el servidor está activo."""
