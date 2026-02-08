@@ -81,27 +81,22 @@ class CordisApiClient:
                         logger.warning("V27 - No results found for this query")
                         break
                 
-                # Extract hits - Cordis may return different structures
-                result_obj = data.get('result', {})
-                
-                # Try multiple possible structures
+                # Extract hits - Cordis returns them in data['hits'] as a list
                 hits = []
                 
-                # Structure 1: result.hits.hit (array)
-                if 'hits' in result_obj:
-                    hits_container = result_obj.get('hits', {})
-                    if isinstance(hits_container, dict) and 'hit' in hits_container:
-                        hits = hits_container.get('hit', [])
-                    elif isinstance(hits_container, list):
-                        hits = hits_container
-                
-                # Structure 2: result.hit (direct array)
-                if not hits and 'hit' in result_obj:
-                    hits = result_obj.get('hit', [])
-                
-                # Structure 3: data.hits or data.hit
-                if not hits:
-                    hits = data.get('hits', data.get('hit', []))
+                # Structure 1 (ACTUAL CORDIS STRUCTURE): data['hits'] direct list
+                if 'hits' in data and isinstance(data['hits'], list):
+                    hits = data['hits']
+                # Structure 2: data['hits'] as dict with 'hit' key
+                elif 'hits' in data and isinstance(data['hits'], dict):
+                    hits = data['hits'].get('hit', [])
+                # Structure 3: result.hits (legacy fallback)
+                elif 'result' in data and 'hits' in data['result']:
+                    result_hits = data['result']['hits']
+                    if isinstance(result_hits, dict) and 'hit' in result_hits:
+                        hits = result_hits['hit']
+                    elif isinstance(result_hits, list):
+                        hits = result_hits
                 
                 # Ensure hits is a list
                 if isinstance(hits, dict):
@@ -110,12 +105,10 @@ class CordisApiClient:
                     hits = []
                 
                 if not hits:
-                    logger.warning(f"V27 - Page {page}: Found totalHits={total_hits} but extracted 0 hits. JSON structure may be unexpected.")
-                    logger.warning(f"V27 - Result keys: {list(result_obj.keys())}")
-                    if total_hits > 0 and page == 1:
-                        # First page should have results - this is a parsing error
-                        logger.error("V27 - PARSING ERROR: Cannot extract hits from JSON. Dumping first 500 chars of response:")
-                        logger.error(str(data)[:500])
+                    logger.warning(f"V27 - Page {page}: Found totalHits={total_hits} but extracted 0 hits.")
+                    logger.warning(f"V27 - Root data keys: {list(data.keys())}")
+                    if 'hits' in data:
+                        logger.warning(f"V27 - data['hits'] type: {type(data['hits'])}")
                     break
                 
                 page_count = 0
