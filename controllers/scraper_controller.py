@@ -786,7 +786,7 @@ class ScraperController(ScraperControllerBase):
           logger.info(f"Buscando en Cordis API: '{search_term}' (Original: '{course_name if course_name else sic_code}')")
           
           try:
-              results = await self.cordis_api_client.search_projects_and_publications(search_term, search_mode=search_mode)
+              results = await self.cordis_api_client.search_projects_and_publications(search_term, search_mode=search_mode, progress_callback=progress_callback)
               
               for r in results:
                   r['sic_code'] = sic_code

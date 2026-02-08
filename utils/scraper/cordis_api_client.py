@@ -27,7 +27,7 @@ class CordisApiClient:
             'Accept-Language': 'en-US,en;q=0.9',
         }
     
-    async def search_projects_and_publications(self, query_term: str, search_mode: str = 'broad', max_results: int = 50000) -> List[Dict[str, Any]]:
+    async def search_projects_and_publications(self, query_term: str, search_mode: str = 'broad', max_results: int = 50000, progress_callback=None) -> List[Dict[str, Any]]:
         """
         V27 - Uses the official Cordis JSON endpoint.
         
@@ -159,6 +159,10 @@ class CordisApiClient:
                     page_count += 1
                 
                 logger.info(f"V27 - Page {page}: Found {page_count} results. Total acumulado: {len(all_results)} de {total_hits}")
+                
+                # Update GUI with progress
+                if progress_callback:
+                    progress_callback(0, f"Cordis API: Página {page} - {len(all_results)}/{total_hits} resultados", {})
                 
                 # Check if we have collected all expected results
                 if len(all_results) >= total_hits:
