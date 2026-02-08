@@ -27,7 +27,7 @@ class CordisApiClient:
             'Accept-Language': 'en-US,en;q=0.9',
         }
     
-    async def search_projects_and_publications(self, query_term: str, search_mode: str = 'broad', max_results: int = 1000) -> List[Dict[str, Any]]:
+    async def search_projects_and_publications(self, query_term: str, search_mode: str = 'broad', max_results: int = 50000) -> List[Dict[str, Any]]:
         """
         V27 - Uses the official Cordis JSON endpoint.
         
@@ -177,8 +177,8 @@ class CordisApiClient:
                 
                 page += 1
                 
-                # Be nice to server - 1 second between requests
-                await asyncio.sleep(1.0)
+                # Be nice to server - 0.3 seconds between requests
+                await asyncio.sleep(0.3)
                 
             except Exception as e:
                 logger.error(f"V27 - Error on page {page}: {e}")
