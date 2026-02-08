@@ -1135,7 +1135,7 @@ class ScraperController(ScraperControllerBase):
               # Pass gov_only flag to the wayback phase
               all_search_results = await self._process_wayback_machine_search_phase(courses_in_range, site_domain, progress_callback, gov_only=gov_only)
           elif search_engine == 'Cordis Europa API':
-               all_search_results = await self._process_cordis_api_phase(courses_in_range, progress_callback)
+               all_search_results = await self._process_cordis_api_phase(courses_in_range, progress_callback=progress_callback)
           else:
               all_search_results = await self._process_search_phase(courses_in_range, progress_callback, search_engine, site_domain)
       
