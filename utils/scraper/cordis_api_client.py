@@ -81,17 +81,42 @@ class CordisApiClient:
                         logger.warning("V27 - No results found for this query")
                         break
                 
-                # Extract hits
-                hits_container = data.get('result', {}).get('hits', {})
-                hits = hits_container.get('hit', [])
+                # Extract hits - Cordis may return different structures
+                result_obj = data.get('result', {})
                 
+                # Try multiple possible structures
+                hits = []
+                
+                # Structure 1: result.hits.hit (array)
+                if 'hits' in result_obj:
+                    hits_container = result_obj.get('hits', {})
+                    if isinstance(hits_container, dict) and 'hit' in hits_container:
+                        hits = hits_container.get('hit', [])
+                    elif isinstance(hits_container, list):
+                        hits = hits_container
+                
+                # Structure 2: result.hit (direct array)
+                if not hits and 'hit' in result_obj:
+                    hits = result_obj.get('hit', [])
+                
+                # Structure 3: data.hits or data.hit
                 if not hits:
-                    logger.info(f"V27 - No more results on page {page}")
-                    break
+                    hits = data.get('hits', data.get('hit', []))
                 
-                # Ensure hits is a list (single result might not be in a list)
+                # Ensure hits is a list
                 if isinstance(hits, dict):
                     hits = [hits]
+                elif not isinstance(hits, list):
+                    hits = []
+                
+                if not hits:
+                    logger.warning(f"V27 - Page {page}: Found totalHits={total_hits} but extracted 0 hits. JSON structure may be unexpected.")
+                    logger.warning(f"V27 - Result keys: {list(result_obj.keys())}")
+                    if total_hits > 0 and page == 1:
+                        # First page should have results - this is a parsing error
+                        logger.error("V27 - PARSING ERROR: Cannot extract hits from JSON. Dumping first 500 chars of response:")
+                        logger.error(str(data)[:500])
+                    break
                 
                 page_count = 0
                 for hit in hits:
