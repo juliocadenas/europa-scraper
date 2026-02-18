@@ -1,0 +1,36 @@
+# Version Control
+.git/
+.gitignore
+
+# Build Artifacts
+build/
+dist/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.zip
+*.spec
+*.egg-info/
+.pytest_cache/
+
+# Data Directories (These should be volume mounted, not built in)
+results/
+omitidos/
+logs/
+downloads/
+courses.db
+crush.db
+counties.db
+
+# Virtual Environment
+venv/
+.venv/
+env/
+.env/
+
+# IDE/Editor Config
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
