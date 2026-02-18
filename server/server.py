@@ -16,11 +16,12 @@ import socket
 import time
 import multiprocessing
 import threading
+import shutil
 from multiprocessing.managers import SyncManager
 from queue import Empty
 from typing import Dict, Any, Optional, List, Tuple
-from fastapi import FastAPI, HTTPException, UploadFile, File
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, HTTPException, UploadFile, File, Query
+from fastapi.responses import FileResponse, HTMLResponse
 from pydantic import BaseModel
 import uvicorn
 from contextlib import asynccontextmanager
@@ -453,6 +454,14 @@ class ScraperServer:
         self.app.get("/")(self.root_endpoint)
         self.app.get("/ping")(self.ping_endpoint)
         
+        # Nuevos endpoints para visualización de resultados
+        self.app.get("/api/list_results")(self.list_results_files)
+        self.app.get("/api/list_omitidos")(self.list_omitidos_files)
+        self.app.get("/api/download_file")(self.download_single_file)
+        self.app.get("/api/preview_csv")(self.preview_csv)
+        self.app.get("/viewer")(self.results_viewer_html)
+        self.app.get("/api/cloudflare_url")(self.get_cloudflare_url)
+        
         # Agregar logging para verificar que las rutas se registraron
         self.logger.info("Rutas registradas:")
         for route in self.app.routes:
@@ -842,6 +851,429 @@ class ScraperServer:
         except Exception as e:
             self.logger.error(f"Error en cleanup_files: {e}")
             raise HTTPException(status_code=500, detail=f"Error limpiando archivos: {str(e)}")
+
+    async def list_results_files(self):
+        """Lista todos los archivos CSV en la carpeta results con información detallada."""
+        try:
+            results_dir = os.path.join(project_root, 'results')
+            if not os.path.exists(results_dir):
+                return {"files": [], "message": "La carpeta results no existe aún."}
+            
+            files_info = []
+            for filename in os.listdir(results_dir):
+                if filename.endswith('.csv'):
+                    filepath = os.path.join(results_dir, filename)
+                    stat = os.stat(filepath)
+                    files_info.append({
+                        "name": filename,
+                        "size": stat.st_size,
+                        "size_human": self._human_readable_size(stat.st_size),
+                        "modified": stat.st_mtime,
+                        "modified_human": time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(stat.st_mtime))
+                    })
+            
+            # Ordenar por fecha de modificación (más reciente primero)
+            files_info.sort(key=lambda x: x['modified'], reverse=True)
+            
+            return {
+                "files": files_info,
+                "total": len(files_info),
+                "results_dir": results_dir
+            }
+        except Exception as e:
+            self.logger.error(f"Error listando archivos: {e}")
+            raise HTTPException(status_code=500, detail=f"Error listando archivos: {str(e)}")
+
+    async def list_omitidos_files(self):
+        """Lista todos los archivos CSV en la carpeta omitidos con información detallada."""
+        try:
+            omitidos_dir = os.path.join(project_root, 'omitidos')
+            if not os.path.exists(omitidos_dir):
+                return {"files": [], "message": "La carpeta omitidos no existe aún."}
+            
+            files_info = []
+            for filename in os.listdir(omitidos_dir):
+                if filename.endswith('.csv'):
+                    filepath = os.path.join(omitidos_dir, filename)
+                    stat = os.stat(filepath)
+                    files_info.append({
+                        "name": filename,
+                        "size": stat.st_size,
+                        "size_human": self._human_readable_size(stat.st_size),
+                        "modified": stat.st_mtime,
+                        "modified_human": time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(stat.st_mtime))
+                    })
+            
+            # Ordenar por fecha de modificación (más reciente primero)
+            files_info.sort(key=lambda x: x['modified'], reverse=True)
+            
+            return {
+                "files": files_info,
+                "total": len(files_info),
+                "omitidos_dir": omitidos_dir
+            }
+        except Exception as e:
+            self.logger.error(f"Error listando archivos omitidos: {e}")
+            raise HTTPException(status_code=500, detail=f"Error listando archivos omitidos: {str(e)}")
+
+    async def download_single_file(self, filename: str):
+        """Descarga un archivo individual de la carpeta results o omitidos."""
+        try:
+            results_dir = os.path.join(project_root, 'results')
+            omitidos_dir = os.path.join(project_root, 'omitidos')
+            
+            filepath = os.path.join(results_dir, filename)
+            if not os.path.exists(filepath):
+                filepath = os.path.join(omitidos_dir, filename)
+            
+            if not os.path.exists(filepath):
+                raise HTTPException(status_code=404, detail=f"Archivo no encontrado: {filename}")
+            
+            return FileResponse(filepath, filename=filename, media_type='text/csv')
+        except HTTPException:
+            raise
+        except Exception as e:
+            self.logger.error(f"Error descargando archivo {filename}: {e}")
+            raise HTTPException(status_code=500, detail=f"Error descargando archivo: {str(e)}")
+
+    async def preview_csv(self, filename: str, rows: int = 10):
+        """Muestra una vista previa de un archivo CSV (primeras N filas)."""
+        try:
+            results_dir = os.path.join(project_root, 'results')
+            omitidos_dir = os.path.join(project_root, 'omitidos')
+            
+            filepath = os.path.join(results_dir, filename)
+            if not os.path.exists(filepath):
+                filepath = os.path.join(omitidos_dir, filename)
+            
+            if not os.path.exists(filepath):
+                raise HTTPException(status_code=404, detail=f"Archivo no encontrado: {filename}")
+            
+            # Leer el CSV
+            df = pd.read_csv(filepath, nrows=int(rows))
+            
+            # Convertir a HTML para visualización
+            html_table = df.to_html(classes='table table-striped table-hover', index=False)
+            
+            # Obtener información del archivo
+            stat = os.stat(filepath)
+            total_rows = sum(1 for _ in open(filepath)) - 1  # -1 por el encabezado
+            
+            return {
+                "filename": filename,
+                "preview_html": html_table,
+                "preview_rows": int(rows),
+                "total_rows": total_rows,
+                "columns": list(df.columns),
+                "size_human": self._human_readable_size(stat.st_size)
+            }
+        except HTTPException:
+            raise
+        except Exception as e:
+            self.logger.error(f"Error generando preview de {filename}: {e}")
+            raise HTTPException(status_code=500, detail=f"Error generando preview: {str(e)}")
+
+    async def results_viewer_html(self):
+        """Retorna una página HTML simple para visualizar los resultados con auto-refresh."""
+        html_content = """
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Europa Scraper - Resultados</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding: 20px; background-color: #f5f5f5; }
+        .card { margin-bottom: 20px; }
+        .file-row { cursor: pointer; transition: background-color 0.2s; }
+        .file-row:hover { background-color: #e9ecef; }
+        .preview-container { max-height: 500px; overflow-y: auto; }
+        #previewModal .modal-dialog { max-width: 90vw; }
+        #previewModal .modal-body { padding: 0; }
+        .table-responsive { margin: 0; }
+        table { font-size: 0.9em; }
+        th { background-color: #0d6efd; color: white; }
+        .nav-tabs .nav-link { cursor: pointer; }
+        .nav-tabs .nav-link.active { background-color: #0d6efd; color: white; }
+        .url-box { background-color: #e9ecef; padding: 15px; border-radius: 5px; margin: 15px 0; }
+        .url-box h5 { margin: 0 0 10px 0; }
+        .url-box .url { word-break: break-all; font-family: monospace; background: #fff; padding: 10px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Archivos del Scraper</h4>
+                        <div>
+                            <span class="badge bg-success" id="lastUpdate">Actualizado: --:--:--</span>
+                            <button class="btn btn-sm btn-primary ms-2" onclick="loadFiles()">Actualizar</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="tab-results" data-bs-toggle="tab" href="#" onclick="switchTab('results')">
+                                    Resultados Exitosos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tab-omitidos" data-bs-toggle="tab" href="#" onclick="switchTab('omitidos')">
+                                    Archivos Omitidos
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label>Auto-refresh:</label>
+                                <select id="refreshInterval" class="form-select form-select-sm" onchange="setRefreshInterval()">
+                                    <option value="0">Desactivado</option>
+                                    <option value="5000">5 segundos</option>
+                                    <option value="10000" selected>10 segundos</option>
+                                    <option value="30000">30 segundos</option>
+                                    <option value="60000">1 minuto</option>
+                                </select>
+                            </div>
+                            <div class="col-md-8 text-end">
+                                <span class="badge bg-info" id="fileCount">0 archivos</span>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Tamaño</th>
+                                        <th>Modificado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="filesTableBody">
+                                    <tr><td colspan="4" class="text-center">Cargando...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="url-box">
+        <h5>URL de Acceso (Cloudflare)</h5>
+        <div class="url" id="cloudflareUrl">Cargando URL...</div>
+        <small class="text-muted">Esta URL se mantiene activa mientras el servidor corra. Si la URL cambia, recarga la pagina.</small>
+    </div>
+
+    <!-- Preview Modal -->
+    <div class="modal fade" id="previewModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="previewTitle">Vista Previa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body preview-container" id="previewBody">
+                    <div class="text-center p-4">Cargando vista previa...</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="downloadFromPreview">Descargar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let refreshTimer = null;
+        let currentPreviewFile = null;
+        let currentTab = 'results';
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('tab-results').classList.remove('active');
+            document.getElementById('tab-omitidos').classList.remove('active');
+            document.getElementById('tab-' + tab).classList.add('active');
+            loadFiles();
+        }
+
+        function loadFiles() {
+            const endpoint = currentTab === 'results' ? '/api/list_results' : '/api/list_omitidos';
+            
+            fetch(endpoint)
+                .then(r => r.json())
+                .then(data => {
+                    const tbody = document.getElementById('filesTableBody');
+                    const countBadge = document.getElementById('fileCount');
+                    
+                    if (data.files.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="4" class="text-center">No hay archivos aun</td></tr>';
+                        countBadge.textContent = '0 archivos';
+                        return;
+                    }
+                    
+                    tbody.innerHTML = data.files.map(f => `
+                        <tr class="file-row">
+                            <td><strong>${escapeHtml(f.name)}</strong></td>
+                            <td>${f.size_human}</td>
+                            <td>${f.modified_human}</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" onclick="previewFile('${escapeHtml(f.name)}')">Ver</button>
+                                <button class="btn btn-sm btn-outline-success" onclick="downloadFile('${escapeHtml(f.name)}')">Descargar</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                    
+                    countBadge.textContent = `${data.total} archivo${data.total !== 1 ? 's' : ''}`;
+                    document.getElementById('lastUpdate').textContent = 'Actualizado: ' + new Date().toLocaleTimeString();
+                })
+                .catch(err => {
+                    console.error('Error:', err);
+                    document.getElementById('filesTableBody').innerHTML =
+                        '<tr><td colspan="4" class="text-center text-danger">Error cargando archivos</td></tr>';
+                });
+        }
+
+        function previewFile(filename) {
+            currentPreviewFile = filename;
+            document.getElementById('previewTitle').textContent = 'Vista Previa: ' + filename;
+            document.getElementById('previewBody').innerHTML = '<div class="text-center p-4"><div class="spinner-border"></div></div>';
+            
+            const modal = new bootstrap.Modal(document.getElementById('previewModal'));
+            modal.show();
+            
+            fetch(`/api/preview_csv?filename=${encodeURIComponent(filename)}&rows=50`)
+                .then(r => r.json())
+                .then(data => {
+                    document.getElementById('previewBody').innerHTML = `
+                        <div class="p-3">
+                            <div class="mb-3">
+                                <span class="badge bg-primary">${data.total_rows} filas totales</span>
+                                <span class="badge bg-secondary">${data.size_human}</span>
+                                <span class="badge bg-info">Mostrando primeras ${data.preview_rows} filas</span>
+                            </div>
+                            <div class="table-responsive">
+                                ${data.preview_html}
+                            </div>
+                        </div>
+                    `;
+                })
+                .catch(err => {
+                    document.getElementById('previewBody').innerHTML =
+                        '<div class="text-center p-4 text-danger">Error cargando vista previa</div>';
+                });
+        }
+
+        function downloadFile(filename) {
+            window.location.href = `/api/download_file?filename=${encodeURIComponent(filename)}`;
+        }
+
+        document.getElementById('downloadFromPreview').addEventListener('click', () => {
+            if (currentPreviewFile) {
+                downloadFile(currentPreviewFile);
+            }
+        });
+
+        function setRefreshInterval() {
+            const interval = parseInt(document.getElementById('refreshInterval').value);
+            if (refreshTimer) {
+                clearInterval(refreshTimer);
+                refreshTimer = null;
+            }
+            if (interval > 0) {
+                refreshTimer = setInterval(loadFiles, interval);
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function updateCloudflareUrl() {
+            fetch('/api/cloudflare_url')
+                .then(r => r.json())
+                .then(data => {
+                    const urlBox = document.getElementById('cloudflareUrl');
+                    if (data.url) {
+                        urlBox.textContent = data.url;
+                        urlBox.style.background = '#fff';
+                    } else {
+                        urlBox.textContent = 'URL no disponible - cloudflared no esta corriendo';
+                        urlBox.style.background = '#f8d7da';
+                    }
+                })
+                .catch(err => {
+                    console.error('Error:', err);
+                    const urlBox = document.getElementById('cloudflareUrl');
+                    urlBox.textContent = 'Error obteniendo URL';
+                    urlBox.style.background = '#f8d7da';
+                });
+        }
+
+        // Cargar archivos al inicio
+        loadFiles();
+        setRefreshInterval();
+        setInterval(updateCloudflareUrl, 10000);
+        updateCloudflareUrl();
+    </script>
+</body>
+</html>
+        """
+        from fastapi.responses import HTMLResponse
+        return HTMLResponse(content=html_content)
+
+    async def get_cloudflare_url(self):
+        """Endpoint para obtener la URL de cloudflared desde los logs del visor de resultados."""
+        try:
+            import os
+            import re
+            
+            # Directorio donde se guardan los logs de cloudflared
+            cloudflare_log_dir = "/home/julio/cloudflared_logs"
+            
+            if not os.path.exists(cloudflare_log_dir):
+                return {"url": None, "message": "No se encontraron logs de cloudflared"}
+            
+            # Buscar el archivo de log más reciente
+            log_files = sorted(
+                [f for f in os.listdir(cloudflare_log_dir) if f.startswith('cloudflared_')],
+                key=lambda x: os.path.getmtime(os.path.join(cloudflare_log_dir, x)),
+                reverse=True
+            )
+            
+            if not log_files:
+                return {"url": None, "message": "No se encontraron logs de cloudflared"}
+            
+            latest_log = os.path.join(cloudflare_log_dir, log_files[0])
+            
+            # Buscar la URL en el log
+            url_pattern = r'https://[a-zA-Z0-9\-]+\.trycloudflare\.com'
+            
+            with open(latest_log, 'r', encoding='utf-8', errors='ignore') as f:
+                content = f.read()
+                match = re.search(url_pattern, content)
+                if match:
+                    return {"url": match.group(0), "message": "URL encontrada"}
+            
+            return {"url": None, "message": "No se encontró URL en los logs de cloudflared"}
+            
+        except Exception as e:
+            self.logger.error(f"Error obteniendo URL de cloudflared: {e}")
+            return {"url": None, "message": f"Error: {str(e)}"}
+
+    def _human_readable_size(self, size_bytes):
+        """Convierte bytes a formato legible."""
+        for unit in ['B', 'KB', 'MB', 'GB']:
+            if size_bytes < 1024.0:
+                return f"{size_bytes:.2f} {unit}"
+            size_bytes /= 1024.0
+        return f"{size_bytes:.2f} TB"
 
     async def root_endpoint(self):
         """Endpoint raíz para verificar que el servidor está activo."""

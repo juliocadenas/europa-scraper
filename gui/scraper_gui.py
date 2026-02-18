@@ -277,7 +277,7 @@ class ScraperGUI(ttk.Frame):
         # BUTTON CLEANUP: "Limpiar Archivos"
         self.cleanup_button = ttk.Button(
             self.results_buttons_frame, 
-            text="Limpiar Archivos", 
+            text="Gestionar Archivos Servidor", 
             command=self._cleanup_files_action, 
             state=tk.NORMAL
         )
@@ -298,7 +298,7 @@ class ScraperGUI(ttk.Frame):
         config_frame = ttk.LabelFrame(self.server_frame, text="Configuración", padding=10)
         config_frame.pack(fill=tk.X, pady=10)
         ttk.Label(config_frame, text="URL del Servidor:").grid(row=0, column=0, sticky=tk.W, pady=5)
-        self.server_url = tk.StringVar(value="https://usr-brief-essex-moss.trycloudflare.com")
+        self.server_url = tk.StringVar(value="https://scraper.docuplay.com")
         self.server_url_entry = ttk.Entry(config_frame, textvariable=self.server_url, width=50)
         self.server_url_entry.grid(row=0, column=1, padx=10, pady=5, sticky=tk.EW)
         self.connect_button = ttk.Button(config_frame, text="Conectar", command=self._connect_to_server)
@@ -1132,6 +1132,154 @@ class ScraperGUI(ttk.Frame):
             pass
         finally:
             self.master.after(200, self.process_queue)
+
+    def _cleanup_files_action(self):
+        """Abre la ventana de gestión de archivos del servidor."""
+        ServerFilesWindow(self.master, self.server_url.get().rstrip('/'))
+
+class ServerFilesWindow(tk.Toplevel):
+    """Ventana para explorar y gestionar archivos en el servidor (Resultados y Omitidos)."""
+    
+    def __init__(self, parent, server_url):
+        super().__init__(parent)
+        self.server_url = server_url
+        self.title("Gestor de Archivos del Servidor")
+        self.geometry("900x600")
+        
+        # Configurar estilos si no existen (reutilizando los de la app principal)
+        
+        self.notebook = ttk.Notebook(self)
+        self.notebook.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        
+        # Pestaña Resultados
+        self.results_frame = ttk.Frame(self.notebook)
+        self.notebook.add(self.results_frame, text="Resultados (CSV)")
+        self._setup_file_list(self.results_frame, "results")
+        
+        # Pestaña Omitidos
+        self.omitted_frame = ttk.Frame(self.notebook)
+        self.notebook.add(self.omitted_frame, text="Omitidos (CSV)")
+        self._setup_file_list(self.omitted_frame, "omitidos")
+        
+        # Botonera Principal
+        self.bottom_frame = ttk.Frame(self)
+        self.bottom_frame.pack(fill=tk.X, padx=10, pady=10)
+        
+        self.refresh_btn = ttk.Button(self.bottom_frame, text="🔄 Refrescar Listas", command=self.refresh_all)
+        self.refresh_btn.pack(side=tk.LEFT, padx=5)
+        
+        self.clean_btn = ttk.Button(self.bottom_frame, text="🗑️ LIMPIAR TODO (Resultados y Omitidos)", command=self.clean_all_files, style="Danger.TButton")
+        self.clean_btn.pack(side=tk.RIGHT, padx=5)
+        
+        self.status_label = ttk.Label(self.bottom_frame, text="Listo", font=("TkDefaultFont", 9))
+        self.status_label.pack(side=tk.LEFT, padx=20)
+        
+        # Cargar datos iniciales
+        self.refresh_all()
+        
+    def _setup_file_list(self, parent, type_key):
+        """Configura el Treeview para listar archivos."""
+        # Frame contenedor
+        frame = ttk.Frame(parent)
+        frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Treeview
+        columns = ('name', 'size', 'modified')
+        tree = ttk.Treeview(frame, columns=columns, show='headings')
+        
+        tree.heading('name', text='Nombre de Archivo')
+        tree.heading('size', text='Tamaño')
+        tree.heading('modified', text='Modificado')
+        
+        tree.column('name', width=400)
+        tree.column('size', width=100, anchor='e')
+        tree.column('modified', width=150, anchor='center')
+        
+        scrollbar = ttk.Scrollbar(frame, orient=tk.VERTICAL, command=tree.yview)
+        tree.configure(yscrollcommand=scrollbar.set)
+        
+        tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        
+        # Guardar referencia para actualizar luego
+        setattr(self, f"{type_key}_tree", tree)
+        
+        # Bind para descarga (doble clic)
+        tree.bind("<Double-1>", lambda e, t=type_key: self.download_file(t))
+
+    def refresh_all(self):
+        """Refresca ambas listas."""
+        self.status_label.config(text="Actualizando listas...", foreground="blue")
+        self.update_idletasks()
+        
+        self._load_data("results")
+        self._load_data("omitidos")
+        
+        self.status_label.config(text=f"Actualizado: {datetime.now().strftime('%H:%M:%S')}", foreground="green")
+
+    def _load_data(self, type_key):
+        """Carga datos del endpoint correspondiente."""
+        tree = getattr(self, f"{type_key}_tree")
+        # Limpiar tree
+        tree.delete(*tree.get_children())
+        
+        endpoint = "/api/list_results" if type_key == "results" else "/api/list_omitidos"
+        try:
+            response = requests.get(f"{self.server_url}{endpoint}", timeout=5)
+            if response.status_code == 200:
+                data = response.json()
+                files = data.get('files', [])
+                for f in files:
+                    tree.insert('', tk.END, values=(f['name'], f['size_human'], f['modified_human']))
+            else:
+                print(f"Error cargando {type_key}: {response.status_code}")
+        except Exception as e:
+            print(f"Excepción cargando {type_key}: {e}")
+
+    def clean_all_files(self):
+        """Llama al endpoint de limpieza general."""
+        if messagebox.askyesno("CONFIRMAR LIMPIEZA", "⚠️ ¿Estás SEGURO de eliminar TODOS los archivos de resultados y omitidos del servidor?\n\nEsta acción NO se puede deshacer."):
+            try:
+                self.status_label.config(text="Limpiando archivos...", foreground="red")
+                self.update_idletasks()
+                
+                response = requests.get(f"{self.server_url}/cleanup_files", timeout=10)
+                if response.status_code == 200:
+                    data = response.json()
+                    messagebox.showinfo("Limpieza Exitosa", data.get("message", "Limpieza completada."))
+                    self.refresh_all()
+                else:
+                    messagebox.showerror("Error", f"Error en el servidor: {response.text}")
+                    self.status_label.config(text="Error en limpieza", foreground="red")
+            except Exception as e:
+                messagebox.showerror("Error de Conexión", f"No se pudo conectar: {e}")
+                
+    def download_file(self, type_key):
+        """Descarga el archivo seleccionado."""
+        tree = getattr(self, f"{type_key}_tree")
+        selection = tree.selection()
+        if not selection:
+            return
+        
+        item = tree.item(selection[0])
+        filename = item['values'][0]
+        
+        save_path = filedialog.asksaveasfilename(defaultextension=".csv", initialfile=filename, title="Guardar archivo")
+        if not save_path:
+            return
+            
+        try:
+            url = f"{self.server_url}/api/download_file?filename={filename}"
+            response = requests.get(url, stream=True)
+            if response.status_code == 200:
+                with open(save_path, 'wb') as f:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        f.write(chunk)
+                messagebox.showinfo("Descarga", f"Archivo guardado: {os.path.basename(save_path)}")
+            else:
+                messagebox.showerror("Error", "No se pudo descargar el archivo.")
+        except Exception as e:
+            messagebox.showerror("Error", f"Error de descarga: {e}")
 
 if __name__ == "__main__":
     # Este bloque ahora asegura que la aplicación se inicie correctamente,

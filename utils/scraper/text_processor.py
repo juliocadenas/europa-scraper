@@ -209,23 +209,22 @@ class TextProcessor:
     
     def should_exclude_result(self, total_words: int, word_counts: Dict[str, int], min_words: int = 30) -> Tuple[bool, str]:
         """
-        Determines if a result should be excluded based on word count.
+        Determines if a result should be excluded based on keyword count.
         
         Args:
-            total_words: Total number of words
+            total_words: Total number of words (for logging/legacy)
             word_counts: Dictionary with count of each keyword
-            min_words: Minimum number of words required
+            min_words: Minimum number of keyword occurrences required
             
         Returns:
             Tuple of (should_exclude, reason)
         """
-        # Check if total words is less than minimum
-        if total_words < min_words:
-            return True, f"Total words ({total_words}) less than minimum required ({min_words})"
+        # Sum all keyword occurrences
+        total_keywords_found = sum(word_counts.values()) if word_counts else 0
         
-        # Check if all keywords have zero count
-        if word_counts and all(count == 0 for count in word_counts.values()):
-            return True, "All keywords have zero count"
+        # Check if total keyword occurrences is less than minimum
+        if total_keywords_found < min_words:
+            return True, f"Total keywords found ({total_keywords_found}) less than minimum required ({min_words})"
         
         # Don't exclude
         return False, ""

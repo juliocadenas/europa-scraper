@@ -51,13 +51,14 @@ class ResultManager:
         # Define base filename
         base_filename = f"{from_sic}_{from_course_sanitized}_to_{to_sic}_{to_course_sanitized}{engine_str}{worker_str}_{timestamp}"
 
-        # Create results directory
-        output_dir = 'results'
-        os.makedirs(output_dir, exist_ok=True)
+        # Create EN directory by default for main output
+        base_results_dir = 'results'
+        en_dir = os.path.join(base_results_dir, 'EN')
+        os.makedirs(en_dir, exist_ok=True)
         
-        # Create output file path
+        # Create output file path inside EN subfolder
         self.output_file = os.path.join(
-            output_dir, 
+            en_dir, 
             f"results_{base_filename}.csv"
         )
         
@@ -68,7 +69,7 @@ class ResultManager:
         ]
         pd.DataFrame(columns=columns).to_csv(self.output_file, index=False)
         
-        logger.info(f"CSV file created for worker {worker_id}: {self.output_file}")
+        logger.info(f"CSV file created for worker {worker_id} in EN folder: {self.output_file}")
         
         # Create directory for omitted results
         omitted_dir = 'omitidos'
@@ -108,22 +109,25 @@ class ResultManager:
         """Helper to get or create file path for a specific language."""
         lang = lang.lower() if lang else 'en'
         
-        # English goes to main file
-        if lang == 'en':
-            return self.output_file
-            
-        # Check if we already have a path for this lang
+        # Consistent routing: results/[LANG.upper()]/results_..._[lang].csv
+        
+        # Initialize lang_files map if needed
         if not hasattr(self, 'lang_files'):
             self.lang_files = {}
+            
+        # If it's English and we already set output_file, use it (it's already in results/EN/)
+        if lang == 'en':
+            return self.output_file
             
         if lang in self.lang_files:
             return self.lang_files[lang]
             
         # Create new path: results/ES/results_..._es.csv
         try:
-            # Base directory
-            base_dir = os.path.dirname(self.output_file)
-            lang_dir = os.path.join(base_dir, lang.upper())
+            # Base results directory is the parent of the EN folder
+            en_dir_path = os.path.dirname(self.output_file)
+            base_results_dir = os.path.dirname(en_dir_path)
+            lang_dir = os.path.join(base_results_dir, lang.upper())
             os.makedirs(lang_dir, exist_ok=True)
             
             # Construct filename based on main filename

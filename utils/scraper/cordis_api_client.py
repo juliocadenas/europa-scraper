@@ -146,17 +146,39 @@ class CordisApiClient:
                     else:
                         url = f"https://cordis.europa.eu/search?q={encoded_query}"
                     
-                    # Add to results
-                    all_results.append({
-                        'url': url,
-                        'title': title,
-                        'description': teaser[:1000] if teaser else f"Cordis {content_type}: {title}",
-                        'source': 'Cordis Europa JSON V27',
-                        'mediatype': content_type,
-                        'rcn': rcn,
-                        'lang': content.get('language', 'en')
-                    })
-                    page_count += 1
+                    # Capture main language
+                    main_lang = content.get('language', 'en')
+                    
+                    # Get available languages if present
+                    available_langs = content.get('availableLanguages', '')
+                    if isinstance(available_langs, str):
+                        # Format: "en,es,fr"
+                        langs_list = [l.strip().lower() for l in available_langs.split(',') if l.strip()]
+                    elif isinstance(available_langs, list):
+                        langs_list = [str(l).lower() for l in available_langs]
+                    else:
+                        langs_list = [main_lang.lower()]
+                    
+                    # If empty or missing, fallback to main_lang
+                    if not langs_list:
+                        langs_list = [main_lang.lower()]
+                    
+                    # Ensure main_lang is in the list
+                    if main_lang.lower() not in langs_list:
+                        langs_list.append(main_lang.lower())
+                    
+                    # Add to results for EACH language
+                    for individual_lang in langs_list:
+                        all_results.append({
+                            'url': url,
+                            'title': title,
+                            'description': teaser[:1000] if teaser else f"Cordis {content_type}: {title}",
+                            'source': 'Cordis Europa JSON V27',
+                            'mediatype': content_type,
+                            'rcn': rcn,
+                            'lang': individual_lang
+                        })
+                        page_count += 1
                 
                 logger.info(f"V27 - Page {page}: Found {page_count} results. Total acumulado: {len(all_results)} de {total_hits}")
                 

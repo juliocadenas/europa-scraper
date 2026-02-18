@@ -172,16 +172,34 @@ class ScraperController(ScraperControllerBase):
               word_counts = self.text_processor.estimate_keyword_occurrences(full_content, search_term)
               should_exclude, exclude_reason = self.text_processor.should_exclude_result(total_words, word_counts, min_words)
 
-              if should_exclude:
-                  if 'total words' in exclude_reason.lower():
-                      self.stats['skipped_low_words'] += 1
-                      self.stats['files_not_saved'] += 1
-                      self.omitted_results.append({'sic_code': sic_code, 'course_name': course_name, 'title': title, 'url': url, 'description': description, 'omission_reason': f'Bajo conteo de palabras: {total_words}'})
-                  else:
-                      self.stats['skipped_zero_keywords'] += 1
-                      self.stats['files_not_saved'] += 1
-                      self.omitted_results.append({'sic_code': sic_code, 'course_name': course_name, 'title': title, 'url': url, 'description': description, 'omission_reason': 'Sin coincidencias de palabras clave'})
-                  return None
+                if should_exclude:
+                    # Log total keywords found for debugging
+                    total_keywords = sum(word_counts.values()) if word_counts else 0
+                    logger.info(f"   Result EXCLUDED: {exclude_reason} (Keywords sum: {total_keywords})")
+                    
+                    if 'total keywords' in exclude_reason.lower():
+                        self.stats['skipped_low_words'] += 1
+                        self.stats['files_not_saved'] += 1
+                        self.omitted_results.append({
+                            'sic_code': sic_code, 
+                            'course_name': course_name, 
+                            'title': title, 
+                            'url': url, 
+                            'description': description, 
+                            'omission_reason': f'Bajo conteo de palabras clave: {total_keywords} (Mínimo: {min_words})'
+                        })
+                    else:
+                        self.stats['skipped_zero_keywords'] += 1
+                        self.stats['files_not_saved'] += 1
+                        self.omitted_results.append({
+                            'sic_code': sic_code, 
+                            'course_name': course_name, 
+                            'title': title, 
+                            'url': url, 
+                            'description': description, 
+                            'omission_reason': 'Sin coincidencias de palabras clave'
+                        })
+                    return None
 
               formatted_word_counts = self.text_processor.format_word_counts(total_words, word_counts)
               if formatted_word_counts.startswith('Total words:') and len(formatted_word_counts.split('|')) == 1:
@@ -197,7 +215,15 @@ class ScraperController(ScraperControllerBase):
                   if len(content_preview) > len(description) * 2:
                       description = content_preview
 
-              result_data = {'sic_code': sic_code, 'course_name': course_name, 'title': title, 'description': description, 'url': url, 'total_words': formatted_word_counts}
+              result_data = {
+                  'sic_code': sic_code, 
+                  'course_name': course_name, 
+                  'title': title, 
+                  'description': description, 
+                  'url': url, 
+                  'total_words': formatted_word_counts,
+                  'lang': result.get('lang', 'en')
+              }
               return result_data
       except Exception as e:
           logger.error(f"Error procesando URL {result.get('url','')}: {e}")
@@ -567,190 +593,6 @@ class ScraperController(ScraperControllerBase):
               continue
 
       return all_search_results
-
-  
-      """
-      Procesa un único resultado de búsqueda.
-      """
-      try:
-          async with self._processing_semaphore:
-              if self.stop_requested:
-                  return None
-          
-              sic_code = result.get('sic_code', '')
-              course_name = result.get('course_name', '')
-              search_term = result.get('search_term', '')
-              title = result.get('title', 'Sin Título')
-              url = result.get('url', '')
-              description = result.get('description', 'Sin Descripción')
-          
-              record_identifier = (sic_code, course_name, url)
-
-              if record_identifier in self.processed_records:
-                  logger.debug(f"Registro duplicado omitido: {record_identifier}")
-                  self.stats['skipped_duplicates'] += 1
-                  self.stats['files_not_saved'] += 1
-                  self.omitted_results.append({
-                      'sic_code': sic_code,
-                      'course_name': course_name,
-                      'title': title,
-                      'url': url,
-                      'description': description,
-                      'omission_reason': "Registro duplicado (mismo código, curso y URL)"
-                  })
-                  return None
-          
-              self.processed_records.add(record_identifier)
-          
-              if not url:
-                  return None
-          
-              # Determine which URL to use for content extraction
-              if search_engine == "Wayback Machine":
-                  content_extraction_url = result.get('wayback_url', url)
-                  logger.debug(f"Extrayendo contenido de Wayback Machine de: {content_extraction_url}")
-              else:
-                  content_extraction_url = url
-                  logger.debug(f"Extrayendo contenido completo de: {content_extraction_url}")
-
-              try:
-                  full_content = await asyncio.wait_for(
-                      self.content_extractor.extract_full_content(content_extraction_url),
-                      timeout=60.0
-                  )
-              except asyncio.TimeoutError:
-                  logger.warning(f"Timeout global al extraer contenido de: {url}")
-                  self.stats['failed_content_extraction'] += 1
-                  self.stats['files_not_saved'] += 1
-                  self.omitted_results.append({
-                      'sic_code': sic_code,
-                      'course_name': course_name,
-                      'title': title,
-                      'url': url,
-                      'description': description,
-                      'omission_reason': "Timeout en extracción de contenido"
-                  })
-                  return None
-          
-              if not full_content:
-                  logger.warning(f"No se pudo extraer contenido de: {url}")
-                  self.stats['failed_content_extraction'] += 1
-                  self.stats['files_not_saved'] += 1
-                  self.omitted_results.append({
-                      'sic_code': sic_code,
-                      'course_name': course_name,
-                      'title': title,
-                      'url': url,
-                      'description': description,
-                      'omission_reason': "Error en extracción de contenido"
-                  })
-                  return None
-          
-              total_words = self.text_processor.count_all_words(full_content)
-              word_counts = self.text_processor.estimate_keyword_occurrences(full_content, search_term)
-
-              # Debug logging to understand keyword matching issues
-              logger.info(f"🔍 Processing URL: {content_extraction_url}")
-              logger.info(f"   Search term: '{search_term}'")
-              logger.info(f"   Minimum words threshold: {min_words}")
-              logger.info(f"   Content extracted: {'YES' if full_content else 'NO'}")
-              if full_content:
-                  logger.info(f"   Total words extracted: {total_words}")
-                  logger.info(f"   Word counts: {word_counts}")
-                  logger.info(f"   Content preview (first 300 chars): '{full_content[:300]}'")
-                  if len(full_content) > 500:
-                      logger.info(f"   Content preview (middle): '{full_content[300:600]}'")
-              else:
-                  logger.warning(f"   ❌ NO CONTENT extracted from {content_extraction_url}")
-
-              # Use the min_words parameter consistently for validation
-              should_exclude = (total_words < min_words)  # Use the actual min_words parameter
-              exclude_reason = f"Total words ({total_words}) less than minimum ({min_words})" if total_words < min_words else ""
-
-              logger.info(f"   Checking minimum words: {total_words} >= {min_words} = {total_words >= min_words}")
-
-              if total_words >= min_words and not word_counts:
-                  # If we have content but no keyword matches, we'll check manually below
-                  should_exclude = False
-                  logger.info(f"   Content has {total_words} words but no keyword matches - will check manually")
-          
-              if should_exclude:
-                  if "total words" in exclude_reason.lower():
-                      logger.debug(f"Excluyendo URL por bajo conteo de palabras: {url} - {exclude_reason}")
-                      self.stats['skipped_low_words'] += 1
-                      self.stats['files_not_saved'] += 1
-                      self.omitted_results.append({
-                          'sic_code': sic_code,
-                          'course_name': course_name,
-                          'title': title,
-                          'url': url,
-                          'description': description,
-                          'omission_reason': f"Bajo conteo de palabras: {total_words}"
-                      })
-                  else:
-                      logger.debug(f"Excluyendo URL por conteo cero de palabras clave: {url} - {exclude_reason}")
-                      self.stats['skipped_zero_keywords'] += 1
-                      self.stats['files_not_saved'] += 1
-                      self.omitted_results.append({
-                          'sic_code': sic_code,
-                          'course_name': course_name,
-                          'title': title,
-                          'url': url,
-                          'description': description,
-                          'omission_reason': "Sin coincidencias de palabras clave"
-                      })
-                  return None
-          
-              formatted_word_counts = self.text_processor.format_word_counts(total_words, word_counts)
-          
-              if formatted_word_counts.startswith("Total words:") and len(formatted_word_counts.split("|")) == 1:
-                  logger.debug(f"Excluyendo URL sin coincidencias de palabras clave: {url}")
-                  self.stats['skipped_zero_keywords'] += 1
-                  self.stats['files_not_saved'] += 1
-                  self.omitted_results.append({
-                      'sic_code': sic_code,
-                      'course_name': course_name,
-                      'title': title,
-                      'url': url,
-                      'description': description,
-                      'omission_reason': "Sin coincidencias de palabras clave"
-                  })
-                  return None
-          
-              description = self.text_processor.clean_description(description)
-
-              if len(description) < 100 and full_content:
-                  content_preview = full_content[:1000]
-                  content_preview = self.text_processor.clean_description(content_preview)
-                  if len(content_preview) > len(description) * 2:
-                      description = content_preview
-          
-              result_data = {
-                  'sic_code': sic_code,
-                  'course_name': course_name,
-                  'title': title,
-                  'description': description,
-                  'url': url,
-                  'total_words': formatted_word_counts
-              }
-          
-              return result_data
-      
-      except Exception as e:
-          logger.error(f"Error procesando URL {url}: {str(e)}")
-          logger.error(traceback.format_exc())
-          self.stats['failed_content_extraction'] += 1
-          self.stats['total_errors'] += 1
-          self.stats['files_not_saved'] += 1
-          self.omitted_results.append({
-              'sic_code': result.get('sic_code', ''),
-              'course_name': result.get('course_name', ''),
-              'title': result.get('title', 'Sin Título'),
-              'url': result.get('url', ''),
-              'description': result.get('description', 'Sin Descripción'),
-              'omission_reason': f"Error en extracción de contenido: {str(e)}"
-          })
-          return None
 
 
   async def _process_cordis_api_phase(self, courses_in_range: List[Tuple[str, str, str, str]], search_mode: str = 'broad', progress_callback: Optional[Callable] = None) -> List[Dict[str, Any]]:
