@@ -172,33 +172,33 @@ class ScraperController(ScraperControllerBase):
               word_counts = self.text_processor.estimate_keyword_occurrences(full_content, search_term)
               should_exclude, exclude_reason = self.text_processor.should_exclude_result(total_words, word_counts, min_words)
 
-                if should_exclude:
-                    # Log total keywords found for debugging
-                    total_keywords = sum(word_counts.values()) if word_counts else 0
-                    logger.info(f"   Result EXCLUDED: {exclude_reason} (Keywords sum: {total_keywords})")
-                    
-                    if 'total keywords' in exclude_reason.lower():
-                        self.stats['skipped_low_words'] += 1
-                        self.stats['files_not_saved'] += 1
-                        self.omitted_results.append({
-                            'sic_code': sic_code, 
-                            'course_name': course_name, 
-                            'title': title, 
-                            'url': url, 
-                            'description': description, 
-                            'omission_reason': f'Bajo conteo de palabras clave: {total_keywords} (Mínimo: {min_words})'
-                        })
-                    else:
-                        self.stats['skipped_zero_keywords'] += 1
-                        self.stats['files_not_saved'] += 1
-                        self.omitted_results.append({
-                            'sic_code': sic_code, 
-                            'course_name': course_name, 
-                            'title': title, 
-                            'url': url, 
-                            'description': description, 
-                            'omission_reason': 'Sin coincidencias de palabras clave'
-                        })
+              if should_exclude:
+                  # Log total keywords found for debugging
+                  total_keywords = sum(word_counts.values()) if word_counts else 0
+                  logger.info(f"   Result EXCLUDED: {exclude_reason} (Keywords sum: {total_keywords})")
+                  
+                  if 'total keywords' in exclude_reason.lower():
+                      self.stats['skipped_low_words'] += 1
+                      self.stats['files_not_saved'] += 1
+                      self.omitted_results.append({
+                          'sic_code': sic_code, 
+                          'course_name': course_name, 
+                          'title': title, 
+                          'url': url, 
+                          'description': description, 
+                          'omission_reason': f'Bajo conteo de palabras clave: {total_keywords} (Mínimo: {min_words})'
+                      })
+                  else:
+                      self.stats['skipped_zero_keywords'] += 1
+                      self.stats['files_not_saved'] += 1
+                      self.omitted_results.append({
+                          'sic_code': sic_code, 
+                          'course_name': course_name, 
+                          'title': title, 
+                          'url': url, 
+                          'description': description, 
+                          'omission_reason': 'Sin coincidencias de palabras clave'
+                      })
                     return None
 
               formatted_word_counts = self.text_processor.format_word_counts(total_words, word_counts)
