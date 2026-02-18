@@ -199,7 +199,7 @@ class ScraperController(ScraperControllerBase):
                           'description': description, 
                           'omission_reason': 'Sin coincidencias de palabras clave'
                       })
-                    return None
+                  return None
 
               formatted_word_counts = self.text_processor.format_word_counts(total_words, word_counts)
               if formatted_word_counts.startswith('Total words:') and len(formatted_word_counts.split('|')) == 1:
