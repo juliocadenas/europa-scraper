@@ -122,6 +122,7 @@ def worker_process(
     worker_id: int,
     work_queue: multiprocessing.JoinableQueue,
     status_dict: Dict,
+    course_states: Dict,
     config_path: str,
     event_queue: multiprocessing.Queue # Corregido: era event_log y faltaba tipo
 ):
@@ -312,16 +313,38 @@ def worker_process(
                     'progress': percentage,
                     'current_task': message
                 })
-                # Incluir estadísticas si están disponibles
                 if stats:
                     current_status.update({
                         'total_urls_found': stats.get('total_urls_found', 0),
                         'files_saved': stats.get('files_saved', 0)
                     })
-                
                 status_dict[worker_id] = current_status
-                # Log progress events logic handled inside controller now via set_event_callback
+                
+                # Actualizar estado del curso
+                if batch and len(batch) > 0:
+                    course_sic = batch[0][0]
+                    if course_sic in course_states:
+                        try:
+                            c_state = course_states[course_sic]
+                            c_state.update({
+                                'progress': percentage,
+                                'status': 'Procesando' if percentage < 100 else 'Completado'
+                            })
+                            course_states[course_sic] = c_state
+                        except Exception:
+                            pass
             
+            # Marcar inicio del curso
+            if batch and len(batch) > 0:
+                course_sic = batch[0][0]
+                if course_sic in course_states:
+                    try:
+                        c_state = course_states[course_sic]
+                        c_state['status'] = 'Procesando'
+                        course_states[course_sic] = c_state
+                    except Exception:
+                        pass
+
             # run_scraping es una corutina, la ejecutamos en el bucle de eventos del worker.
             loop.run_until_complete(scraper_controller.run_scraping(
                 job_params, 
@@ -329,6 +352,19 @@ def worker_process(
                 worker_id=worker_id,
                 batch=batch
             ))
+            
+            # Marcar fin explícito si fue éxito (el error se manda en `except`)
+            if batch and len(batch) > 0:
+                course_sic = batch[0][0]
+                if course_sic in course_states:
+                    try:
+                        c_state = course_states[course_sic]
+                        c_state['status'] = 'Completado'
+                        c_state['progress'] = 100
+                        course_states[course_sic] = c_state
+                    except Exception:
+                        pass
+
 
             logger.info(f"Worker {worker_id} completó el lote {batch_id}.")
             log_event_sync(EventType.SUCCESS, f"Lote {batch_id} completado.")
@@ -389,6 +425,7 @@ class ScraperServer:
         self.worker_pool: List[multiprocessing.Process] = []
         self.work_queue: Optional[multiprocessing.JoinableQueue] = None
         self.worker_states: Optional[Dict] = None
+        self.course_states: Optional[Dict] = None
 
         # --- Bandera de Estado Global ---
         self.is_job_running = False
@@ -414,6 +451,7 @@ class ScraperServer:
         self.manager = multiprocessing.Manager()
         self.work_queue = self.manager.JoinableQueue()
         self.worker_states = self.manager.dict()
+        self.course_states = self.manager.dict()
         self.cleanup_stop_event = threading.Event()
         
         # --- NUEVO: COLA DE EVENTOS Y HILO CONSUMIDOR ---
@@ -484,7 +522,7 @@ class ScraperServer:
         self.worker_pool = [
             multiprocessing.Process(
                 target=worker_process,
-                args=(i, self.work_queue, self.worker_states, self.config_path, self.event_queue) # Pass event_queue
+                args=(i, self.work_queue, self.worker_states, self.course_states, self.config_path, self.event_queue) # Pass event_queue
             ) for i in range(num_workers)
         ]
         for p in self.worker_pool:
@@ -612,6 +650,9 @@ class ScraperServer:
             self.logger.info("Limpiando estados previos de los trabajadores...")
             await global_event_log.add(EventType.SYSTEM, "Server", "Limpiando estados previos de los trabajadores.")
             self.worker_states.clear()
+            
+        if self.course_states is not None:
+            self.course_states.clear()
 
         try:
             # Manejar múltiples formatos de entrada del frontend
@@ -707,6 +748,12 @@ class ScraperServer:
                 # Cada item de trabajo es ahora un solo curso en un lote de tamaño 1
                 single_course_batch = [(course_sic, course_name)]
                 self.work_queue.put((single_course_batch, job_params_dict))
+                self.course_states[course_sic] = {
+                    'sic': course_sic,
+                    'name': course_name,
+                    'status': 'Pendiente',
+                    'progress': 0
+                }
 
             self.logger.info(f"¡¡¡TAREAS PUESTAS EN LA COLA!!! Tamaño de la cola: {self.work_queue.qsize()}")
             await global_event_log.add(EventType.SYSTEM, "Server", f"Tareas puestas en la cola. Tamaño de la cola: {self.work_queue.qsize()}")
@@ -816,7 +863,13 @@ class ScraperServer:
         return {"events": events, "latest_id": events[-1]["id"] if events else min_id}
 
     async def get_detailed_status(self):
-        return dict(self.worker_states)
+        workers_dict = dict(self.worker_states) if self.worker_states else {}
+        courses_dict = dict(self.course_states) if self.course_states else {}
+        return {
+            "workers": workers_dict, 
+            "courses": courses_dict,
+            "is_running": self.is_job_running
+        }
 
     async def get_all_courses(self):
         try:
