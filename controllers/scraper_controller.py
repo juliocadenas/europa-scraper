@@ -803,7 +803,7 @@ class ScraperController(ScraperControllerBase):
                   try:
                       success = self.result_manager.add_result(result_data)
                       if success:
-                          self.stats['saved_records'] += 1
+                          self.stats['files_saved'] += 1
                           logger.info(f"✅ Resultado guardado: {result_data['title']} - {result_data['url']}")
                       else:
                           logger.error(f"❌ FALLO al guardar resultado: {result_data['title']}")
@@ -906,7 +906,7 @@ class ScraperController(ScraperControllerBase):
               self.browser_manager.set_proxy_manager(None)
               logger.info("Proxies DESHABILITADOS explícitamente")
   
-  async def run_scraping(self, params: Dict[str, Any], progress_callback: Optional[Callable] = None, worker_id: Optional[int] = None) -> List[Dict[str, Any]]:
+  async def run_scraping(self, params: Dict[str, Any], progress_callback: Optional[Callable] = None, worker_id: Optional[int] = None, batch: Optional[List[Tuple]] = None) -> List[Dict[str, Any]]:
       """
       Ejecuta el proceso de scraping.
       
@@ -914,6 +914,7 @@ class ScraperController(ScraperControllerBase):
           params: Diccionario de parámetros para la tarea.
           progress_callback: Callback para reportar el progreso.
           worker_id: ID opcional para el trabajador en modo paralelo.
+          batch: Lote opcional de cursos a procesar (para modo multiproceso).
       """
       try:
           self.stop_requested = False
@@ -946,7 +947,7 @@ class ScraperController(ScraperControllerBase):
               'skipped_low_words': 0,
               'skipped_zero_keywords': 0,
               'skipped_duplicates': 0,
-              'saved_records': 0,
+              'files_saved': 0,
               'failed_content_extraction': 0,
               'files_not_saved': 0,
               'total_errors': 0,
@@ -1011,13 +1012,25 @@ class ScraperController(ScraperControllerBase):
           if progress_callback:
               progress_callback(0, f"Archivo CSV creado: {output_file}")
       
-          all_sic_codes_with_courses = self.csv_handler.get_detailed_sic_codes_with_courses()
-      
-          if not all_sic_codes_with_courses:
-              logger.warning("No se encontraron códigos SIC detallados con cursos en los datos CSV")
-              return []
-      
-          courses_in_range = self._get_courses_in_range_by_position(all_sic_codes_with_courses, from_sic, to_sic)
+          server_id = self.config.get('server_id', 'UNKNOWN_SERVER')
+          
+          if batch:
+              logger.info(f"MODO MULTIPROCESO: Usando lote proporcionado de {len(batch)} cursos.")
+              courses_in_range = []
+              for item in batch:
+                  if isinstance(item, (list, tuple)) and len(item) >= 2:
+                      # Transformar a formato esperado (sic, name, status, server)
+                      courses_in_range.append((item[0], item[1], "PENDING", server_id))
+                  else:
+                      logger.warning(f"Item de lote inválido: {item}")
+          else:
+              all_sic_codes_with_courses = self.csv_handler.get_detailed_sic_codes_with_courses()
+          
+              if not all_sic_codes_with_courses:
+                  logger.warning("No se encontraron códigos SIC detallados con cursos en los datos CSV")
+                  return []
+          
+              courses_in_range = self._get_courses_in_range_by_position(all_sic_codes_with_courses, from_sic, to_sic)
       
           logger.info(f"CURSOS EN RANGO CALCULADOS: {len(courses_in_range)} códigos SIC desde '{from_sic}' hasta '{to_sic}'")
 

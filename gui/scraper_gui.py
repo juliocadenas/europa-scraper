@@ -329,7 +329,7 @@ class ScraperGUI(ttk.Frame):
         # Guardar URL automáticamente al cambiar
         self.server_url.trace_add("write", lambda *args: self.config.set('server_url', self.server_url.get()))
         
-        self.connect_button = ttk.Button(config_frame, text="Conectar / Refrescar", command=self._connect_to_server)
+        self.connect_button = ttk.Button(config_frame, text="Conectar / Refrescar", command=self._connect_to_server_threaded)
         self.connect_button.grid(row=2, column=1, padx=10, pady=20, sticky=tk.E)
         
         self.connection_status_label = ttk.Label(config_frame, text="Desconectado", foreground="red")
@@ -492,8 +492,10 @@ class ScraperGUI(ttk.Frame):
             self.results_frame.add_log(f"❌ Error al procesar datos de cursos: {e}")
 
     def _connect_to_server(self, show_popups=True):
+        """Conecta al servidor. SIEMPRE llamar desde un hilo de fondo."""
+        url = self.server_url.get()
         try:
-            r = requests.get(f"{self.server_url.get()}/api/version", timeout=5)
+            r = requests.get(f"{url}/api/version", timeout=5)
             version = "???"
             if r.status_code == 200:
                 try:
@@ -501,38 +503,117 @@ class ScraperGUI(ttk.Frame):
                 except:
                     version = "V3.1-Legacy"
                 
-                self.connection_status_label.config(text=f"CONECTADO ({version})", foreground="green")
+                # Actualizar UI desde hilo principal
+                self.master.after(0, lambda v=version: self.connection_status_label.config(
+                    text=f"CONECTADO ({v})", foreground="green"))
+                
+                # Cargar cursos en hilo de fondo también
                 self._refresh_courses_from_server()
-                self._update_status_loop()
-                if show_popups: messagebox.showinfo("OK", f"Conectado al servidor {version}")
+                
+                # Iniciar polling de estado
+                self.master.after(500, self._schedule_status_poll)
+                
+                if show_popups:
+                    self.master.after(0, lambda v=version: messagebox.showinfo("OK", f"Conectado al servidor {v}"))
             else:
-                self.connection_status_label.config(text=f"ERROR ({r.status_code})", foreground="red")
+                self.master.after(0, lambda c=r.status_code: self.connection_status_label.config(
+                    text=f"ERROR ({c})", foreground="red"))
         except Exception as e:
-            self.connection_status_label.config(text="DESCONECTADO", foreground="red")
-            if show_popups: logger.error(f"Error de conexión: {e}")
+            self.master.after(0, lambda: self.connection_status_label.config(
+                text="DESCONECTADO", foreground="red"))
+            if show_popups:
+                logger.error(f"Error de conexión: {e}")
+
+    def _connect_to_server_threaded(self):
+        """Botón 'Conectar': lanza la conexión en un hilo de fondo."""
+        self.connection_status_label.config(text="Conectando...", foreground="orange")
+        threading.Thread(target=self._connect_to_server, args=(True,), daemon=True).start()
+
+    def _log_debug(self, msg):
+        try:
+            with open("debug_client.txt", "a") as f:
+                import datetime
+                f.write(f"{datetime.datetime.now()}: {msg}\n")
+        except: pass
 
     def _on_start_scraping(self):
-        f_idx = self.from_sic_listbox.curselection()
-        t_idx = self.to_sic_listbox.curselection()
-        if not f_idx or not t_idx: return
-        f_sic = self.from_sic_listbox.get(f_idx[0]).split(' - ')[0]
-        t_sic = self.to_sic_listbox.get(t_idx[0]).split(' - ')[0]
+        try:
+            self._log_debug("Botón Iniciar Scraping presionado")
+            
+            # Verificar existencia de listboxes
+            if not hasattr(self, 'from_sic_listbox') or not hasattr(self, 'to_sic_listbox'):
+                self._log_debug("ERROR: Listboxes no encontrados")
+                messagebox.showerror("Error GUI", "Componentes de lista no inicializados.")
+                return
+
+            f_idx = self.from_sic_listbox.curselection()
+            t_idx = self.to_sic_listbox.curselection()
+            
+            self._log_debug(f"Selección: From={f_idx}, To={t_idx}")
+            
+            if not f_idx or not t_idx:
+                self._log_debug("Selección vacía. Mostrando aviso.")
+                messagebox.showwarning(
+                    "Selección Requerida",
+                    "Selecciona un curso de inicio y un curso de fin en la lista de la izquierda.\n\n"
+                    "Si la lista está vacía, ve a la pestaña 'Configuración del Servidor',\n"
+                    "verifica la URL y presiona 'Conectar / Refrescar'."
+                )
+                return
+            
+            f_sic = self.from_sic_listbox.get(f_idx[0]).split(' - ')[0]
+            t_sic = self.to_sic_listbox.get(t_idx[0]).split(' - ')[0]
+            
+            params = {
+                'from_sic': f_sic,
+                'to_sic': t_sic,
+                # Parámetros desde SearchConfigTab
+                'search_engine': self.search_config_tab.search_engine_var.get(),
+                'search_mode': self.search_config_tab.search_mode_var.get(),
+                'require_keywords': self.search_config_tab.require_keywords_var.get(),
+                # Parámetros desde ConfigTab (General)
+                'is_headless': self.config_tab.headless_mode_var.get(),
+                'min_words': int(self.config_tab.min_words_var.get() or 0),
+                'num_workers': int(self.config_tab.num_workers_var.get() or 4)
+            }
+            
+            self._log_debug(f"Params preparados: {params}")
+
+            if hasattr(self, 'controller') and self.controller:
+                try:
+                    # Pasar la URL completa (con https://)
+                    full_url = self.server_url.get()
+                    self._log_debug(f"URL Servidor: {full_url}")
+                    self.results_frame.add_log(f"Iniciando solicitud de scraping a {full_url}...")
+                    self.results_frame.add_log(f"Parámetros: {params}")
+                    
+                    # Ejecutar en hilo separado para asegurar que no bloquee aunque el controlador no lo hiciera
+                    def _launch():
+                        try:
+                            self._log_debug("Lanzando thread de scraping...")
+                            self.controller.start_scraping_on_server(full_url, params)
+                            self._log_debug("Thread lanzado OK")
+                        except Exception as e:
+                            self._log_debug(f"ERROR en thread: {e}")
+                            self.master.after(0, lambda: messagebox.showerror("Error en Controlador", f"Fallo al iniciar: {e}"))
+                            self.master.after(0, lambda: self.results_frame.add_log(f"❌ Error lanzando scraping: {e}"))
+
+                    threading.Thread(target=_launch, daemon=True).start()
+                    
+                except Exception as e:
+                    self._log_debug(f"ERROR preparando solicitud: {e}")
+                    messagebox.showerror("Error GUI", f"Error preparando solicitud: {e}")
+                    logger.error(f"Error en _on_start_scraping: {e}")
+            else:
+                self._log_debug("ERROR: self.controller es None")
+                self.results_frame.add_log("❌ Error: Controlador no inicializado.")
+                messagebox.showerror("Error Fatal", "El controlador de la aplicación no está conectado a la GUI.")
         
-        params = {
-            'from_sic': f_sic,
-            'to_sic': t_sic,
-            'search_engine': self.search_config_tab.search_engine.get(),
-            'is_headless': self.search_config_tab.is_headless.get(),
-            'min_words': int(self.search_config_tab.min_words.get() or 0),
-            'search_mode': self.search_config_tab.search_mode.get(),
-            'require_keywords': self.search_config_tab.require_keywords.get(),
-            'num_workers': int(self.search_config_tab.num_workers.get() or 4)
-        }
-        
-        if hasattr(self, 'controller') and self.controller:
-            self.controller.start_scraping_on_server(self.server_url.get().replace('http://',''), params)
-        else:
-            self.results_frame.add_log("❌ Error: Controlador no inicializado.")
+        except Exception as e:
+            self._log_debug(f"CRITICAL ERROR _on_start_scraping: {e}")
+            import traceback
+            self._log_debug(traceback.format_exc())
+            messagebox.showerror("Error Crítico", f"Error inesperado en GUI:\n{e}")
 
     def _on_stop_scraping(self):
         if hasattr(self, 'controller') and self.controller:
@@ -588,15 +669,10 @@ class ScraperGUI(ttk.Frame):
     def _update_timer_display(self, t): self.queue.put(('update_timer', t))
     def _log_callback(self, l): self.queue.put(('log', l))
     def _connect_and_load_initial_data(self):
-        """Intenta conectar con el servidor y cargar datos iniciales."""
+        """Conecta al servidor en un hilo de fondo para no bloquear la GUI."""
         url = self.server_url.get()
         if not url: return
-        
-        try:
-            # Probar conexión (ping)
-            r = requests.get(f"{url}/api/ping", timeout=3)
-            self._connect_to_server(False)
-        except: pass
+        threading.Thread(target=self._connect_to_server, args=(False,), daemon=True).start()
     def _show_context_menu(self, event):
         """Muestra el menú contextual en la posición del ratón."""
         self.last_event_widget = event.widget
@@ -619,33 +695,38 @@ class ScraperGUI(ttk.Frame):
         except: pass
         finally: self.master.after(200, self.process_queue)
 
-    def _update_status_loop(self):
-        """Bucle para obtener estado y logs periódicamente."""
+    def _schedule_status_poll(self):
+        """Programa el polling de estado en un hilo de fondo (no bloquea la GUI)."""
+        if self.is_closing: return
+        threading.Thread(target=self._do_status_poll, daemon=True).start()
+
+    def _do_status_poll(self):
+        """Hace las llamadas HTTP de polling en un hilo de fondo."""
         url = self.server_url.get()
         if not url or self.is_closing: return
-        
         try:
-            # Estado detallado
-            r = requests.get(f"{url}/api/detailed_status", timeout=2)
+            r = requests.get(f"{url}/api/detailed_status", timeout=3)
             if r.status_code == 200:
                 data = r.json()
-                self._render_worker_status(data.get('workers', {}))
-                
-            # Audit logs (scan_events fue renombrado a events para consistencia)
-            r_logs = requests.get(f"{url}/api/events?min_id={getattr(self, 'last_event_id', 0)}", timeout=2)
+                workers = data.get('workers', {})
+                if workers:
+                    self.master.after(0, lambda w=workers: self._render_worker_status(w))
+
+            r_logs = requests.get(f"{url}/api/events?min_id={getattr(self, 'last_event_id', 0)}", timeout=3)
             if r_logs.status_code == 200:
                 evs = r_logs.json().get('events', [])
                 if evs:
-                    self.update_audit_log(evs)
+                    self.master.after(0, lambda e=evs: self.update_audit_log(e))
                     self.last_event_id = evs[-1]['id']
-        except requests.exceptions.ConnectionError:
-            # Server might be down or unreachable
+        except:
             pass
-        except Exception as e:
-            print(f"Error in _update_status_loop: {e}")
         finally:
             if not self.is_closing:
-                self.master.after(1000, self._update_status_loop) # Poll every 1 second
+                self.master.after(2000, self._schedule_status_poll)
+
+    def _update_status_loop(self):
+        """Compatibilidad: redirige al nuevo sistema de polling en hilo de fondo."""
+        self._schedule_status_poll()
 
 class ServerFilesWindow(tk.Toplevel):
     def __init__(self, parent, url):

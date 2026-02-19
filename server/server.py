@@ -709,8 +709,12 @@ class ScraperServer:
             }
 
         except Exception as e:
+            import traceback
             self.logger.error("Error al iniciar el trabajo de scraping.", exc_info=True)
-            await global_event_log.add(EventType.ERROR, "Server", f"Error al iniciar el trabajo de scraping: {e}", {"traceback": traceback.format_exc()})
+            try:
+                await global_event_log.add(EventType.ERROR, "Server", f"Error al iniciar el trabajo de scraping: {e}", {"traceback": traceback.format_exc()})
+            except Exception as log_e:
+                self.logger.error(f"Fallo al registrar evento global: {log_e}")
             self.is_job_running = False
             raise HTTPException(status_code=500, detail=f"Error al iniciar el trabajo: {e}")
 
