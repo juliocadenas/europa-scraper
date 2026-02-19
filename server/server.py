@@ -459,11 +459,11 @@ class ScraperServer:
     def _start_worker_pool(self, num_workers: int):
         if self.worker_pool:
             self.logger.warning("El pool de trabajadores ya está en ejecución. No se iniciará de nuevo.")
-            asyncio.run(global_event_log.add(EventType.WARNING, "Server", "Intento de iniciar pool de workers, pero ya está en ejecución."))
+            asyncio.create_task(global_event_log.add(EventType.WARNING, "Server", "Intento de iniciar pool de workers, pero ya está en ejecución."))
             return
 
         self.logger.info(f"Iniciando un pool de {num_workers} procesos trabajadores...")
-        asyncio.run(global_event_log.add(EventType.SYSTEM, "Server", f"Iniciando un pool de {num_workers} procesos trabajadores."))
+        asyncio.create_task(global_event_log.add(EventType.SYSTEM, "Server", f"Iniciando un pool de {num_workers} procesos trabajadores."))
         self.worker_pool = [
             multiprocessing.Process(
                 target=worker_process,
@@ -478,7 +478,11 @@ class ScraperServer:
             return
         
         self.logger.info("Enviando señal de finalización a todos los trabajadores...")
-        asyncio.run(global_event_log.add(EventType.SYSTEM, "Server", "Enviando señal de finalización a todos los trabajadores."))
+        try:
+            loop = asyncio.get_running_loop()
+            loop.create_task(global_event_log.add(EventType.SYSTEM, "Server", "Enviando señal de finalización a todos los trabajadores."))
+        except RuntimeError:
+            asyncio.run(global_event_log.add(EventType.SYSTEM, "Server", "Enviando señal de finalización a todos los trabajadores."))
         for _ in self.worker_pool:
             self.work_queue.put(None) # Enviar una señal de "veneno" por cada trabajador
 
@@ -486,13 +490,15 @@ class ScraperServer:
             p.join(timeout=10) # Esperar a que los procesos terminen
             if p.is_alive():
                 self.logger.warning(f"El trabajador {p.pid} no terminó a tiempo, forzando terminación.")
-                asyncio.run(global_event_log.add(EventType.WARNING, "Server", f"El trabajador {p.pid} no terminó a tiempo, forzando terminación."))
+                try: asyncio.get_running_loop().create_task(global_event_log.add(EventType.WARNING, "Server", f"El trabajador {p.pid} no terminó a tiempo, forzando terminación."))
+                except RuntimeError: asyncio.run(global_event_log.add(EventType.WARNING, "Server", f"El trabajador {p.pid} no terminó a tiempo, forzando terminación."))
                 p.terminate()
 
         self.worker_pool = []
         self.is_job_running = False
         self.logger.info("Pool de trabajadores detenido.")
-        asyncio.run(global_event_log.add(EventType.SYSTEM, "Server", "Pool de trabajadores detenido."))
+        try: asyncio.get_running_loop().create_task(global_event_log.add(EventType.SYSTEM, "Server", "Pool de trabajadores detenido."))
+        except RuntimeError: asyncio.run(global_event_log.add(EventType.SYSTEM, "Server", "Pool de trabajadores detenido."))
 
     def _start_broadcasting(self):
         """Inicia el broadcasting para descubrimiento de clientes."""
