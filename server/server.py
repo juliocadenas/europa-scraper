@@ -358,11 +358,17 @@ def worker_process(
             # Esto no debería ocurrir con un `get()` bloqueante, pero es una salvaguarda
             log_event_sync(EventType.WORKER, "Cola de trabajo vacía. Esperando...")
             time.sleep(1)
-        except Exception:
+        except Exception as e:
             import traceback
-            logger.error(f"Worker {worker_id}: Error catastrófico.", exc_info=True)
-            log_event_sync(EventType.ERROR, "Error catastrófico en el worker.", {"traceback": traceback.format_exc()})
-            status_dict[worker_id] = {'id': worker_id, 'status': 'Error', 'progress': 0, 'current_task': 'CRASHED'}
+            error_msg = f"Error crítico en Worker-{worker_id}: {str(e)}"
+            logger.error(f"Worker {worker_id}: {error_msg}", exc_info=True)
+            log_event_sync(EventType.ERROR, error_msg, {"traceback": traceback.format_exc()})
+            status_dict[worker_id] = {
+                'id': worker_id, 
+                'status': 'Error', 
+                'progress': 0, 
+                'current_task': f"CRASHED: {str(e)[:40]}..."
+            }
             # Marcar la tarea como hecha para no bloquear la cola si hay un error
             if 'work_queue' in locals() and isinstance(work_queue, multiprocessing.queues.JoinableQueue):
                 work_queue.task_done()
