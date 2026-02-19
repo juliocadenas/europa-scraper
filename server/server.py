@@ -204,7 +204,18 @@ def worker_process(
                 
                 # Configurar proxy manager
                 proxy_file_path = os.path.join(project_root, 'config', 'proxies.txt')
-                proxy_manager = ProxyManager(proxy_file_path)
+                proxy_manager = ProxyManager() # Constructor sin argumentos
+                
+                # Cargar proxies desde archivo si existe
+                if os.path.exists(proxy_file_path):
+                    try:
+                        with open(proxy_file_path, 'r', encoding='utf-8') as f:
+                            proxies = [line.strip() for line in f if line.strip() and not line.startswith('#')]
+                            if proxies:
+                                proxy_manager.set_proxies(proxies)
+                                logger.info(f"Cargados {len(proxies)} proxies desde {proxy_file_path}")
+                    except Exception as e:
+                        logger.error(f"Error cargando archivo de proxies: {e}")
                 
                 # start_web_server_if_needed(project_root) # Eliminado: no existe esta función
                 
