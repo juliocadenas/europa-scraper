@@ -22,10 +22,11 @@ from queue import Empty
 from typing import Dict, Any, Optional, List, Tuple
 from fastapi import FastAPI, HTTPException, UploadFile, File, Query
 from fastapi.responses import FileResponse, HTMLResponse
+from pydantic import BaseModel
 from datetime import datetime
 from collections import deque
 import enum
-import queue # Import queue for Empty exception
+import queue 
 
 # --- SYSTEM EVENTS ENUM ---
 class EventType(str, enum.Enum):
@@ -63,50 +64,11 @@ class EventLog:
             return list(self._log)[-50:]
         return [e for e in self._log if e["id"] > min_id]
 
-# GLOBAL EVENT LOG (Main Process Only)
-global_event_log = EventLog()
-
-from collections import deque
-import enum
-
-# --- SYSTEM EVENTS ENUM ---
-class EventType(str, enum.Enum):
-    SYSTEM = "SYSTEM"
-    WORKER = "WORKER"
-    SCRAPER = "SCRAPER"
-    ERROR = "ERROR"
-    SUCCESS = "SUCCESS"
-    WARNING = "WARNING"
-
-# --- EVENT LOG SYSTEM ---
-class EventLog:
-    def __init__(self, max_size=5000):
-        self._log = deque(maxlen=max_size)
-        self._lock = asyncio.Lock()
-        self._counter = 0
-
-    async def add(self, event_type: str, source: str, message: str, details: Dict = None):
-        async with self._lock:
-            self._counter += 1
-            event = {
-                "id": self._counter,
-                "timestamp": datetime.now().strftime("%H:%M:%S"),
-                "type": event_type,
-                "source": source,
-                "message": message,
-                "details": details or {}
-            }
-            self._log.append(event)
-            return event
-
-    async def get_events(self, min_id: int = 0):
-        """Retorna eventos con ID > min_id"""
-        # Optimización: si min_id es 0, devolver los últimos 50
-        if min_id == 0:
-            return list(self._log)[-50:]
-        
-        # Filtrar solo los nuevos
-        return [e for e in self._log if e["id"] > min_id]
+# --- Constantes ---
+NUM_PROCESSES = os.cpu_count() or 4
+BATCH_SIZE = 10
+BROADCAST_PORT = 50001
+BROADCAST_INTERVAL = 5
 
 # GLOBAL EVENT LOG
 global_event_log = EventLog()
@@ -567,25 +529,31 @@ class ScraperServer:
             time.sleep(BROADCAST_INTERVAL)
         
     def _setup_routes(self):
-        self.app.post("/start_scraping", status_code=202)(self.start_scraping_job)
-        self.app.post("/stop_scraping")(self.stop_scraping_job)
-        self.app.post("/force_reset")(self.force_reset_state)
-        self.app.get("/detailed_status")(self.get_detailed_status)
-        self.app.post("/upload_courses")(self.upload_courses)
-        self.app.get("/get_all_courses")(self.get_all_courses)
-        self.app.get("/download_results")(self.download_results)
-        self.app.get("/cleanup_files")(self.cleanup_files_endpoint)
+        # Endpoints estándar
+        self.app.post("/api/start_scraping", status_code=202)(self.start_scraping_job)
+        self.app.post("/api/stop_scraping")(self.stop_scraping_job)
+        self.app.post("/api/reset")(self.force_reset_state)
+        self.app.get("/api/detailed_status")(self.get_detailed_status)
+        self.app.post("/api/upload_courses")(self.upload_courses)
+        self.app.get("/api/get_all_courses")(self.get_all_courses)
+        self.app.get("/api/download_results")(self.download_results)
+        self.app.post("/api/cleanup_files")(self.cleanup_files_endpoint)
         self.app.get("/")(self.root_endpoint)
-        self.app.get("/ping")(self.ping_endpoint)
+        self.app.get("/api/ping")(self.ping_endpoint)
         
-        # Nuevos endpoints para visualización de resultados
+        # Endpoints de diagnóstico y eventos
+        self.app.get("/api/events")(self.get_events_endpoint)
+        self.app.get("/api/debug_info")(self.debug_info)
+        self.app.get("/api/version")(self.version_endpoint)
+        
+        # Endpoints de visualización de resultados
         self.app.get("/api/list_results")(self.list_results_files)
         self.app.get("/api/list_omitidos")(self.list_omitidos_files)
         self.app.get("/api/download_file")(self.download_single_file)
+        self.app.delete("/api/delete_file")(self.delete_single_file)  # NUEVO: borrado individual
         self.app.get("/api/preview_csv")(self.preview_csv)
         self.app.get("/viewer")(self.results_viewer_html)
         self.app.get("/api/cloudflare_url")(self.get_cloudflare_url)
-        self.app.get("/scan_events")(self.scan_events) # New endpoint
         
         # Agregar logging para verificar que las rutas se registraron
         self.logger.info("Rutas registradas:")
@@ -824,7 +792,8 @@ class ScraperServer:
             
             db_handler = SQLiteHandler(db_path)
             all_courses = db_handler.get_all_courses()
-            return all_courses
+            # Convert tuples to dictionaries for GUI compatibility
+            return [{"sic_code": c[0], "course_name": c[1]} for c in all_courses]
         except Exception as e:
             self.logger.exception("Error en get_all_courses")
             raise HTTPException(status_code=500, detail=f"Error interno del servidor al obtener cursos: {e}")
@@ -1002,24 +971,39 @@ class ScraperServer:
             raise HTTPException(status_code=500, detail=f"Error limpiando archivos: {str(e)}")
 
     async def list_results_files(self):
-        """Lista todos los archivos CSV en la carpeta results con información detallada."""
+        """Lista todos los archivos CSV/XLSX en la carpeta results y sus subcarpetas."""
         try:
             results_dir = os.path.join(project_root, 'results')
+            self.logger.info(f"Listando archivos recursivamente en: {results_dir}")
+            
             if not os.path.exists(results_dir):
-                return {"files": [], "message": "La carpeta results no existe aún."}
+                self.logger.warning(f"La carpeta results no existe: {results_dir}")
+                return {"files": [], "message": f"La carpeta results no existe: {results_dir}", "results_dir": results_dir}
             
             files_info = []
-            for filename in os.listdir(results_dir):
-                if filename.endswith('.csv') or filename.endswith('.xlsx'):
-                    filepath = os.path.join(results_dir, filename)
-                    stat = os.stat(filepath)
-                    files_info.append({
-                        "name": filename,
-                        "size": stat.st_size,
-                        "size_human": self._human_readable_size(stat.st_size),
-                        "modified": stat.st_mtime,
-                        "modified_human": time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(stat.st_mtime))
-                    })
+            # Búsqueda recursiva
+            for root, dirs, files in os.walk(results_dir):
+                for filename in files:
+                    if filename.endswith('.csv') or filename.endswith('.xlsx'):
+                        filepath = os.path.join(root, filename)
+                        stat = os.stat(filepath)
+                        relative_path = os.path.relpath(filepath, results_dir).replace('\\', '/')
+                        
+                        # Determinar categoría basado en la subcarpeta
+                        category = "General"
+                        if "/EN/" in f"/{relative_path}/": category = "EN"
+                        elif "/ES/" in f"/{relative_path}/": category = "ES"
+                        elif "/omitidos/" in f"/{relative_path}/": category = "Omitidos"
+
+                        files_info.append({
+                            "name": filename,
+                            "path": relative_path,
+                            "size": stat.st_size,
+                            "size_human": self._human_readable_size(stat.st_size),
+                            "modified": stat.st_mtime,
+                            "modified_human": time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(stat.st_mtime)),
+                            "category": category
+                        })
             
             # Ordenar por fecha de modificación (más reciente primero)
             files_info.sort(key=lambda x: x['modified'], reverse=True)
@@ -1103,6 +1087,39 @@ class ScraperServer:
         except Exception as e:
             self.logger.error(f"Error descargando archivo {filename}: {e}")
             raise HTTPException(status_code=500, detail=f"Error descargando archivo: {str(e)}")
+
+    async def delete_single_file(self, filename: str):
+        """Elimina un archivo individual de la carpeta results o omitidos."""
+        try:
+            # Sanitizar el nombre para prevenir path traversal
+            safe_name = os.path.basename(filename)
+            if not safe_name or safe_name != filename:
+                raise HTTPException(status_code=400, detail="Nombre de archivo no válido.")
+
+            results_dir = os.path.join(project_root, 'results')
+            omitidos_new = os.path.join(project_root, 'results', 'omitidos')
+            omitidos_old = os.path.join(project_root, 'omitidos')
+
+            search_paths = [results_dir, omitidos_new, omitidos_old]
+            deleted = False
+            for directory in search_paths:
+                filepath = os.path.join(directory, safe_name)
+                if os.path.exists(filepath) and os.path.isfile(filepath):
+                    os.unlink(filepath)
+                    deleted = True
+                    self.logger.info(f"Archivo eliminado: {filepath}")
+                    await global_event_log.add(EventType.SYSTEM, "Server", f"Archivo eliminado: {safe_name}")
+                    break
+
+            if not deleted:
+                raise HTTPException(status_code=404, detail=f"Archivo no encontrado: {safe_name}")
+
+            return {"message": f"Archivo '{safe_name}' eliminado correctamente."}
+        except HTTPException:
+            raise
+        except Exception as e:
+            self.logger.error(f"Error eliminando archivo {filename}: {e}")
+            raise HTTPException(status_code=500, detail=f"Error eliminando archivo: {str(e)}")
 
     async def preview_csv(self, filename: str, rows: int = 10):
         """Muestra una vista previa de un archivo CSV (primeras N filas)."""
@@ -1457,6 +1474,46 @@ class ScraperServer:
     async def ping_endpoint(self):
         """Endpoint simple para ping de prueba."""
         return "EUROPA_SCRAPER_SERVER_PONG"
+
+    async def emergency_reset(self):
+        """Detiene todo, limpia colas y resetea el estado global."""
+        self.logger.info("🚨 Recibida solicitud de RESET DE EMERGENCIA")
+        await global_event_log.add(EventType.SYSTEM, "Server", "Iniciando RESET DE EMERGENCIA.")
+        
+        # 1. Detener procesos
+        await self.stop_scraping_job()
+        
+        # 2. Limpiar estados
+        if self.worker_states is not None:
+            self.worker_states.clear()
+        
+        self.is_job_running = False
+        
+        await global_event_log.add(EventType.SUCCESS, "Server", "Sistema reseteado correctamente.")
+        return {"status": "ok", "message": "Sistema reseteado correctamente"}
+
+    async def get_events_endpoint(self, min_id: int = Query(0)):
+        """Endpoint para que el cliente obtenga los eventos recientes."""
+        events = await global_event_log.get_events(min_id)
+        return {"events": events}
+
+    async def debug_info(self):
+        """Diagnostic endpoint to see server environment."""
+        try:
+            return {
+                "cwd": os.getcwd(),
+                "project_root": project_root,
+                "results_exists": os.path.exists(os.path.join(project_root, 'results')),
+                "files_in_results": len(os.listdir(os.path.join(project_root, 'results'))) if os.path.exists(os.path.join(project_root, 'results')) else 0,
+                "environment": {k: v for k, v in os.environ.items() if "KEY" not in k and "AUTH" not in k},
+                "version": "3.1.4-STABLE"
+            }
+        except Exception as e:
+            return {"error": str(e)}
+
+    async def version_endpoint(self):
+        """Returns the current server version."""
+        return {"version": "3.1.4-STABLE", "status": "OK"}
 
     def run(self):
         os.makedirs("logs", exist_ok=True)
