@@ -27,6 +27,12 @@ from datetime import datetime
 from collections import deque
 import enum
 import queue 
+import platform
+import traceback
+import random
+import json
+import hashlib
+import re
 
 # --- SYSTEM EVENTS ENUM ---
 class EventType(str, enum.Enum):
@@ -117,7 +123,7 @@ def worker_process(
     work_queue: multiprocessing.JoinableQueue,
     status_dict: Dict,
     config_path: str,
-    event_log: EventLog # Add event_log here
+    event_queue: multiprocessing.Queue # Corregido: era event_log y faltaba tipo
 ):
     """
     Función principal para cada proceso trabajador del pool.
@@ -137,7 +143,7 @@ def worker_process(
             print(f"Error putting event in queue from Worker-{worker_id}: {e}")
 
     # Set logging configuration for worker process
-    setup_logging(os.path.join(project_root, 'logs'), f"worker_{worker_id}.log")
+    setup_logger(logging.DEBUG, os.path.join(project_root, 'logs', f"worker_{worker_id}.log"))
     logger = logging.getLogger(f"worker_{worker_id}") # Get the logger instance
 
     status_dict[worker_id] = {'id': worker_id, 'status': 'Idle', 'progress': 0, 'current_task': 'Esperando tarea'}
@@ -147,7 +153,7 @@ def worker_process(
 
     # --- Inicialización de componentes por proceso ---
     # Cada proceso necesita sus propias instancias para evitar conflictos.
-    config_manager = ConfigManager(config_path)
+    config_manager = Config(config_path)
     
     # Pre-cargar configuración para evitar lecturas de disco repetitivas
     search_engine_param = config_manager.get('search_engine', 'DuckDuckGo')
@@ -200,7 +206,7 @@ def worker_process(
                 proxy_file_path = os.path.join(project_root, 'config', 'proxies.txt')
                 proxy_manager = ProxyManager(proxy_file_path)
                 
-                start_web_server_if_needed(project_root)
+                # start_web_server_if_needed(project_root) # Eliminado: no existe esta función
                 
                 # Configurar rotación de proxies desde config
                 if config_manager.get('use_proxies', False):
@@ -307,9 +313,10 @@ def worker_process(
             
             # run_scraping es una corutina, la ejecutamos en el bucle de eventos del worker.
             loop.run_until_complete(scraper_controller.run_scraping(
-                batch, 
-                job_params,
-                progress_callback
+                job_params, 
+                progress_callback=progress_callback,
+                worker_id=worker_id,
+                batch=batch
             ))
 
             logger.info(f"Worker {worker_id} completó el lote {batch_id}.")
@@ -319,7 +326,7 @@ def worker_process(
             # Obtener estadísticas reales del lote actual
             try:
                 cumulative_stats = scraper_controller.stats
-                msg_finished = f"Completado: {course_name_display} | URLs: {cumulative_stats['total_urls_found']} | Guardados: {cumulative_stats['files_saved']} | Omitidos: {cumulative_stats['omitted_count']} | Errores: {cumulative_stats['error_count']}"
+                msg_finished = f"Completado: {course_name_display} | URLs: {cumulative_stats['total_urls_found']} | Guardados: {cumulative_stats['files_saved']} | Omitidos: {cumulative_stats['files_not_saved']} | Errores: {cumulative_stats['total_errors']}"
                 
                 status_dict[worker_id] = {
                     'id': worker_id, 
@@ -328,8 +335,8 @@ def worker_process(
                     'current_task': msg_finished,
                     'total_urls_found': cumulative_stats['total_urls_found'],
                     'files_saved': cumulative_stats['files_saved'],
-                    'omitted_count': cumulative_stats['omitted_count'],
-                    'error_count': cumulative_stats['error_count']
+                    'omitted_count': cumulative_stats['files_not_saved'],
+                    'error_count': cumulative_stats['total_errors']
                 }
                 log_event_sync(EventType.SUCCESS, "Tarea finalizada.", {"stats": cumulative_stats})
 
@@ -635,6 +642,7 @@ class ScraperServer:
                     else:
                         num_workers = int(requested_workers)
                 self.logger.info(f"Usando formato directo: {from_sic} a {to_sic}")
+                job_params = request_data  # Definir job_params para el log de eventos
             await global_event_log.add(EventType.SYSTEM, "Server", f"Parámetros de trabajo procesados: {from_sic} a {to_sic}, {num_workers} workers.", {"job_params": job_params})
 
             # 1. Obtener todos los cursos de la base de datos
@@ -1506,14 +1514,14 @@ class ScraperServer:
                 "results_exists": os.path.exists(os.path.join(project_root, 'results')),
                 "files_in_results": len(os.listdir(os.path.join(project_root, 'results'))) if os.path.exists(os.path.join(project_root, 'results')) else 0,
                 "environment": {k: v for k, v in os.environ.items() if "KEY" not in k and "AUTH" not in k},
-                "version": "3.1.4-STABLE"
+                "version": "3.1.7-STABLE"
             }
         except Exception as e:
             return {"error": str(e)}
 
     async def version_endpoint(self):
         """Returns the current server version."""
-        return {"version": "3.1.4-STABLE", "status": "OK"}
+        return {"version": "3.1.7-STABLE", "status": "OK"}
 
     def run(self):
         os.makedirs("logs", exist_ok=True)
