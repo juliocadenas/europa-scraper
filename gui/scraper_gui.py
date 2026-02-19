@@ -240,17 +240,15 @@ class ScraperGUI(ttk.Frame):
         ttk.Button(self.mon_btn_frame, text="Ver Detalles de Worker", command=self._show_worker_details).pack(side=tk.LEFT, padx=5, expand=True, fill=tk.X)
         ttk.Button(self.mon_btn_frame, text="⚠️ Resetear Sistema (Emergencia)", command=self._force_reset_client_state).pack(side=tk.RIGHT, padx=5, expand=True, fill=tk.X)
 
-        # PanedWindow Interna (Workers vs Historial)
-        self.inner_monitor_paned = ttk.PanedWindow(self.monitor_area, orient=tk.VERTICAL)
-        self.inner_monitor_paned.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        # PanedWindow solo para tener formato si se quiere, o usar un Frame simple
+        self.workers_pane = ttk.Frame(self.monitor_area)
+        self.workers_pane.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
-        # Workers Tree
-        self.workers_pane = ttk.Frame(self.inner_monitor_paned)
-        self.inner_monitor_paned.add(self.workers_pane, weight=1)
-        self.worker_tree = ttk.Treeview(self.workers_pane, columns=('ID', 'Status', 'Course', 'Progress'), show='headings')
-        for col in ('ID', 'Status', 'Course', 'Progress'):
+        # Workers Tree (Ahora es el Monitor de Cursos)
+        self.worker_tree = ttk.Treeview(self.workers_pane, columns=('SIC', 'Status', 'Course', 'Progress'), show='headings')
+        for col in ('SIC', 'Status', 'Course', 'Progress'):
             self.worker_tree.heading(col, text=col)
-        self.worker_tree.column('ID', width=50, anchor=tk.CENTER)
+        self.worker_tree.column('SIC', width=70, anchor=tk.CENTER)
         self.worker_tree.column('Status', width=120)
         self.worker_tree.column('Course', width=350)
         self.worker_tree.column('Progress', width=80, anchor=tk.CENTER)
@@ -259,21 +257,6 @@ class ScraperGUI(ttk.Frame):
         self.worker_tree.configure(yscrollcommand=sb1.set)
         sb1.pack(side=tk.RIGHT, fill=tk.Y)
 
-        # Audit Tree (Historial)
-        self.audit_pane = ttk.LabelFrame(self.inner_monitor_paned, text="Auditoría de Procesos (Historial)", padding=5)
-        self.inner_monitor_paned.add(self.audit_pane, weight=2)
-        self.audit_tree = ttk.Treeview(self.audit_pane, columns=('Time', 'Type', 'Source', 'Message'), show='headings')
-        for col in ('Time', 'Type', 'Source', 'Message'):
-            self.audit_tree.heading(col, text=col)
-        self.audit_tree.column('Time', width=80, anchor=tk.CENTER)
-        self.audit_tree.column('Type', width=100, anchor=tk.CENTER)
-        self.audit_tree.column('Source', width=100, anchor=tk.CENTER)
-        self.audit_tree.column('Message', width=500)
-        self.audit_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        sb2 = ttk.Scrollbar(self.audit_pane, orient=tk.VERTICAL, command=self.audit_tree.yview)
-        self.audit_tree.configure(yscrollcommand=sb2.set)
-        sb2.pack(side=tk.RIGHT, fill=tk.Y)
-
         # SECCIÓN 2: DETALLES DEL PROCESO SELECCIONADO (ABAJO)
         self.details_area = ttk.LabelFrame(self.center_master_paned, text="Detalles del Proceso Seleccionado", padding=5)
         self.center_master_paned.add(self.details_area, weight=2)
@@ -281,20 +264,39 @@ class ScraperGUI(ttk.Frame):
         self.details_text.pack(fill=tk.BOTH, expand=True)
 
         # Tags y Bindings
+        self.worker_tree.bind("<Button-3>", self._show_context_menu)
+        
+        # --- COLUMNA DERECHA (AUDITORÍA Y RESULTADOS) ---
+        self.right_paned = ttk.PanedWindow(self.right_column, orient=tk.VERTICAL)
+        self.right_paned.pack(fill=tk.BOTH, expand=True)
+        
+        # 1. Auditoría Tree (Historial Técnico)
+        self.audit_pane = ttk.LabelFrame(self.right_paned, text="Auditoría de Procesos (Historial Técnico)", padding=5)
+        self.right_paned.add(self.audit_pane, weight=1)
+        self.audit_tree = ttk.Treeview(self.audit_pane, columns=('Time', 'Type', 'Source', 'Message'), show='headings')
+        for col in ('Time', 'Type', 'Source', 'Message'):
+            self.audit_tree.heading(col, text=col)
+        self.audit_tree.column('Time', width=80, anchor=tk.CENTER)
+        self.audit_tree.column('Type', width=90, anchor=tk.CENTER)
+        self.audit_tree.column('Source', width=90, anchor=tk.CENTER)
+        self.audit_tree.column('Message', width=450)
+        self.audit_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        sb2 = ttk.Scrollbar(self.audit_pane, orient=tk.VERTICAL, command=self.audit_tree.yview)
+        self.audit_tree.configure(yscrollcommand=sb2.set)
+        sb2.pack(side=tk.RIGHT, fill=tk.Y)
+        
         self.audit_tree.tag_configure('ERROR', foreground='white', background='#d32f2f')
         self.audit_tree.tag_configure('WARNING', foreground='black', background='#fbc02d')
         self.audit_tree.tag_configure('SUCCESS', foreground='white', background='#388e3c')
         self.audit_tree.tag_configure('SCRAPER', foreground='blue')
         self.audit_tree.tag_configure('SYSTEM', foreground='gray')
-        self.worker_tree.bind('<<TreeviewSelect>>', self._on_tree_select)
         self.audit_tree.bind('<<TreeviewSelect>>', self._on_audit_select)
-        self.monitor_menu = tk.Menu(self.master, tearoff=0)
-        self.monitor_menu.add_command(label="Eliminar registro", command=self._delete_selected_records)
-        self.worker_tree.bind("<Button-3>", self._show_context_menu)
         self.audit_tree.bind("<Button-3>", self._show_context_menu)
-        
-        # --- COLUMNA DERECHA (RESULTADOS) ---
-        self.results_frame = ResultsFrame(self.right_column)
+
+        # 2. Resultados (Botín)
+        self.results_container = ttk.LabelFrame(self.right_paned, text="Resultados Finales", padding=5)
+        self.right_paned.add(self.results_container, weight=1)
+        self.results_frame = ResultsFrame(self.results_container)
         self.results_frame.pack(fill=tk.BOTH, expand=True)
         self.results_btns = ttk.Frame(self.right_column)
         self.results_btns.pack(fill=tk.X, pady=5)
@@ -352,65 +354,66 @@ class ScraperGUI(ttk.Frame):
         self.details_text.insert(tk.END, full_details)
         self.details_text.config(state=tk.DISABLED)
 
-    def _render_worker_status(self, worker_states):
-        """Renderiza el estado dinámico de los trabajadores en el Monitor (UN SOLO REGISTRO POR CURSO)."""
+    def _render_status(self, workers, courses):
+        """Renderiza el estado dinámico de los cursos en el Monitor Principal."""
+        # Mantener un diccionario para los detalles del panel inferior
         if not hasattr(self, 'row_details_map'): self.row_details_map = {}
-        for worker_id, state in worker_states.items():
-            worker_id_str = str(worker_id)
-            raw_task = state.get('current_task', 'N/A')
-            server_status = state.get('status', 'N/A').capitalize()
-            
-            # Parsing para separar Curso de Estado (Evitar filas duplicadas para un mismo curso)
-            display_status = server_status
-            display_course = raw_task
-            is_transient = False
-            
-            # Limpiar curso y extraer sub-fases (ej: Cordis Página X)
-            clean_task = raw_task
-            if "Cordis API" in raw_task:
-                 # Ejemplo: "Cordis API | Página 26 | 920/937 resultados"
-                 parts = [p.strip() for p in re.split(r'[-|]', raw_task)]
-                 display_status = " - ".join(parts[:2]) if len(parts) >= 2 else parts[0]
-                 display_course = " - ".join(parts[2:]) if len(parts) >= 3 else "Buscando..."
-            elif "Buscando curso" in raw_task and (" - " in raw_task or " | " in raw_task):
-                 # Ejemplo: "Buscando curso 1 de 10 - 0119.0 - Cash Grains"
-                 parts = [p.strip() for p in re.split(r'[-|]', raw_task)]
-                 display_status = parts[0]
-                 display_course = " - ".join(parts[1:])
-            elif "Tabulando curso" in raw_task and (" - " in raw_task or " | " in raw_task):
-                 parts = [p.strip() for p in re.split(r'[-|]', raw_task)]
-                 display_status = parts[0]
-                 display_course = " - ".join(parts[1:])
-            elif "|" in raw_task:
-                 display_status = raw_task.split('|')[1].strip()
-                 display_course = raw_task.split('|')[0].strip()
-
-            # ID único por curso para evitar duplicidad
-            import re
-            sic_match = re.search(r'(\d+\.\d+)', display_course)
-            if sic_match:
-                row_id = f"sic_{sic_match.group(1).replace('.', '_')}"
-            elif "Iniciando" in raw_task or "Esperando" in raw_task:
-                row_id = f"worker_msg_{worker_id_str}"
-                is_transient = True
-            else:
-                row_id = f"course_{hashlib.md5(display_course.encode()).hexdigest()[:8]}"
-
-            vals = (worker_id_str, display_status, display_course, f"{int(state.get('progress', 0))}%")
-            self.row_details_map[row_id] = raw_task
-            if self.worker_tree.exists(row_id):
-                self.worker_tree.item(row_id, values=vals)
-            else:
-                self.worker_tree.insert('', '0' if not is_transient else 'end', iid=row_id, values=vals)
         
+        # 1. Renderizar Cursos (La nueva vista principal)
+        # Formato de data de courses del server: list of dicts: [{'sic':'01.0', 'name':'...', 'status':'...', 'progress':X}, ...]
+        if isinstance(courses, dict):
+             # Por si viene como dict
+             courses_list = courses.values()
+        else:
+             courses_list = courses
+             
+        for c in courses_list:
+             sic = c.get('sic', 'N/A')
+             name = c.get('name', 'N/A')
+             status = c.get('status', 'Pendiente')
+             progress = int(c.get('progress', 0))
+             
+             row_id = f"course_{sic.replace('.', '_')}"
+             vals = (sic, status.capitalize(), name, f"{progress}%")
+             
+             self.row_details_map[row_id] = f"Curso: {sic} - {name}\nEstado Actual: {status}\nProgreso: {progress}%"
+             
+             if self.worker_tree.exists(row_id):
+                 self.worker_tree.item(row_id, values=vals)
+             else:
+                 self.worker_tree.insert('', 'end', iid=row_id, values=vals)
+
+        # 2. Agregar mensajes de los workers si están atascados o iniciando (opcional, solo para feedback transitorio)
+        # Limpiamos los transitorios primero
+        for item in self.worker_tree.get_children():
+            if item.startswith("worker_msg_"):
+                self.worker_tree.delete(item)
+                
+        if isinstance(workers, dict):
+            for wid, state in workers.items():
+                if state.get('status') in ['Idle', 'Error'] or state.get('progress', 0) == 0:
+                    raw_task = state.get('current_task', '')
+                    if "Iniciando" in raw_task or "Esperando" in raw_task or "CRASHED" in raw_task:
+                        row_id = f"worker_msg_{wid}"
+                        vals = ("--", state.get('status', '').capitalize(), f"Worker {wid}: {raw_task}", "--")
+                        self.row_details_map[row_id] = f"Detalles de Trabajador {wid}:\nEstado: {state.get('status')}\nTarea: {raw_task}"
+                        self.worker_tree.insert('', 'end', iid=row_id, values=vals)
+
         # Progreso general
-        if worker_states:
-            active = [s for s in worker_states.values() if s.get('status') != 'Idle']
-            if active:
-                avg = sum(s.get('progress', 0) for s in active) / len(active)
+        if courses_list:
+            active_or_done = [c for c in courses_list if c.get('status') != 'Pendiente']
+            if active_or_done:
+                # El promedio es la suma de los progresos dividido por el TOTAL de cursos (para que llegue a 100% solo al final)
+                avg = sum(c.get('progress', 0) for c in courses_list) / len(courses_list)
                 self.progress_frame.update_progress(avg, f"General: {avg:.1f}%")
             else:
-                self.progress_frame.update_progress(100, "Inactivo")
+                self.progress_frame.update_progress(0, "Inactivo")
+        elif workers:
+             active_workers = [w for w in (workers.values() if isinstance(workers, dict) else workers) if w.get('status') != 'Idle']
+             if active_workers:
+                 self.progress_frame.update_progress(0, "Iniciando...")
+             else:
+                 self.progress_frame.update_progress(100, "Inactivo")
 
     def update_audit_log(self, events):
         """Actualiza el historial de auditoría."""
@@ -419,7 +422,8 @@ class ScraperGUI(ttk.Frame):
             row_id = f"ev_{ev['id']}"
             msg = ev.get('message', '')
             self.audit_details_map[row_id] = f"{ev.get('timestamp')}\n{msg}\n\n{json.dumps(ev.get('details'), indent=2)}"
-            self.audit_tree.insert('', 0, iid=row_id, values=(ev.get('timestamp'), ev.get('type'), ev.get('source'), msg), tags=(ev.get('type'),))
+            if not self.audit_tree.exists(row_id):
+                self.audit_tree.insert('', 0, iid=row_id, values=(ev.get('timestamp'), ev.get('type'), ev.get('source'), msg), tags=(ev.get('type'),))
 
     def _on_audit_select(self, event):
         sel = self.audit_tree.selection()
@@ -709,8 +713,9 @@ class ScraperGUI(ttk.Frame):
             if r.status_code == 200:
                 data = r.json()
                 workers = data.get('workers', {})
-                if workers:
-                    self.master.after(0, lambda w=workers: self._render_worker_status(w))
+                courses = data.get('courses', [])
+                if courses or workers:
+                    self.master.after(0, lambda w=workers, c=courses: self._render_status(w, c))
 
             r_logs = requests.get(f"{url}/api/events?min_id={getattr(self, 'last_event_id', 0)}", timeout=3)
             if r_logs.status_code == 200:
