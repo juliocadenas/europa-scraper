@@ -194,8 +194,8 @@ def worker_process(
                 # Crear un server_state simulado para los workers
                 class WorkerServerState:
                     def __init__(self):
-                        pass
-                    
+                        self.captcha_solution_queue = multiprocessing.Queue()
+                        
                     def set_pending_captcha_challenge(self, challenge):
                         logger.info(f"CAPTCHA challenge detectado en worker: {challenge}")
                         log_event_sync(EventType.WARNING, "CAPTCHA challenge detectado.", {"challenge": challenge})
