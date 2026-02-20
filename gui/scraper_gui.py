@@ -572,8 +572,9 @@ class ScraperGUI(ttk.Frame):
             params = {
                 'from_sic': f_sic,
                 'to_sic': t_sic,
+                # Parámetros desde la página principal (combobox visible)
+                'search_engine': self.search_engine_var.get(),
                 # Parámetros desde SearchConfigTab
-                'search_engine': self.search_config_tab.search_engine_var.get(),
                 'search_mode': self.search_config_tab.search_mode_var.get(),
                 'require_keywords': self.search_config_tab.require_keywords_var.get(),
                 # Parámetros desde ConfigTab (General)

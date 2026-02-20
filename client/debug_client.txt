@@ -70,3 +70,9 @@
 2026-02-19 22:09:07.448654: URL Servidor: https://scraper.docuplay.com
 2026-02-19 22:09:07.456719: Lanzando thread de scraping...
 2026-02-19 22:09:07.459751: Thread lanzado OK
+2026-02-19 22:20:28.842061: Botón Iniciar Scraping presionado
+2026-02-19 22:20:28.842577: Selección: From=(1,), To=(18,)
+2026-02-19 22:20:28.842577: Params preparados: {'from_sic': '011901.1', 'to_sic': '016199.2', 'search_engine': 'Google', 'search_mode': 'broad', 'require_keywords': False, 'is_headless': False, 'min_words': 3, 'num_workers': 25}
+2026-02-19 22:20:28.846612: URL Servidor: https://scraper.docuplay.com
+2026-02-19 22:20:28.851226: Lanzando thread de scraping...
+2026-02-19 22:20:28.855761: Thread lanzado OK
