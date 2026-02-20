@@ -72,39 +72,44 @@ class ResultManager:
     
     def initialize_output_files(self, from_sic: str, to_sic: str, from_course: str, to_course: str, search_engine: str = '', worker_id: Optional[int] = None) -> tuple[str, str]:
         """
-        Inicializa los archivos de salida para un CURSO INDIVIDUAL.
+        Inicializa los archivos de salida para el RANGO DE CURSOS.
         
-        NUEVO FORMATO V3.1:
-        - Archivo de resultados: results/{sic_code}-{course_name}.csv
-        - Archivo de omitidos: results/omitidos/{sic_code}-{course_name}_omitidos.xlsx
+        FORMATO DEL NOMBRE DEL ARCHIVO:
+        {codigo_desde}-{nombre_desde}_to_{codigo_hasta}-{nombre_hasta}_{timestamp}.csv
+        
+        Ejemplo: 011901.1-Pea_farms_to_011903.2-Sugar_beets_20260220_165500.csv
         
         Args:
-            from_sic: Código SIC del curso (para un solo curso)
-            to_sic: No se usa en el nuevo modelo (mantenido por compatibilidad)
-            from_course: Nombre del curso
-            to_course: No se usa en el nuevo modelo
+            from_sic: Código SIC inicial del rango
+            to_sic: Código SIC final del rango
+            from_course: Nombre del curso inicial
+            to_course: Nombre del curso final
             search_engine: Motor de búsqueda
             worker_id: ID del worker (para logging)
             
         Returns:
             Tuple of (output_file, omitted_file)
         """
-        # Guardar información del curso actual
+        # Guardar información del rango actual
         self.current_sic_code = from_sic
         self.current_course_name = from_course
         
-        # Sanitizar nombre del curso para el archivo
-        sanitized_course = self._sanitize_filename(from_course) if from_course else 'unknown'
+        # Sanitizar nombres de cursos para el archivo
+        sanitized_from_course = self._sanitize_filename(from_course) if from_course else 'unknown'
+        sanitized_to_course = self._sanitize_filename(to_course) if to_course else 'unknown'
         
-        # Crear nombre base del archivo: {sic_code}-{course_name}
-        base_filename = f"{from_sic}-{sanitized_course}"
+        # Crear timestamp para el nombre del archivo
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        
+        # NOMBRE DEL ARCHIVO: {codigo_desde}-{nombre_desde}_to_{codigo_hasta}-{nombre_hasta}_{timestamp}
+        base_filename = f"{from_sic}-{sanitized_from_course}_to_{to_sic}-{sanitized_to_course}_{timestamp}"
         
         # Usar rutas absolutas
         project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         results_dir = os.path.join(project_root, 'results')
         os.makedirs(results_dir, exist_ok=True)
         
-        # Archivo de resultados: results/{sic_code}-{course_name}.csv
+        # Archivo de resultados: results/{codigo_desde}-{nombre_desde}_to_{codigo_hasta}-{nombre_hasta}_{timestamp}.csv
         self.output_file = os.path.join(results_dir, f"{base_filename}.csv")
         
         # ==============================================================================
@@ -113,16 +118,16 @@ class ResultManager:
         pd.DataFrame(columns=CSV_COLUMNS).to_csv(self.output_file, index=False)
         # ==============================================================================
         
-        logger.info(f"CSV file created for course {from_sic}: {self.output_file}")
+        logger.info(f"CSV file created for range {from_sic} to {to_sic}: {self.output_file}")
         
         # Directorio para omitidos
         omitted_dir = os.path.join(results_dir, 'omitidos')
         os.makedirs(omitted_dir, exist_ok=True)
         
-        # Archivo de omitidos: results/omitidos/{sic_code}-{course_name}_omitidos.xlsx
+        # Archivo de omitidos: results/omitidos/{codigo_desde}-{nombre_desde}_to_{codigo_hasta}-{nombre_hasta}_{timestamp}_omitidos.xlsx
         self.omitted_file = os.path.join(omitted_dir, f"{base_filename}_omitidos.xlsx")
         
-        logger.info(f"Omitted file for course {from_sic}: {self.omitted_file}")
+        logger.info(f"Omitted file for range {from_sic} to {to_sic}: {self.omitted_file}")
         
         return self.output_file, self.omitted_file
     
