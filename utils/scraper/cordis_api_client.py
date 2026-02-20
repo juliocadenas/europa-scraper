@@ -5,16 +5,18 @@ from urllib.parse import quote_plus
 
 logger = logging.getLogger(__name__)
 
+# Idiomas oficiales de la UE que CORDIS soporta
+EU_LANGUAGES = ['en', 'es', 'de', 'fr', 'it', 'pl']
+
 class CordisApiClient:
     """
-    V27 - FINAL VERSION
+    V28 - MULTI-LANGUAGE VERSION
     
     Uses the OFFICIAL Cordis JSON endpoint that works:
     https://cordis.europa.eu/search?q=QUERY&format=json&p=PAGE&num=100
     
-    This returns:
-    - totalHits: Total number of results available
-    - hits.hit[]: Array of result objects with rcn, id, title, teaser
+    NEW: Generates one record per language (en, es, de, fr, it, pl) for each article.
+    URL format: https://cordis.europa.eu/article/id/{ID}/{lang}
     """
 
     SEARCH_URL = "https://cordis.europa.eu/search"
@@ -29,13 +31,14 @@ class CordisApiClient:
     
     async def search_projects_and_publications(self, query_term: str, search_mode: str = 'broad', max_results: int = 50000, progress_callback=None) -> List[Dict[str, Any]]:
         """
-        V27 - Uses the official Cordis JSON endpoint.
+        V28 - Multi-language version.
         
         1. First request gets totalHits
         2. Paginates through ALL pages to collect every result
-        3. Returns complete list for tabulation
+        3. For each result, generates 6 records (one per EU language)
+        4. Returns complete list for tabulation
         """
-        logger.info(f"*** V27 ACTIVADA ***: Iniciando búsqueda JSON en Cordis para '{query_term}'")
+        logger.info(f"*** V28 MULTI-LANG ACTIVADA ***: Iniciando búsqueda JSON en Cordis para '{query_term}'")
         
         all_results = []
         page = 1
@@ -48,7 +51,7 @@ class CordisApiClient:
             # Build URL: https://cordis.europa.eu/search?q=QUERY&format=json&p=PAGE&num=100
             search_url = f"{self.SEARCH_URL}?q={encoded_query}&format=json&p={page}&num={results_per_page}"
             
-            logger.info(f"V27 - Fetching page {page}: {search_url}")
+            logger.info(f"V28 - Fetching page {page}: {search_url}")
             
             loop = asyncio.get_running_loop()
             def _fetch():
@@ -59,13 +62,13 @@ class CordisApiClient:
                 response = await loop.run_in_executor(None, _fetch)
                 
                 if response.status_code != 200:
-                    logger.error(f"V27 - Error fetching page {page}: Status {response.status_code}")
+                    logger.error(f"V28 - Error fetching page {page}: Status {response.status_code}")
                     break
                 
                 try:
                     data = response.json()
                 except Exception as e:
-                    logger.error(f"V27 - JSON parse error on page {page}: {e}")
+                    logger.error(f"V28 - JSON parse error on page {page}: {e}")
                     break
                 
                 # Extract header info
@@ -75,10 +78,10 @@ class CordisApiClient:
                 if total_hits is None:
                     total_hits_str = header.get('totalHits', '0')
                     total_hits = int(total_hits_str) if total_hits_str else 0
-                    logger.info(f"*** V27 - TOTAL EN CORDIS: {total_hits} resultados ***")
+                    logger.info(f"*** V28 - TOTAL EN CORDIS: {total_hits} resultados ***")
                     
                     if total_hits == 0:
-                        logger.warning("V27 - No results found for this query")
+                        logger.warning("V28 - No results found for this query")
                         break
                 
                 # Extract hits - Cordis returns them in data['hits'] as a list
@@ -105,10 +108,10 @@ class CordisApiClient:
                     hits = []
                 
                 if not hits:
-                    logger.warning(f"V27 - Page {page}: Found totalHits={total_hits} but extracted 0 hits.")
-                    logger.warning(f"V27 - Root data keys: {list(data.keys())}")
+                    logger.warning(f"V28 - Page {page}: Found totalHits={total_hits} but extracted 0 hits.")
+                    logger.warning(f"V28 - Root data keys: {list(data.keys())}")
                     if 'hits' in data:
-                        logger.warning(f"V27 - data['hits'] type: {type(data['hits'])}")
+                        logger.warning(f"V28 - data['hits'] type: {type(data['hits'])}")
                     break
                 
                 page_count = 0
@@ -134,72 +137,54 @@ class CordisApiClient:
                     title = content.get('title', content.get('acronym', 'No Title'))
                     teaser = content.get('teaser', content.get('objective', ''))
                     
-                    # Build URL based on content type
+                    # Build base URL based on content type (without language suffix)
                     if content_type == 'project':
-                        url = f"https://cordis.europa.eu/project/id/{item_id}"
+                        base_url = f"https://cordis.europa.eu/project/id/{item_id}"
                     elif content_type == 'article':
-                        url = f"https://cordis.europa.eu/article/id/{item_id}"
+                        base_url = f"https://cordis.europa.eu/article/id/{item_id}"
                     elif content_type == 'result':
-                        url = f"https://cordis.europa.eu/result/id/{item_id}"
+                        base_url = f"https://cordis.europa.eu/result/id/{item_id}"
                     elif content_type == 'publication':
-                        url = f"https://cordis.europa.eu/publication/id/{item_id}"
+                        base_url = f"https://cordis.europa.eu/publication/id/{item_id}"
                     else:
-                        url = f"https://cordis.europa.eu/search?q={encoded_query}"
+                        base_url = f"https://cordis.europa.eu/search?q={encoded_query}"
                     
-                    # Capture main language
-                    main_lang = content.get('language', 'en')
-                    
-                    # Get available languages if present
-                    available_langs = content.get('availableLanguages', '')
-                    if isinstance(available_langs, str):
-                        # Format: "en,es,fr"
-                        langs_list = [l.strip().lower() for l in available_langs.split(',') if l.strip()]
-                    elif isinstance(available_langs, list):
-                        langs_list = [str(l).lower() for l in available_langs]
-                    else:
-                        langs_list = [main_lang.lower()]
-                    
-                    # If empty or missing, fallback to main_lang
-                    if not langs_list:
-                        langs_list = [main_lang.lower()]
-                    
-                    # Ensure main_lang is in the list
-                    if main_lang.lower() not in langs_list:
-                        langs_list.append(main_lang.lower())
-                    
-                    # Add to results for EACH language
-                    for individual_lang in langs_list:
+                    # V28: Generate one record for EACH EU language
+                    for lang in EU_LANGUAGES:
+                        # URL with language suffix
+                        url_with_lang = f"{base_url}/{lang}"
+                        
                         all_results.append({
-                            'url': url,
+                            'url': url_with_lang,
                             'title': title,
                             'description': teaser[:1000] if teaser else f"Cordis {content_type}: {title}",
-                            'source': 'Cordis Europa JSON V27',
+                            'source': 'Cordis Europa API V28',
                             'mediatype': content_type,
                             'rcn': rcn,
-                            'lang': individual_lang
+                            'lang': lang
                         })
                         page_count += 1
                 
-                logger.info(f"V27 - Page {page}: Found {page_count} results. Total acumulado: {len(all_results)} de {total_hits}")
+                logger.info(f"V28 - Page {page}: Found {page_count} results (x6 langs). Total acumulado: {len(all_results)} de {total_hits * 6}")
                 
                 # Update GUI with progress
                 if progress_callback:
                     # Formato estandarizado para que la GUI identifique el curso
-                    progress_callback(0, f"Cordis API | Página {page} | {len(all_results)}/{total_hits} resultados", {})
+                    progress_callback(0, f"Cordis API | Página {page} | {len(all_results)//6}/{total_hits} artículos (x6 idiomas)", {})
                 
-                # Check if we have collected all expected results
-                if len(all_results) >= total_hits:
-                    logger.info(f"V27 - Collected all {total_hits} results. Done!")
+                # Check if we have collected all expected results (multiplied by 6 for languages)
+                if len(all_results) >= total_hits * 6:
+                    logger.info(f"V28 - Collected all {total_hits} results x6 languages. Done!")
                     break
                 
                 # Safety limit
                 if len(all_results) >= max_results:
-                    logger.info(f"V27 - Reached safety limit ({max_results}). Stopping.")
+                    logger.info(f"V28 - Reached safety limit ({max_results}). Stopping.")
                     break
                 
                 # Check if this was the last page (NO results on this page)
                 if page_count == 0:
-                    logger.info(f"V27 - No more results on page {page}. Stopping.")
+                    logger.info(f"V28 - No more results on page {page}. Stopping.")
                     break
                 
                 page += 1
@@ -208,7 +193,7 @@ class CordisApiClient:
                 await asyncio.sleep(0.3)
                 
             except Exception as e:
-                logger.error(f"V27 - Error on page {page}: {e}")
+                logger.error(f"V28 - Error on page {page}: {e}")
                 # Try to continue with next page
                 page += 1
                 if page > 1000:  # Safety: max 1000 pages
@@ -216,7 +201,7 @@ class CordisApiClient:
                 await asyncio.sleep(2.0)
                 continue
         
-        logger.info(f"*** V27 COMPLETADO ***: Recopilados {len(all_results)} resultados de Cordis")
+        logger.info(f"*** V28 COMPLETADO ***: Recopilados {len(all_results)} resultados de Cordis ({len(all_results)//6} artículos x 6 idiomas)")
         return all_results
 
     # Legacy compatibility
