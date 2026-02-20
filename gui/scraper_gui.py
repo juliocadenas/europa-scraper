@@ -488,11 +488,15 @@ class ScraperGUI(ttk.Frame):
             
             # Crear nodo padre del worker si no existe
             if worker_key not in self.audit_worker_nodes:
-                # Insertar nodo padre para este worker
+                # Insertar nodo padre para este worker (COLAPSADO por defecto)
                 node_id = self.audit_tree.insert('', 'end', text=worker_display, 
                                                    values=('', '', f'Eventos de {worker_display}'),
-                                                   tags=('worker_node',), open=True)
+                                                   tags=('worker_node',), open=False)
                 self.audit_worker_nodes[worker_key] = node_id
+                # Inicializar lista de mensajes para este worker
+                if not hasattr(self, 'worker_messages'):
+                    self.worker_messages = {}
+                self.worker_messages[worker_key] = []
                 needs_reorder = True
             
             parent_node = self.audit_worker_nodes[worker_key]
@@ -509,19 +513,88 @@ class ScraperGUI(ttk.Frame):
                                         text='',  # Sin texto en columna #0 para hijos
                                         values=(timestamp, ev_type, msg[:80]),  # Truncar mensaje
                                         tags=(ev_type,))
+                
+                # Agregar mensaje a la lista del worker para el compilado
+                if hasattr(self, 'worker_messages') and worker_key in self.worker_messages:
+                    # Formato: [TIMESTAMP] TIPO: Mensaje
+                    formatted_msg = f"[{timestamp}] {ev_type}: {msg}"
+                    self.worker_messages[worker_key].append(formatted_msg)
         
         # Reordenar workers si se agregó uno nuevo
         if needs_reorder:
             self._reorder_worker_nodes()
+        
+        # Actualizar panel de detalles en tiempo real si hay un worker seleccionado
+        self._update_details_if_worker_selected()
 
     def _on_audit_select(self, event):
+        """Muestra detalles del elemento seleccionado.
+        Si es un nodo worker (nivel cero), muestra el compilado de todos sus mensajes.
+        Si es un evento hijo, muestra los detalles individuales.
+        """
         sel = self.audit_tree.selection()
-        if sel:
-            txt = self.audit_details_map.get(sel[0], "")
-            self.details_text.config(state=tk.NORMAL)
-            self.details_text.delete(1.0, tk.END)
+        if not sel:
+            return
+        
+        selected_id = sel[0]
+        
+        # Verificar si es un nodo worker (nivel cero)
+        # Los nodos worker tienen IDs como 'worker_1', 'worker_2', etc.
+        # y están en audit_worker_nodes
+        worker_key = None
+        if hasattr(self, 'audit_worker_nodes'):
+            for wk, node_id in self.audit_worker_nodes.items():
+                if node_id == selected_id:
+                    worker_key = wk
+                    break
+        
+        self.details_text.config(state=tk.NORMAL)
+        self.details_text.delete(1.0, tk.END)
+        
+        if worker_key and hasattr(self, 'worker_messages'):
+            # Es un nodo worker - mostrar compilado de mensajes
+            messages = self.worker_messages.get(worker_key, [])
+            if messages:
+                compiled = "\n".join(messages)
+                # Obtener el nombre display del worker
+                worker_display = self.audit_tree.item(selected_id, 'text')
+                self.details_text.insert(tk.END, f"=== {worker_display} - Historial de Eventos ===\n\n{compiled}")
+            else:
+                self.details_text.insert(tk.END, "Sin eventos registrados aún.")
+        else:
+            # Es un evento hijo - mostrar detalles individuales
+            txt = self.audit_details_map.get(selected_id, "Sin detalles disponibles.")
             self.details_text.insert(tk.END, txt)
-            self.details_text.config(state=tk.DISABLED)
+        
+        self.details_text.config(state=tk.DISABLED)
+    
+    def _update_details_if_worker_selected(self):
+        """Actualiza el panel de detalles en tiempo real si un worker está seleccionado."""
+        sel = self.audit_tree.selection()
+        if not sel:
+            return
+        
+        selected_id = sel[0]
+        
+        # Verificar si es un nodo worker
+        worker_key = None
+        if hasattr(self, 'audit_worker_nodes'):
+            for wk, node_id in self.audit_worker_nodes.items():
+                if node_id == selected_id:
+                    worker_key = wk
+                    break
+        
+        if worker_key and hasattr(self, 'worker_messages'):
+            # Actualizar el panel de detalles con los mensajes actualizados
+            messages = self.worker_messages.get(worker_key, [])
+            if messages:
+                compiled = "\n".join(messages)
+                worker_display = self.audit_tree.item(selected_id, 'text')
+                
+                self.details_text.config(state=tk.NORMAL)
+                self.details_text.delete(1.0, tk.END)
+                self.details_text.insert(tk.END, f"=== {worker_display} - Historial de Eventos ===\n\n{compiled}")
+                self.details_text.config(state=tk.DISABLED)
 
     def _upload_courses_file(self):
         filepath = filedialog.askopenfilename(filetypes=[("CSV/Excel", "*.csv *.xlsx")])
