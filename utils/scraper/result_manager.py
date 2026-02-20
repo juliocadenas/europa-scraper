@@ -5,12 +5,19 @@ from typing import List, Dict, Any, Optional
 from datetime import datetime
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment
+import re
 
 logger = logging.getLogger(__name__)
 
 class ResultManager:
     """
     Manages scraping results and storage.
+    
+    NUEVO MODELO:
+    - Un archivo CSV por curso: {codigo_sic}-{nombre_curso}.csv
+    - Sin carpetas por idioma
+    - El campo 'lang' diferencia los idiomas dentro del mismo archivo
+    - Archivo de omitidos: {codigo_sic}-{nombre_curso}_omitidos.xlsx
     """
     
     def __init__(self):
@@ -19,79 +26,85 @@ class ResultManager:
         self.omitted_results = []
         self.output_file = ""
         self.omitted_file = ""
+        self.current_sic_code = ""
+        self.current_course_name = ""
+    
+    def _sanitize_filename(self, name: str) -> str:
+        """
+        Sanitiza un nombre para usarlo como nombre de archivo.
+        Elimina caracteres inválidos y limita la longitud.
+        """
+        # Reemplazar caracteres inválidos con guión bajo
+        sanitized = re.sub(r'[<>:"/\\|?*\[\](){}]', '_', name)
+        # Reemplazar múltiples espacios con uno solo
+        sanitized = re.sub(r'\s+', '_', sanitized)
+        # Limitar longitud
+        return sanitized[:50]
     
     def initialize_output_files(self, from_sic: str, to_sic: str, from_course: str, to_course: str, search_engine: str = '', worker_id: Optional[int] = None) -> tuple[str, str]:
         """
-        Initializes output files for results and omitted results.
+        Inicializa los archivos de salida para un CURSO INDIVIDUAL.
+        
+        NUEVO FORMATO:
+        - Archivo de resultados: results/{sic_code}-{course_name}.csv
+        - Archivo de omitidos: results/omitidos/{sic_code}-{course_name}_omitidos.xlsx
         
         Args:
-            from_sic: Starting SIC code
-            to_sic: Ending SIC code
-            from_course: Starting course name
-            to_course: Ending course name
-            search_engine: The search engine being used
-            worker_id: Optional identifier for parallel workers
+            from_sic: Código SIC del curso (para un solo curso)
+            to_sic: No se usa en el nuevo modelo (mantenido por compatibilidad)
+            from_course: Nombre del curso
+            to_course: No se usa en el nuevo modelo
+            search_engine: Motor de búsqueda
+            worker_id: ID del worker (para logging)
             
         Returns:
             Tuple of (output_file, omitted_file)
         """
-        # Sanitize course names for use in filenames
-        from_course_sanitized = '_'.join(from_course.split()[:2]) if from_course else ''
-        to_course_sanitized = '_'.join(to_course.split()[:2]) if to_course else ''
+        # Guardar información del curso actual
+        self.current_sic_code = from_sic
+        self.current_course_name = from_course
         
-        # Create timestamp for filenames
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        # Sanitizar nombre del curso para el archivo
+        sanitized_course = self._sanitize_filename(from_course) if from_course else 'unknown'
         
-        # Add search engine to filename
-        engine_str = f"_{search_engine.replace(' ', '_').lower()}" if search_engine else ''
+        # Crear nombre base del archivo: {sic_code}-{course_name}
+        base_filename = f"{from_sic}-{sanitized_course}"
         
-        # Add worker ID to filename if provided
-        worker_str = f"_worker_{worker_id}" if worker_id is not None else ""
-
-        # Define base filename
-        base_filename = f"{from_sic}_{from_course_sanitized}_to_{to_sic}_{to_course_sanitized}{engine_str}{worker_str}_{timestamp}"
-
-        # Use absolute paths to avoid confusion on server
+        # Usar rutas absolutas
         project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        base_results_dir = os.path.join(project_root, 'results')
-        en_dir = os.path.join(base_results_dir, 'EN')
-        os.makedirs(en_dir, exist_ok=True)
+        results_dir = os.path.join(project_root, 'results')
+        os.makedirs(results_dir, exist_ok=True)
         
-        # Create output file path inside EN subfolder
-        self.output_file = os.path.join(
-            en_dir, 
-            f"results_{base_filename}.csv"
-        )
+        # Archivo de resultados: results/{sic_code}-{course_name}.csv
+        self.output_file = os.path.join(results_dir, f"{base_filename}.csv")
         
-        # Create empty CSV file with predefined columns
+        # Crear archivo CSV con columnas predefinidas (incluye 'lang')
         columns = [
             'sic_code', 'course_name', 'title', 
             'description', 'url', 'total_words', 'lang'
         ]
         pd.DataFrame(columns=columns).to_csv(self.output_file, index=False)
         
-        logger.info(f"CSV file created for worker {worker_id} in EN folder: {self.output_file}")
+        logger.info(f"CSV file created for course {from_sic}: {self.output_file}")
         
-        # Create directory for omitted results
-        omitted_dir = os.path.join(base_results_dir, 'omitidos')
+        # Directorio para omitidos
+        omitted_dir = os.path.join(results_dir, 'omitidos')
         os.makedirs(omitted_dir, exist_ok=True)
         
-        # Create omitted file path
-        self.omitted_file = os.path.join(
-            omitted_dir, 
-            f"omitidos_{base_filename}.xlsx"
-        )
+        # Archivo de omitidos: results/omitidos/{sic_code}-{course_name}_omitidos.xlsx
+        self.omitted_file = os.path.join(omitted_dir, f"{base_filename}_omitidos.xlsx")
         
-        logger.info(f"File for omitted results for worker {worker_id}: {self.omitted_file}")
+        logger.info(f"Omitted file for course {from_sic}: {self.omitted_file}")
         
         return self.output_file, self.omitted_file
     
     def add_result(self, result: Dict[str, Any]) -> bool:
         """
-        Adds a result to the results list and CSV file, routing to language folder if needed.
+        Adds a result to the results list and CSV file.
+        Todos los resultados van al mismo archivo, diferenciados por el campo 'lang'.
         
         Args:
-            result: Result dictionary
+            result: Result dictionary (debe incluir 'lang')
             
         Returns:
             True if successful, False otherwise
@@ -100,63 +113,16 @@ class ResultManager:
             # Add to results list
             self.results.append(result)
             
-            # Add to CSV file
+            # Add to CSV file (mismo archivo para todos los idiomas)
             return self.append_to_csv(result)
         except Exception as e:
             logger.error(f"Error adding result: {str(e)}")
             return False
 
-    def _get_file_path_for_lang(self, lang: str) -> str:
-        """Helper to get or create file path for a specific language."""
-        lang = lang.lower() if lang else 'en'
-        
-        # Consistent routing: results/[LANG.upper()]/results_..._[lang].csv
-        
-        # Initialize lang_files map if needed
-        if not hasattr(self, 'lang_files'):
-            self.lang_files = {}
-            
-        # If it's English and we already set output_file, use it (it's already in results/EN/)
-        if lang == 'en':
-            return self.output_file
-            
-        if lang in self.lang_files:
-            return self.lang_files[lang]
-            
-        # Create new path: results/ES/results_..._es.csv
-        try:
-            # Base results directory is the parent of the EN folder
-            en_dir_path = os.path.dirname(self.output_file)
-            base_results_dir = os.path.dirname(en_dir_path)
-            lang_dir = os.path.join(base_results_dir, lang.upper())
-            os.makedirs(lang_dir, exist_ok=True)
-            
-            # Construct filename based on main filename
-            main_name = os.path.basename(self.output_file)
-            name_parts = os.path.splitext(main_name)
-            new_name = f"{name_parts[0]}_{lang}{name_parts[1]}"
-            
-            lang_file_path = os.path.join(lang_dir, new_name)
-            
-            # Initialize with headers if new
-            if not os.path.exists(lang_file_path):
-                columns = [
-                    'sic_code', 'course_name', 'title', 
-                    'description', 'url', 'total_words', 'lang'
-                ]
-                pd.DataFrame(columns=columns).to_csv(lang_file_path, index=False)
-                logger.info(f"Created new language result file: {lang_file_path}")
-                
-            self.lang_files[lang] = lang_file_path
-            return lang_file_path
-            
-        except Exception as e:
-            logger.error(f"Error creating file for lang {lang}: {e}")
-            return self.output_file # Fallback to main
-
     def append_to_csv(self, result: Dict[str, Any]) -> bool:
         """
-        Appends a result to the appropriate CSV file based on language.
+        Appends a result to the CSV file.
+        Todos los resultados van al mismo archivo, el campo 'lang' indica el idioma.
         
         Args:
             result: Result dictionary
@@ -165,16 +131,14 @@ class ResultManager:
             True if successful, False otherwise
         """
         try:
-            lang = result.get('lang', 'en')
-            target_file = self._get_file_path_for_lang(lang)
+            # Asegurar que el resultado tenga el campo 'lang'
+            if 'lang' not in result:
+                result['lang'] = 'en'
             
             df = pd.DataFrame([result])
-            # Ensure 'lang' column exists in dataframe used for appending
-            if 'lang' not in df.columns:
-                 df['lang'] = lang
             
-            # Append without writing header
-            df.to_csv(target_file, mode='a', header=False, index=False)
+            # Append sin header (el archivo ya tiene las columnas)
+            df.to_csv(self.output_file, mode='a', header=False, index=False)
             return True
         except Exception as e:
             logger.error(f"Error appending to CSV: {str(e)}")
@@ -192,10 +156,9 @@ class ResultManager:
                 logger.warning("No omitted results to save")
                 
                 # Even if there are no results, ensure we create an empty Excel file
-                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-                # If self.omitted_file is not set, create a default path
                 if not self.omitted_file:
-                    omitted_dir = 'omitidos'
+                    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                    omitted_dir = 'results/omitidos'
                     os.makedirs(omitted_dir, exist_ok=True)
                     self.omitted_file = os.path.join(omitted_dir, f"omitidos_{timestamp}.xlsx")
                 
@@ -312,3 +275,24 @@ class ResultManager:
             Omitted file path
         """
         return self.omitted_file
+    
+    def cleanup_if_empty(self):
+        """
+        Elimina el archivo CSV si está vacío (solo tiene cabecera).
+        """
+        try:
+            if self.output_file and os.path.exists(self.output_file):
+                with open(self.output_file, 'r', encoding='utf-8') as f:
+                    lines = f.readlines()
+                
+                # Si solo tiene la cabecera, eliminar
+                if len(lines) <= 1:
+                    os.remove(self.output_file)
+                    logger.info(f"Removed empty results file: {self.output_file}")
+                    
+                    # También eliminar el archivo de omitidos si está vacío
+                    if self.omitted_file and os.path.exists(self.omitted_file):
+                        os.remove(self.omitted_file)
+                        logger.info(f"Removed empty omitted file: {self.omitted_file}")
+        except Exception as e:
+            logger.error(f"Error cleaning up empty files: {e}")
