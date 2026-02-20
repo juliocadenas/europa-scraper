@@ -618,6 +618,10 @@ class ScraperServer:
         self.app.get("/api/debug_info")(self.debug_info)
         self.app.get("/api/version")(self.version_endpoint)
         
+        # Endpoints de análisis de fallos
+        self.app.get("/api/failed_courses")(self.get_failed_courses_summary)
+        self.app.get("/api/course_details")(self.get_course_details)
+        
         # Endpoints de visualización de resultados
         self.app.get("/api/list_results")(self.list_results_files)
         self.app.get("/api/list_omitidos")(self.list_omitidos_files)
@@ -1606,6 +1610,154 @@ class ScraperServer:
     async def version_endpoint(self):
         """Returns the current server version."""
         return {"version": "3.1.7-STABLE", "status": "OK"}
+
+    async def get_failed_courses_summary(self):
+        """
+        Retorna un resumen de cursos que fallaron o no completaron correctamente.
+        Incluye información detallada sobre la razón del fallo.
+        """
+        try:
+            failed_courses = []
+            error_events = []
+            
+            # 1. Obtener cursos con estado 'Error' o que no completaron
+            if self.course_states is not None:
+                courses_dict = dict(self.course_states)
+                for sic_code, course_data in courses_dict.items():
+                    status = course_data.get('status', '')
+                    # Identificar cursos con problemas
+                    if status in ['Error', 'CRASHED', 'Failed'] or 'CRASHED' in str(status):
+                        failed_courses.append({
+                            'sic_code': sic_code,
+                            'course_name': course_data.get('name', 'Desconocido'),
+                            'status': status,
+                            'progress': course_data.get('progress', 0),
+                            'reason': 'Error durante el procesamiento'
+                        })
+            
+            # 2. Obtener eventos de error del log global
+            events = await global_event_log.get_events(0)
+            for event in events:
+                if event.get('type') == 'ERROR':
+                    error_events.append({
+                        'timestamp': event.get('timestamp', ''),
+                        'source': event.get('source', ''),
+                        'message': event.get('message', ''),
+                        'details': event.get('details', {})
+                    })
+            
+            # 3. Obtener workers con estado de error
+            workers_with_errors = []
+            if self.worker_states is not None:
+                workers_dict = dict(self.worker_states)
+                for worker_id, worker_data in workers_dict.items():
+                    status = worker_data.get('status', '')
+                    current_task = worker_data.get('current_task', '')
+                    # Identificar workers con problemas
+                    if status in ['Error', 'CRASHED'] or 'CRASHED' in str(current_task) or 'Error' in str(current_task):
+                        workers_with_errors.append({
+                            'worker_id': worker_id,
+                            'status': status,
+                            'current_task': current_task,
+                            'progress': worker_data.get('progress', 0)
+                        })
+            
+            # 4. Calcular estadísticas resumidas
+            total_courses = len(dict(self.course_states)) if self.course_states else 0
+            total_errors = len(failed_courses)
+            total_worker_errors = len(workers_with_errors)
+            
+            # 5. Agrupar errores por tipo
+            error_types = {}
+            for event in error_events:
+                msg = event.get('message', '')
+                # Categorizar el error
+                if 'timeout' in msg.lower():
+                    error_type = 'Timeout'
+                elif 'connection' in msg.lower() or 'network' in msg.lower():
+                    error_type = 'Connection Error'
+                elif 'captcha' in msg.lower():
+                    error_type = 'CAPTCHA'
+                elif 'browser' in msg.lower():
+                    error_type = 'Browser Error'
+                elif 'api' in msg.lower():
+                    error_type = 'API Error'
+                else:
+                    error_type = 'Other'
+                
+                error_types[error_type] = error_types.get(error_type, 0) + 1
+            
+            return {
+                'summary': {
+                    'total_courses': total_courses,
+                    'failed_courses': total_errors,
+                    'workers_with_errors': total_worker_errors,
+                    'total_error_events': len(error_events),
+                    'error_types': error_types
+                },
+                'failed_courses': failed_courses,
+                'workers_with_errors': workers_with_errors,
+                'recent_errors': error_events[-20:] if error_events else [],  # Últimos 20 errores
+                'is_running': self.is_job_running
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Error obteniendo resumen de cursos fallidos: {e}")
+            raise HTTPException(status_code=500, detail=f"Error obteniendo resumen: {str(e)}")
+
+    async def get_course_details(self, sic_code: str = Query(...)):
+        """
+        Obtiene detalles de un curso específico incluyendo su historial de eventos.
+        """
+        try:
+            course_details = {}
+            
+            # 1. Obtener estado actual del curso
+            if self.course_states is not None:
+                courses_dict = dict(self.course_states)
+                course_details = courses_dict.get(sic_code, {})
+            
+            # 2. Buscar eventos relacionados con este curso
+            related_events = []
+            events = await global_event_log.get_events(0)
+            for event in events:
+                details = event.get('details', {})
+                event_sic = details.get('sic', '')
+                event_course = details.get('course', '')
+                
+                if event_sic == sic_code or sic_code in str(event_course):
+                    related_events.append(event)
+            
+            # 3. Buscar en los logs del worker (si existe)
+            worker_logs = []
+            log_dir = os.path.join(project_root, 'logs')
+            if os.path.exists(log_dir):
+                for log_file in os.listdir(log_dir):
+                    if log_file.startswith('worker_') and log_file.endswith('.log'):
+                        log_path = os.path.join(log_dir, log_file)
+                        try:
+                            with open(log_path, 'r', encoding='utf-8', errors='ignore') as f:
+                                # Leer últimas 100 líneas
+                                lines = f.readlines()[-100:]
+                                for line in lines:
+                                    if sic_code in line:
+                                        worker_logs.append({
+                                            'file': log_file,
+                                            'line': line.strip()
+                                        })
+                        except Exception:
+                            pass
+            
+            return {
+                'sic_code': sic_code,
+                'course_state': course_details,
+                'related_events': related_events,
+                'worker_log_entries': worker_logs[-20:] if worker_logs else []  # Últimas 20 entradas
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Error obteniendo detalles del curso {sic_code}: {e}")
+            raise HTTPException(status_code=500, detail=f"Error obteniendo detalles: {str(e)}")
 
     def run(self):
         os.makedirs("logs", exist_ok=True)

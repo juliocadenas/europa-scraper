@@ -300,6 +300,28 @@ class ClientApp:
             self.gui.control_frame.start_button.config(state=tk.NORMAL)
             self.gui.control_frame.stop_button.config(state=tk.DISABLED)
 
+    def get_failed_courses(self):
+        """Obtiene el resumen de cursos fallidos del servidor."""
+        try:
+            url = f"{self.server_base_url}/api/failed_courses"
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+            return response.json()
+        except Exception as e:
+            logger.error(f"Error obteniendo cursos fallidos: {e}")
+            return None
+
+    def get_course_details(self, sic_code):
+        """Obtiene detalles de un curso específico del servidor."""
+        try:
+            url = f"{self.server_base_url}/api/course_details?sic_code={sic_code}"
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+            return response.json()
+        except Exception as e:
+            logger.error(f"Error obteniendo detalles del curso {sic_code}: {e}")
+            return None
+
     def _on_closing(self):
         self.stop_polling.set()
         if self.is_scraping:

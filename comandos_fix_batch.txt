@@ -1,0 +1,53 @@
+# ============================================================
+# COMANDOS PARA EJECUTAR EN EL SHELL DE PROXMOX
+# ============================================================
+# Error: "ScraperController.run_scraping() got an unexpected keyword argument 'batch'"
+# Solución: Actualizar scraper_controller.py con la versión que tiene el parámetro batch
+# ============================================================
+
+# 1. Entrar al directorio del proyecto
+cd /opt/docuscraper
+
+# 2. Verificar la versión actual del controlador (debería fallar = no tiene batch)
+echo "=== Verificando versión actual ==="
+grep -n "batch: Optional" controllers/scraper_controller.py
+
+# 3. Descargar la versión corregida desde GitHub
+echo "=== Descargando versión corregida desde GitHub ==="
+git pull origin main
+
+# 4. Si git pull no funciona, descargar directamente:
+# (Usar solo si el paso 3 falla)
+curl -o controllers/scraper_controller.py https://raw.githubusercontent.com/tu-usuario/tu-repo/main/controllers/scraper_controller.py
+
+# 5. Verificar que el archivo se actualizó correctamente
+echo "=== Verificando actualización ==="
+grep -n "batch: Optional" controllers/scraper_controller.py
+# Debe mostrar algo como: "909:  async def run_scraping(self, params: Dict[str, Any], progress_callback: Optional[Callable] = None, worker_id: Optional[int] = None, batch: Optional[List[Tuple]] = None) -> List[Dict[str, Any]]:"
+
+# 6. Copiar el archivo al contenedor Docker
+echo "=== Copiando al contenedor Docker ==="
+docker cp controllers/scraper_controller.py europa-scraper-prod:/app/controllers/
+
+# 7. Verificar que el archivo dentro del contenedor tiene el parámetro batch
+echo "=== Verificando archivo dentro del contenedor ==="
+docker exec europa-scraper-prod grep -n "batch: Optional" /app/controllers/scraper_controller.py
+
+# 8. Reiniciar el contenedor
+echo "=== Reiniciando contenedor ==="
+docker restart europa-scraper-prod
+
+# 9. Esperar 15 segundos
+sleep 15
+
+# 10. Verificar que el contenedor está corriendo
+echo "=== Estado del contenedor ==="
+docker ps | grep europa-scraper-prod
+
+# 11. Ver los logs para confirmar que inició correctamente
+echo "=== Logs del contenedor ==="
+docker logs --tail 20 europa-scraper-prod
+
+# ============================================================
+# FIN DE LOS COMANDOS
+# ============================================================

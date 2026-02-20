@@ -158,6 +158,10 @@ class ScraperClientGUI(ttk.Frame):
         self.worker_status_frame = WorkerStatusFrame(controls_main_frame)
         self.worker_status_frame.pack(fill=tk.BOTH, expand=True, pady=5)
 
+        # Botón para ver cursos fallidos
+        self.failed_courses_button = ttk.Button(controls_main_frame, text="🔍 Ver Cursos Fallidos", command=self._show_failed_courses)
+        self.failed_courses_button.pack(fill=tk.X, pady=5)
+
     def _on_search_engine_change(self, event):
         selected_engine = self.search_engine_combo.get()
         if selected_engine in ["Google", "DuckDuckGo", "Common Crawl", "Common Crawl (Guiado por Google)", "Wayback Machine"]:
@@ -611,3 +615,139 @@ class ScraperClientGUI(ttk.Frame):
             logger.error(f"Error al mostrar reCAPTCHA: {e}")
             messagebox.showerror("Error de reCAPTCHA", f"No se pudo mostrar el reCAPTCHA: {e}", parent=window)
             window.destroy()
+
+    def _show_failed_courses(self):
+        """Muestra una ventana con el resumen de cursos fallidos."""
+        # Obtener datos del servidor
+        failed_data = self.parent_app.get_failed_courses()
+        
+        if not failed_data:
+            messagebox.showerror("Error", "No se pudo obtener información del servidor.")
+            return
+        
+        # Crear ventana de resultados
+        failed_window = tk.Toplevel(self.master)
+        failed_window.title("Resumen de Cursos Fallidos")
+        failed_window.geometry("900x700")
+        
+        # Frame principal
+        main_frame = ttk.Frame(failed_window, padding="10")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Resumen
+        summary = failed_data.get('summary', {})
+        summary_frame = ttk.LabelFrame(main_frame, text="Resumen", padding="10")
+        summary_frame.pack(fill=tk.X, pady=5)
+        
+        ttk.Label(summary_frame, text=f"Total de cursos: {summary.get('total_courses', 0)}").pack(anchor=tk.W)
+        ttk.Label(summary_frame, text=f"Cursos fallidos: {summary.get('failed_courses', 0)}").pack(anchor=tk.W)
+        ttk.Label(summary_frame, text=f"Workers con errores: {summary.get('workers_with_errors', 0)}").pack(anchor=tk.W)
+        ttk.Label(summary_frame, text=f"Eventos de error: {summary.get('total_error_events', 0)}").pack(anchor=tk.W)
+        
+        # Tipos de error
+        error_types = summary.get('error_types', {})
+        if error_types:
+            error_types_frame = ttk.LabelFrame(main_frame, text="Tipos de Error", padding="10")
+            error_types_frame.pack(fill=tk.X, pady=5)
+            for error_type, count in error_types.items():
+                ttk.Label(error_types_frame, text=f"  • {error_type}: {count}").pack(anchor=tk.W)
+        
+        # Notebook para pestañas
+        notebook = ttk.Notebook(main_frame)
+        notebook.pack(fill=tk.BOTH, expand=True, pady=5)
+        
+        # Pestaña: Cursos Fallidos
+        courses_frame = ttk.Frame(notebook)
+        notebook.add(courses_frame, text="Cursos Fallidos")
+        
+        # Treeview para cursos fallidos
+        columns = ("SIC", "Curso", "Estado", "Progreso", "Razón")
+        courses_tree = ttk.Treeview(courses_frame, columns=columns, show="headings", selectmode="browse")
+        
+        for col in columns:
+            courses_tree.heading(col, text=col)
+            courses_tree.column(col, width=150)
+        
+        courses_tree.column("Curso", width=300)
+        courses_tree.column("Razón", width=200)
+        
+        vsb = ttk.Scrollbar(courses_frame, orient="vertical", command=courses_tree.yview)
+        courses_tree.configure(yscrollcommand=vsb.set)
+        
+        vsb.pack(side=tk.RIGHT, fill=tk.Y)
+        courses_tree.pack(fill=tk.BOTH, expand=True)
+        
+        failed_courses = failed_data.get('failed_courses', [])
+        for course in failed_courses:
+            courses_tree.insert("", "end", values=(
+                course.get('sic_code', ''),
+                course.get('course_name', ''),
+                course.get('status', ''),
+                course.get('progress', 0),
+                course.get('reason', '')
+            ))
+        
+        if not failed_courses:
+            courses_tree.insert("", "end", values=("", "No hay cursos fallidos", "", "", ""))
+        
+        # Pestaña: Workers con Errores
+        workers_frame = ttk.Frame(notebook)
+        notebook.add(workers_frame, text="Workers con Errores")
+        
+        columns = ("Worker ID", "Estado", "Tarea Actual", "Progreso")
+        workers_tree = ttk.Treeview(workers_frame, columns=columns, show="headings", selectmode="browse")
+        
+        for col in columns:
+            workers_tree.heading(col, text=col)
+            workers_tree.column(col, width=200)
+        
+        vsb2 = ttk.Scrollbar(workers_frame, orient="vertical", command=workers_tree.yview)
+        workers_tree.configure(yscrollcommand=vsb2.set)
+        
+        vsb2.pack(side=tk.RIGHT, fill=tk.Y)
+        workers_tree.pack(fill=tk.BOTH, expand=True)
+        
+        workers_with_errors = failed_data.get('workers_with_errors', [])
+        for worker in workers_with_errors:
+            workers_tree.insert("", "end", values=(
+                worker.get('worker_id', ''),
+                worker.get('status', ''),
+                worker.get('current_task', ''),
+                worker.get('progress', 0)
+            ))
+        
+        if not workers_with_errors:
+            workers_tree.insert("", "end", values=("", "No hay workers con errores", "", ""))
+        
+        # Pestaña: Errores Recientes
+        errors_frame = ttk.Frame(notebook)
+        notebook.add(errors_frame, text="Errores Recientes")
+        
+        columns = ("Hora", "Fuente", "Mensaje")
+        errors_tree = ttk.Treeview(errors_frame, columns=columns, show="headings", selectmode="browse")
+        
+        for col in columns:
+            errors_tree.heading(col, text=col)
+            errors_tree.column(col, width=200)
+        
+        errors_tree.column("Mensaje", width=400)
+        
+        vsb3 = ttk.Scrollbar(errors_frame, orient="vertical", command=errors_tree.yview)
+        errors_tree.configure(yscrollcommand=vsb3.set)
+        
+        vsb3.pack(side=tk.RIGHT, fill=tk.Y)
+        errors_tree.pack(fill=tk.BOTH, expand=True)
+        
+        recent_errors = failed_data.get('recent_errors', [])
+        for error in recent_errors:
+            errors_tree.insert("", "end", values=(
+                error.get('timestamp', ''),
+                error.get('source', ''),
+                error.get('message', '')[:100]  # Truncar mensaje largo
+            ))
+        
+        if not recent_errors:
+            errors_tree.insert("", "end", values=("", "No hay errores recientes", ""))
+        
+        # Botón cerrar
+        ttk.Button(main_frame, text="Cerrar", command=failed_window.destroy).pack(pady=10)
