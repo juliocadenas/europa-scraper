@@ -157,7 +157,7 @@ def worker_process(
     config_manager = Config(config_path)
     
     # Pre-cargar configuración para evitar lecturas de disco repetitivas
-    search_engine_param = config_manager.get('search_engine', 'DuckDuckGo')
+    # NOTA: search_engine se obtiene de job_params, NO de config global
     is_headless_param = config_manager.get('headless', True)
     
     scraper_controller = None
@@ -184,6 +184,10 @@ def worker_process(
             
             batch, job_params = work_item
             batch_id = f"batch_{int(time.time())}_{worker_id}"
+            
+            # OBTENER search_engine DE job_params, NO de config global
+            search_engine_param = job_params.get('search_engine', 'DuckDuckGo')
+            logger.info(f"Worker {worker_id}: Motor de búsqueda del trabajo: '{search_engine_param}'")
             
             browser_initialized = (scraper_controller is not None)
 
