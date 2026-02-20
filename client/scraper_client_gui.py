@@ -123,8 +123,8 @@ class ScraperClientGUI(ttk.Frame):
         search_config_frame.grid(row=1, column=0, sticky="nsew", pady=(5, 0))
 
         ttk.Label(search_config_frame, text="Motor de Búsqueda:").pack(fill=tk.X, pady=(0, 2))
-        self.search_engine_combo = ttk.Combobox(search_config_frame, values=["Google", "DuckDuckGo", "Cordis Europa", "Common Crawl", "Wayback Machine"], state="readonly")
-        self.search_engine_combo.set("DuckDuckGo")
+        self.search_engine_combo = ttk.Combobox(search_config_frame, values=["Cordis Europa API", "Google", "DuckDuckGo", "Cordis Europa", "Common Crawl", "Wayback Machine"], state="readonly")
+        self.search_engine_combo.set("Cordis Europa API")
         self.search_engine_combo.pack(fill=tk.X, pady=(0, 5))
         self.search_engine_combo.bind("<<ComboboxSelected>>", self._on_search_engine_change)
 
