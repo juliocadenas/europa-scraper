@@ -230,9 +230,9 @@ class ScraperGUI(ttk.Frame):
         self.center_master_paned = ttk.PanedWindow(self.center_column, orient=tk.VERTICAL)
         self.center_master_paned.pack(side=tk.TOP, fill=tk.BOTH, expand=True, pady=10)
 
-        # SECCIÓN 1: MONITOR ÁREA (WORKERS + AUDITORÍA)
+        # SECCIÓN 1: MONITOR ÁREA (WORKERS + AUDITORÍA) - MÁS ALTURA
         self.monitor_area = ttk.LabelFrame(self.center_master_paned, text="Monitor de Actividad Local", padding=5)
-        self.center_master_paned.add(self.monitor_area, weight=3)
+        self.center_master_paned.add(self.monitor_area, weight=5)
 
         # Botones del Monitor
         self.mon_btn_frame = ttk.Frame(self.monitor_area)
@@ -257,9 +257,9 @@ class ScraperGUI(ttk.Frame):
         self.worker_tree.configure(yscrollcommand=sb1.set)
         sb1.pack(side=tk.RIGHT, fill=tk.Y)
 
-        # SECCIÓN 2: DETALLES DEL PROCESO SELECCIONADO (ABAJO)
+        # SECCIÓN 2: DETALLES DEL PROCESO SELECCIONADO (ABAJO) - MENOS ALTURA
         self.details_area = ttk.LabelFrame(self.center_master_paned, text="Detalles del Proceso Seleccionado", padding=5)
-        self.center_master_paned.add(self.details_area, weight=2)
+        self.center_master_paned.add(self.details_area, weight=1)
         self.details_text = tk.Text(self.details_area, font=("Consolas", 11), state=tk.DISABLED, bg="#f0f0f0")
         self.details_text.pack(fill=tk.BOTH, expand=True)
 
@@ -293,12 +293,13 @@ class ScraperGUI(ttk.Frame):
         self.audit_tree.bind('<<TreeviewSelect>>', self._on_audit_select)
         self.audit_tree.bind("<Button-3>", self._show_context_menu)
 
-        # 2. Resultados (Botín)
+        # 2. Resultados (Botín) con botones integrados
         self.results_container = ttk.LabelFrame(self.right_paned, text="Resultados Finales", padding=5)
         self.right_paned.add(self.results_container, weight=1)
         self.results_frame = ResultsFrame(self.results_container)
         self.results_frame.pack(fill=tk.BOTH, expand=True)
-        self.results_btns = ttk.Frame(self.right_column)
+        # Botones justo debajo de resultados
+        self.results_btns = ttk.Frame(self.results_container)
         self.results_btns.pack(fill=tk.X, pady=5)
         ttk.Button(self.results_btns, text="Exportar Resultados (ZIP)", command=self._on_export_results).pack(side=tk.LEFT, padx=5, pady=5, fill=tk.X, expand=True)
         ttk.Button(self.results_btns, text="Abrir Carpeta", command=self._on_open_results_folder).pack(side=tk.LEFT, padx=5, pady=5, fill=tk.X, expand=True)
