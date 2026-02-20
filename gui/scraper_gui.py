@@ -296,14 +296,17 @@ class ScraperGUI(ttk.Frame):
         # 2. Resultados (Botín) con botones integrados
         self.results_container = ttk.LabelFrame(self.right_paned, text="Resultados Finales", padding=5)
         self.right_paned.add(self.results_container, weight=1)
+        
+        # Botones JUSTO DEBAJO del título "Resultados Finales" (ANTES del contenido para que sean visibles)
+        self.results_btns = ttk.Frame(self.results_container)
+        self.results_btns.pack(fill=tk.X, pady=(0, 5), before=None)
+        ttk.Button(self.results_btns, text="📥 Exportar ZIP", command=self._on_export_results).pack(side=tk.LEFT, padx=2, pady=2, fill=tk.X, expand=True)
+        ttk.Button(self.results_btns, text="📂 Ver Archivos", command=self._on_open_results_folder).pack(side=tk.LEFT, padx=2, pady=2, fill=tk.X, expand=True)
+        ttk.Button(self.results_btns, text="🗑️ Limpiar", command=self._cleanup_files_action).pack(side=tk.LEFT, padx=2, pady=2, fill=tk.X, expand=True)
+        
+        # Contenido de resultados (DESPUÉS de los botones)
         self.results_frame = ResultsFrame(self.results_container)
         self.results_frame.pack(fill=tk.BOTH, expand=True)
-        # Botones justo debajo de resultados
-        self.results_btns = ttk.Frame(self.results_container)
-        self.results_btns.pack(fill=tk.X, pady=5)
-        ttk.Button(self.results_btns, text="Exportar Resultados (ZIP)", command=self._on_export_results).pack(side=tk.LEFT, padx=5, pady=5, fill=tk.X, expand=True)
-        ttk.Button(self.results_btns, text="Abrir Carpeta", command=self._on_open_results_folder).pack(side=tk.LEFT, padx=5, pady=5, fill=tk.X, expand=True)
-        ttk.Button(self.results_btns, text="Gestionar Servidor", command=self._cleanup_files_action).pack(side=tk.LEFT, padx=5, pady=5, fill=tk.X, expand=True)
 
         # Ajuste final de sashes
         self.paned_window.update()
