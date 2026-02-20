@@ -629,15 +629,48 @@ class ScraperGUI(ttk.Frame):
         self._on_tree_select(None)
 
     def _force_reset_client_state(self):
-        """Detiene todo en el servidor y limpia la vista local."""
-        if messagebox.askyesno("Confirmar", "¿Seguro que desea resetear TODO el sistema (Servidor + Cliente)?\nSe detendrán todos los procesos activos."):
+        """Detiene todo en el servidor, limpia la vista local, auditoría y archivos del servidor."""
+        if messagebox.askyesno("Confirmar RESET TOTAL", 
+            "¿Seguro que desea resetear TODO el sistema?\n\n"
+            "Esta acción:\n"
+            "• Detendrá todos los procesos activos en el servidor\n"
+            "• Limpiará el Monitor de Actividad Local\n"
+            "• Limpiará la Auditoría de Procesos\n"
+            "• ELIMINARÁ todos los archivos de resultados del servidor\n\n"
+            "¿Continuar?"):
             try:
+                # 1. Resetear el servidor (detiene procesos)
                 r = requests.post(f"{self.server_url.get()}/api/reset", timeout=10)
+                
+                # 2. Limpiar archivos del servidor
+                r_cleanup = requests.post(f"{self.server_url.get()}/api/cleanup_files", timeout=10)
+                
                 if r.status_code == 200:
                     self.results_frame.add_log("⚠️ Sistema reiniciado (Cliente + Servidor).")
-                    # No reseteamos los listboxes para no perder la selección, solo el estado de workers
+                    
+                    # 3. Limpiar Monitor de Actividad Local
                     self.worker_tree.delete(*self.worker_tree.get_children())
-                    messagebox.showinfo("Reset", "El sistema ha sido reseteado correctamente.")
+                    
+                    # 4. Limpiar Auditoría de Procesos
+                    self.audit_tree.delete(*self.audit_tree.get_children())
+                    if hasattr(self, 'audit_details_map'):
+                        self.audit_details_map.clear()
+                    
+                    # 5. Limpiar detalles del proceso seleccionado
+                    self.details_text.config(state=tk.NORMAL)
+                    self.details_text.delete(1.0, tk.END)
+                    self.details_text.config(state=tk.DISABLED)
+                    
+                    # 6. Resetear el contador de eventos
+                    if hasattr(self.controller, 'last_event_id'):
+                        self.controller.last_event_id = 0
+                    
+                    messagebox.showinfo("Reset Completo", 
+                        "Sistema reseteado correctamente:\n"
+                        "✓ Procesos detenidos\n"
+                        "✓ Monitor limpio\n"
+                        "✓ Auditoría limpiada\n"
+                        f"✓ Archivos: {'Borrados' if r_cleanup.status_code == 200 else 'Error al borrar'}")
                 else:
                     messagebox.showerror("Error", f"Fallo al resetear servidor: {r.status_code}")
             except Exception as e:

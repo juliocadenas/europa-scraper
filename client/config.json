@@ -43,5 +43,5 @@
         "port": 443,
         "auto_detect_wsl": false
     },
-    "num_workers": "2"
+    "num_workers": "25"
 }
