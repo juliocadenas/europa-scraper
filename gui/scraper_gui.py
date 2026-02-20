@@ -257,22 +257,16 @@ class ScraperGUI(ttk.Frame):
         self.worker_tree.configure(yscrollcommand=sb1.set)
         sb1.pack(side=tk.RIGHT, fill=tk.Y)
 
-        # SECCIÓN 2: DETALLES DEL PROCESO SELECCIONADO (ABAJO) - MENOS ALTURA
-        self.details_area = ttk.LabelFrame(self.center_master_paned, text="Detalles del Proceso Seleccionado", padding=5)
-        self.center_master_paned.add(self.details_area, weight=1)
-        self.details_text = tk.Text(self.details_area, font=("Consolas", 11), state=tk.DISABLED, bg="#f0f0f0")
-        self.details_text.pack(fill=tk.BOTH, expand=True)
-
         # Tags y Bindings
         self.worker_tree.bind("<Button-3>", self._show_context_menu)
         
-        # --- COLUMNA DERECHA (AUDITORÍA Y RESULTADOS) ---
+        # --- COLUMNA DERECHA (AUDITORÍA, DETALLES Y RESULTADOS) ---
         self.right_paned = ttk.PanedWindow(self.right_column, orient=tk.VERTICAL)
         self.right_paned.pack(fill=tk.BOTH, expand=True)
         
         # 1. Auditoría Tree (Historial Técnico) - ESTRUCTURA JERÁRQUICA
         self.audit_pane = ttk.LabelFrame(self.right_paned, text="Auditoría de Procesos (por Worker)", padding=5)
-        self.right_paned.add(self.audit_pane, weight=1)
+        self.right_paned.add(self.audit_pane, weight=2)
         
         # TreeView jerárquico: Workers como padres, eventos como hijos
         self.audit_tree = ttk.Treeview(self.audit_pane, columns=('Time', 'Type', 'Message'), show='tree headings')
@@ -308,7 +302,13 @@ class ScraperGUI(ttk.Frame):
         # Diccionario para tracking de workers y sus eventos
         self.audit_worker_nodes = {}  # worker_id -> node_id en el tree
 
-        # 2. Resultados (Botín) con botones integrados
+        # 2. DETALLES DEL PROCESO SELECCIONADO (AHORA A LA DERECHA, DEBAJO DE AUDITORÍA)
+        self.details_area = ttk.LabelFrame(self.right_paned, text="Detalles del Proceso Seleccionado", padding=5)
+        self.right_paned.add(self.details_area, weight=1)
+        self.details_text = tk.Text(self.details_area, font=("Consolas", 10), state=tk.DISABLED, bg="#f5f5f5", height=6)
+        self.details_text.pack(fill=tk.BOTH, expand=True)
+
+        # 3. Resultados (Botín) con botones integrados
         self.results_container = ttk.LabelFrame(self.right_paned, text="Resultados Finales", padding=5)
         self.right_paned.add(self.results_container, weight=1)
         
@@ -434,10 +434,46 @@ class ScraperGUI(ttk.Frame):
              else:
                  self.progress_frame.update_progress(100, "Inactivo")
 
+    def _get_worker_sort_key(self, source):
+        """Extrae el número del worker para ordenamiento numérico.
+        Ej: 'Worker-1' -> 1, 'Worker-10' -> 10, 'System' -> 9999
+        """
+        if not source:
+            return 9999
+        match = re.search(r'(\d+)', source)
+        if match:
+            return int(match.group(1))
+        return 9999  # System u otros van al final
+
+    def _reorder_worker_nodes(self):
+        """Reordena los nodos de workers en el árbol numéricamente."""
+        if not hasattr(self, 'audit_worker_nodes') or not self.audit_worker_nodes:
+            return
+        
+        # Obtener todos los workers con su clave de ordenamiento
+        workers_with_keys = []
+        for worker_key, node_id in self.audit_worker_nodes.items():
+            # Extraer el display name del nodo
+            if self.audit_tree.exists(node_id):
+                text = self.audit_tree.item(node_id, 'text')
+                sort_key = self._get_worker_sort_key(text)
+                workers_with_keys.append((sort_key, worker_key, node_id))
+        
+        # Ordenar por número de worker
+        workers_with_keys.sort(key=lambda x: x[0])
+        
+        # Mover cada nodo a su posición correcta
+        for idx, (sort_key, worker_key, node_id) in enumerate(workers_with_keys):
+            if self.audit_tree.exists(node_id):
+                # Mover el nodo a la posición idx
+                self.audit_tree.move(node_id, '', idx)
+
     def update_audit_log(self, events):
         """Actualiza el historial de auditoría con estructura jerárquica por Worker."""
         if not hasattr(self, 'audit_details_map'): self.audit_details_map = {}
         if not hasattr(self, 'audit_worker_nodes'): self.audit_worker_nodes = {}
+        
+        needs_reorder = False
         
         for ev in events:
             event_id = ev.get('id')
@@ -457,6 +493,7 @@ class ScraperGUI(ttk.Frame):
                                                    values=('', '', f'Eventos de {worker_display}'),
                                                    tags=('worker_node',), open=True)
                 self.audit_worker_nodes[worker_key] = node_id
+                needs_reorder = True
             
             parent_node = self.audit_worker_nodes[worker_key]
             
@@ -472,6 +509,10 @@ class ScraperGUI(ttk.Frame):
                                         text='',  # Sin texto en columna #0 para hijos
                                         values=(timestamp, ev_type, msg[:80]),  # Truncar mensaje
                                         tags=(ev_type,))
+        
+        # Reordenar workers si se agregó uno nuevo
+        if needs_reorder:
+            self._reorder_worker_nodes()
 
     def _on_audit_select(self, event):
         sel = self.audit_tree.selection()
