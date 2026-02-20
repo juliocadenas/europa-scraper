@@ -1,6 +1,7 @@
 import os
 import logging
 import pandas as pd
+import csv
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 import openpyxl
@@ -115,7 +116,9 @@ class ResultManager:
         # ==============================================================================
         # JOYA DE LA CORONA - CREAR CSV CON COLUMNAS INAMOVIBLES
         # ==============================================================================
-        pd.DataFrame(columns=CSV_COLUMNS).to_csv(self.output_file, index=False)
+        # Usar quoting=csv.QUOTE_ALL para que todos los campos estén entre comillas
+        # Esto evita que las comas dentro de los campos se interpreten como delimitadores
+        pd.DataFrame(columns=CSV_COLUMNS).to_csv(self.output_file, index=False, quoting=csv.QUOTE_ALL)
         # ==============================================================================
         
         logger.info(f"CSV file created for range {from_sic} to {to_sic}: {self.output_file}")
@@ -187,7 +190,9 @@ class ResultManager:
             df = pd.DataFrame([filtered_result])
             
             # Append sin header (el archivo ya tiene las columnas)
-            df.to_csv(self.output_file, mode='a', header=False, index=False)
+            # Usar quoting=csv.QUOTE_ALL para que todos los campos estén entre comillas
+            # Esto evita que las comas dentro de los campos se interpreten como delimitadores
+            df.to_csv(self.output_file, mode='a', header=False, index=False, quoting=csv.QUOTE_ALL)
             return True
         except Exception as e:
             logger.error(f"Error appending to CSV: {str(e)}")
