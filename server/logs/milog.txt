@@ -1,0 +1,238 @@
+
+
+Iniciando servidor corregido en WSL optimizado...
+
+=========================================
+  INICIANDO SERVIDOR WSL FINAL
+=========================================
+
+ℹ️ WSL no detectado (ejecutando desde Windows)
+Activando entorno virtual final...
+Iniciando servidor WSL final...
+2025-11-29 19:13:08,420 - INFO - Iniciando SERVIDOR REAL (PRODUCCIÓN) en 0.0.0.0:8002...
+2025-11-29 19:13:08,426 - INFO - root - Logging initialized to logs/server.log
+2025-11-29 19:13:08,431 - INFO - root - Rutas registradas:
+2025-11-29 19:13:08,432 - INFO - root -   {'HEAD', 'GET'} /openapi.json
+2025-11-29 19:13:08,433 - INFO - root -   {'HEAD', 'GET'} /docs
+2025-11-29 19:13:08,433 - INFO - root -   {'HEAD', 'GET'} /docs/oauth2-redirect
+2025-11-29 19:13:08,434 - INFO - root -   {'HEAD', 'GET'} /redoc
+2025-11-29 19:13:08,435 - INFO - root -   {'POST'} /start_scraping
+2025-11-29 19:13:08,435 - INFO - root -   {'POST'} /stop_scraping
+2025-11-29 19:13:08,436 - INFO - root -   {'GET'} /detailed_status
+2025-11-29 19:13:08,436 - INFO - root -   {'POST'} /upload_courses
+2025-11-29 19:13:08,437 - INFO - root -   {'GET'} /get_all_courses
+2025-11-29 19:13:08,437 - INFO - root -   {'GET'} /
+2025-11-29 19:13:08,438 - INFO - root -   {'GET'} /ping
+2025-11-29 19:13:08,439 - INFO - __main__ - DEBUG CRITICO: La base de datos se buscará en: /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/courses.db
+2025-11-29 19:13:08,441 - INFO - __main__ - ✅ Archivo de base de datos encontrado.
+2025-11-29 19:13:08,442 - INFO - root - Iniciando servidor en http://0.0.0.0:8002
+2025-11-29 19:13:08,492 - DEBUG - asyncio - Using selector: EpollSelector
+INFO:     Started server process [17065]
+INFO:     Waiting for application startup.
+2025-11-29 19:13:08,776 - INFO - root - Iniciando servidor y gestor de multiprocesamiento...
+2025-11-29 19:13:20,815 - INFO - root - Iniciado broadcasting de presencia del servidor
+2025-11-29 19:13:20,815 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+2025-11-29 19:13:20,816 - INFO - root - Iniciado el monitor de limpieza de workers.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8002 (Press CTRL+C to quit)
+INFO:     127.0.0.1:40944 - "GET / HTTP/1.1" 200 OK
+2025-11-29 19:13:23,652 - INFO - utils.sqlite_handler - SQLiteHandler inicializado con base de datos: /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/courses.db
+2025-11-29 19:13:23,666 - INFO - utils.sqlite_handler - El esquema de la tabla 'courses' ya está actualizado.
+2025-11-29 19:13:23,729 - INFO - utils.sqlite_handler - Obtenidos 12171 cursos desde la base de datos SQLite
+INFO:     127.0.0.1:40948 - "GET /get_all_courses HTTP/1.1" 200 OK
+2025-11-29 19:13:25,817 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+INFO:     127.0.0.1:38380 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38394 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-29 19:13:30,817 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+INFO:     127.0.0.1:38398 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-29 19:13:35,818 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+INFO:     127.0.0.1:38380 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-29 19:13:40,819 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+INFO:     127.0.0.1:38392 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-29 19:13:45,820 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+INFO:     127.0.0.1:55366 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55372 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-29 19:13:51,649 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+INFO:     127.0.0.1:55388 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-29 19:13:56,650 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+INFO:     127.0.0.1:60428 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-29 19:14:01,652 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+INFO:     127.0.0.1:60430 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-29 19:14:06,653 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+INFO:     127.0.0.1:33354 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33358 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-29 19:14:11,654 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+INFO:     127.0.0.1:33360 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-29 19:14:16,655 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+INFO:     127.0.0.1:42442 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-29 19:14:21,657 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+INFO:     127.0.0.1:42456 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-29 19:14:25,008 - INFO - root - ¡¡¡ENDPOINT /start_scraping ALCANZADO!!! Datos: {'from_sic': '604(0001)', 'to_sic': '604(0001)', 'min_words': 30, 'search_engine': 'DuckDuckGo', 'proxy_enabled': False, 'proxy_rotation': False, 'captcha_solving_enabled': False, 'captcha_service': 'manual', 'request_delay': 1.0, 'page_timeout': 30, 'output_format': 'CSV', 'headless_mode': True}
+2025-11-29 19:14:25,009 - INFO - root - Recibido nuevo trabajo de scraping: {'from_sic': '604(0001)', 'to_sic': '604(0001)', 'min_words': 30, 'search_engine': 'DuckDuckGo', 'proxy_enabled': False, 'proxy_rotation': False, 'captcha_solving_enabled': False, 'captcha_service': 'manual', 'request_delay': 1.0, 'page_timeout': 30, 'output_format': 'CSV', 'headless_mode': True}
+2025-11-29 19:14:25,009 - INFO - root - Usando formato directo: 604(0001) a 604(0001)
+2025-11-29 19:14:25,011 - INFO - utils.sqlite_handler - SQLiteHandler inicializado con base de datos: /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/courses.db
+2025-11-29 19:14:25,030 - INFO - utils.sqlite_handler - El esquema de la tabla 'courses' ya está actualizado.
+2025-11-29 19:14:25,122 - INFO - utils.sqlite_handler - Obtenidos 12171 cursos desde la base de datos SQLite
+2025-11-29 19:14:25,125 - INFO - root - Encolando 1 cursos como tareas individuales.
+2025-11-29 19:14:25,126 - INFO - root - Parámetros del trabajo: {'from_sic': '604(0001)', 'to_sic': '604(0001)', 'search_engine': 'DuckDuckGo', 'min_words': 30, 'is_headless': True}
+2025-11-29 19:14:25,128 - INFO - root - ¡¡¡TAREAS PUESTAS EN LA COLA!!! Tamaño de la cola: 1
+2025-11-29 19:14:25,129 - INFO - root - Iniciando un pool de 8 procesos trabajadores...
+INFO:     127.0.0.1:42464 - "POST /start_scraping HTTP/1.1" 202 Accepted
+INFO:     127.0.0.1:44048 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44060 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-29 19:14:27,486 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+INFO:     127.0.0.1:44076 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44086 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-29 19:14:32,488 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+INFO:     127.0.0.1:44096 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44110 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-29 19:14:37,489 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+INFO:     127.0.0.1:56038 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56042 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-29 19:14:42,491 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+INFO:     127.0.0.1:56048 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56060 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-29 19:14:43,794 - INFO - root - Logging initialized to /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/logs/worker_1.log
+2025-11-29 19:14:43,794 - INFO - root - Logging initialized to /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/logs/worker_0.log
+2025-11-29 19:14:43,795 - INFO - root - Logging initialized to /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/logs/worker_3.log
+2025-11-29 19:14:43,799 - INFO - root - Worker 1 iniciado.
+2025-11-29 19:14:43,800 - INFO - root - Worker 3 iniciado.
+2025-11-29 19:14:43,800 - INFO - root - Worker 0 iniciado.
+2025-11-29 19:14:43,807 - INFO - scraper.config - Loaded configuration from /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/client/config.json
+2025-11-29 19:14:43,807 - INFO - scraper.config - Loaded configuration from /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/client/config.json
+2025-11-29 19:14:43,808 - INFO - scraper.config - Configuration manager initialized
+2025-11-29 19:14:43,809 - INFO - scraper.config - Configuration manager initialized
+2025-11-29 19:14:43,810 - INFO - scraper.config - Loaded configuration from /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/client/config.json
+2025-11-29 19:14:43,810 - INFO - root - Worker 1: Esperando por un trabajo en la cola...
+2025-11-29 19:14:43,810 - INFO - root - Worker 3: Esperando por un trabajo en la cola...
+2025-11-29 19:14:43,810 - INFO - scraper.config - Configuration manager initialized
+2025-11-29 19:14:43,810 - INFO - root - Worker 1: ¡Ha recibido un trabajo de la cola!
+2025-11-29 19:14:43,811 - INFO - root - Worker 1: Inicializando componentes para la primera tarea.
+2025-11-29 19:14:43,812 - INFO - root - Worker 0: Esperando por un trabajo en la cola...
+2025-11-29 19:14:43,813 - INFO - utils.user_agent_manager - Inicializado UserAgentManager con 32 User-Agents
+2025-11-29 19:14:43,814 - INFO - root - Worker 1: Modo headless = True
+2025-11-29 19:14:43,815 - INFO - utils.scraper.browser_manager - Starting Playwright...
+2025-11-29 19:14:43,830 - INFO - root - Logging initialized to /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/logs/worker_4.log
+2025-11-29 19:14:43,833 - INFO - root - Worker 4 iniciado.
+2025-11-29 19:14:43,845 - INFO - scraper.config - Loaded configuration from /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/client/config.json
+2025-11-29 19:14:43,846 - INFO - scraper.config - Configuration manager initialized
+2025-11-29 19:14:43,846 - INFO - root - Worker 4: Esperando por un trabajo en la cola...
+2025-11-29 19:14:44,483 - INFO - root - Logging initialized to /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/logs/worker_5.log
+2025-11-29 19:14:44,484 - INFO - root - Logging initialized to /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/logs/worker_2.log
+2025-11-29 19:14:44,489 - INFO - root - Worker 5 iniciado.
+2025-11-29 19:14:44,491 - INFO - root - Worker 2 iniciado.
+2025-11-29 19:14:44,503 - INFO - scraper.config - Loaded configuration from /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/client/config.json
+2025-11-29 19:14:44,505 - INFO - scraper.config - Configuration manager initialized
+2025-11-29 19:14:44,506 - INFO - scraper.config - Loaded configuration from /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/client/config.json
+2025-11-29 19:14:44,506 - INFO - root - Worker 5: Esperando por un trabajo en la cola...
+2025-11-29 19:14:44,507 - INFO - scraper.config - Configuration manager initialized
+2025-11-29 19:14:44,509 - INFO - root - Worker 2: Esperando por un trabajo en la cola...
+INFO:     127.0.0.1:56074 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56086 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-29 19:14:47,492 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+2025-11-29 19:14:49,239 - INFO - root - Logging initialized to /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/logs/worker_7.log
+2025-11-29 19:14:49,243 - INFO - root - Worker 7 iniciado.
+2025-11-29 19:14:49,251 - INFO - scraper.config - Loaded configuration from /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/client/config.json
+2025-11-29 19:14:49,251 - INFO - scraper.config - Configuration manager initialized
+2025-11-29 19:14:49,252 - INFO - root - Worker 7: Esperando por un trabajo en la cola...
+2025-11-29 19:14:50,092 - INFO - root - Logging initialized to /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/logs/worker_6.log
+2025-11-29 19:14:50,095 - INFO - root - Worker 6 iniciado.
+2025-11-29 19:14:50,101 - INFO - scraper.config - Loaded configuration from /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/client/config.json
+2025-11-29 19:14:50,102 - INFO - scraper.config - Configuration manager initialized
+2025-11-29 19:14:50,103 - INFO - root - Worker 6: Esperando por un trabajo en la cola...
+2025-11-29 19:14:52,493 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+2025-11-29 19:14:55,275 - INFO - utils.scraper.browser_manager - Launching browser...
+2025-11-29 19:14:55,276 - INFO - utils.scraper.browser_manager - Playwright will launch browser with headless=True
+2025-11-29 19:14:55,491 - INFO - utils.scraper.browser_manager - Creating browser context with enhanced fingerprinting protection...
+2025-11-29 19:14:55,492 - INFO - utils.scraper.browser_manager - Using locale: en-GB, timezone: Europe/Paris
+2025-11-29 19:14:55,569 - INFO - utils.scraper.browser_manager - Browser initialized successfully with stealth enhancements.
+2025-11-29 19:14:55,569 - INFO - root - Worker 1: Navegador inicializado correctamente
+2025-11-29 19:14:55,574 - INFO - utils.proxy_manager - ProxyManager inicializado (proxies deshabilitados por defecto)
+2025-11-29 19:14:55,575 - INFO - utils.user_agent_manager - Inicializado UserAgentManager con 32 User-Agents
+2025-11-29 19:14:55,575 - INFO - utils.adaptive_delay - Inicializado AdaptiveDelay con retraso inicial=2.0s, máximo=60.0s, jitter=0.25
+2025-11-29 19:14:55,577 - INFO - utils.url_cache - Inicializado URLCache en /tmp/url_cache (max_age=86400s, max_size=100.0MB)
+2025-11-29 19:14:55,578 - INFO - utils.url_cache - Limpieza de caché completada. Tamaño actual: 1.9MB
+2025-11-29 19:14:55,579 - INFO - utils.url_cache - Inicializado URLCache en /tmp/url_cache (max_age=86400s, max_size=100.0MB)
+2025-11-29 19:14:55,580 - INFO - utils.url_cache - Limpieza de caché completada. Tamaño actual: 1.9MB
+2025-11-29 19:14:55,581 - INFO - utils.sqlite_handler - SQLiteHandler inicializado con base de datos: /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/controllers/../courses.db
+2025-11-29 19:14:55,594 - INFO - utils.sqlite_handler - El esquema de la tabla 'courses' ya está actualizado.
+2025-11-29 19:14:55,596 - INFO - root - Worker 1 recibió lote 604(0001)..604(0001) con 1 cursos y parámetros: {'from_sic': '604(0001)', 'to_sic': '604(0001)', 'search_engine': 'DuckDuckGo', 'min_words': 30, 'is_headless': True}
+2025-11-29 19:14:55,597 - INFO - controllers.scraper_controller - Resultado de check_playwright_browser: True
+2025-11-29 19:14:55,598 - INFO - controllers.scraper_controller - Creando tarea de fondo para scraping: {'de_sic': '604(0001)', 'a_sic': '604(0001)', 'de_curso': 'Copies', 'a_curso': 'Copies', 'min_palabras': 30, 'motor': 'DuckDuckGo', 'dominio': 'None'}
+2025-11-29 19:14:55,638 - INFO - utils.scraper.result_manager - CSV file created for worker 1: results/results_604(0001)_Copies_to_604(0001)_Copies_duckduckgo_worker_1_20251129_191455.csv
+2025-11-29 19:14:55,640 - INFO - utils.scraper.result_manager - File for omitted results for worker 1: omitidos/omitidos_604(0001)_Copies_to_604(0001)_Copies_duckduckgo_worker_1_20251129_191455.xlsx
+2025-11-29 19:14:55,642 - INFO - controllers.scraper_controller - ✅ Archivo CSV creado exitosamente: results/results_604(0001)_Copies_to_604(0001)_Copies_duckduckgo_worker_1_20251129_191455.csv
+2025-11-29 19:14:55,644 - INFO - controllers.scraper_controller -    Tamaño inicial del archivo: 55 bytes
+2025-11-29 19:14:55,644 - INFO - controllers.scraper_controller - Usando conexión directa (sin proxies)
+2025-11-29 19:14:55,742 - INFO - utils.sqlite_handler - TOTAL de códigos SIC con nombres de curso cargados desde SQLite: 12171
+2025-11-29 19:14:55,745 - INFO - controllers.scraper_controller - Código 'desde' encontrado en posición 9: 604(0001) - Copies
+2025-11-29 19:14:55,746 - INFO - controllers.scraper_controller - Código 'hasta' encontrado en posición 9: 604(0001) - Copies
+2025-11-29 19:14:55,747 - INFO - controllers.scraper_controller - RANGO CALCULADO: desde posición 9 hasta 9 (inclusive)
+2025-11-29 19:14:55,748 - INFO - controllers.scraper_controller - TOTAL DE CURSOS EN RANGO: 1
+2025-11-29 19:14:55,748 - INFO - controllers.scraper_controller -   Curso 1: 604(0001) - Copies (Estado: procesando, Servidor: UNKNOWN_SERVER)
+2025-11-29 19:14:55,749 - INFO - controllers.scraper_controller - CURSOS EN RANGO CALCULADOS: 1 códigos SIC desde '604(0001)' hasta '604(0001)'
+2025-11-29 19:14:55,749 - INFO - controllers.scraper_controller - TOTAL DE CURSOS A PROCESAR: 1
+2025-11-29 19:14:55,750 - INFO - controllers.scraper_controller - Marcando 1 cursos como 'PROCESANDO' en el servidor UNKNOWN_SERVER...
+2025-11-29 19:14:55,829 - INFO - utils.sqlite_handler - 1 cursos actualizados a 'PROCESANDO' en el servidor 'UNKNOWN_SERVER' en SQLite.
+2025-11-29 19:14:55,831 - INFO - controllers.scraper_controller - === FASE 1: BÚSQUEDA DE RESULTADOS con DuckDuckGo ====
+2025-11-29 19:14:55,831 - INFO - controllers.scraper_controller - Total de cursos a procesar en búsqueda: 1
+2025-11-29 19:14:55,832 - INFO - controllers.scraper_controller - Buscando 'Copies' con código SIC 604(0001) (1/1)
+2025-11-29 19:14:55,833 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'DuckDuckGo', Dominio: 'None'
+2025-11-29 19:14:56,733 - INFO - utils.sqlite_handler - Estado del curso '604(0001) - Copies' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-29 19:14:56,739 - INFO - utils.scraper.search_engine - Realizando búsqueda en DuckDuckGo: Copies
+
+[DEBUG-DDG-1] INICIO BÚSQUEDA DDG. URL: https://duckduckgo.com/html/?q=Copies
+2025-11-29 19:14:58,305 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+2025-11-29 19:15:03,306 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+2025-11-29 19:15:08,307 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+2025-11-29 19:15:13,309 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+2025-11-29 19:15:18,310 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+2025-11-29 19:15:23,311 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+2025-11-29 19:15:26,981 - ERROR - utils.scraper.search_engine - Error en búsqueda DuckDuckGo: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://duckduckgo.com/html/?q=Copies", waiting until "domcontentloaded"
+
+2025-11-29 19:15:27,044 - INFO - controllers.scraper_controller - Encontrados 0 resultados para 'Copies'
+2025-11-29 19:15:27,045 - INFO - controllers.scraper_controller - No se encontraron resultados para 'Copies' con código SIC 604(0001)
+2025-11-29 19:15:27,046 - WARNING - controllers.scraper_controller - No se encontraron resultados para procesar
+2025-11-29 19:15:27,047 - INFO - root - Worker 1 completó el lote 604(0001)..604(0001).
+2025-11-29 19:15:27,048 - INFO - root - Toda la carga de trabajo de la cola ha sido completada. Los workers están ahora inactivos (idle).
+2025-11-29 19:15:27,048 - INFO - root - Worker 1: Esperando por un trabajo en la cola...
+2025-11-29 19:15:28,313 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8002
+
+
+
+
+PS C:\Users\julio\Documents\DOCUPLAY\Proyecto\Python\EUROPA\V3.1-LINUX> .\INICIAR_FRONTEND.bat
+====================================
+  INICIANDO FRONTEND EUROPA SCRAPER
+====================================
+
+Iniciando interfaz grafica...
+
+Inicializando ScraperGUI...
+DEBUG: ScraperGUI.__init__, self.controller is <client.main.ClientApp object at 0x000001BDFF3F8D10>
+ScraperGUI inicializado
+2025-11-29 19:13:16,816 - INFO - ProxyManager inicializado (proxies deshabilitados por defecto)
+2025-11-29 19:13:16,819 - INFO - Loaded configuration from config.json
+2025-11-29 19:13:16,819 - INFO - Configuration manager initialized
+2025-11-29 19:13:17,831 - INFO - Saved configuration to config.json
+2025-11-29 19:13:17,831 - INFO - Headless mode changed to: True
+2025-11-29 19:13:17,831 - INFO - Configuración cargada en la GUI
+2025-11-29 19:13:17,832 - INFO - ConfigTab inicializado correctamente
+✅ Botón 'CARGAR CURSOS (CSV/XLS)' agregado a la pestaña Principal
+2025-11-29 19:13:21,218 - INFO - Conectado al servidor: http://localhost:8002
+2025-11-29 19:13:23,405 - INFO - Cargados 12171 cursos para la tabla
+2025-11-29 19:13:23,971 - INFO - Datos cargados exitosamente en la tabla y listboxes
+🔧 Configuración del servidor cargada: http://localhost:8002
+🔍 DEPURACIÓN: from_sic='604(0001)', to_sic='604(0001)'
+🔍 DEPURACIÓN FINAL: Enviando configuración: {'query': '604(0001) a 604(0001)', 'job_params': {'from_sic': '604(0001)', 'to_sic': '604(0001)', 'min_words': 30, 'search_engine': 'DuckDuckGo', 'proxy_enabled': False, 'proxy_rotation': False, 'captcha_solving_enabled': False, 'captcha_service': 'manual', 'request_delay': 1.0, 'page_timeout': 30, 'output_format': 'CSV', 'headless_mode': True}}
+DEBUG: _send_scraping_task_to_server, self.controller is <client.main.ClientApp object at 0x000001BDFF3F8D10>
+2025-11-29 19:14:22,505 - INFO - Establecida la URL base del servidor: http://localhost:8002
+2025-11-29 19:14:47,007 - INFO - Todos los workers han finalizado. Deteniendo sondeo.
+DEBUG GUI RENDER: Recibiendo del servidor: {'1': {'id': 1, 'status': 'Idle', 'progress': 0, 'current_task': 'Esperando tarea'}, '3': {'id': 3, 'status': 'Idle', 'progress': 0, 'current_task': 'Esperando tarea'}, '0': {'id': 0, 'status': 'Idle', 'progress': 0, 'current_task': 'Esperando tarea'}, '4': {'id': 4, 'status': 'Idle', 'progress': 0, 'current_task': 'Esperando tarea'}, '5': {'id': 5, 'status': 'Idle', 'progress': 0, 'current_task': 'Esperando tarea'}, '2': {'id': 2, 'status': 'Idle', 'progress': 0, 'current_task': 'Esperando tarea'}}
+DEBUG GUI RENDER: Recibiendo del servidor: {'1': {'id': 1, 'status': 'Idle', 'progress': 0, 'current_task': 'Esperando tarea'}, '3': {'id': 3, 'status': 'Idle', 'progress': 0, 'current_task': 'Esperando tarea'}, '0': {'id': 0, 'status': 'Idle', 'progress': 0, 'current_task': 'Esperando tarea'}, '4': {'id': 4, 'status': 'Idle', 'progress': 0, 'current_task': 'Esperando tarea'}, '5': {'id': 5, 'status': 'Idle', 'progress': 0, 'current_task': 'Esperando tarea'}, '2': {'id': 2, 'status': 'Idle', 'progress': 0, 'current_task': 'Esperando tarea'}}
+
+
+
+

@@ -1,0 +1,100 @@
+2026-01-18 20:10:55,575 - INFO - controllers.scraper_controller - 📈 Líneas en el archivo CSV: 977
+2026-01-18 20:10:55,575 - INFO - controllers.scraper_controller - Estadísticas finales: {'total_urls_found': 982, 'skipped_non_gov': 0, 'skipped_low_words': 1, 'skipped_zero_keywords': 0, 'skipped_duplicates': 0, 'saved_records': 976, 'failed_content_extraction': 5, 'files_not_saved': 6, 'total_errors': 0, 'captchas_detected': 0, 'captchas_solved': 0}
+2026-01-18 20:10:55,575 - WARNING - controllers.scraper_controller - ⚠️ DESAJUSTE: saved_records=976 != líneas en CSV=977
+2026-01-18 20:10:55,576 - INFO - root - Worker 2 completó el lote 104102.0..104102.0.
+2026-01-18 20:10:55,576 - INFO - root - Worker 2: Esperando por un trabajo en la cola...
+INFO: 38.121.214.113:51869 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:51868 - "GET /detailed_status HTTP/1.1" 200 OK
+2026-01-18 20:10:57,042 - INFO - controllers.scraper_controller - ✅ Resultado guardado: Archived Final Report Summary - FEMTONANO (Femtosecond laser induced nanoclusters in glasses for photonic applications) - https://cordis.europa.eu/project/id/908582/reporting
+2026-01-18 20:10:57,042 - INFO - utils.scraper.progress_reporter - Tabulando curso 1 de 1 - 104402.0 - Silver ores processing | Tabulados 889 de 993 | Total resultados: 993
+2026-01-18 20:10:58,644 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;10.0.1.8;8001
+INFO: 38.121.214.113:63771 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:63770 - "GET /detailed_status HTTP/1.1" 200 OK
+2026-01-18 20:10:59,395 - WARNING - controllers.scraper_controller - DIAGNOSTIC: No keyword matches for 'Silver ores processing' in content
+2026-01-18 20:10:59,395 - WARNING - controllers.scraper_controller - DIAGNOSTIC: Saving result anyway to analyze what was found
+2026-01-18 20:10:59,397 - INFO - controllers.scraper_controller - ✅ Resultado guardado: Solve-RD Solving the unsolved Rare Diseases - https://cordis.europa.eu/project/id/779257
+2026-01-18 20:10:59,397 - INFO - utils.scraper.progress_reporter - Tabulando curso 1 de 1 - 104402.0 - Silver ores processing | Tabulados 890 de 993 | Total resultados: 993
+INFO: 38.121.214.113:51225 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:51224 - "GET /detailed_status HTTP/1.1" 200 OK
+2026-01-18 20:11:01,971 - WARNING - controllers.scraper_controller - DIAGNOSTIC: No keyword matches for 'Silver ores processing' in content
+2026-01-18 20:11:01,972 - WARNING - controllers.scraper_controller - DIAGNOSTIC: Saving result anyway to analyze what was found
+2026-01-18 20:11:01,974 - INFO - controllers.scraper_controller - ✅ Resultado guardado: ENSEMBLE3 Centre of ExcelleNce for nanophotonicS, advancEd Materials and novel crystal growth-Based technoLogiEs - https://cordis.europa.eu/project/id/857543
+2026-01-18 20:11:01,974 - INFO - utils.scraper.progress_reporter - Tabulando curso 1 de 1 - 104402.0 - Silver ores processing | Tabulados 891 de 993 | Total resultados: 993
+INFO: 38.121.214.113:55592 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:55593 - "GET /detailed_status HTTP/1.1" 200 OK
+2026-01-18 20:11:03,648 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;10.0.1.8;8001
+2026-01-18 20:11:04,368 - WARNING - controllers.scraper_controller - DIAGNOSTIC: No keyword matches for 'Silver ores processing' in content
+2026-01-18 20:11:04,368 - WARNING - controllers.scraper_controller - DIAGNOSTIC: Saving result anyway to analyze what was found
+2026-01-18 20:11:04,370 - INFO - controllers.scraper_controller - ✅ Resultado guardado: Archived 3RD GENLAC 3rd generation optical coatings for large area architectural glazing (3RD GENLAC) - https://cordis.europa.eu/project/id/ENK6-CT-2002-00678
+2026-01-18 20:11:04,370 - INFO - utils.scraper.progress_reporter - Tabulando curso 1 de 1 - 104402.0 - Silver ores processing | Tabulados 892 de 993 | Total resultados: 993
+INFO: 38.121.214.113:60798 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:60797 - "GET /detailed_status HTTP/1.1" 200 OK
+2026-01-18 20:11:06,454 - INFO - controllers.scraper_controller - ✅ Resultado guardado: Archived Final Report Summary - BRAINCIROXCON (Functional and structural changes of brain circuitry in altered oxygen conditions) - https://cordis.europa.eu/project/id/628515/reporting
+2026-01-18 20:11:06,455 - INFO - utils.scraper.progress_reporter - Tabulando curso 1 de 1 - 104402.0 - Silver ores processing | Tabulados 893 de 993 | Total resultados: 993
+INFO: 38.121.214.113:57544 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:57545 - "GET /detailed_status HTTP/1.1" 200 OK
+2026-01-18 20:11:08,654 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;10.0.1.8;8001
+2026-01-18 20:11:09,012 - INFO - controllers.scraper_controller - ✅ Resultado guardado: Archived Final Report Summary - THREEPLE (Three-Photon Entanglement) - https://cordis.europa.eu/project/id/627478/reporting
+2026-01-18 20:11:09,012 - INFO - utils.scraper.progress_reporter - Tabulando curso 1 de 1 - 104402.0 - Silver ores processing | Tabulados 894 de 993 | Total resultados: 993
+INFO: 38.121.214.113:52977 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:52978 - "GET /detailed_status HTTP/1.1" 200 OK
+2026-01-18 20:11:11,363 - INFO - controllers.scraper_controller - ✅ Resultado guardado: Archived Final Report Summary - NANOCAGE (The Development of Protein Cage-Based Inorganic Nano-Materials (resubmission)) - https://cordis.europa.eu/project/id/618538/reporting
+2026-01-18 20:11:11,363 - INFO - utils.scraper.progress_reporter - Tabulando curso 1 de 1 - 104402.0 - Silver ores processing | Tabulados 895 de 993 | Total resultados: 993
+INFO: 38.121.214.113:60266 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:60265 - "GET /detailed_status HTTP/1.1" 200 OK
+2026-01-18 20:11:13,398 - INFO - controllers.scraper_controller - ✅ Resultado guardado: Periodic Reporting for period 1 - NABIHEAL (ANTIMICROBIAL NANOSTRUCTURED BIOMATERIALS FOR COMPLEX WOUND HEALING) - https://cordis.europa.eu/project/id/101092269/reporting
+2026-01-18 20:11:13,398 - INFO - utils.scraper.progress_reporter - Tabulando curso 1 de 1 - 104402.0 - Silver ores processing | Tabulados 896 de 993 | Total resultados: 993
+2026-01-18 20:11:13,655 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;10.0.1.8;8001
+INFO: 38.121.214.113:62418 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:62419 - "GET /detailed_status HTTP/1.1" 200 OK
+2026-01-18 20:11:16,822 - INFO - controllers.scraper_controller - ✅ Resultado guardado: Archived Removing carbon dioxide from syngas before combustion - https://cordis.europa.eu/article/id/86429-removing-carbon-dioxide-from-syngas-before-combustion
+2026-01-18 20:11:16,822 - INFO - utils.scraper.progress_reporter - Tabulando curso 1 de 1 - 104402.0 - Silver ores processing | Tabulados 897 de 993 | Total resultados: 993
+INFO: 38.121.214.113:64817 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:64816 - "GET /detailed_status HTTP/1.1" 200 OK
+2026-01-18 20:11:18,657 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;10.0.1.8;8001
+INFO: 38.121.214.113:55613 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:55614 - "GET /detailed_status HTTP/1.1" 200 OK
+2026-01-18 20:11:22,685 - INFO - controllers.scraper_controller - ✅ Resultado guardado: Archived Final Report Summary - METACHARYL (Tandem Catalysis: New Processes for Meta-Selective Functionalization of Arenes) - https://cordis.europa.eu/project/id/326792/reporting
+2026-01-18 20:11:22,685 - INFO - utils.scraper.progress_reporter - Tabulando curso 1 de 1 - 104402.0 - Silver ores processing | Tabulados 898 de 993 | Total resultados: 993
+INFO: 38.121.214.113:54547 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:54546 - "GET /detailed_status HTTP/1.1" 200 OK
+2026-01-18 20:11:23,663 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;10.0.1.8;8001
+2026-01-18 20:11:25,316 - INFO - controllers.scraper_controller - ✅ Resultado guardado: Archived Final Report Summary - POLYPALLADATEDARENES (Polypalladated arenes: synthesis, characterization and reactivity. Applications in organic synthesis) - https://cordis.europa.eu/project/id/219687/reporting
+2026-01-18 20:11:25,316 - INFO - utils.scraper.progress_reporter - Tabulando curso 1 de 1 - 104402.0 - Silver ores processing | Tabulados 899 de 993 | Total resultados: 993
+INFO: 38.121.214.113:51817 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:51818 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:65119 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:65118 - "GET /detailed_status HTTP/1.1" 200 OK
+2026-01-18 20:11:27,850 - WARNING - controllers.scraper_controller - DIAGNOSTIC: No keyword matches for 'Silver ores processing' in content
+2026-01-18 20:11:27,850 - WARNING - controllers.scraper_controller - DIAGNOSTIC: Saving result anyway to analyze what was found
+2026-01-18 20:11:27,851 - INFO - controllers.scraper_controller - ✅ Resultado guardado: MeTABLE Advanced bioinformatics for genome and metagenome analyses and discovery of novel biocatalists from extremophiles: implications for improving industrial bioprocesses - https://cordis.europa.eu/project/id/645693
+2026-01-18 20:11:27,852 - INFO - utils.scraper.progress_reporter - Tabulando curso 1 de 1 - 104402.0 - Silver ores processing | Tabulados 900 de 993 | Total resultados: 993
+2026-01-18 20:11:28,669 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;10.0.1.8;8001
+2026-01-18 20:11:30,165 - INFO - controllers.scraper_controller - ✅ Resultado guardado: Archived Final Report Summary - ECCOFLOW (Development and field test of an efficient YBCO Coated Conductor based Fault Current Limiter for Operation in Electricity Networks) - https://cordis.europa.eu/project/id/241285/reporting
+2026-01-18 20:11:30,165 - INFO - utils.scraper.progress_reporter - Tabulando curso 1 de 1 - 104402.0 - Silver ores processing | Tabulados 901 de 993 | Total resultados: 993
+INFO: 38.121.214.113:49971 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:49970 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:51816 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:51815 - "GET /detailed_status HTTP/1.1" 200 OK
+2026-01-18 20:11:32,910 - INFO - controllers.scraper_controller - ✅ Resultado guardado: Periodic Reporting for period 1 - SPIRE (A Photovoltaic Plant with thermal co-generation) - https://cordis.europa.eu/project/id/855757/reporting
+2026-01-18 20:11:32,910 - INFO - utils.scraper.progress_reporter - Tabulando curso 1 de 1 - 104402.0 - Silver ores processing | Tabulados 902 de 993 | Total resultados: 993
+2026-01-18 20:11:33,674 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;10.0.1.8;8001
+INFO: 38.121.214.113:58956 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:58957 - "GET /detailed_status HTTP/1.1" 200 OK
+2026-01-18 20:11:35,356 - INFO - controllers.scraper_controller - ✅ Resultado guardado: Archived Final Report Summary - BENATURAL (Bioengineered Nanomaterials for Research and Applications) - https://cordis.europa.eu/project/id/33256/reporting
+2026-01-18 20:11:35,356 - INFO - utils.scraper.progress_reporter - Tabulando curso 1 de 1 - 104402.0 - Silver ores processing | Tabulados 903 de 993 | Total resultados: 993
+INFO: 38.121.214.113:62659 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:62660 - "GET /detailed_status HTTP/1.1" 200 OK
+2026-01-18 20:11:38,075 - INFO - controllers.scraper_controller - ✅ Resultado guardado: Photochem-RS-RP Unraveling the Photochemistry of Radiosensitizers and Radioprotectors in Free Biomolecular Complexes - https://cordis.europa.eu/project/id/101068805
+2026-01-18 20:11:38,075 - INFO - utils.scraper.progress_reporter - Tabulando curso 1 de 1 - 104402.0 - Silver ores processing | Tabulados 904 de 993 | Total resultados: 993
+2026-01-18 20:11:38,680 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;10.0.1.8;8001
+INFO: 38.121.214.113:61668 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:61667 - "GET /detailed_status HTTP/1.1" 200 OK
+2026-01-18 20:11:39,958 - WARNING - controllers.scraper_controller - DIAGNOSTIC: No keyword matches for 'Silver ores processing' in content
+2026-01-18 20:11:39,958 - WARNING - controllers.scraper_controller - DIAGNOSTIC: Saving result anyway to analyze what was found
+2026-01-18 20:11:39,960 - INFO - controllers.scraper_controller - ✅ Resultado guardado: TAKE-OFF Production of synthetic renewable aviation fuel from CO2 and H2 - https://cordis.europa.eu/project/id/101006799
+2026-01-18 20:11:39,960 - INFO - utils.scraper.progress_reporter - Tabulando curso 1 de 1 - 104402.0 - Silver ores processing | Tabulados 905 de 993 | Total resultados: 993
+INFO: 38.121.214.113:62779 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO: 38.121.214.113:62778 - "GET /detailed_status HTTP/1.1" 200 OK
+2026-01-18 20:11:42,592 - INFO - controllers.scraper_controller - ✅ Resultado guardado: ROLEDS Highly Efficient Photoemitters for Light-Emitting Diodes Based on Intramolecular Rotation - https://cordis.europa.eu/project/id/754615
+2026-01-18 20:11:42,592 - INFO - utils.scraper.progress_reporter - Tabulando curso 1 de 1 - 104402.0 - Silver ores processing | Tabulados 906 de 993 | Total resultados: 993

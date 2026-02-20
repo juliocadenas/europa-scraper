@@ -1,0 +1,9 @@
+{
+  "server_discovery": true,
+  "task_submission": false,
+  "task_execution": false,
+  "results_retrieval": false,
+  "errors": [
+    "❌ Error enviando tarea: 404 - {\"detail\":\"Not Found\"}"
+  ],
+  "start_time": 

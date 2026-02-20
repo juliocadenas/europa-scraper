@@ -1,0 +1,42 @@
+2026-02-19 19:03:28.260342: Botón Iniciar Scraping presionado
+2026-02-19 19:03:28.262086: Selección: From=(1,), To=(18,)
+2026-02-19 19:03:28.263274: Params preparados: {'from_sic': '011901.1', 'to_sic': '016199.2', 'search_engine': 'Google', 'search_mode': 'broad', 'require_keywords': False, 'is_headless': False, 'min_words': 3, 'num_workers': 2}
+2026-02-19 19:03:28.264705: URL Servidor: https://scraper.docuplay.com
+2026-02-19 19:03:28.270571: Lanzando thread de scraping...
+2026-02-19 19:03:28.274071: Thread lanzado OK
+2026-02-19 19:13:00.827018: Botón Iniciar Scraping presionado
+2026-02-19 19:13:00.829176: Selección: From=(1,), To=(18,)
+2026-02-19 19:13:00.830913: Params preparados: {'from_sic': '011901.1', 'to_sic': '016199.2', 'search_engine': 'Google', 'search_mode': 'broad', 'require_keywords': False, 'is_headless': False, 'min_words': 3, 'num_workers': 2}
+2026-02-19 19:13:00.832089: URL Servidor: https://scraper.docuplay.com
+2026-02-19 19:13:00.839240: Lanzando thread de scraping...
+2026-02-19 19:13:00.842681: Thread lanzado OK
+2026-02-19 19:16:41.483598: Botón Iniciar Scraping presionado
+2026-02-19 19:16:41.485744: Selección: From=(1,), To=(18,)
+2026-02-19 19:16:41.487860: Params preparados: {'from_sic': '011901.1', 'to_sic': '016199.2', 'search_engine': 'Google', 'search_mode': 'broad', 'require_keywords': False, 'is_headless': False, 'min_words': 3, 'num_workers': 2}
+2026-02-19 19:16:41.488375: URL Servidor: https://scraper.docuplay.com
+2026-02-19 19:16:41.491971: Lanzando thread de scraping...
+2026-02-19 19:16:41.494752: Thread lanzado OK
+2026-02-19 19:27:55.745752: Botón Iniciar Scraping presionado
+2026-02-19 19:27:55.752263: Selección: From=(1,), To=(18,)
+2026-02-19 19:27:55.756710: Params preparados: {'from_sic': '011901.1', 'to_sic': '016199.2', 'search_engine': 'Google', 'search_mode': 'broad', 'require_keywords': False, 'is_headless': False, 'min_words': 3, 'num_workers': 2}
+2026-02-19 19:27:55.762000: URL Servidor: https://scraper.docuplay.com
+2026-02-19 19:27:55.776603: Lanzando thread de scraping...
+2026-02-19 19:27:55.788088: Thread lanzado OK
+2026-02-19 19:58:07.767789: Botón Iniciar Scraping presionado
+2026-02-19 19:58:07.771047: Selección: From=(1,), To=(15,)
+2026-02-19 19:58:07.772954: Params preparados: {'from_sic': '011901.1', 'to_sic': '016104.1', 'search_engine': 'Google', 'search_mode': 'broad', 'require_keywords': False, 'is_headless': False, 'min_words': 3, 'num_workers': 2}
+2026-02-19 19:58:07.773576: URL Servidor: https://scraper.docuplay.com
+2026-02-19 19:58:07.780924: Lanzando thread de scraping...
+2026-02-19 19:58:07.787456: Thread lanzado OK
+2026-02-19 20:08:22.496980: Botón Iniciar Scraping presionado
+2026-02-19 20:08:22.498974: Selección: From=(1,), To=(15,)
+2026-02-19 20:08:22.501497: Params preparados: {'from_sic': '011901.1', 'to_sic': '016104.1', 'search_engine': 'Google', 'search_mode': 'broad', 'require_keywords': False, 'is_headless': False, 'min_words': 3, 'num_workers': 2}
+2026-02-19 20:08:22.501497: URL Servidor: https://scraper.docuplay.com
+2026-02-19 20:08:22.509127: Lanzando thread de scraping...
+2026-02-19 20:08:22.509127: Thread lanzado OK
+2026-02-19 20:54:20.377839: Botón Iniciar Scraping presionado
+2026-02-19 20:54:20.380914: Selección: From=(1,), To=(18,)
+2026-02-19 20:54:20.380914: Params preparados: {'from_sic': '011901.1', 'to_sic': '016199.2', 'search_engine': 'Google', 'search_mode': 'broad', 'require_keywords': False, 'is_headless': False, 'min_words': 3, 'num_workers': 2}
+2026-02-19 20:54:20.380914: URL Servidor: https://scraper.docuplay.com
+2026-02-19 20:54:20.388167: Lanzando thread de scraping...
+2026-02-19 20:54:20.389695: Thread lanzado OK

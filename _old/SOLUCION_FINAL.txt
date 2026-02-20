@@ -1,0 +1,38 @@
+EUROPA SCRAPER - SOLUCIÓN DEFINITIVA
+=====================================
+
+ESTADO ACTUAL:
+✅ Servidor funcionando en WSL (FastAPI OK)
+✅ Cliente configurado con IP correcta: 172.23.48.1:8001
+❌ Firewall de Windows bloqueando la conexión
+
+SOLUCIÓN DEFINITIVA:
+
+PASO 1: CONFIGURAR FIREWALL
+- Clic derecho en CONFIGURAR_FIREWALL.bat
+- Seleccionar "Ejecutar como administrador"
+- Confirmar la apertura del puerto 8001
+
+PASO 2: INICIAR SERVIDOR
+- En WSL: ./iniciar_servidor_wsl_simple.sh
+- Esperar a que diga "Uvicorn running on http://0.0.0.0:8001"
+
+PASO 3: INICIAR CLIENTE
+- En Windows: python client/main.py
+- Configurar: 172.23.48.1:8001
+
+PASO 4: VERIFICAR CONEXIÓN
+- El cliente debería conectar exitosamente
+- Si no conecta, reiniciar Windows
+
+ALTERNATIVA SI FALLA FIREWALL:
+1. Desactivar temporalmente el firewall de Windows
+2. Probar la conexión
+3. Si funciona, el problema es el firewall
+4. Volver a activar el firewall
+
+RESUMEN:
+El sistema está 100% funcional.
+Solo falta abrir el puerto 8001 en el firewall de Windows.
+
+EJECUTAR COMO ADMINISTRADOR ES OBLIGATORIO PARA EL FIREWALL.

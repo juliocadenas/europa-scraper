@@ -1,0 +1,4640 @@
+sic_code,course,status,server
+01.0,AGRICULTURAL PRODUCTION CROPS,nan,nan
+011901.1,Pea farms,nan,nan
+011901.2,Vean farms,COMPLETADO,172.26.192.1
+011902.0,Feeder grains,nan,nan
+011903.0,Oil grains,nan,nan
+011904.0,Cereal crop farms,nan,nan
+011999.0,Cash grains,nan,nan
+013199.0,Cotton,nan,nan
+013399.1,Sugarcane,nan,nan
+013399.2,Sugar beets,nan,nan
+013901.0,Feeder crops,nan,nan
+013902.0,Food crops,nan,nan
+013999.0,Field crops,nan,nan
+016101.0,Melon farms,nan,nan
+016103.0,Rooted vegetable farms,nan,nan
+016104.1,Lettuce farms,nan,nan
+016104.2,Leaf vegetable farms,nan,nan
+016199.1,Vegetable,nan,nan
+016199.2,Melons,nan,nan
+017199.0,Berry crops,nan,nan
+017399.0,Tree nuts,nan,nan
+017499.0,Citrus fruits,nan,nan
+017599.0,Deciduous tree fruits,nan,nan
+017999.0,Fruits,nan,nan
+018101.1,Plants,nan,nan
+018101.2,Foliage,nan,nan
+018101.3,And shrubberies,nan,nan
+018102.1,Florists',nan,nan
+018102.2,Greens,nan,nan
+018102.3,Flowers,nan,nan
+018103.1,Bulbs,nan,nan
+018103.2,Seeds,nan,nan
+018199.0,Ornamental nursery products,nan,nan
+018201.0,Vegetable crops grown under cover,nan,nan
+018299.0,Food crops grown under cover,nan,nan
+02.0,AGRICULTURAL PRODUCTION LIVESTOCK,nan,nan
+021399.0,Hogs,nan,nan
+021401.0,Goats,nan,nan
+021402.0,Sheep,nan,nan
+024199.0,Dairy farms,nan,nan
+025199.1,Roasted Chicken,nan,nan
+025199.2,Fried Chicken,nan,nan
+025299.0,Chicken Eggs,nan,nan
+025399.1,Turkeys,nan,nan
+025399.2,Turkey eggs,nan,nan
+025499.0,Poultry hatcheries,nan,nan
+025999.1,Poultry,nan,nan
+025999.2,Poultry eggs,nan,nan
+027199.1,Furbearing animals,nan,nan
+027199.2,Rabbits,nan,nan
+027299.1,Horses,nan,nan
+027299.2,Equines,nan,nan
+027301.0,Finfish farms,nan,nan
+027302.0,Shellfish farms,nan,nan
+027901.0,Worm farms,nan,nan
+027902.0,Bird sanctuaries,nan,nan
+027903.0,Amphibious animal farms,nan,nan
+027904.0,Domestic animal farms,nan,nan
+027999.0,Animal specialties,nan,nan
+029199.0,General farms primarily animals,nan,nan
+07.0,AGRICULTURAL SERVICES,nan,nan
+071199.0,Soil preparation services,nan,nan
+072101.1,Orchard. Tree,nan,nan
+072101.2,Vine services,nan,nan
+072102.1,Sprout services,nan,nan
+072102.2,Twig services,nan,nan
+072103.0,Crop protecting services,nan,nan
+072104.0,Crop cultivating services,nan,nan
+072199.1,Crop planting,nan,nan
+072199.2,Crop protection,nan,nan
+072201.1,Cash grains services,nan,nan
+072201.2,Machine harvesting services,nan,nan
+072202.1,Fruit,nan,nan
+072202.2,Tree nuts,nan,nan
+072203.0,Field crops,nan,nan
+072299.0,Crop harvesting,nan,nan
+072301.1,Field crops,nan,nan
+072301.2,Field crops market preparation services,nan,nan
+072302.1,Cash grain crops,nan,nan
+072302.2,Grain market preparation services,nan,nan
+072303.1,Vegetable crops,nan,nan
+072303.2,Vegetable market preparation services,nan,nan
+072304.1,Fruit crops,nan,nan
+072304.2,Fruit market preparation services,nan,nan
+072305.1,Tree nut crops,nan,nan
+072305.2,Tree nut market preparation services,nan,nan
+072399.0,Crop market preparation services,nan,nan
+072499.1,Cotton,nan,nan
+072499.2,Cotton Ginning,nan,nan
+074199.0,Veterinary services for livestock,nan,nan
+074299.1,Veterinary services,nan,nan
+074299.2,Veterinary specialties,nan,nan
+075101.0,Cattle services,nan,nan
+075102.0,Poultry services,nan,nan
+075103.0,Sheep services,nan,nan
+075104.0,Livestock reproduction services,nan,nan
+075199.0,Livestock services,nan,nan
+075201.0,Animal breeding services,nan,nan
+075202.0,Animal boarding services,nan,nan
+075203.0,Animal training services,nan,nan
+075299.0,Animal specialty services,nan,nan
+076199.0,Farm labor contractors,nan,nan
+076299.0,Farm management services,nan,nan
+078101.0,Horticulture services,nan,nan
+078102.0,Landscape services,nan,nan
+078201.0,Garden services,nan,nan
+078299.1,Lawn services,nan,nan
+078299.2,Garden services,nan,nan
+078301.1,Planting services,nan,nan
+078301.2,Pruning services,nan,nan
+078301.3,Trimming services,nan,nan
+078302.1,Bracing services,nan,nan
+078302.2,Surgery services,nan,nan
+078399.1,Ornamental shrub services,nan,nan
+078399.2,Ornamental tree services,nan,nan
+08.0,FORESTRY,nan,nan
+081199.0,Timber.Tracts,nan,nan
+083101.0,Gathering of forest products,nan,nan
+083102.1,Gum extraction,nan,nan
+083102.2,Gum distillation,nan,nan
+083102.3,Resin extraction,nan,nan
+083102.4,Resin distillation,nan,nan
+083199.0,Forest products,nan,nan
+085101.0,Forest management services,nan,nan
+085199.0,Forestry services,nan,nan
+09.0,FISHING HUNTING AND TRAPS,nan,nan
+091299.0,Finfish,nan,nan
+091301.0,Digging of shellfish,nan,nan
+091302.0,Catching of shellfish,nan,nan
+091901.1,Whale fishing,nan,nan
+091901.2,Whale products,nan,nan
+091999.0,Miscellaneous marine products,nan,nan
+092199.1,Fish hatcheries,nan,nan
+092199.2,Fish preserves,nan,nan
+097101.0,Game services,nan,nan
+097102.0,Hunting services,nan,nan
+097199.1,Hunting,nan,nan
+097199.2,Trapping,nan,nan
+097199.3,Hunting propagation,nan,nan
+10.0,METAL MINING,nan,nan
+101101.0,Iron ore mining,nan,nan
+101102.0,Iron ore preparation,nan,nan
+102101.1,Copper ore mining,nan,nan
+102101.2,Copper ore preparation,nan,nan
+103101.0,Lead ores mining,nan,nan
+103102.0,Zinc ores mining,nan,nan
+104101.0,Gold ores mining,nan,nan
+104102.0,Gold ores processing,nan,nan
+104401.0,Silver ores mining,nan,nan
+104402.0,Silver ores processing,nan,nan
+106101.0,Chromium ores mining,nan,nan
+106102.0,Manganese ores mining,nan,nan
+106103.0,Molybdenum ores mining,nan,nan
+106104.0,Tungsten ores mining,nan,nan
+106199.0,Ferroalloy ores,nan,nan
+108101.1,Metal mining exploration,nan,nan
+108101.2,Metal development services,nan,nan
+108199.0,Metal mining services,nan,nan
+109499.1,Uranium ore,nan,nan
+109499.2,Radium ore,nan,nan
+109499.3,Vanadium ore,nan,nan
+109901.1,Aluminum ore mining,nan,nan
+109901.2,Beryllium ore mining,nan,nan
+109903.0,Platinum group ores mining,nan,nan
+109904.0,Rareearth ores mining,nan,nan
+109905.1,Titanium ores mining,nan,nan
+109905.2,Zirconium ores mining,nan,nan
+109999.0,Metal ores,nan,nan
+12.0,EXTRACTION OF BITUMINOUS COAL AND LIGNITE,nan,nan
+122101.0,Bituminous coal surface mining,nan,nan
+122102.1,Bituminous coal loading and preparation,nan,nan
+122102.2,Lignite loading and preparation,nan,nan
+122299.0,Bituminous coal underground,nan,nan
+123101.1,Anthracite preparation,nan,nan
+123101.2,Anthracite screening,nan,nan
+123199.0,Anthracite mining,nan,nan
+124101.1,Coal mining exploration,nan,nan
+124101.2,Coal mining test boring,nan,nan
+124102.0,Mine preparation services,nan,nan
+124199.0,Coal mining services,nan,nan
+13.0,OIL AND GAS EXTRACTION,nan,nan
+131101.1,Crude petroleum production,nan,nan
+131101.2,Natural gas production,nan,nan
+131102.1,Gas liquefaction from coal,nan,nan
+131102.2,Hydrocarbon liquefaction from coal,nan,nan
+131103.1,Sand oil mining,nan,nan
+131103.2,Shale oil mining,nan,nan
+132199.0,Natural gas liquids,nan,nan
+138199.1,Drilling oil wells,nan,nan
+138199.2,Gas wells,nan,nan
+138299.1,Oil exploration services,nan,nan
+138299.2,Gas exploration services,nan,nan
+138901.1,Construction services,nan,nan
+138901.3,Dismantling services,nan,nan
+138902.1,Testing services,nan,nan
+138902.2,Measuring services,nan,nan
+138903.1,Bailing of Wells,nan,nan
+138903.2,Cleaning of Wells,nan,nan
+138903.3,Swabbing of Wells,nan,nan
+138903.4,Treating of Wells,nan,nan
+138999.1,Oil field services,nan,nan
+138999.2,Gas field services,nan,nan
+14.0,EXTRACTION OF NONMETALLIC MINERALS EXCEPT FUELS,nan,nan
+141101.1,Limestone dimension Stone,nan,nan
+141101.2,Marble dimension stone,nan,nan
+141102.0,Granite dimension stone,nan,nan
+141103.0,Igneous dimension stone,nan,nan
+141199.0,Dimension stone,nan,nan
+142201.0,Limestones ground,nan,nan
+142299.1,Crushed limestone,nan,nan
+142299.2,Broken limestone,nan,nan
+142399.1,Crushed granite,nan,nan
+142399.2,Broken granite,nan,nan
+142901.1,Igneous rock quarrying,nan,nan
+142901.2,Crushed igneous rock quarrying,nan,nan
+142901.3,Broken igneous rock quarrying,nan,nan
+142999.1,Crushed Stone,nan,nan
+142999.2,Broken stone,nan,nan
+144201.0,Sand mining,nan,nan
+144202.1,Gravel mining,nan,nan
+144202.2,Pebble mining,nan,nan
+144699.0,Industrial sand,nan,nan
+145599.1,Kaolin clay,nan,nan
+145599.2,Ball clay,nan,nan
+145901.0,Clays,nan,nan
+145902.0,Nonclay refractory minerals,nan,nan
+145903.0,Feldspar mining,nan,nan
+145999.1,Clay mineral,nan,nan
+145999.2,Clay related minerals,nan,nan
+147499.1,Potash mineral,nan,nan
+147499.2,Soda mineral,nan,nan
+147499.3,Borate mineral,nan,nan
+147599.0,Phosphate rock,nan,nan
+147901.0,Mineral pigment mining,nan,nan
+147902.0,Pyrites mining,nan,nan
+147903.1,Salt mining,nan,nan
+147903.2,Sulfur mining,nan,nan
+147904.0,Fertilizer mineral mining,nan,nan
+147999.1,Chemical mining,nan,nan
+147999.2,Fertilizer mining,nan,nan
+148101.1,Nonmetallic minerals development,nan,nan
+148101.2,Nonmetallic minerals test boring,nan,nan
+148199.0,Nonmetallic mineral services,nan,nan
+149901.1,Gemstone mining,nan,nan
+149901.2,Industrial diamond mining,nan,nan
+149902.0,Mica mining,nan,nan
+149903.1,Gypsum mining,nan,nan
+149903.2,Calcite mining,nan,nan
+149904.0,Mineral abrasives mining,nan,nan
+149905.0,Talc mining,nan,nan
+149906.1,Peat mining,nan,nan
+149906.2,Peat processing,nan,nan
+149907.1,Asphalt mining,nan,nan
+149907.2,Bituminous stone quarrying,nan,nan
+149999.0,Miscellaneous nonmetallic minerals,nan,nan
+15.0,BUILDING CONSTRUCTION GENERAL CONTRACTORS AND OPERATING BUILDERS,nan,nan
+152101.1,Singlefamily home remodeling,nan,nan
+152101.2,Singlefamily home additions,nan,nan
+152101.3,Singlefamily home repairs,nan,nan
+152199.0,Singlefamily housing construction,nan,nan
+152201.1,Hotel/motel construction,nan,nan
+152201.2,Multifamily home construction,nan,nan
+152202.1,Hotel/motel renovation,nan,nan
+152202.2,Hotel/motel remodeling,nan,nan
+152202.3,Multifamily home renovation,nan,nan
+152202.4,Multifamily home remodeling,nan,nan
+153199.0,Operative builders,nan,nan
+154199.1,Industrial buildings,nan,nan
+154199.2,Industrial warehouses,nan,nan
+154201.1,Commercial building contractors,nan,nan
+154201.2,Office building contractors,nan,nan
+154202.0,Agricultural building contractors,nan,nan
+154203.1,Garage contractors,nan,nan
+154203.2,Service station contractors,nan,nan
+154204.0,Specialized public building contractors,nan,nan
+154299.0,Nonresidential construction,nan,nan
+16.0,HEAVY CONSTRUCTION OTHER THAN BUILDING CONSTRUCTION CONTRACTORS,nan,nan
+161101.1,Highway signs,nan,nan
+161101.2,Highway guardrails,nan,nan
+161102.1,Surfacing,nan,nan
+161102.2,Paving,nan,nan
+161199.1,Highway construction,nan,nan
+161199.2,Street construction,nan,nan
+162299.1,Bridge,nan,nan
+162299.3,Elevated highway,nan,nan
+162301.1,Oil and gas line construction,nan,nan
+162301.2,Compressor station construction,nan,nan
+162302.1,Communication line construction,nan,nan
+162302.2,Transmission tower construction,nan,nan
+162303.1,Water line construction,nan,nan
+162303.2,Sewer line construction,nan,nan
+162399.1,Water line,nan,nan
+162399.3,Utility line,nan,nan
+162901.1,Dams construction,nan,nan
+162902.1,Railroad construction,nan,nan
+162902.2,Subway construction,nan,nan
+162903.1,Athletic construction,nan,nan
+162903.2,Recreation facilities construction,nan,nan
+162904.0,Land preparation construction,nan,nan
+162905.0,Industrial plant construction,nan,nan
+162999.0,Heavy construction,nan,nan
+171101.1,Boiler contractors,nan,nan
+171102.0,Plumbing contractors,nan,nan
+171103.0,Sprinkler contractors,nan,nan
+171104.1,Heating contractors,nan,nan
+171104.2,Air conditioning contractors,nan,nan
+171199.1,Plumbing,nan,nan
+171199.2,Heating,nan,nan
+171199.3,Airconditioning,nan,nan
+172101.0,Residential painting,nan,nan
+172102.0,Commercial painting,nan,nan
+172103.0,Industrial painting,nan,nan
+172104.0,Wallcovering contractors,nan,nan
+173101.0,Electric power systems contractors,nan,nan
+173102.0,Electronic controls installation,nan,nan
+173103.0,Communications specialization,nan,nan
+173104.1,Safety specialization,nan,nan
+173199.0,Electrical work,nan,nan
+174101.1,Foundation construction,nan,nan
+174101.2,Retaining wall construction,nan,nan
+174199.0,Masonry,nan,nan
+174199.1,Other stonework,nan,nan
+174201.1,Plaster work,nan,nan
+174201.2,Drywall work,nan,nan
+174202.1,Acoustical work,nan,nan
+174202.2,Insulation work,nan,nan
+174399.1,Terrazzo work,nan,nan
+175101.1,Cabinet carpentry,nan,nan
+175101.2,Finish carpentry,nan,nan
+175102.1,Window installation and erection,nan,nan
+175102.2,Door installation and erection,nan,nan
+175199.0,Carpentry work,nan,nan
+175299.1,Floor laying,nan,nan
+175299.2,Floor work,nan,nan
+176101.0,Roofing work,nan,nan
+176101.1,Gutter work,nan,nan
+176199.1,Roofing work,nan,nan
+176199.2,Siding work,nan,nan
+176199.3,Sheetmetal work,nan,nan
+177101.1,Stucco contractors,nan,nan
+177101.2,Gunite contractors,nan,nan
+177101.3,Grouting contractors,nan,nan
+177102.0,Curb contractors,nan,nan
+177102.1,Sidewalk contractors,nan,nan
+177103.1,Driveway contractors,nan,nan
+177103.2,Parking lot contractors,nan,nan
+177103.3,Blacktop contractors,nan,nan
+177199.0,Concrete work,nan,nan
+178199.0,Water well drilling,nan,nan
+179199.0,Structural Steel erection,nan,nan
+179499.0,Excavation work,nan,nan
+179599.1,Wrecking work,nan,nan
+179599.2,Demolition work,nan,nan
+179699.0,Installing building equipment,nan,nan
+179901.1,Athletic facilities construction,nan,nan
+179901.2,Recreation facilities construction,nan,nan
+179902.1,Coating caulking,nan,nan
+179902.2,Protection versus fireproofing,nan,nan
+179903.0,Service station equipment,nan,nan
+179904.1,Rigging,nan,nan
+179904.2,Scaffolding,nan,nan
+179905.1,Exterior cleaning,nan,nan
+179905.2,Exterior sandblasting,nan,nan
+179906.1,Home/office interiors finishing,nan,nan
+179906.2,Home/office interiors furnishing,nan,nan
+179906.3,Home/office interiors remodeling,nan,nan
+179907.0,Parking facility equipment,nan,nan
+179907.1,Parking facility maintenance,nan,nan
+179908.0,Decontamination services,nan,nan
+179909.0,Building site preparation,nan,nan
+179999.0,Special trade contractors,nan,nan
+20.0,FOOD AND RELATED PRODUCTS,nan,nan
+201101.1,Beef products. from beef slaughtered on site,nan,nan
+201102.0,Pork products. from pork slaughtered on site,nan,nan
+201103.0,Lamb products from lamb slaughtered on site,nan,nan
+201104.1,Meat byproducts,nan,nan
+201104.2,Meat byproducts from meat slaughtered on site,nan,nan
+201199.0,Meat packing plants,nan,nan
+201301.1,Prepared beef products,nan,nan
+201301.2,Prepared beef products from purchased beef,nan,nan
+201302.1,Prepared pork products,nan,nan
+201302.2,Prepared pork products from purchased pork,nan,nan
+201303.1,Sausages and related products,nan,nan
+201303.2,Sausages and related products from purchased meat,nan,nan
+201399.0,Sausages and other prepared meats,nan,nan
+201501.1,Chicken slaughtering,nan,nan
+201501.2,Chicken processing,nan,nan
+201502.1,Duck slaughtering,nan,nan
+201502.2,Duck processing,nan,nan
+201503.0,Egg processing,nan,nan
+201504.1,Small game slaughtering,nan,nan
+201504.2,Small game processing,nan,nan
+201505.1,Geese slaughtering,nan,nan
+201505.2,Geese processing,nan,nan
+201506.1,Poultry slaughtering,nan,nan
+201506.2,Poultry processing,nan,nan
+201507.1,Rabbit slaughtering,nan,nan
+201507.2,Rabbit processing,nan,nan
+201508.1,Turkey processing,nan,nan
+201508.2,Turkey slaughtering,nan,nan
+201509.1,Poultry sausage l,nan,nan
+201509.3,Other poultry products,nan,nan
+202199.0,Creamery butter,nan,nan
+202201.1,Cheese spreads,nan,nan
+202201.2,Cheese dips,nan,nan
+202201.3,Cheese pastes,nan,nan
+202201.4,Other cheese products,nan,nan
+202299.1,Cheese natural,nan,nan
+202299.2,Cheese processed,nan,nan
+202301.0,Baby formulas,nan,nan
+202302.1,Condensed milk products,nan,nan
+202302.2,Concentrated milk products,nan,nan
+202302.3,Evaporated milk products,nan,nan
+202303.1,Dried and powdered milk,nan,nan
+202303.2,Milk products,nan,nan
+202399.1,Dry products,nan,nan
+202399.2,Condensed products,nan,nan
+202399.3,Evaporated products,nan,nan
+202401.1,Ice cream,nan,nan
+202401.2,Ice milk,nan,nan
+202402.0,Dairy based frozen desserts,nan,nan
+202403.0,Nondairy based frozen desserts,nan,nan
+202601.1,Milk,nan,nan
+202601.2,Cream.,nan,nan
+202602.1,Fermented milk products,nan,nan
+202602.2,Cultured milk products,nan,nan
+202602.3,Flavored milk products,nan,nan
+202699.0,Fluid milk,nan,nan
+203201.1,Beans,nan,nan
+203201.2,Bean sprouts,nan,nan
+203201.3,Beans canned,nan,nan
+203201.4,Beans jarred,nan,nan
+203202.1,Ethnic foods,nan,nan
+203202.2,Ethnic foods canned,nan,nan
+203202.3,Ethnic foods jarred,nan,nan
+203203.1,Soups canned jarred,nan,nan
+203203.2,Broths canned jarred,nan,nan
+203299.0,Canned specialties,nan,nan
+203301.1,Tomato products,nan,nan
+203301.2,Tomato in cans in jars,nan,nan
+203302.1,Jams,nan,nan
+203302.2,Jellies,nan,nan
+203302.3,Preserves,nan,nan
+203302.4,Jams jellies in cans in jars,nan,nan
+203303.1,Fruits,nan,nan
+203303.2,Fruit products,nan,nan
+203303.3,Fruits in cans in jars,nan,nan
+203304.3,Vegetables in cans in jars,nan,nan
+203401.1,Dried soup,nan,nan
+203401.2,Dehydrated soup mixes,nan,nan
+203402.0,Dried fruits,nan,nan
+203402.1,Dehydrated fruits,nan,nan
+203403.1,Dried vegetables,nan,nan
+203403.2,Dehydrated vegetables,nan,nan
+203501.1,Seasonings,nan,nan
+203501.2,Sauces,nan,nan
+203502.1,Pickled fruits,nan,nan
+203502.2,Pickled vegetables,nan,nan
+203701.1,Frozen fruits,nan,nan
+203701.2,Frozen vegetables,nan,nan
+203702.0,Fruit juices,nan,nan
+203899.0,Frozen specialties,nan,nan
+204101.0,Flour,nan,nan
+204102.1,Doughs,nan,nan
+204102.2,Batters,nan,nan
+204103.0,Flour mixes,nan,nan
+204199.0,Flour products,nan,nan
+204399.0,Cereal breakfast foods,nan,nan
+204499.0,Rice milling,nan,nan
+204501.1,Flours and flour mixes,nan,nan
+204501.2,Flours and flour mixes from purchased flour,nan,nan
+204502.1,Doughs and batters,nan,nan
+204502.2,Doughs and batters from purchased flour,nan,nan
+204601.1,Corn starches,nan,nan
+204601.2,Other vegetable starches,nan,nan
+204602.0,Corn oil products,nan,nan
+204603.1,Corn sugars,nan,nan
+204603.2,Corn syrups,nan,nan
+204604.0,Corn milling byproducts,nan,nan
+204799.1,Dog food,nan,nan
+204799.2,Cat food,nan,nan
+204801.1,Cereal based feeds,nan,nan
+204801.2,Grain based feeds,nan,nan
+204801.3,Seedbased feeds,nan,nan
+204802.1,Feeds from meat,nan,nan
+204802.2,Feeds from meat and vegetable meals,nan,nan
+204899.0,Prepared feeds,nan,nan
+205101.1,Breads,nan,nan
+205101.2,Rolls,nan,nan
+205101.3,Buns,nan,nan
+205102.1,Cakes,nan,nan
+205102.2,Pies,nan,nan
+205102.3,Pastries,nan,nan
+205199.1,Bread products,nan,nan
+205199.2,Cake products,nan,nan
+205199.3,Bread and cake related products,nan,nan
+205299.1,Cookies,nan,nan
+205299.2,Crackers,nan,nan
+205399.0,Frozen bakery products,nan,nan
+206101.0,Dry cane sugar products,nan,nan
+206102.0,Liquid cane sugar products,nan,nan
+206299.0,Cane sugar refining,nan,nan
+206301.0,Dry beet sugar products,nan,nan
+206302.0,Liquid beet sugar products,nan,nan
+206401.1,Fruit confections,nan,nan
+206401.2,Fruit peel confections,nan,nan
+206499.1,Candy products,nan,nan
+206499.2,Other confectionery products,nan,nan
+206601.0,Cacao vean processing,nan,nan
+206602.1,Cocoa,nan,nan
+206602.2,Cocoa products,nan,nan
+206603.0,Chocolate,nan,nan
+206799.0,Chewing gum,nan,nan
+206899.1,Salted nuts and seeds,nan,nan
+206899.2,Roasted nuts and seeds,nan,nan
+207499.0,Cottonseed oil mills,nan,nan
+207599.0,Soybean oil mills,nan,nan
+207699.0,Vegetable oil mills,nan,nan
+207701.1,Animal fats,nan,nan
+207701.2,Animal oils,nan,nan
+207701.3,Animal meals,nan,nan
+207702.1,Marine fats,nan,nan
+207702.2,Marine oils,nan,nan
+207702.3,Marine meals,nan,nan
+207703.0,Rendering,nan,nan
+207901.1,Margarine,nan,nan
+207901.2,Margarine oils,nan,nan
+207902.1,Shortening,nan,nan
+207902.2,Other solid edible fats,nan,nan
+207999.1,Edible fats,nan,nan
+207999.2,Edible oils,nan,nan
+208201.0,Malt beverage products,nan,nan
+208299.0,Malt beverages,nan,nan
+208399.0,Malt,nan,nan
+208401.0,Wines,nan,nan
+208402.1,Brandy,nan,nan
+208402.2,Brandy spirits,nan,nan
+208499.0,Wines,nan,nan
+208501.1,Distiller's alcohol dried grains,nan,nan
+208501.2,Distiller's alcohol solubles grains,nan,nan
+208502.0,Premixed alcoholic cocktails,nan,nan
+208599.1,Distilled liquors,nan,nan
+208599.2,Blended liquors,nan,nan
+208601.1,Iced tea bottled and canned,nan,nan
+208601.2,Fruit drinks bottled and canned,nan,nan
+208602.1,Pasteurized water bottled and canned,nan,nan
+208602.2,Mineral waters bottled and canned,nan,nan
+208603.0,Carbonated soft drinks bottled and canned,nan,nan
+208701.0,Food colorings,nan,nan
+208702.1,Beverage bases,nan,nan
+208702.2,Beverage concentrates,nan,nan
+208702.3,Syrups,nan,nan
+208702.4,Beverage powders,nan,nan
+208702.5,Beverage mixes.,nan,nan
+208799.1,Flavoring extracts,nan,nan
+208799.2,Flavoring syrups,nan,nan
+209101.1,Fish canned or packaged,nan,nan
+209101.2,Seafood soups canned or packaged,nan,nan
+209101.3,Stews canned or packaged,nan,nan
+209101.4,Chowders canned or packaged,nan,nan
+209102.1,Shellfish canned,nan,nan
+209102.2,Shellfish cured,nan,nan
+209103.1,Fish canned,nan,nan
+209103.2,Fish cured,nan,nan
+209199.1,Canned and cured fish,nan,nan
+209199.2,Canned and cured seafoods,nan,nan
+209201.1,Fresh or frozen fish,nan,nan
+209201.2,Fresh or frozen seafood chowders,nan,nan
+209201.3,Fish or seafood soups,nan,nan
+209201.4,Fish or seafood stews,nan,nan
+209202.1,Prepared fish cakes,nan,nan
+209202.2,Other seafood cakes,nan,nan
+209202.3,Seafood sticks,nan,nan
+209299.1,Fresh packaged fish,nan,nan
+209299.2,Frozen packaged fish,nan,nan
+209599.0,Roasted coffee,nan,nan
+209601.1,Potato chips,nan,nan
+209601.2,Other potatobased snacks,nan,nan
+209602.1,Corn chips,nan,nan
+209602.2,Other cornbased snacks,nan,nan
+209699.1,Potato chips,nan,nan
+209699.2,Similar snacks,nan,nan
+209799.0,Manufactured ice,nan,nan
+209899.1,Macaroni,nan,nan
+209899.2,Spaghetti,nan,nan
+209901.0,Syrups,nan,nan
+209902.1,Baking powder,nan,nan
+209902.3,Yeast,nan,nan
+209902.4,Other leavening agents,nan,nan
+209903.1,Dessert mixes,nan,nan
+209903.2,Dessert fillings,nan,nan
+209904.1,Seasonings,nan,nan
+209904.2,Spices,nan,nan
+209905.1,Sauce mixes,nan,nan
+209905.2,Gravy. mixes,nan,nan
+209905.3,Dressing mixes,nan,nan
+209905.4,Mixes,nan,nan
+209906.0,Sugar,nan,nan
+209907.1,Readytoeat meals,nan,nan
+209907.2,Salads,nan,nan
+209908.1,Combined Pasta,nan,nan
+209908.2,Combined rice,nan,nan
+209908.3,Combined potato,nan,nan
+209999.0,Food preparations,nan,nan
+21.0,TOBACCO PRODUCTS,nan,nan
+212199.0,Cigars,nan,nan
+213199.1,Chewing tobacco,nan,nan
+214199.2,Tobacco redrying,nan,nan
+22.0,TEXTILE MANUFACTURING PRODUCTS,nan,nan
+221101.1,Cotton sheets,nan,nan
+221101.2,Cotton bedding,nan,nan
+221101.3,Table cotton cloths,nan,nan
+221102.1,Cotton apparel fabrics,nan,nan
+221102.2,Cotton outerwear fabrics,nan,nan
+221103.1,Table towels,nan,nan
+221103.2,Table dishcloths,nan,nan
+221103.3,Table washcloths,nan,nan
+221104.1,Plushes broadwoven cotton,nan,nan
+221104.2,Piles broadwoven cotton,nan,nan
+221105.1,Cotton ribbed twills,nan,nan
+221105.2,Cotton ribbed drills,nan,nan
+221105.3,Cotton ribbed denims,nan,nan
+221105.4,Other ribbed fabrics,nan,nan
+221106.1,Cotton upholstery,nan,nan
+221106.2,Cotton tapestry,nan,nan
+221106.3,Cotton wall coverings,nan,nan
+221107.1,Cotton nets,nan,nan
+221107.3,Cotton fabrics,nan,nan
+221108.1,Cotton sheers,nan,nan
+221108.2,Other cotton thin lightweight fabrics,nan,nan
+221109.1,Cotton bandages,nan,nan
+221109.2,Cotton gauzes,nan,nan
+221109.3,Cotton surgical fabrics,nan,nan
+221110.1,Cotton linings,nan,nan
+221110.2,Cotton interlinings,nan,nan
+221111.1,Cotton canvas,nan,nan
+221111.2,Other cotton heavy coarse fabrics,nan,nan
+221112.1,Decorative trim,nan,nan
+221112.2,Specialty fabrics,nan,nan
+221112.3,Twist weave,nan,nan
+221113.1,Cotton crepes,nan,nan
+221113.2,Other crinkled texture fabrics,nan,nan
+221199.0,Cotton broadwoven fabric mills,nan,nan
+222101.1,Bedding. manmade fabric,nan,nan
+222101.2,Bedding silk fabric,nan,nan
+222102.1,Apparel manmade fiber or silk fabric,nan,nan
+222102.2,Outerwear manmade fiber or silk fabric,nan,nan
+222103.1,Silk,nan,nan
+222103.2,Satins,nan,nan
+222103.4,Crepes,nan,nan
+222104.1,Manmade broadwoven fabrics,nan,nan
+222104.2,Synthetic broadwoven fabrics,nan,nan
+222105.1,Glass broadwoven fabrics,nan,nan
+222105.2,Fiberglass broadwoven fabrics,nan,nan
+222106.1,Upholstery covering fabrics,nan,nan
+222106.2,Tapestry covering fabrics,nan,nan
+222106.3,Wall covering fabrics,nan,nan
+222107.0,Ribbed broadwoven fabrics,nan,nan
+222108.1,Plushes broadwoven fabrics,nan,nan
+222108.2,Piles broadwoven fabrics,nan,nan
+222109.1,Specialty broadwoven fabrics,nan,nan
+222109.2,Twisted weaves,nan,nan
+222199.0,Broadwoven manmade fabric mills,nan,nan
+223101.1,Apparel broadwoven fabrics,nan,nan
+223101.2,Outerwear broadwoven fabrics,nan,nan
+223102.1,Wool bleaching,nan,nan
+223102.2,Wool dying,nan,nan
+223102.3,Wool specialty treating,nan,nan
+223103.1,Wool felts fabrics,nan,nan
+223103.2,Wool blanketing fabrics,nan,nan
+223103.3,Wool upholstery fabrics,nan,nan
+223104.0,Animal fiberfabrics,nan,nan
+223199.0,Wool broadwoven fabric mills,nan,nan
+224101.1,Lace trim fabric,nan,nan
+224101.2,Decorative trim fabric,nan,nan
+224101.3,Narrow fabric,nan,nan
+224102.1,Rubber yarns and fabrics,nan,nan
+224102.2,Elastic yarns and fabrics,nan,nan
+224103.0,Fabric tapes,nan,nan
+224104.1,Webbing,nan,nan
+224104.2,Braids,nan,nan
+224104.3,Belting,nan,nan
+224199.0,Narrow fabric mills,nan,nan
+225199.0,Women's hosiery,nan,nan
+225201.1,Anklets,nan,nan
+225201.2,Socks,nan,nan
+225202.1,Tights,nan,nan
+225202.2,Leg warmers,nan,nan
+225299.0,Hosiery,nan,nan
+225301.1,Warm weather knit outerwear,nan,nan
+225301.2,Beachwear,nan,nan
+225302.1,Cold weather knit outerwear,nan,nan
+225302.2,Ski wear,nan,nan
+225303.1,Lounge wear,nan,nan
+225303.2,Bed wear,nan,nan
+225303.3,Leisure wear,nan,nan
+225304.1,Dresses,nan,nan
+225304.2,Skirts,nan,nan
+225305.1,Blouses,nan,nan
+225305.2,Shirts,nan,nan
+225305.3,Pants,nan,nan
+225305.4,Suits,nan,nan
+225399.0,Knit outerwear mills,nan,nan
+225401.1,Knit Shorts,nan,nan
+225401.2,Knit shirts,nan,nan
+225401.3,Knit slips,nan,nan
+225401.4,Knit panties,nan,nan
+225499.0,Knit underwear mills,nan,nan
+225799.0,Weft knit fabric mills,nan,nan
+225801.2,Lace,nan,nan
+225801.0,Lace products,nan,nan
+225802.1,Warp products,nan,nan
+225802.2,Flat Knit products,nan,nan
+225803.2,Netting products,nan,nan
+225899.1,Lace fabric mills,nan,nan
+225899.2,Warp knit fabric mills,nan,nan
+225901.1,Knit gloves,nan,nan
+225901.2,Knit gloves,nan,nan
+225902.1,Knit towels,nan,nan
+225902.2,Knit washcloths,nan,nan
+225902.3,Knit dishcloths,nan,nan
+225903.1,Knit curtains,nan,nan
+225903.2,Knit bedding,nan,nan
+225904.1,Knit girdles,nan,nan
+225904.2,Knit girdle blanks,nan,nan
+225999.0,Knitting mills,nan,nan
+226101.0,Printing of cotton broadwoven fabrics,nan,nan
+226102.1,Chemical coating of cotton broadwoven fabrics,nan,nan
+226102.2,Chemical treating of cotton broadwoven fabrics,nan,nan
+226103.0,Decorative finishing of cotton broadwoven fabrics,nan,nan
+226199.0,Cotton finishing plants,nan,nan
+226201.1,Printing manmade fiber,nan,nan
+226201.2,Silk broadwoven fabrics,nan,nan
+226203.0,Decorative finishing of manmade broadwoven fabrics,nan,nan
+226299.1,Finishing plants,nan,nan
+226901.0,Printing of narrow fabrics,nan,nan
+226902.0,Chemical coating or treating of narrow fabrics,nan,nan
+226903.0,Decorative finishing of narrow fabrics,nan,nan
+227301.1,Aircraft floor coverings,nan,nan
+227301.2,Automobile floor coverings,nan,nan
+227302.0,Mats and matting,nan,nan
+227303.0,Art squares,nan,nan
+227304.1,Carpets hand made,nan,nan
+227304.2,Carpets machine made,nan,nan
+227305.1,Rugs hand made,nan,nan
+227305.2,Rugs machine made,nan,nan
+227399.0,Carpets and rugs,nan,nan
+228101.1,Yarns spun for needle,nan,nan
+228101.2,Yarns spun for handicraft,nan,nan
+228102.1,Manmade spun yarns,nan,nan
+228102.2,Synthetic fiber spun yarns,nan,nan
+228103.1,Natural fiber spun yarns,nan,nan
+228103.2,Animal fiber spun yarns,nan,nan
+228104.1,Carpet spun yarns,nan,nan
+228104.2,Rug spun yarns,nan,nan
+228199.0,Yarn spinning mills,nan,nan
+228201.1,Needle and handicraft yarns for twisting,nan,nan
+228201.2,Needle and handicraft yarns for winding,nan,nan
+228201.3,Needle and handicraft yarns for spooling,nan,nan
+228202.1,Manmade yarns and synthetic fiber yarns for twisting.,nan,nan
+228202.2,Manmade yarns and synthetic fiber yarns for winding.,nan,nan
+228203.1,Natural fiber yarns and animal fiber yarns for twisting.,nan,nan
+228203.2,Natural fiber yarns and animal fiber yarns for winding.,nan,nan
+228203.3,Natural fiber yarns and animal fiber yarns for spooling.,nan,nan
+228204.1,Carpet and rug yarns for twisting,nan,nan
+228204.2,Carpet and rug yarns for winding,nan,nan
+228204.3,Carpet and rug yarns for spooling,nan,nan
+228299.1,Throwing mills,nan,nan
+228299.2,Winding mills,nan,nan
+228401.0,Thread from manmade fibers,nan,nan
+228402.0,Thread from natural fibers,nan,nan
+228403.0,Needle and handicraft thread,nan,nan
+228499.0,Thread mills,nan,nan
+229501.1,Chemically coated fabric,nan,nan
+229501.2,Chemically treated fabrics,nan,nan
+229502.1,Plastic coated yarns,nan,nan
+229502.2,Plastic coated fabrics,nan,nan
+229503.1,Varnished glass,nan,nan
+229503.2,Coated fiberglass fabrics,nan,nan
+229599.0,Coated fabrics not rubberized,nan,nan
+229601.1,Cord for reinforcing rubber tires,nan,nan
+229601.2,Fabric for reinforcing rubber tires,nan,nan
+229602.1,Cord for reinforcing industrial belting,nan,nan
+229602.2,Fabric for reinforcing industrial belting,nan,nan
+229603.1,Cord for reinforcing fuel cells,nan,nan
+229603.2,Fabric for reinforcing fuel cells,nan,nan
+229799.0,Nonwoven fabrics,nan,nan
+229801.1,Ropes,nan,nan
+229801.2,Fiber cables,nan,nan
+229802.1,Twine,nan,nan
+229802.2,Cord,nan,nan
+229802.3,Cordage,nan,nan
+229803.1,Nets,nan,nan
+229803.2,Seines,nan,nan
+229803.3,Slings,nan,nan
+229803.4,Insulator pads,nan,nan
+229901.1,Batting,nan,nan
+229901.2,Wadding,nan,nan
+229901.3,Padding,nan,nan
+229901.4,Fillings,nan,nan
+229902.1,Felts,nan,nan
+229902.2,Felt products,nan,nan
+229903.1,Yarns made from nonfabric materials,nan,nan
+229903.2,Thread made from nonfabric materials,nan,nan
+229904.1,Textile mill waste processing,nan,nan
+229904.2,Textile mill remnant processing,nan,nan
+229905.1,Jute textile products,nan,nan
+229906.1,Scouring of textile fibers,nan,nan
+229906.2,Carbonizing of textile fibers,nan,nan
+229907.1,Tops manmade processing,nan,nan
+229907.2,Tops from fiber processing,nan,nan
+229999.0,Textile goods,nan,nan
+23.0,APPAREL AND OTHER FINISHED PRODUCTS OF FABRICS AND SIMILAR MATERIALS,nan,nan
+231101.1,Tailored suits,nan,nan
+231101.2,Formal jackets,nan,nan
+231102.1,Coats,nan,nan
+231102.2,Overcoats,nan,nan
+231102.3,Vests,nan,nan
+231103.1,Men's uniforms,nan,nan
+232101.1,Men's dress shirts,nan,nan
+232101.2,Boys' dress shirts,nan,nan
+232102.1,Men's sports and polo shirts,nan,nan
+232102.2,Boys' sports and polo shirts,nan,nan
+232199.1,Men's furnishings,nan,nan
+232199.2,Boy's furnishings,nan,nan
+232299.1,Men's underwear and nightwear,nan,nan
+232299.2,Boy's underwear and nightwear,nan,nan
+232301.1,Men's neckties and bow ties,nan,nan
+232301.2,Boys' neckties and bow ties,nan,nan
+232302.1,Men's scarves,nan,nan
+232302.2,Boys' scarves,nan,nan
+232501.1,Men's jeans and dungarees,nan,nan
+232501.2,Boys' jeans and dungarees,nan,nan
+232502.1,Men's dress slacks and shorts,nan,nan
+232502.2,Boys' dress slacks and shorts,nan,nan
+232601.0,Work uniforms,nan,nan
+232602.0,Work apparel except uniforms,nan,nan
+232901.1,Men's sportswear and athletic clothing,nan,nan
+232901.2,Boys' sportswear and athletic clothing,nan,nan
+2329021.0,Men's leather wool and downfilled outerwear,nan,nan
+232902.2,Boys' leather wool and downfilled outerwear,nan,nan
+232903.1,Men's athletic uniforms,nan,nan
+232903.2,Boys' athletic uniforms,nan,nan
+232999.1,Men's clothing,nan,nan
+232999.0,Boy's clothing,nan,nan
+233199.1,Women's blouses and shirts,nan,nan
+233199.2,Misses' blouses and shirts,nan,nan
+233501.1,Bridal fabrics,nan,nan
+233501.2,Formal gowns,nan,nan
+233599.1,Women's dresses,nan,nan
+233599.2,Junior's dresses,nan,nan
+233599.3,Misses' dresses,nan,nan
+233701.1,Women's suits and skirts,nan,nan
+233701.2,Misses' suits and skirts,nan,nan
+233702.1,Women's capes and jackets,nan,nan
+233702.2,Misses' capes and jackets,nan,nan
+233799.1,Women's suits and coats,nan,nan
+233799.2,Misses' suits and coats,nan,nan
+233901.1,Women's accessories,nan,nan
+233901.2,Misses' accessories,nan,nan
+233902.1,Women's culottes knickers and shorts,nan,nan
+233902.2,Misses' culottes knickers and shorts,nan,nan
+233903.1,Women's athletic clothing and sportswear,nan,nan
+233903.2,Misses' athletic clothing and sportswear,nan,nan
+233904.1,Women's jackets and coats,nan,nan
+233904.2,Misses' jackets and coats,nan,nan
+233999.1,Women's outerwear,nan,nan
+233999.2,Misses' outerwear,nan,nan
+234101.1,Women's nightwear,nan,nan
+234101.2,Children's nightwear,nan,nan
+234102.1,Women's undergarments,nan,nan
+234102.2,Children's undergarments,nan,nan
+234299.1,Brasand allied garments,nan,nan
+234299.2,Girdlesand allied garments,nan,nan
+235301.1,Uniform hats,nan,nan
+235301.2,Uniform.caps,nan,nan
+235399.1,Hats,nan,nan
+235399.2,Caps,nan,nan
+235399.3,Millinery,nan,nan
+236101.1,Girls' blouses and shirts,nan,nan
+236101.2,Children's blouses and shirts,nan,nan
+236199.1,Girl's dresses blouses,nan,nan
+236199.2,Children's dresses blouses,nan,nan
+236901.1,Children's culottes,nan,nan
+236901.2,Fabrics shorts,nan,nan
+236902.1,Children's bathing suits,nan,nan
+236902.2,Children's beachwear,nan,nan
+236903.1,Children's robes,nan,nan
+236903.2,Children's housecoats,nan,nan
+236904.1,Children's snowsuits,nan,nan
+236904.2,Children's coats,nan,nan
+236904.3,Children's jackets,nan,nan
+236999.1,Girl's outerwear,nan,nan
+236999.2,Children's outerwear,nan,nan
+237101.1,Fur coats,nan,nan
+237101.2,Other fur apparel,nan,nan
+237102.1,Fur linings,nan,nan
+237102.2,Trimmings,nan,nan
+237102.3,Neckpieces,nan,nan
+237199.0,Fur goods,nan,nan
+238199.1,Fabric dress,nan,nan
+238199.2,Work gloves,nan,nan
+238499.1,Robes,nan,nan
+238499.2,Dressing gowns,nan,nan
+238599.0,Waterproof outerwear,nan,nan
+238601.1,Leather and sheeplined coats,nan,nan
+238601.2,Leather and sheeplined hats,nan,nan
+238602.0,Leather and sheeplined garments,nan,nan
+238901.0,Men's miscellaneous accessories,nan,nan
+238902.1,Uniforms,nan,nan
+238902.2,Vestments,nan,nan
+238903.0,Costumes,nan,nan
+238999.1,Apparel,nan,nan
+238999.2,Apparel accessories,nan,nan
+239199.1,Curtains,nan,nan
+239199.2,Draperies,nan,nan
+239201.1,Cushions,nan,nan
+239201.2,Pillows,nan,nan
+239202.1,Laundry,nan,nan
+239202.2,Garment,nan,nan
+239202.3,Storage bags,nan,nan
+239203.1,Blankets,nan,nan
+239203.2,Comforters,nan,nan
+239203.3,Beddings,nan,nan
+239204.1,Tablecloths,nan,nan
+239204.2,Table settings,nan,nan
+239205.1,Towels,nan,nan
+239205.2,Dishcloths,nan,nan
+239205.3,Dust cloths,nan,nan
+239206.1,Slip covers,nan,nan
+239206.2,Pads,nan,nan
+239299.0,Household furnishings,nan,nan
+239301.0,Canvas bags.,nan,nan
+239399.0,Textile bags,nan,nan
+239401.1,Canvas awnings,nan,nan
+239401.2,Canvas canopies,nan,nan
+239402.1,Canvas covers,nan,nan
+239402.2,Drop cloths,nan,nan
+239499.1,Canvas,nan,nan
+239499.2,Canvas related products,nan,nan
+239501.1,Quilting,nan,nan
+239501.2,Quilting supplies,nan,nan
+239502.1,Embroidery,nan,nan
+239502.2,Art needlework,nan,nan
+239503.1,Decorative and novelty stitching:,nan,nan
+239503.2,The trade,nan,nan
+239504.1,Pleating and tucking:,nan,nan
+239504.2,The trade,nan,nan
+239599.1,Pleating,nan,nan
+239599.2,Stitching,nan,nan
+239601.1,Apparel,nan,nan
+239601.2,Other Apparel linings,nan,nan
+239602.1,Apparel findings,nan,nan
+239602.2,Apparel trimmings,nan,nan
+239603.1,Millinery materials,nan,nan
+239603.2,Millinery.supplies,nan,nan
+239604.1,Fabric printing,nan,nan
+239604.2,Fabrics stamping,nan,nan
+239699.1,Automotive trimmings,nan,nan
+239699.2,Apparel trimmings,nan,nan
+239901.1,Emblems,nan,nan
+239901.2,Badges,nan,nan
+239901.3,Insignia,nan,nan
+239902.1,Horse textile accessories,nan,nan
+239902.2,Pet textile accessories,nan,nan
+239903.1,Banners,nan,nan
+239903.2,Pennants,nan,nan
+239903.3,Flags,nan,nan
+239904.1,Belting,nan,nan
+239904.2,Belt products,nan,nan
+239905.1,Hand woven products,nan,nan
+239905.2,Crocheted products,nan,nan
+239906.1,Hammocks,nan,nan
+239906.2,Other net products,nan,nan
+239999.0,Fabricated textile products,nan,nan
+024.0,024- WOOD AND WOOD PRODUCTS EXCEPT FURNITURE,nan,nan
+241101.0,Wooden bolts hewn,nan,nan
+241102.1,Poles,nan,nan
+241102.2,Posts,nan,nan
+241102.3,Pilings,nan,nan
+241103.0,Wooden logs,nan,nan
+241199.0,Logging,nan,nan
+242101.1,Wood Building,nan,nan
+242101.2,Wood structural materials,nan,nan
+242102.1,Sawdust,nan,nan
+242102.2,Shavings,nan,nan
+242102.3,Wood chips,nan,nan
+242103.0,Specialty sawmill products,nan,nan
+242104.1,Outdoor Wood structural products,nan,nan
+242199.1,Sawmills and planing mills,nan,nan
+242601.1,Furniture hardwood stock,nan,nan
+242601.2,Furniture hardwood parts,nan,nan
+242602.1,Hardwood Blocks,nan,nan
+242602.2,Hardwood blanks,nan,nan
+242603.1,Stocks: gun,nan,nan
+242603.2,Stocks: handle,nan,nan
+242603.3,Stocks: vehicle,nan,nan
+242604.1,Textile machinery,nan,nan
+242604.2,Textile machinery : hardwood accessories,nan,nan
+242901.1,Barrels,nan,nan
+242901.2,Barrel parts,nan,nan
+242902.1,Shavings.,nan,nan
+242902.2,Shavings packaging excelsior,nan,nan
+242903.1,Shingle,nan,nan
+242903.2,Shingle mills,nan,nan
+243101.1,Wood Doors,nan,nan
+243101.2,Wood door parts and trim,nan,nan
+243102.1,WoodWindows parts,nan,nan
+243102.2,Wood window trims,nan,nan
+243103.1,Ornamental and trim Moldings,nan,nan
+243103.2,Ornamental and trim baseboards,nan,nan
+243104.1,Wood Awnings,nan,nan
+243104.2,Wood blinds,nan,nan
+243104.3,Wood shutters,nan,nan
+243105.1,Staircases,nan,nan
+243105.2,Stairs,nan,nan
+243105.3,Stairs railings,nan,nan
+243106.1,Interior and ornamental woodwork,nan,nan
+243106.2,Interior and ornamental trim,nan,nan
+243107.1,Exterior and ornamental woodwork,nan,nan
+243107.2,Exterior and ornamental trim,nan,nan
+243199.0,Millwork,nan,nan
+243499.1,Wood kitchencabinets,nan,nan
+243599.1,Hardwood veneer,nan,nan
+243599.2,Hardwood plywood,nan,nan
+243699.1,Softwood veneer,nan,nan
+243699.2,Softwood plywood,nan,nan
+243999.0,Structural wood members,nan,nan
+244101.0,Wood Boxes,nan,nan
+244102.0,Wood Cases,nan,nan
+244103.1,Wood Chests,nan,nan
+244103.2,Wood trunks,nan,nan
+245299.0,Prefabricated wood buildings,nan,nan
+249101.1,Treated wood Poles,nan,nan
+249101.2,Treated wood posts,nan,nan
+249101.3,Treated wood pilings,nan,nan
+249102.1,Treated wood bridges,nan,nan
+249102.2,Treated wood trestles,nan,nan
+249199.0,Wood preserving,nan,nan
+249301.1,Building board,nan,nan
+249301.2,Building wallboard,nan,nan
+249302.0,Particleboard products,nan,nan
+249303.1,Hardboard products,nan,nan
+249303.2,Fiberboard products,nan,nan
+249304.1,Insulation material roofing,nan,nan
+249304.2,Reconstituted Wood roofing,nan,nan
+249399.0,Reconstituted wood products,nan,nan
+249901.0,Wood Laundry products,nan,nan
+249902.1,Wood Shoe,nan,nan
+249902.2,Wood boot products,nan,nan
+249903.1,WoodLadders,nan,nan
+249903.2,Wood stepladders,nan,nan
+249904.1,Wood Picture frames,nan,nan
+249904.2,Wood mirror frames,nan,nan
+249905.1,Cork,nan,nan
+249905.2,Cork products,nan,nan
+249906.1,Wood Rulers,nan,nan
+249906.2,Woodyardsticks,nan,nan
+249907.1,Reed ware,nan,nan
+249907.2,Rattan ware,nan,nan
+249907.3,Wicker ware,nan,nan
+249907.4,Willow ware,nan,nan
+249908.1,Wood Handles,nan,nan
+249908.2,Wood poles,nan,nan
+249908.3,Wood dowels,nan,nan
+249908.4,Wood stakes,nan,nan
+249909.1,Wood Food handling products,nan,nan
+249910.1,Wood Kitchen ware,nan,nan
+249910.2,Wood bathroom ware,nan,nan
+249910.3,Wood household ware,nan,nan
+249911.1,Decorative Wood,nan,nan
+249911.2,Decorative woodwork,nan,nan
+249912.1,Wood Spools,nan,nan
+249912.2,Wood reels,nan,nan
+249912.3,Wood pulleys,nan,nan
+249913.1,Wood mulch,nan,nan
+249913.2,Wood sawdust products,nan,nan
+249914.1,Wood Mallets,nan,nan
+249914.2,Wood hammers,nan,nan
+249914.3,Wood clubs,nan,nan
+249915.1,Wood Stoppers,nan,nan
+249915.2,Wood plugs,nan,nan
+249916.1,Wood Fencing,nan,nan
+249916.2,Wood docks,nan,nan
+249916.3,Other outdoor wood structural products,nan,nan
+249999.0,Wood products,nan,nan
+25.0,FURNITURE AND ACCESSORIES,nan,nan
+251101.0,Wood bedroom furniture,nan,nan
+251102.1,Kitchen furniture,nan,nan
+251102.2,Dining room furniture,nan,nan
+251103.0,Children's wood furniture,nan,nan
+251104.0,Wood game room furniture,nan,nan
+251105.1,Wood desks,nan,nan
+251105.2,Wood bookcases,nan,nan
+251105.3,Wood magazine racks,nan,nan
+251106.1,Wood stands,nan,nan
+251106.2,Wood chests,nan,nan
+251107.1,Wood lawn,nan,nan
+251107.2,Wood garden furniture,nan,nan
+251199.0,Wood household furniture,nan,nan
+251201.1,Wood upholstered chairs,nan,nan
+251201.2,Wood couches,nan,nan
+251299.0,Upholstered household furniture,nan,nan
+251401.0,Metal bedroom furniture,nan,nan
+251402.1,Metal kitchen furniture,nan,nan
+251403.0,Metal children's furniture,nan,nan
+251404.0,Metal game room furniture,nan,nan
+251405.1,Metal bookcases,nan,nan
+251405.2,Stereo cabinets,nan,nan
+251406.1,Lawn metal furniture,nan,nan
+251406.2,Garden metal furniture,nan,nan
+251499.0,Metal household furniture,nan,nan
+251501.0,Mattresses and foundations,nan,nan
+251502.0,Furniture springs,nan,nan
+251503.0,Sleep furniture,nan,nan
+251799.1,Wood television,nan,nan
+251799.2,Radio cabinets,nan,nan
+251901.1,Lawn furniture,nan,nan
+251901.2,Garden furniture,nan,nan
+251902.2,Rattan furniture,nan,nan
+251903.1,Fiberglass furniture,nan,nan
+251903.2,Plastic furniture,nan,nan
+251999.0,Household furniture,nan,nan
+252101.1,Wood office chairs,nan,nan
+252101.2,Wood office benches,nan,nan
+252101.3,Wood office stools,nan,nan
+252102.1,Wood office filing cabinets,nan,nan
+252102.2,Wood office bookcases,nan,nan
+252103.1,Wood office desks,nan,nan
+252103.2,Wood office tables,nan,nan
+252199.0,Wood office furniture,nan,nan
+252201.1,Office chairs,nan,nan
+252201.2,Office benches,nan,nan
+252201.3,Office tools,nan,nan
+252202.1,Office bookcases,nan,nan
+252202.2,Office wallcases,nan,nan
+252202.3,Office partitions,nan,nan
+252203.1,Office cabinets,nan,nan
+252203.2,Office filing drawers,nan,nan
+252204.1,Office desks,nan,nan
+252204.2,Office tables except wood,nan,nan
+253101.0,School furniture,nan,nan
+253102.0,Church furniture,nan,nan
+253103.0,Vehicle furniture,nan,nan
+253104.0,Stadium furniture,nan,nan
+253199.1,Public building,nan,nan
+253199.2,Public building related furniture,nan,nan
+254101.1,Store display cases and fixtures,nan,nan
+254101.2,Office display cases and fixtures,nan,nan
+254102.1,Cabinets,nan,nan
+254102.2,Lockers,nan,nan
+254102.3,Shelving,nan,nan
+254103.1,Counter tops,nan,nan
+254103.2,Sink tops,nan,nan
+254199.1,Nonwood Partitions,nan,nan
+254199.2,Nonwood fixtures,nan,nan
+254201.1,Postal lock boxes,nan,nan
+254201.2,Mail racks,nan,nan
+254201.3,Postal related products.,nan,nan
+254202.1,Office showcases and display fixtures,nan,nan
+259101.1,Shade hardware,nan,nan
+259101.2,Curtain hardware,nan,nan
+259101.3,Drapery hardware,nan,nan
+259102.0,Window blinds,nan,nan
+259103.0,Window shades,nan,nan
+259901.1,Factory furniture,nan,nan
+259901.2,Factory fixtures,nan,nan
+259902.1,Bar furniture,nan,nan
+259902.2,Restaurant furniture,nan,nan
+259902.3,Cafeteria furniture,nan,nan
+259903.0,Beds not household use,nan,nan
+259999.1,Furniture,nan,nan
+259999.2,Fixtures,nan,nan
+26.0,PAPER AND RELATED PRODUCTS,nan,nan
+261101.0,Pulp mills chemical and semichemical processing,nan,nan
+261102.0,Pulp mills dissolving pulp processing,nan,nan
+261103.0,Pulp mills mechanical and recycling processing,nan,nan
+261199.0,Pulp mills,nan,nan
+262101.1,Paper and stock Towels,nan,nan
+262101.2,Paper and stock tissues,nan,nan
+262101.3,Paper and stock napkins,nan,nan
+262102.1,Parchment papers,nan,nan
+262102.2,Securites papers,nan,nan
+262102.3,Bank note papers,nan,nan
+262103.1,Specialty papers,nan,nan
+262103.2,Chemically treated papers,nan,nan
+262104.1,Book papers,nan,nan
+262104.2,Printing papers,nan,nan
+262105.1,Poster papers,nan,nan
+262105.2,Art papers,nan,nan
+262106.1,Stationary,nan,nan
+262106.2,Envelope,nan,nan
+262106.3,Tablet papers,nan,nan
+262107.1,Catalog papers,nan,nan
+262107.2,Magazine papers,nan,nan
+262107.3,Newsprint papers,nan,nan
+262108.1,Wrapping papers,nan,nan
+262108.2,Packaging papers,nan,nan
+262109.1,Building paper felts and insulation siding,nan,nan
+262109.2,Roofing paper felts and insulation siding,nan,nan
+262110.1,Pressed pulp and fiber products,nan,nan
+262110.2,Molded pulp and fiber products,nan,nan
+262199.0,Paper mills,nan,nan
+263101.0,Linerboard,nan,nan
+263102.1,Innersole,nan,nan
+263102.2,Shoe board,nan,nan
+263103.1,Container,nan,nan
+263103.2,Packaging,nan,nan
+263103.3,Boxboard,nan,nan
+263104.1,Coated board,nan,nan
+263104.2,Treated board,nan,nan
+263105.1,Cardboard,nan,nan
+263105.2,Tagboard,nan,nan
+263105.3,Strawboard,nan,nan
+263199.0,Paperboard mills,nan,nan
+265299.0,Setup paperboard boxes,nan,nan
+265301.1,Corrugated boxes,nan,nan
+265301.2,Corrugated partitions,nan,nan
+265301.3,Corrugated sheets,nan,nan
+265301.4,Corrugated pad,nan,nan
+265302.1,Solid fiber boxes,nan,nan
+265302.2,Solid fiber partitions,nan,nan
+265302.4,Solid fiber sheets,nan,nan
+265501.1,Fiber spools,nan,nan
+265501.2,Fiber tubes,nan,nan
+265501.3,Fiber cones,nan,nan
+265502.1,Fiber cans,nan,nan
+265502.2,Fiber drums,nan,nan
+265502.3,Iber containers,nan,nan
+265503.1,Fiber shipping containers,nan,nan
+265503.2,Fiber mailing containers,nan,nan
+265504.1,Fiber cores,nan,nan
+265504.2,Fiber reels,nan,nan
+265599.1,Fiber cans,nan,nan
+265599.2,Fiber drums,nan,nan
+265599.3,Similar Fiber products,nan,nan
+265601.1,Paper cups,nan,nan
+265601.2,Paper plates,nan,nan
+265601.3,Paper dishes,nan,nan
+265601.4,Paper utensils,nan,nan
+265602.1,Frozen food containers,nan,nan
+265602.2,Ice cream containers,nan,nan
+265603.1,Food containers (liquid tight),nan,nan
+265603.2,Milk cartons,nan,nan
+265799.0,Folding paperboard boxes,nan,nan
+267199.1,Paper coated packaging,nan,nan
+267199.2,Paper laminated packaging,nan,nan
+267201.1,Chemically treated papers made from purchased materials,nan,nan
+267202.1,Adhesive papers,nan,nan
+267202.2,Adhesive labels,nan,nan
+267202.3,Adhesive tapes,nan,nan
+267299.1,Paper coated,nan,nan
+267299.2,Paper laminated,nan,nan
+267301.1,Garment bags,nan,nan
+267301.2,Wardrobe bags,nan,nan
+267302.1,Food storage,nan,nan
+267302.2,Trash bags,nan,nan
+267303.1,Plastic bags,nan,nan
+267303.2,Pliofilm bags,nan,nan
+267399.1,Plastic bags,nan,nan
+267399.2,Laminated bags,nan,nan
+267399.3,Coated bags,nan,nan
+267401.1,Shipping bags or Sacks,nan,nan
+267401.2,Shopping bags or Sacks,nan,nan
+267499.1,Uncoated paper bags,nan,nan
+267499.2,Uncoated multiwall bags,nan,nan
+267501.1,Diecut cardboard cutouts,nan,nan
+267501.2,Diecut panels,nan,nan
+267501.3,Diecut foundations,nan,nan
+267502.1,Diecut cards,nan,nan
+267502.2,Diecut folders,nan,nan
+267502.3,Diecut mats,nan,nan
+267503.1,Diecut stencils Diecut,nan,nan
+267503.2,Diecut lettering materials,nan,nan
+267504.1,Food container products from diecut paper,nan,nan
+267504.2,Diecut paper Food container parts,nan,nan
+267599.1,Diecut paper,nan,nan
+267599.2,Diecut board,nan,nan
+267601.1,Towels tissue paper,nan,nan
+267601.2,Napkins tissue paper,nan,nan
+267601.3,Other tissue paper products,nan,nan
+267602.1,Feminine higiene paper products,nan,nan
+267603.1,Infant paper products,nan,nan
+267603.2,Baby paper products,nan,nan
+267801.1,Memorandum books,nan,nan
+267801.2,Notebooks,nan,nan
+267801.3,Looseleaf filler paper,nan,nan
+267802.1,Tablets,nan,nan
+267802.2,Pads,nan,nan
+267803.1,Papeteries,nan,nan
+267803.2,Writing paper sets,nan,nan
+267901.1,Pressed fiber products,nan,nan
+267901.2,Molded pulp products,nan,nan
+267902.1,Food dishes,nan,nan
+267902.2,Food utensils,nan,nan
+267902.3,Pressed and molded Pulp,nan,nan
+267903.0,Wallpaper,nan,nan
+267904.1,Paper tags,nan,nan
+267904.2,Paper labels,nan,nan
+267905.1,Gift wrap paper,nan,nan
+267905.2,Gift novelties paper,nan,nan
+267906.1,Telegraph paper,nan,nan
+267906.2,Teletype paper,nan,nan
+267906.3,Adding machine paper,nan,nan
+267907.1,Building paper,nan,nan
+267907.2,Insulating paper,nan,nan
+267907.3,Packaging paper,nan,nan
+267908.1,Building paperboard,nan,nan
+267908.2,Insulating paperboard,nan,nan
+267908.3,Packaging paperboard,nan,nan
+267909.0,Non diecut cardboard products,nan,nan
+267999.0,Converted paper products,nan,nan
+27.0,PRINTING PUBLISHING AND ALLIED INDUSTRIES,nan,nan
+271101.1,Newspapers,nan,nan
+271101.2,Newspapers publishing,nan,nan
+271101.3,Newspapers printing,nan,nan
+271199.0,Newspapers,nan,nan
+272101.0,Periodicals publishing only,nan,nan
+272102.0,Periodicals publishing and printing,nan,nan
+273101.0,Books publishing only,nan,nan
+273102.0,Books publishing and printing,nan,nan
+273201.0,Books printing only,nan,nan
+273202.0,Books printing and binding,nan,nan
+274101.1,Art copy,nan,nan
+274101.2,Poster publishing,nan,nan
+274102.1,Atlas publishing,nan,nan
+274102.2,Map publishing,nan,nan
+274102.3,Guide publishing,nan,nan
+274103.1,Telephone publishing,nan,nan
+274103.2,Other telephone directory publishing,nan,nan
+274104.1,Music book publishing,nan,nan
+274104.2,Sheet music publishing,nan,nan
+274105.0,Newsletter publishing,nan,nan
+274106.1,Technical manual,nan,nan
+274106.2,Technical paper publishing,nan,nan
+274199.0,Miscellaneous publishing,nan,nan
+275201.1,Offset printing,nan,nan
+275201.2,Photolithographic printing,nan,nan
+275202.0,Promotional lithographic printing,nan,nan
+275203.1,Business form lithographic printing,nan,nan
+275203.2,Card lithographic printing,nan,nan
+275204.1,Calendar lithographic printing,nan,nan
+275204.2,Card lithographic printing,nan,nan
+275205.1,Atlas lithographic printing,nan,nan
+275205.2,Map lithographic printing,nan,nan
+275206.1,Poster lithographic printing,nan,nan
+275206.2,Decal lithographic printing,nan,nan
+275207.1,Tag lithographic printing,nan,nan
+275207.3,Schedule lithographic printing,nan,nan
+275208.1,Wrapper lithographic printing,nan,nan
+275208.2,Seal lithographic printing,nan,nan
+275209.0,Publication lithographic printing,nan,nan
+275299.0,Commercial lithographic printing,nan,nan
+275401.1,Photogravure printing,nan,nan
+275401.2,Rotogravure printing,nan,nan
+275402.1,Business form printing gravure,nan,nan
+275402.2,Business card printing gravure,nan,nan
+275403.1,Calendar printing gravure,nan,nan
+275403.2,Calendar card printing gravure,nan,nan
+275404.1,Wrapper printing gravure,nan,nan
+275404.2,Seal printing gravure,nan,nan
+275405.0,Publication printing gravure,nan,nan
+275406.0,Promotional printing gravure,nan,nan
+275407.1,Stationery printing gravure,nan,nan
+275407.2,Invitation printing gravure,nan,nan
+275499.0,Commercial printing gravure,nan,nan
+275901.1,Financial note printing and engraving.,nan,nan
+275901.2,Certificate printing and engraving,nan,nan
+275902.0,Card printing and engraving.,nan,nan
+275903.0,Promotional printing,nan,nan
+275904.0,Publication printing,nan,nan
+275905.1,Invitation printing and engraving.,nan,nan
+275905.2,Stationery printing and engraving,nan,nan
+275906.1,Letterpress printing,nan,nan
+275906.2,Screen printing,nan,nan
+275907.1,Bag printing and engraving,nan,nan
+275907.2,Wrapper printing and engraving.,nan,nan
+275907.3,Seal printing and engraving.,nan,nan
+275908.1,Poster printing and engraving,nan,nan
+275908.2,Decal printing and engraving,nan,nan
+275909.1,Schedule printing and engraving,nan,nan
+275909.2,Ticket printing and engraving,nan,nan
+275909.3,Tag printing and engraving,nan,nan
+275999.0,Commercial printing,nan,nan
+276199.0,Manifold business forms,nan,nan
+278201.1,Ledger books,nan,nan
+278201.2,Inventory books,nan,nan
+278201.3,Account books,nan,nan
+278202.1,Scrapbooks,nan,nan
+278202.2,Albums,nan,nan
+278202.3,Diaries,nan,nan
+278203.1,Looseleaf binders,nan,nan
+278203.2,Looseleaf devices,nan,nan
+278204.1,Receipt books,nan,nan
+278204.2,Invoice books,nan,nan
+278204.3,Memorandum books,nan,nan
+278205.1,Bank checkbooks,nan,nan
+278205.2,Bank passbooks,nan,nan
+278299.1,Blankbooks,nan,nan
+278299.2,Looseleaf binders,nan,nan
+278901.0,Display mounting,nan,nan
+278902.1,Books bronzing gilding edging and deckling,nan,nan
+278902.2,Cards bronzing gilding edging and deckling,nan,nan
+278902.3,Paper bronzing gilding edging and deckling,nan,nan
+278903.1,Binding and repair of books,nan,nan
+278903.2,Binding and repair of magazines,nan,nan
+278903.3,Binding and repair of pamphlets,nan,nan
+278999.1,Bookbinding,nan,nan
+278999.2,Bookbinding related work,nan,nan
+279101.0,Hand composition typesetting,nan,nan
+279199.0,Typesetting,nan,nan
+279601.0,Gravure platemaking services,nan,nan
+279602.0,Engraving platemaking services,nan,nan
+279699.0,Platemaking services,nan,nan
+28.0,CHEMICAL PRODUCTS AND ALLIES,nan,nan
+281299.2,Chlorine,nan,nan
+281301.0,Carbon dioxide,nan,nan
+281399.0,Industrial gases,nan,nan
+281601.0,White pigments,nan,nan
+281602.0,Color pigments,nan,nan
+281603.0,Black pigments,nan,nan
+281699.0,Inorganic pigments,nan,nan
+281901.0,Elements,nan,nan
+281902.0,Inorganic acids except nitric and phosphoric,nan,nan
+281903.0,Aluminum compounds,nan,nan
+281904.1,Sodium compounds . except bleaches alkalies aluminum,nan,nan
+281904.2,Potassium compounds except bleaches alkalies aluminum,nan,nan
+281905.0,Alums,nan,nan
+281906.1,Fuels,nan,nan
+281906.2,Radioactive compounds,nan,nan
+281907.0,Carbides,nan,nan
+281908.0,Silica compounds,nan,nan
+281909.1,Metal salts except sodium potassium aluminum,nan,nan
+281909.2,Metal compounds except sodium potassium aluminum,nan,nan
+281910.0,Nonmetallic compounds,nan,nan
+281911.1,Ammonium salts,nan,nan
+281911.2,Ammonium compounds,nan,nan
+281999.0,Industrial inorganic chemicals,nan,nan
+282101.0,Thermosetting materials,nan,nan
+282102.0,Thermoplastic materials,nan,nan
+282103.0,Cellulose derivative materials,nan,nan
+282104.0,Plasticizer/additive based plastic materials,nan,nan
+282199.1,Plastics materials,nan,nan
+282199.2,Resins,nan,nan
+282201.0,Butadiene rubbers,nan,nan
+282299.0,Synthetic rubber,nan,nan
+282399.0,Cellulosic manmade fibers,nan,nan
+282499.0,Noncellulosic organic fibers,nan,nan
+283301.0,Medicinal chemicals,nan,nan
+283302.1,Alkaloids,nan,nan
+283302.2,Other botanical based products,nan,nan
+283303.0,Antibiotics,nan,nan
+283304.0,Animal based products,nan,nan
+283401.1,Drugs affecting neoplasms,nan,nan
+283401.2,Drugs affecting endrocrine systems,nan,nan
+283402.1,Drugs acting on the central nervous system .,nan,nan
+283402.2,Drugs acting on the sense organs,nan,nan
+283403.0,Drugs acting on the cardiovascular system except diagnostic,nan,nan
+283404.0,Drugs acting on the respiratory system,nan,nan
+283405.1,Drugs acting on the gastrointestinal,nan,nan
+283405.2,Drugs acting on the genitourinary system,nan,nan
+283406.0,Dermatologicals,nan,nan
+283407.1,Vitamin preparations for human use,nan,nan
+283407.2,Preparations for human use,nan,nan
+283407.3,Hematinic preparations for human use,nan,nan
+283408.1,Drugs affecting parasitic,nan,nan
+283408.2,Drugs affecting infective diseases,nan,nan
+283499.0,Pharmaceutical preparations,nan,nan
+283599.0,Diagnostic substances,nan,nan
+283601.0,Blood derivatives,nan,nan
+283602.0,Extracts,nan,nan
+283603.1,Vaccines,nan,nan
+283603.2,Other immunizing products,nan,nan
+283604.0,Culture media,nan,nan
+283605.1,Toxins,nan,nan
+283605.2,Viruses,nan,nan
+283605.3,Similar substance and venoms,nan,nan
+283699.0,Biological products except diagnostic,nan,nan
+284199.1,Soap detergents,nan,nan
+284199.2,Other detergents,nan,nan
+284201.0,Specialty cleaning,nan,nan
+284202.1,Polishing preparations,nan,nan
+284202.2,Polishing related products,nan,nan
+284203.0,Drycleaning preparations,nan,nan
+284204.1,Sanitation preparations,nan,nan
+284204.2,Disinfectants,nan,nan
+284204.3,Deodorants,nan,nan
+284205.0,Laundry cleaning preparations,nan,nan
+284299.1,Polishes goods,nan,nan
+284299.2,Sanitation goods,nan,nan
+284301.1,Oils,nan,nan
+284301.2,Greases,nan,nan
+284302.0,Finishing agents,nan,nan
+284303.0,Processing assistants,nan,nan
+284399.0,Surface active agents,nan,nan
+284401.0,Hair preparations including shampoos,nan,nan
+284402.0,Oral preparations,nan,nan
+284403.1,Perfumes,nan,nan
+284403.2,Colognes,nan,nan
+284404.0,Shaving preparations,nan,nan
+284405.0,Cosmetic preparations,nan,nan
+284499.0,Toilet preparations,nan,nan
+285101.1,Paints,nan,nan
+285101.2,Paint additives,nan,nan
+285102.1,Lacquers,nan,nan
+285102.3,Enamels,nan,nan
+285102.4,Other coatings,nan,nan
+285103.1,Putty,nan,nan
+285103.2,Wood fillers,nan,nan
+285103.3,Wood sealers,nan,nan
+285104.1,Removers,nan,nan
+285104.2,Cleaners,nan,nan
+286101.0,Wood distillation products,nan,nan
+286102.0,Wood extract products,nan,nan
+286199.1,Gum chemicals,nan,nan
+286199.2,Wood chemicals,nan,nan
+286501.1,Dyes,nan,nan
+286501.2,Pigments,nan,nan
+286502.0,Cyclic organic crudes,nan,nan
+286503.0,Cyclic organic intermediates,nan,nan
+286504.1,Tar,nan,nan
+286504.2,Coal tar,nan,nan
+286504.3,Tar related chemicals,nan,nan
+286599.1,Cyclic crudes,nan,nan
+286599.2,Intermediates crudes,nan,nan
+286901.0,Alcohols non beverage,nan,nan
+286902.0,Olefins,nan,nan
+286903.1,Amines,nan,nan
+286903.3,Salts,nan,nan
+286903.4,Esters.,nan,nan
+286904.0,Fuels,nan,nan
+286905.1,Perfumes,nan,nan
+286905.2,Flavorings,nan,nan
+286905.3,Food additives,nan,nan
+286906.1,Aldehydes,nan,nan
+286906.2,Ketones,nan,nan
+286999.0,Industrial organic chemicals,nan,nan
+287301.1,Ammonia,nan,nan
+287301.2,Ammonium salts,nan,nan
+287399.0,Nitrogenous fertilizers,nan,nan
+287401.0,Phosphates,nan,nan
+287499.0,Phosphatic fertilizers,nan,nan
+287599.0,Fertilizers mixing only,nan,nan
+287901.1,Insecticides,nan,nan
+287901.2,Pesticides,nan,nan
+287999.0,Agricultural chemicals,nan,nan
+289101.0,Sealants,nan,nan
+289102.0,Adhesives,nan,nan
+289201.1,Primary explosives,nan,nan
+289201.2,Fuses,nan,nan
+289201.3,Detonators,nan,nan
+289202.0,Secondary high explosives,nan,nan
+289399.0,Printing ink,nan,nan
+289599.0,Carbon black,nan,nan
+289901.1,Oils,nan,nan
+289901.2,Essential oils,nan,nan
+289902.0,Acids,nan,nan
+289903.0,Gelatin,nan,nan
+289904.1,Flares,nan,nan
+289904.2,Fireworks,nan,nan
+289904.3,Flares and similar Fireworks preparations,nan,nan
+289905.0,Sizes,nan,nan
+289999.0,Chemical preparations,nan,nan
+29.0,OIL REFINING AND RELATED INDUSTRIES,nan,nan
+291101.2,Liquefied petroleum gases,nan,nan
+291102.0,Light distillates,nan,nan
+291103.0,Intermediate distillates,nan,nan
+291104.0,Heavy distillates,nan,nan
+291105.0,Residues,nan,nan
+291106.0,Aromatic chemical products,nan,nan
+291107.0,Nonaromatic chemical products,nan,nan
+291199.0,Petroleum refining,nan,nan
+295101.0,Paving blocks,nan,nan
+295102.0,Paving mixtures,nan,nan
+295201.0,Roofing materials,nan,nan
+295202.0,Siding materials,nan,nan
+295299.1,Asphalt felts,nan,nan
+295299.2,Asphalt coatings,nan,nan
+299201.0,Lubricating oils,nan,nan
+299299.1,Lubricating oils,nan,nan
+299299.2,Lubricating greases,nan,nan
+299901.0,Coke,nan,nan
+299902.1,Fuel briquettes,nan,nan
+299902.2,Fuel waxes,nan,nan
+30.0,VARIOUS RUBBER AND PLASTICS PRODUCTS,nan,nan
+301101.0,Inner tubes all tire types,nan,nan
+301102.1,Pneumatic tires,nan,nan
+301102.2,All tire types,nan,nan
+301103.1,Tire materials,nan,nan
+301103.2,Inner tube materials,nan,nan
+301103.3,Tire and inner tube related products,nan,nan
+301199.0,Tires and inner tubes,nan,nan
+302101.1,Protective rubber footwear,nan,nan
+302101.2,Protective plastic footwear,nan,nan
+302102.1,Shoes rubber molded to fabric,nan,nan
+302102.2,Shoes plastic molded to fabric,nan,nan
+305201.0,Rubber hose,nan,nan
+305202.0,Plastic hose,nan,nan
+305203.0,Rubber belting,nan,nan
+305204.0,Plastic belting,nan,nan
+305301.0,Gaskets and sealing devices,nan,nan
+305302.0,Packing materials,nan,nan
+306199.0,Mechanical rubber goodf,nan,nan
+306901.1,Medical rubber sundries,nan,nan
+306901.2,Laboratory rubber sundries,nan,nan
+306901.3,Related medical and loboratory products,nan,nan
+306902.1,Rubber wallcoverings,nan,nan
+306902.2,Rubber floorcoverings/mats,nan,nan
+306903.1,Rubber coated clothing,nan,nan
+306903.2,Rubber coated fabrics,nan,nan
+306904.0,Airsupported rubber structures,nan,nan
+306905.1,Boot products rubber,nan,nan
+306905.2,Shoe products rubber,nan,nan
+306906.1,Reclaimed rubber,nan,nan
+306906.2,Specialty rubber compounds,nan,nan
+306907.1,Sponge rubber,nan,nan
+306907.2,Sponge rubber products,nan,nan
+306908.0,Druggist's rubber sundries,nan,nan
+306909.0,Stationer's rubber sundries,nan,nan
+306910.1,Hard rubber,nan,nan
+306910.2,Molded rubber products,nan,nan
+306911.0,Rubber hair accessories,nan,nan
+306912.0,Rubber smoking accessories,nan,nan
+306913.1,Rubber Rolls,nan,nan
+306913.2,Roll coverings,nan,nan
+306914.0,Rubber automotive products,nan,nan
+306915.0,Rubber hardware,nan,nan
+306916.0,Rubber tape,nan,nan
+306999.0,Fabricated rubber products,nan,nan
+308199.1,Unsupported plastics film,nan,nan
+308199.2,Unsupported plastics sheet,nan,nan
+308299.0,Unsupported plastics profile shapes,nan,nan
+308399.1,Laminated plastics plate,nan,nan
+308399.2,Laminated plastics sheet,nan,nan
+308699.0,Plastics foam products,nan,nan
+308899.0,Plastics plumbing fixtures,nan,nan
+308901.0,Plastics containers except foam,nan,nan
+308902.1,Plastics kitchenware,nan,nan
+308902.2,Plastics tableware,nan,nan
+308902.3,Plastics houseware,nan,nan
+308903.1,Plastics hardware,nan,nan
+308903.2,Building products,nan,nan
+308904.1,Boot products plastics,nan,nan
+308904.2,Shoe products plastics,nan,nan
+31.0,LEATHER AND LEATHER PRODUCTS,nan,nan
+311101.0,Equestrian leather products,nan,nan
+311102.0,Shoe leather,nan,nan
+311103.0,Leather processing,nan,nan
+311104.0,Accessory products leather,nan,nan
+311105.0,Garment leather,nan,nan
+311106.1,Fine pliant leather from sheepH,nan,nan
+311106.2,Fine pliant leather from goat,nan,nan
+311106.3,Fine pliant leather from calf,nan,nan
+311107.0,Industrial leather products,nan,nan
+311199.1,Leather tanning,nan,nan
+311199.2,Leather finishing,nan,nan
+313101.1,Boot accessories,nan,nan
+313101.2,Shoe accessories,nan,nan
+313102.0,Heel parts for shoes,nan,nan
+313103.0,Sole parts for shoes,nan,nan
+313104.0,Inner parts for shoes,nan,nan
+313105.1,Body parts,nan,nan
+313105.2,Shoe outers,nan,nan
+314299.0,House slippers,nan,nan
+314399.0,Men's footwear except athletic,nan,nan
+314499.0,Women's footwear except athletic,nan,nan
+314901.0,Children's footwear except athletic,nan,nan
+314999.0,Footwearexcept rubber,nan,nan
+315199.1,Leather gloves,nan,nan
+315199.2,Leather mittens,nan,nan
+316101.1,Clothing carrying cases,nan,nan
+316101.2,Apparel carrying cases,nan,nan
+316199.0,Luggage,nan,nan
+317199.1,Women's handbags,nan,nan
+317199.2,Women's purses,nan,nan
+317201.0,Leather money holders,nan,nan
+317202.0,Leather cases,nan,nan
+317299.0,Personal leather goods,nan,nan
+319901.0,Equestrian related leather articles,nan,nan
+319902.0,Leather garments,nan,nan
+319903.1,Leather belting,nan,nan
+319903.2,Leather strapping,nan,nan
+319999.0,Leather goods,nan,nan
+32.0,STONE CLAY GLASS AND CONCRETE PRODUCTS,nan,nan
+321101.0,Transparent optical glass except lenses,nan,nan
+321102.1,Strengthened glass,nan,nan
+321102.2,Reinforced glass,nan,nan
+321103.0,Construction glass,nan,nan
+321104.1,Plate glass,nan,nan
+321104.2,Sheet glass,nan,nan
+321199.0,Flat glass,nan,nan
+322101.0,Food containers glass,nan,nan
+322199.0,Glass containers,nan,nan
+322901.1,Glass furnishings,nan,nan
+322901.3,Glass furnishings,nan,nan
+322901.2,Glass accessories,nan,nan
+322902.0,Optical glass,nan,nan
+322903.0,Industrialuse glassware,nan,nan
+322904.0,Glass fiber products,nan,nan
+322905.1,Glass tubes,nan,nan
+322905.2,Glass tubing,nan,nan
+322906.0,Scientific glassware,nan,nan
+322907.0,Glass lighting equipment parts,nan,nan
+322908.1,Art glassware,nan,nan
+322908.2,decorative glassware,nan,nan
+322908.3,Novelty glassware,nan,nan
+323101.1,Ornamental glass cut,nan,nan
+323101.2,Ornamental glass engraved,nan,nan
+323101.3,Ornamental glass otherwise decorated,nan,nan
+323102.0,Mirrored glass,nan,nan
+323103.0,Reflecting glass,nan,nan
+323104.1,Strengthened glass,nan,nan
+323104.2,Reinforced glass,nan,nan
+323105.0,Laboratory glassware,nan,nan
+323199.0,Products of purchased glass,nan,nan
+324199.0,Cement hydraulic,nan,nan
+325101.1,Structural brick,nan,nan
+325101.2,Structural blocks,nan,nan
+325102.0,Structural clay tile,nan,nan
+325301.1,Clay wall,nan,nan
+325301.2,Floor tile,nan,nan
+325302.1,Ceramic wall,nan,nan
+325302.2,Floor tile,nan,nan
+325501.0,Plastic refractories,nan,nan
+325502.0,Glasshouse refractories,nan,nan
+325503.1,Tile refractories except plastic,nan,nan
+325503.2,Brick refractories except plastic,nan,nan
+325504.1,Firing clay oven,nan,nan
+325504.2,Firing clay accessories,nan,nan
+325599.0,Clay refractories,nan,nan
+325901.1,Clay pipe and tile sewer,nan,nan
+325901.0,Clay pipe and tile drainage,nan,nan
+325902.0,Clay chimney products,nan,nan
+325903.0,Architectural clay products,nan,nan
+325999.0,Structural clay products,nan,nan
+326102.2,Accesorios de porcelana vitrificada,nan,nan
+326299.1,Vitreous china table,nan,nan
+326299.2,Vitreous china kitchenware,nan,nan
+326399.1,Semivitreous table,nan,nan
+326399.2,Semivitreous kitchenware,nan,nan
+326499.0,Porcelain electrical supplies,nan,nan
+326901.1,Pottery cooking,nan,nan
+326901.2,Kitchen articles,nan,nan
+326902.0,Laboratory pottery,nan,nan
+326902.2,Industrial pottery,nan,nan
+326903.0,China decorating,nan,nan
+326904.1,Pottery household articles except kitchen articles,nan,nan
+326904.2,Pottery household articles except kitchen articles,nan,nan
+326905.0,Pottery florists' articles,nan,nan
+326999.0,Pottery products,nan,nan
+327199.0,Concrete block and Concrete brick,nan,nan
+327201.1,Liquid catch concrete basins,nan,nan
+327201.2,Concrete tanks,nan,nan
+327201.3,Concrete covers,nan,nan
+327202.0,Solid concrete containing units,nan,nan
+327201.4,Liquid catch concrete basins,nan,nan
+327203.1,Precast terrazo,nan,nan
+327203.2,Concrete products,nan,nan
+327204.1,Concrete fireplace,nan,nan
+327204.2,Concrete chimney material,nan,nan
+327205.1,Concrete window components sills and frames,nan,nan
+327205.2,Concrete door components sills and frames,nan,nan
+327206.1,Concrete products used to facilitate drainage,nan,nan
+327206.2,Concrete products used to facilitate drainage,nan,nan
+327207.1,Concrete structural support,nan,nan
+327207.2,Concrete building material,nan,nan
+327208.1,Monuments markers except terrazo,nan,nan
+327208.2,Grave markers except terrazo,nan,nan
+327299.0,Concrete products,nan,nan
+327401.0,Building lime,nan,nan
+327499.0,Lime,nan,nan
+327501.0,Gypsum board,nan,nan
+327502.0,Gypsum plaster,nan,nan
+327599.0,Gypsum products,nan,nan
+328101.0,Furniture from cut Stone,nan,nan
+328102.1,Household articles from cut Stone except furniture:,nan,nan
+328102.2,Household articles from cut Stone except furniture,nan,nan
+328103.0,Building stone products,nan,nan
+328104.0,Slate products,nan,nan
+328105.1,Monument stone cut and shaped,nan,nan
+328105.2,Burial stone cut and shaped,nan,nan
+328106.1,Curbing Stone,nan,nan
+328106.2,paving Stone,nan,nan
+328106.3,Walkway Stone,nan,nan
+328199.1,Cut Stone,nan,nan
+328199.2,Stone products,nan,nan
+329101.0,Scouring abrasive materials,nan,nan
+329102.1,Abrasive ground stones,nan,nan
+329102.2,Abrasive whole stones except grinding stones,nan,nan
+329103.1,Abrasive metal,nan,nan
+329103.2,Steel products,nan,nan
+329105.0,Synthetic abrasives,nan,nan
+329106.0,Coated abrasive products,nan,nan
+329107.0,Artificial abrasives,nan,nan
+329108.0,Abrasive grains,nan,nan
+329199.0,Abrasive products,nan,nan
+329201.0,Asbestos textiles except insulating material,nan,nan
+329202.1,Asbestos,nan,nan
+329202.2,building materials except asbestos paper,nan,nan
+329203.0,Asbestos insulating materials,nan,nan
+329204.0,Asbestos friction materials,nan,nan
+329205.1,Tubing from asbestos and asbestos cement,nan,nan
+329205.2,Piping from asbestos and asbestos cement,nan,nan
+329206.0,Twisted asbestos fiber products,nan,nan
+329207.0,Asbestos tile products,nan,nan
+329501.1,Minerals ground,nan,nan
+329501.2,Minerals otherwise treated,nan,nan
+329502.1,Earths ground,nan,nan
+329502.2,Earths otherwise treated,nan,nan
+329599.1,Minerals ground,nan,nan
+329599.2,Minerals treated,nan,nan
+329601.0,Mineral wool insulation products,nan,nan
+329699.0,Mineral wool,nan,nan
+329701.0,Brick refractories,nan,nan
+329702.0,Cement refractories,nan,nan
+329703.0,Heat resistant mixtures,nan,nan
+329799.0,Nonclay refractories,nan,nan
+329901.0,Mica products,nan,nan
+329902.0,Sand lime products,nan,nan
+329903.1,Ornamental plaster work,nan,nan
+329903.2,Architectural plaster work,nan,nan
+329904.1,Nonmetallic mineral statuary,nan,nan
+329904.2,Other decorative products,nan,nan
+329992.0,Nonmetallic mineral products,nan,nan
+33.0,PRIMARY METAL INDUSTRIES,nan,nan
+331201.1,Chemicals products,nan,nan
+331201.2,Other products derived from coking,nan,nan
+331202.1,Blast furnace,nan,nan
+331202.2,Blast furnace related products,nan,nan
+331203.1,Primary finished shapes,nan,nan
+331203.2,Semifinished shapes,nan,nan
+331204.1,Structural products,nan,nan
+331204.2,Rail mill products,nan,nan
+331205.1,Bar products,nan,nan
+331205.2,rod products,nan,nan
+331205.3,Wire products,nan,nan
+331206.1,Pipes,nan,nan
+331206.2,Tubes,nan,nan
+331207.1,Plate except coated products,nan,nan
+331207.2,sheet except coated products,nan,nan
+331207.3,Strip except coated products,nan,nan
+331208.1,Steel for tool,nan,nan
+331208.2,Steel for die,nan,nan
+331208.3,Steel for alloys,nan,nan
+331209.0,Wheels,nan,nan
+331210.1,Coated products,nan,nan
+331210.2,Plated products,nan,nan
+331299.1,Blast furnaces,nan,nan
+331299.2,Steel mills,nan,nan
+331301.0,Manganese alloys,nan,nan
+331302.0,Ferroalloys,nan,nan
+331399.0,Electrometallurgical products,nan,nan
+331501.0,Fencing made in wiredrawing plants,nan,nan
+331503.1,Wire,nan,nan
+331503.2,Fabricated wire products,nan,nan
+331601.1,Coldrolled strip,nan,nan
+331601.2,Coldrolled wire,nan,nan
+331699.0,Cold finishing of steel shapes,nan,nan
+331701.1,Seamless pipes,nan,nan
+331701.2,Seamless tubes,nan,nan
+331702.1,Welded pipe,nan,nan
+331702.2,Welded tubes,nan,nan
+332101.1,Cast iron pipe,nan,nan
+332101.2,Cast iron fittings,nan,nan
+332199.1,Gray iron foundries,nan,nan
+332199.2,Ductile iron foundries,nan,nan
+332499.0,Steel investment foundries,nan,nan
+332599.0,Steel foundries,nan,nan
+333101.0,Primary copper smelter products,nan,nan
+333102.0,Refined primary copper products,nan,nan
+333401.1,Aluminum ingots,nan,nan
+333401.2,Aluminum slabs,nan,nan
+333499.0,Primary aluminum,nan,nan
+333901.1,Lead,nan,nan
+333901.2,Zinc,nan,nan
+333902.0,Precious metals,nan,nan
+333903.1,Silicon,nan,nan
+333903.2,Chromium,nan,nan
+333999.0,Primary nonferrous metals,nan,nan
+334101.1,Secondary lead,nan,nan
+334101.2,Secondary zinc,nan,nan
+334102.0,Secondary precious metals,nan,nan
+334199.0,Secondary nonferrous metals,nan,nan
+335101.1,Sheet from copper and copper alloy,nan,nan
+335101.2,Strip from copper and copper alloy,nan,nan
+335101.3,Plate from copper and copper alloy,nan,nan
+335101.4,Products from copper and copper alloy,nan,nan
+335102.1,Pipe from copper and copper alloy,nan,nan
+335102.2,Tube from copper and copper alloy,nan,nan
+335199.1,Copper Rolling,nan,nan
+335199.2,Aluminum drawing,nan,nan
+335301.1,Aluminum sheet,nan,nan
+335301.2,Aluminum strip,nan,nan
+335399.1,Aluminum sheet,nan,nan
+335399.2,Aluminum sheet,nan,nan
+335399.3,Aluminum foil,nan,nan
+335401.1,Aluminum rod,nan,nan
+335401.2,Aluminum bar,nan,nan
+335402.1,Aluminum pipe,nan,nan
+335499.0,Aluminum extruded products,nan,nan
+335501.1,Aluminum wire,nan,nan
+335501.2,Aluminum cable,nan,nan
+335503.0,Aluminum ingot,nan,nan
+335504.1,Aluminum rail,nan,nan
+335504.2,Structural shapes,nan,nan
+335599.1,Aluminum Rolling,nan,nan
+335599.2,Aluminum drawing,nan,nan
+335601.0,Leadand zinc,nan,nan
+335602.0,Precious metals,nan,nan
+335603.0,Magnesium,nan,nan
+335604.0,Nickel,nan,nan
+335605.0,Tin,nan,nan
+335606.0,Titanium,nan,nan
+335607.0,Zirconium,nan,nan
+335699.1,Nonferrous Rolling,nan,nan
+335699.2,Nonferrous drawing,nan,nan
+335701.0,Communication wire,nan,nan
+335799.1,Nonferrous wiredrawing,nan,nan
+335799.2,Nonferrous insulating,nan,nan
+336401.1,Copper,nan,nan
+336401.2,Copper alloy diecastings,nan,nan
+336402.1,Lead diecastings,nan,nan
+336402.2,Zinc diecastings,nan,nan
+336499.1,Nonferrous diecastings except aluminum,nan,nan
+336499.2,Nonferrous diecastings except aluminum,nan,nan
+336501.0,Utensils fom cast aluminum,nan,nan
+336502.1,Aluminum alloy castings,nan,nan
+336502.2,Aluminumbased alloy castings,nan,nan
+336599.0,Aluminum foundries,nan,nan
+336601.1,Bushings,nan,nan
+336601.2,Bearings,nan,nan
+336602.0,Propellers,nan,nan
+336699.0,Copper foundries,nan,nan
+336901.1,Lead,nan,nan
+336901.2,Zinc,nan,nan
+336901.3,White metal,nan,nan
+336999.0,Nonferrous foundries,nan,nan
+339899.0,Metal heat treating,nan,nan
+339901.1,Metal powders,nan,nan
+339901.2,Metal pastes,nan,nan
+339901.3,Metal flakes,nan,nan
+339902.0,Metal fasteners,nan,nan
+339999.0,Primary metal products,nan,nan
+34.0,FABRICATED METAL PRODUCTS EXCEPT MACHINERY AND TRANSPORTATION EQUIPMENT,nan,nan
+341101.1,Food containers,nan,nan
+341101.2,Beverage containers,nan,nan
+341199.0,Metal cans,nan,nan
+341299.1,Metal barrels,nan,nan
+341299.2,Metal drums,nan,nan
+341299.3,Metal pails,nan,nan
+342101.1,Table cutlery,nan,nan
+342101.2,Food cutlery,nan,nan
+342101.3,Butchers' cutlery,nan,nan
+342102.1,Scissors,nan,nan
+342102.2,shears,nan,nan
+342102.3,clippers,nan,nan
+342102.4,snips,nan,nan
+342102.5,Similar tools,nan,nan
+342199.0,Cutlery,nan,nan
+342301.1,Garden tools,nan,nan
+342301.2,Farm tools,nan,nan
+342301.3,Shovels,nan,nan
+342302.0,Soldering tools,nan,nan
+342399.1,Hand tools,nan,nan
+342399.2,Edge tools,nan,nan
+342599.1,Saw Blades,nan,nan
+342599.2,Handsaws,nan,nan
+342901.1,Furniture builders',nan,nan
+342901.2,Other household hardware,nan,nan
+342902.1,Keys,nan,nan
+342902.2,locks,nan,nan
+342902.3,Locks and Keys related hardware,nan,nan
+342903.0,Motor vehicle hardware,nan,nan
+342904.1,Aircraft hardware,nan,nan
+342904.2,marine hardware,nan,nan
+342904.3,Aircraft and marine pulleys,nan,nan
+342905.1,Clamps,nan,nan
+342905.2,couplings,nan,nan
+342905.3,nozzles,nan,nan
+342905.4,Other metal hose fittings,nan,nan
+342999.0,Hardware,nan,nan
+343101.1,Bathroom fixtures,nan,nan
+343101.2,Sinks,nan,nan
+343199.0,Metal sanitary ware,nan,nan
+343299.1,Plumbing fixture fittings,nan,nan
+343299.2,Plumbing trim,nan,nan
+343301.1,Burners,nan,nan
+343301.2,furnaces,nan,nan
+343301.3,boilers,nan,nan
+343301.4,Strokers,nan,nan
+343302.1,Room heaters,nan,nan
+343302.2,wall heaters,nan,nan
+343302.3,Radiators,nan,nan
+343399.0,Nonelectric heating equipment,nan,nan
+344101.0,Fabricated structural metal for ships,nan,nan
+344102.0,Fabricated structural metal for bridges,nan,nan
+344199.0,Fabricated structural metal,nan,nan
+344201.1,Window frames,nan,nan
+344201.2,Door frames,nan,nan
+344202.1,Louvers,nan,nan
+344202.2,shutters,nan,nan
+344202.3,jalousies,nan,nan
+344203.1,Screen and storm doors,nan,nan
+344203.2,Screen and storm Windows,nan,nan
+344204.0,Metal doors,nan,nan
+344205.1,Molding,nan,nan
+344205.2,trim,nan,nan
+344205.3,Stripping,nan,nan
+344299.1,Metal doors,nan,nan
+344299.2,Metal sash,nan,nan
+344299.3,Metal trim,nan,nan
+344301.1,Industrial vessels,nan,nan
+344301.2,Industrial tanks,nan,nan
+344301.3,Industrial containers,nan,nan
+344302.1,Heat exchangers,nan,nan
+344302.2,Heat condensers,nan,nan
+344302.3,Heat components,nan,nan
+344303.1,Boiler shop,nan,nan
+344303.2,Boiler work,nan,nan
+344304.1,Plate work,nan,nan
+344304.2,Metalworking trade,nan,nan
+344305.0,Plate work for the nuclear industry,nan,nan
+344306.0,Liners/lining,nan,nan
+344307.0,Metal parts,nan,nan
+344308.1,Chutes,nan,nan
+344308.2,Troughs,nan,nan
+344309.1,Pipe,nan,nan
+344309.2,standpipe,nan,nan
+344309.3,Culverts,nan,nan
+344310.1,Wind tunnels,nan,nan
+344311.1,Chambers,nan,nan
+344311.2,Caissons,nan,nan
+344399.0,Fabricated plate work (boiler shop),nan,nan
+344401.1,Culverts,nan,nan
+344401.2,flumes,nan,nan
+344401.3,Pipes,nan,nan
+344402.0,Metal ventilating equipment,nan,nan
+344403.1,Metal roofing,nan,nan
+344403.2,Roof drainage equipment,nan,nan
+344404.1,Metal flooring,nan,nan
+344404.2,Metal siding,nan,nan
+344405.1,Metal housings,nan,nan
+344405.2,Metal enclosures,nan,nan
+344405.3,Metal casings,nan,nan
+344405.4,Other Metal containers,nan,nan
+344406.1,Awnings,nan,nan
+344406.2,Awnings,nan,nan
+344499.0,Sheet metalwork,nan,nan
+344601.1,Stairs,nan,nan
+344601.2,fire escapes,nan,nan
+344601.3,balconies,nan,nan
+344601.4,railings,nan,nan
+344601.5,Ladders,nan,nan
+344602.1,Open flooring for construction,nan,nan
+344602.2,Grating for construction,nan,nan
+344603.1,Fences,nan,nan
+344603.2,gates,nan,nan
+344603.3,posts,nan,nan
+344603.4,Flagpoles,nan,nan
+344604.1,Partitions,nan,nan
+344604.2,and supports/studs,nan,nan
+344604.3,Accoustical systems,nan,nan
+344605.1,Channels,nan,nan
+344605.2,louvers,nan,nan
+344605.3,Registers,nan,nan
+344606.0,Ornamental metalwork,nan,nan
+344699.0,Architectural metalwork,nan,nan
+344801.0,Prefabricated metal buildings,nan,nan
+344802.0,Prefabricated metal components,nan,nan
+344899.0,Prefabricated metal buildings,nan,nan
+344901.1,Fabricated bar joists,nan,nan
+344901.2,Concrete reinforcing bars,nan,nan
+344902.0,Metal plaster bases,nan,nan
+344999.0,Miscellaneous metalwork,nan,nan
+345201.0,Pins,nan,nan
+345202.0,Washers,nan,nan
+345299.1,Bolts,nan,nan
+345299.2,Bolts,nan,nan
+345299.3,rivets,nan,nan
+345299.4,Washers,nan,nan
+346201.1,Gear forgings,nan,nan
+346201.2,Chain forgings,nan,nan
+346202.1,Pump forgings c,nan,nan
+346202.2,ompressor forgings,nan,nan
+346202.3,Turbine forgings,nan,nan
+346203.1,Automotive forgings,nan,nan
+346203.2,Internal combustion engine forgings,nan,nan
+346204.1,Railroad forgings,nan,nan
+346204.2,construction forgings,nan,nan
+346204.3,Mining forgings,nan,nan
+346205.1,Missile forgings,nan,nan
+346205.2,Ordnance forgings,nan,nan
+346299.1,Iron forgings,nan,nan
+346299.2,Steel forgings,nan,nan
+346301.1,Pump forgings,nan,nan
+346301.2,compressor forgings,nan,nan
+346301.3,turbine forgings,nan,nan
+346301.4,Engine forgings except auto,nan,nan
+346399.0,Nonferrous forgings,nan,nan
+346599.0,Automotive stampings,nan,nan
+346699.0,Crownsand closures,nan,nan
+346901.1,Household cooking metal utensils,nan,nan
+346901.2,Kitchen metal utensils,nan,nan
+346902.1,Household cooking porcelain enameled utensils,nan,nan
+346902.2,Kitchen porcelain enameled utensils,nan,nan
+346903.1,Porcelain enameled products,nan,nan
+346903.2,Porcelain enameled products utensils,nan,nan
+346904.0,Boxes from stamped metal,nan,nan
+346999.0,Metal stampings,nan,nan
+347101.1,Electroplating,nan,nan
+347101.2,Plating,nan,nan
+347102.1,Cleaning,nan,nan
+347102.2,polishing,nan,nan
+347102.3,Finishing,nan,nan
+347901.1,Etching,nan,nan
+347901.2,Engraving,nan,nan
+347902.1,Painting,nan,nan
+347902.2,coating,nan,nan
+347902.3,Hot dipping,nan,nan
+348299.0,Small arms ammunition,nan,nan
+348301.0,Ammunition components,nan,nan
+348399.0,Ammunitionexcept for small arms,nan,nan
+348401.1,Machine guns,nan,nan
+348401.2,Grenade launchers,nan,nan
+348499.0,Small arms,nan,nan
+348901.1,Guns,nan,nan
+348901.2,howitzers,nan,nan
+348901.3,mortars,nan,nan
+348901.4,Related arms equipment,nan,nan
+348999.1,Ordnance,nan,nan
+348999.2,Ordnance accessories,nan,nan
+349101.1,Automatic regulating,nan,nan
+349101.2,Control valves,nan,nan
+349199.0,Industrial valves,nan,nan
+349201.0,Fluid power valves for aircraft,nan,nan
+349299.1,Fluid power valves,nan,nan
+349299.2,Hose fittings,nan,nan
+349301.0,Hot formed springs,nan,nan
+349302.0,Cold formed springs,nan,nan
+349401.0,Pipe fittings,nan,nan
+349499.1,Valves fittings,nan,nan
+349499.2,Pipe fittings,nan,nan
+349501.0,Precision springs,nan,nan
+349599.0,Wire springs,nan,nan
+349601.1,Wire cloth,nan,nan
+349601.2,Woven wire products,nan,nan
+349602.0,Wire chain,nan,nan
+349603.0,Wire fasteners,nan,nan
+349699.0,Miscellaneous fabricated wire products,nan,nan
+349799.1,Metal foil,nan,nan
+349799.2,Metal leaf,nan,nan
+349899.1,Fabricated pipe,nan,nan
+349899.2,Fabricated fittings,nan,nan
+349901.0,Fire or burglaryresistive products,nan,nan
+349902.0,Metal household articles,nan,nan
+349903.0,Metal ladders,nan,nan
+349904.1,Novelties,nan,nan
+349904.2,Giftware,nan,nan
+349904.3,Trophies,nan,nan
+349999.0,Fabricated metal products,nan,nan
+35.0,INDUSTRIAL AND COMMERCIAL COMPUTER MACHINERY AND EQUIPMENT,nan,nan
+351101.1,Turbines,nan,nan
+351102.2,Turbine generator sets and parts,nan,nan
+351901.1,Diesel engines,nan,nan
+351901.2,semidiesel engines,nan,nan
+351901.3,or duelfuel engines,nan,nan
+351901.4,Marine engines,nan,nan
+351902.1,Internal combustion engines partsand accessories,nan,nan
+351902.2,Internal combustion engines partsand accessories,nan,nan
+351999.0,Internal combustion engines,nan,nan
+352301.1,Planting processing machinery,nan,nan
+352301.2,haying processing machinery,nan,nan
+352301.3,harvesting processing machinery,nan,nan
+352302.0,Soil preparation machinery except turf and grounds,nan,nan
+352303.1,Fertilizing machinery,nan,nan
+352303.2,spraying machinery,nan,nan
+352303.3,dusting machinery,nan,nan
+352303.4,irrigation machinery,nan,nan
+352304.1,Barn machinery,nan,nan
+352304.2,silo machinery,nan,nan
+352304.3,poultry machinery,nan,nan
+352304.4,dairy machinery,nan,nan
+352304.5,livestock machinery,nan,nan
+352305.1,Turf equipment,nan,nan
+352305.2,Grounds equipment,nan,nan
+352399.1,Farm machinery,nan,nan
+352399.2,Farm equipment,nan,nan
+352401.1,Lawn tractors and equipment,nan,nan
+352401.2,Garden tractors and equipment,nan,nan
+352402.1,Lawn mowers and accessories,nan,nan
+352402.2,Garden mowers and accessories,nan,nan
+352499.1,Lawn equipment,nan,nan
+352499.2,Garden equipment,nan,nan
+353101.0,Forestry related equipment,nan,nan
+353102.0,Marine related equipment,nan,nan
+353103.0,Railroad related equipment,nan,nan
+353104.1,Bituminous related products and equipment,nan,nan
+353104.2,cement related products and equipment,nan,nan
+353104.3,Concrete related products and equipment,nan,nan
+353105.1,Scrapers,nan,nan
+353105.2,graders,nan,nan
+353105.3,rollers,nan,nan
+353105.4,Similar equipment,nan,nan
+353106.1,Backhoes,nan,nan
+353106.2,tractors,nan,nan
+353106.3,cranes,nan,nan
+353106.4,plows,nan,nan
+353106.5,Similar equipment,nan,nan
+353107.1,Crushers,nan,nan
+353107.2,grinders,nan,nan
+353107.3,Similar equipment,nan,nan
+353108.0,Construction machinery attachments,nan,nan
+353199.0,Construction machinery,nan,nan
+353201.1,Drills,nan,nan
+353201.2,bits,nan,nan
+353201.3,Similar equipment,nan,nan
+353202.0,Mineral beneficiation equipment,nan,nan
+353203.1,Crushing,nan,nan
+353203.2,pulverizing,nan,nan
+353203.3,Screening equipment,nan,nan
+353204.1,Mine cars,nan,nan
+353204.2,Mine plows,nan,nan
+353204.3,Mine loaders,nan,nan
+353204.5,Similar Mine equipment,nan,nan
+353299.0,Mining machinery,nan,nan
+353301.1,Oil drilling rigs and equipment,nan,nan
+353301.2,Gas drilling rigs and equipment,nan,nan
+353399.1,Oil field machinery,nan,nan
+353399.2,Gas field machinery,nan,nan
+353401.1,Elevators,nan,nan
+353401.2,Elevators equipment,nan,nan
+353499.1,Elevators and moving stairways,nan,nan
+353499.2,Moving stairways,nan,nan
+353501.0,Unit handling conveying systems,nan,nan
+353599.1,Conveyors,nan,nan
+353601.0,Hoists,nan,nan
+353602.1,Cranes,nan,nan
+353602.2,Monorail systems,nan,nan
+353701.1,Platforms,nan,nan
+353701.2,stands,nan,nan
+353701.3,tables,nan,nan
+353701.4,pallets,nan,nan
+353701.5,Similar equipment,nan,nan
+353702.1,Trucks,nan,nan
+353702.2,tractors,nan,nan
+353702.3,loaders,nan,nan
+353702.4,carriers,nan,nan
+353702.5,Similar equipment,nan,nan
+354101.1,Drilling machines,nan,nan
+354101.2,Boring machines,nan,nan
+354102.1,Grinding machines,nan,nan
+354102.2,polishing machines,nan,nan
+354102.4,lapping machines,nan,nan
+354102.5,Honing machines,nan,nan
+354103.0,Milling machines,nan,nan
+354104.0,Lathes,nan,nan
+354105.1,Screw machines,nan,nan
+354105.2,Thread machines,nan,nan
+354106.1,Saws machines,nan,nan
+354106.2,Sawing machines,nan,nan
+354199.1,Machine tools metal cutting type,nan,nan
+354201.1,Punching machines,nan,nan
+354201.2,shearing machines,nan,nan
+354201.3,Bending machines,nan,nan
+354202.0,Pressing machines,nan,nan
+354203.1,Die casting machines,nan,nan
+354203.2,Extruding machines,nan,nan
+354204.1,Spinning machines,nan,nan
+354204.2,spline rolling machines,nan,nan
+354204.3,Winding machines,nan,nan
+354205.1,Knurling machines,nan,nan
+354205.2,Beading machines,nan,nan
+354299.1,Machine tools metal forming type,nan,nan
+354399.1,Industrial patterns,nan,nan
+354401.1,Special dies,nan,nan
+354401.2,Special tools,nan,nan
+354402.0,Jigs and fixtures,nan,nan
+354499.1,Special dies,nan,nan
+354499.3,Special jigs,nan,nan
+354499.4,Special fixtures,nan,nan
+354501.0,Precision measuring tools,nan,nan
+354502.1,Cutting tools for machine tools,nan,nan
+354503.1,Machine tool attachments,nan,nan
+354503.2,Machine tool accessories,nan,nan
+354601.1,Drills,nan,nan
+354601.2,Drilling tools,nan,nan
+354602.1,Saws,nan,nan
+354602.2,Sawing equipment,nan,nan
+354699.0,Powerdriven handtools,nan,nan
+354701.0,Primary rolling mill equipment,nan,nan
+354702.0,Secondary rolling mill equipment,nan,nan
+354799.0,Rolling mill machinery,nan,nan
+354801.0,Electric welding equipment,nan,nan
+354899.0,Welding apparatus,nan,nan
+354901.0,Drawing machinery,nan,nan
+354902.0,Coiling machinery,nan,nan
+354903.1,Cutting machinery,nan,nan
+354903.2,Slitting machinery,nan,nan
+354999.0,Metalworking machinery,nan,nan
+355201.1,Fiber preparation machinery and equipment,nan,nan
+355201.2,Yarn preparation machinery and equipment,nan,nan
+355202.0,Fabric forming machinery and equipment,nan,nan
+355203.1,Dyeing machinery and equipment,nan,nan
+355203.2,drying machinery and equipment,nan,nan
+355203.3,Finishing machinery and equipment,nan,nan
+355299.0,Textile machinery,nan,nan
+355399.0,Woodworking machinery,nan,nan
+355401.0,Paper forming machines,nan,nan
+355499.0,Paper industries machinery,nan,nan
+355501.0,Printing presses,nan,nan
+355502.0,Printing plates,nan,nan
+355503.1,Printing trade parts,nan,nan
+355503.2,Printing trade attachments,nan,nan
+355504.1,Engraving machinery,nan,nan
+355504.2,Engraving equipment except plates,nan,nan
+355505.1,Type machinery and equipment,nan,nan
+355505.2,Type making machinery and equipment,nan,nan
+355506.0,Bookbinding machinery,nan,nan
+355599.0,Printing trades machinery,nan,nan
+355601.1,Dairy machinery,nan,nan
+355601.2,Milk machinery,nan,nan
+355602.1,Cutting machinery,nan,nan
+355602.2,chopping machinery,nan,nan
+355602.3,grinding machinery,nan,nan
+355602.4,mixing machinery,nan,nan
+355602.5,Similar machinery,nan,nan
+355603.1,Smoking machinery,nan,nan
+355603.2,Roasting machinery including ovens,nan,nan
+355604.0,Beverage machinery,nan,nan
+355605.1,Meat processing machinery,nan,nan
+355605.2,poultry processing machinery,nan,nan
+355605.3,Seafood processing machinery,nan,nan
+355699.0,Food products machinery,nan,nan
+355901.1,Sewing machines,nan,nan
+355901.2,and hat making machinery,nan,nan
+355901.3,Zipper making machinery,nan,nan
+355902.1,Boots working machinery,nan,nan
+355902.2,shoes working machinery,nan,nan
+355902.3,Leather working machinery,nan,nan
+355903.0,Automotive related machinery,nan,nan
+355904.1,Refinery,nan,nan
+355904.2,chemical processing,nan,nan
+355904.3,Similar machinery,nan,nan
+355905.1,Foundry machinery,nan,nan
+355905.2,smelting machinery,nan,nan
+355905.3,refining machinery,nan,nan
+355905.4,Similar machinery,nan,nan
+355906.0,Kilns,nan,nan
+355907.1,Rubber working machinery including tires,nan,nan
+355999.0,Special industry machinery,nan,nan
+356101.0,Industrial pumps and parts,nan,nan
+356199.1,Pumps,nan,nan
+356199.2,Pumping equipment,nan,nan
+356299.1,Ball bearings,nan,nan
+356299.2,Roller bearings,nan,nan
+356301.1,Air compressors,nan,nan
+356301.2,Gas compressors,nan,nan
+356301.3,Vacuum pumps,nan,nan
+356302.1,Spraying equipment,nan,nan
+356302.2,Dusting equipment,nan,nan
+356401.1,Purification equipment,nan,nan
+356401.2,Dust collection equipment,nan,nan
+356402.1,Blowers,nan,nan
+356402.2,Fans,nan,nan
+356501.1,Bottling machinery,nan,nan
+356501.2,Canning machinery,nan,nan
+356502.1,Packing machinery,nan,nan
+356502.2,Wrapping machinery,nan,nan
+356699.1,Speed changers,nan,nan
+356699.2,drives,nan,nan
+356699.3,Gears,nan,nan
+356701.1,Electrical furnaces ovens.,nan,nan
+356701.2,heating devices excluding induction,nan,nan
+356702.1,Fuelfired furnaces,nan,nan
+356702.2,Fuelfired ovens,nan,nan
+356703.1,Induction fabrics,nan,nan
+356703.2,Dielectric heating equipment,nan,nan
+356799.1,Industrial furnaces,nan,nan
+356799.2,Industrial ovens,nan,nan
+356801.1,Bearings,nan,nan
+356801.2,bushings,nan,nan
+356801.3,Blocks,nan,nan
+356802.2,Joints,nan,nan
+356802.1,Couplings,nan,nan
+356803.1,Drives,nan,nan
+356803.2,chains,nan,nan
+356803.3,Sprockets,nan,nan
+356899.0,Power transmission equipment,nan,nan
+356901.0,Filters,nan,nan
+356902.1,Firefighting equipment,nan,nan
+356902.2,Fire related equipment,nan,nan
+356903.0,Lubricating equipment,nan,nan
+356904.1,Gas producers,nan,nan
+356904.2,Gas generators a,nan,nan
+356904.3,Other gas related equipment,nan,nan
+356999.0,General industrial machinery,nan,nan
+357199.0,Electronic computers,nan,nan
+357201.1,Computer disk,nan,nan
+357201.2,Drum drives and components,nan,nan
+357202.1,Computer tape drives,nan,nan
+357202.2,Computer components,nan,nan
+357299.0,Computer storage devices,nan,nan
+357501.1,Computer terminals,nan,nan
+357501.2,Computer monitors,nan,nan
+357501.3,Computer components,nan,nan
+357599.0,Computer terminals,nan,nan
+357701.0,Printers and plotters,nan,nan
+357702.0,Keytape equipment except drives,nan,nan
+357703.0,Disk and diskette equipment except drives,nan,nan
+357704.0,Keypunch equipment,nan,nan
+357705.1,Magnetic ink,nan,nan
+357705.2,Optical scanning devices,nan,nan
+357799.0,Computer peripheral equipment,nan,nan
+357801.1,Accounting machines,nan,nan
+357801.2,Cash registers,nan,nan
+357802.1,Calculators,nan,nan
+357802.2,Adding machines,nan,nan
+357803.0,Banking machines,nan,nan
+357899.1,Calculating,nan,nan
+357899.2,Accounting equipment,nan,nan
+357901.1,Mailing machines,nan,nan
+357901.2,letter handling machines,nan,nan
+357901.3,Addressing machines,nan,nan
+357902.1,Typing machines,nan,nan
+357902.2,Word processing machines,nan,nan
+357903.0,Paper handling machines,nan,nan
+357999.0,Office machines,nan,nan
+358101.1,Mechanisms for automatic vending machines,nan,nan
+358101.2,Parts for automatic vending machines,nan,nan
+358201.0,Commercial laundry equipment,nan,nan
+358501.0,Air conditioning equipment,nan,nan
+358502.0,Refrigeration equipment,nan,nan
+358503.0,Heating equipment,nan,nan
+358504.1,Parts for heating equipment,nan,nan
+358504.2,Parts for cooling equipment,nan,nan
+358504.3,Parts for refrigerating equipment,nan,nan
+358505.1,Soda fountain,nan,nan
+358505.2,Beverage dispensing equipment and parts,nan,nan
+358506.1,Humidifiers,nan,nan
+358506.2,Dehumidifiers,nan,nan
+358599.1,Refrigeration equipment,nan,nan
+358599.2,Heating equipment,nan,nan
+358699.1,Measuring pumps,nan,nan
+358699.2,Dispensing pumps,nan,nan
+358901.1,Commercial cooking equipment,nan,nan
+358901.2,Foodwarming equipment,nan,nan
+358902.0,Commercial cleaning equipment,nan,nan
+358903.1,Sewage treatment equipment,nan,nan
+358903.2,Water treatment equipment,nan,nan
+358999.0,Service industry machinery,nan,nan
+359201.0,Valves,nan,nan
+359299.1,Carburetors,nan,nan
+359299.2,pistons,nan,nan
+359299.3,rings,nan,nan
+359299.4,valves,nan,nan
+359399.1,Fluid power cylinders,nan,nan
+359399.2,Fluid power actuators,nan,nan
+359401.0,Fluid power pumps,nan,nan
+359402.0,Fluid power motors,nan,nan
+359499.1,Fluid power pumps,nan,nan
+359499.2,Fluid power motors,nan,nan
+359699.1,Scales,nan,nan
+359901.0,Amusement park equipment,nan,nan
+359902.1,Flexible metal hose,nan,nan
+359902.2,Flexible metal tubing,nan,nan
+359902.3,Flexible metal bellows,nan,nan
+359903.1,Job shop machine,nan,nan
+359903.2,Other job shop work,nan,nan
+359999.0,Industrial machinery,nan,nan
+36.0,ELECTRONIC AND OTHER ELECTRICAL EQUIPMENT AND COMPONENTS EXCEPT COMPUTER EQUIPMENT,nan,nan
+361201.1,Power Transformers,nan,nan
+361201.2,Distribution Transformers,nan,nan
+361202.0,Lamp ballasts,nan,nan
+361203.0,Specialty Transformers,nan,nan
+361299.0,Transformersexcept electric,nan,nan
+361301.0,Power circuit breakers,nan,nan
+361302.1,Panel and distribution boards,nan,nan
+361302.2,Other related panel apparatus,nan,nan
+361303.1,Fuses,nan,nan
+361303.2,Fuse equipment,nan,nan
+361399.1,Switchgear,nan,nan
+361399.2,Switchboard apparatus,nan,nan
+362101.1,Electric motor parts,nan,nan
+362101.2,Electric generator parts,nan,nan
+362102.1,Electric motor,nan,nan
+362102.2,Electric generator auxillary parts,nan,nan
+362103.1,Control equipment for electric buses,nan,nan
+362103.2,Control equipment for locomotives,nan,nan
+362199.1,Motors,nan,nan
+362199.2,Generators,nan,nan
+362499.1,Carbon products,nan,nan
+362499.2,Graphite products,nan,nan
+362501.1,Motor controls,nan,nan
+362501.2,Accessories controls,nan,nan
+362502.1,Industrial electrical relays,nan,nan
+362502.2,Industrial electrical switches,nan,nan
+362599.1,Relays,nan,nan
+362599.2,Industrial controls,nan,nan
+362901.0,Electronic generation equipment,nan,nan
+362902.1,Capacitors,nan,nan
+362902.2,Condensers,nan,nan
+362999.0,Electrical industrial apparatus,nan,nan
+363101.0,Indoor cooking equipment,nan,nan
+363199.0,Household cooking equipment,nan,nan
+363299.1,Household refrigerators,nan,nan
+363299.2,Household freezers,nan,nan
+363301.1,Household laundry machines,nan,nan
+363301.2,Coinoperated laundries,nan,nan
+363399.0,Household laundry equipment,nan,nan
+363401.0,Electric household cooking appliances,nan,nan
+363402.0,Electric household cooking utensils,nan,nan
+363403.1,Electric household fans,nan,nan
+363403.2,Electric heaters,nan,nan
+363403.3,Electric humidifiers,nan,nan
+363404.1,Housewares,nan,nan
+363404.2,Cooking appliances and utensils,nan,nan
+363405.0,Personal electrical appliances,nan,nan
+363599.0,Household vacuum cleaners,nan,nan
+363901.0,Major kitchen appliances,nan,nan
+363901.1,Refrigerators and stoves,nan,nan
+363902.0,Sewing equipment,nan,nan
+363999.0,Household appliances,nan,nan
+364101.1,Electric lamps,nan,nan
+364102.2,Electric parts for specialized applications,nan,nan
+364301.1,Power outlets,nan,nan
+364301.2,Power sockets,nan,nan
+364302.0,Electric switches,nan,nan
+364303.0,Electric connectors,nan,nan
+364399.0,Currentcarrying wiring services,nan,nan
+364401.1,Electric outlet,nan,nan
+364401.2,switch boxes,nan,nan
+364401.3,Fuse boxes,nan,nan
+364402.1,Electric conduits,nan,nan
+364402.2,Electric fittings,nan,nan
+364499.0,Noncurrentcarrying wiring services,nan,nan
+364501.1,Lamp,nan,nan
+364501.2,Light shades,nan,nan
+364599.0,Residential lighting fixtures,nan,nan
+364699.0,Commercial lighting fixtures,nan,nan
+364701.0,Motor vehicle lighting equipment,nan,nan
+364799.0,Vehicular lighting equipment,nan,nan
+364801.0,Outdoor lighting equipment,nan,nan
+364802.0,Stage lighting equipment,nan,nan
+364899.0,Lighting equipment,nan,nan
+365101.0,Household audio equipment,nan,nan
+365102.0,Household video equipment,nan,nan
+365199.1,Household audio equipment,nan,nan
+365199.2,Household video equipment,nan,nan
+365299.1,Prerecorded records,nan,nan
+365299.2,Prerecorded tapes,nan,nan
+366101.1,Telephones,nan,nan
+366101.2,Telephone apparatus,nan,nan
+366102.1,Telegraph,nan,nan
+366102.2,Related telegraph apparatus,nan,nan
+366199.1,Telephone apparatus,nan,nan
+366301.1,Radio broadcasting,nan,nan
+366301.2,Communications equipment,nan,nan
+366302.0,Television broadcasting,nan,nan
+366399.1,Radio communications equipment,nan,nan
+366399.2,Television communications equipment,nan,nan
+366901.0,Emergency alarms,nan,nan
+366902.0,Transportation signaling devices,nan,nan
+366999.0,Communications equipment,nan,nan
+367101.1,Cathode ray tubes,nan,nan
+367101.2,Rebuilt tubes,nan,nan
+367102.1,Transmittal electron tubes,nan,nan
+367102.2,industrial electron tubes,nan,nan
+367102.3,Special purpose electron tubes,nan,nan
+367299.0,Printed circuit boards,nan,nan
+367401.1,Semiconductor diodes,nan,nan
+367401.2,Semiconductors rectifiers,nan,nan
+367402.1,Integrated circuits semiconductor networks,nan,nan
+367402.2,Integrated circuits semiconductor networks,nan,nan
+367403.0,Light sensitive devices,nan,nan
+367404.0,Radiation sensors,nan,nan
+367499.1,Semiconductors,nan,nan
+367499.2,Semiconductors related devices,nan,nan
+367599.0,Electronic capacitors,nan,nan
+367699.0,Electronic resistors,nan,nan
+367701.0,Electronic Transformers,nan,nan
+367799.1,Electronic coils,nan,nan
+367799.2,Electronic Transformers,nan,nan
+367901.0,Electronic circuits,nan,nan
+367902.1,Recording apparatus,nan,nan
+367902.2,Playback apparatus,nan,nan
+367902.3,Phonograph,nan,nan
+367903.1,Electronic loads,nan,nan
+367903.2,Electronic power supplies,nan,nan
+367904.0,Electronic crystals,nan,nan
+367905.0,Electronic switches,nan,nan
+367999.0,Electronic components,nan,nan
+369199.0,Storage batteries,nan,nan
+369299.1,Primary batteries dry,nan,nan
+369299.2,Primary batteries wet,nan,nan
+369401.1,Battery charging alternators,nan,nan
+369401.2,Battery charging generators,nan,nan
+369402.1,Ignition apparatus,nan,nan
+369402.2,Distributors apparatus,nan,nan
+369499.0,Engine electrical equipment,nan,nan
+369501.1,Magnetic disks,nan,nan
+369501.2,Magnetic drums,nan,nan
+369502.0,Magnetic tape,nan,nan
+369599.1,Magnetic recording media,nan,nan
+369599.2,Optical recording media,nan,nan
+369901.0,Highenergy particle physics equipment,nan,nan
+369902.0,Electrical welding equipment,nan,nan
+369903.0,Electronic training devices,nan,nan
+369904.0,Electric sound equipment,nan,nan
+369905.0,Security devices,nan,nan
+369906.0,Household electrical equipment,nan,nan
+369999.1,Electrical equipment,nan,nan
+369999.2,Electrical supplies,nan,nan
+37.0,TRANSPORT EQUIPMENT,nan,nan
+371101.1,Automobile assembly,nan,nan
+371102.0,Truckand tractor truck assembly,nan,nan
+371103.0,Military motor vehicle assembly,nan,nan
+371104.0,Busand other large specialty vehicle assembly,nan,nan
+371301.1,Truck bodies,nan,nan
+371301.2,Truck parts,nan,nan
+371302.0,Specialty motor vehicle bodies,nan,nan
+371401.1,Motor vehicle engines,nan,nan
+371401.2,Motor vehicle parts,nan,nan
+371402.1,Motor vehicle transmissions,nan,nan
+371402.2,Motor vehicle drive assemblies,nan,nan
+371402.3,Motor vehicle parts,nan,nan
+371403.1,Motor vehicle body components,nan,nan
+371403.2,Motor vehicle frame,nan,nan
+371404.0,Motor vehicle electrical equipment,nan,nan
+371405.1,Motor vehicle brake systems,nan,nan
+371405.2,Motor vehicle parts,nan,nan
+371406.1,Motor vehicle steering systems,nan,nan
+371406.2,Motor vehicle parts,nan,nan
+371407.1,Motor vehicle wheels,nan,nan
+371499.2,Motor vehicle accessories,nan,nan
+371599.0,Truck trailers,nan,nan
+371699.0,Motor homes,nan,nan
+372101.0,Motorized aircraft,nan,nan
+372102.1,Nonmotorized aircraft,nan,nan
+372102.2,Lighterthanair aircraft,nan,nan
+372199.0,Aircraft,nan,nan
+372499.1,Aircraft engines,nan,nan
+372499.2,Engine parts,nan,nan
+372801.1,Aircraft body assemblies and parts,nan,nan
+372801.2,Aircraft wing assemblies and parts,nan,nan
+372802.1,Aircraft propellers,nan,nan
+372802.2,Aircraft associated equipment,nan,nan
+372803.1,Aircraft landing assemblies,nan,nan
+372803.2,Aircraft brakes,nan,nan
+372804.1,Military aircraft equipment,nan,nan
+372804.2,Military aircraft armament,nan,nan
+372805.0,Aircraft training equipment,nan,nan
+372899.1,Aircraft parts,nan,nan
+372899.2,Aircraft equipment,nan,nan
+373101.1,Commercial cargo ships building,nan,nan
+373101.2,Commercial cargo ships repairing,nan,nan
+373102.1,Military ships building,nan,nan
+373102.2,Military ships repairing,nan,nan
+373103.1,Commercial passenger ships building,nan,nan
+373103.2,Commercial passenger ships repairing,nan,nan
+373199.1,Shipbuilding,nan,nan
+373199.2,Repairing,nan,nan
+373201.1,Motorized boat building,nan,nan
+373201.2,Motorized boat repairing,nan,nan
+373202.1,Nonmotorized boat building,nan,nan
+373202.2,Nonmotorized boat repairing,nan,nan
+373299.1,Boatbuilding,nan,nan
+373299.2,Repairing,nan,nan
+374301.0,Railroad equipment except locomotives,nan,nan
+374302.1,Interurban cars,nan,nan
+374302.2,Car equipment,nan,nan
+374303.1,Locomotives,nan,nan
+374303.2,Locomotives parts,nan,nan
+375101.1,Motorcycles,nan,nan
+375101.2,Motorcycles related parts,nan,nan
+375102.1,Bicycles,nan,nan
+375102.2,Bicycles related parts,nan,nan
+375199.1,Motorcycles and bycicles,nan,nan
+375199.2,Motorcycles and bycicles parts,nan,nan
+376199.1,Guided missiles,nan,nan
+376199.2,Space vehicles,nan,nan
+376499.1,Space propulsion units,nan,nan
+376499.2,Space propulsion parts,nan,nan
+376999.0,Space vehicle equipment,nan,nan
+379299.1,Travel trailers,nan,nan
+379299.2,Campers,nan,nan
+379599.1,Tanks,nan,nan
+379599.2,Tank components,nan,nan
+379901.1,Trailers,nan,nan
+379901.2,Trailer equipment,nan,nan
+379902.0,Recreational vehicles,nan,nan
+379903.0,Offroad vehicles except recreational vehicles,nan,nan
+379904.1,Pushcarts,nan,nan
+379904.2,Wheelbarrows,nan,nan
+379999.0,Transportation equipment,nan,nan
+38.0,MEASUREMENT ANALYSIS AND CONTROL INSTRUMENTS,nan,nan
+381201.1,Aircraft/aerospace flight instruments,nan,nan
+381201.2,Aircraft/aerospace guidance systems,nan,nan
+381202.0,Aircraft control instruments,nan,nan
+381203.1,Navigational systems,nan,nan
+381203.2,Navigational instruments,nan,nan
+381204.0,Nautical instruments,nan,nan
+381205.1,Defense systems,nan,nan
+381205.2,Defense equipment,nan,nan
+381206.1,Search systems and instruments,nan,nan
+381206.2,Detection systems and instruments,nan,nan
+381299.1,Search equipment,nan,nan
+381299.2,Navigation equipment,nan,nan
+382101.0,Laboratory apparatus except heating and measuring,nan,nan
+382102.0,Laboratory furniture,nan,nan
+382103.0,Laboratory heating apparatus,nan,nan
+382104.0,Laboratory measuring apparatus,nan,nan
+382201.1,Air conditioning controls,nan,nan
+382201.2,Refrigeration controls,nan,nan
+382202.0,Hardware for environmental regulators,nan,nan
+382203.1,Thermostats,nan,nan
+382203.2,Other environmental sensors,nan,nan
+382204.0,Hydronic controls,nan,nan
+382205.0,Electric heat controls,nan,nan
+382206.1,Appliance controls,nan,nan
+382206.2,Airconditioning and refrigeration controls,nan,nan
+382299.0,Environmental controls,nan,nan
+382301.0,Temperature measurement instruments industrial,nan,nan
+382302.0,Pressure measurement instruments industrial,nan,nan
+382303.1,Industrial flow measuring instruments,nan,nan
+382303.2,Liquid measuring instruments,nan,nan
+382304.0,Industrial process measurement equipment,nan,nan
+382305.0,Onstream gas/liquid analysis instruments industrial,nan,nan
+382399.0,Process control instruments,nan,nan
+382401.1,Integrating and totalizing meters for gas,nan,nan
+382401.2,Integrating and totalizing meters for liquids,nan,nan
+382402.1,Mechanical and electromechanical counters,nan,nan
+382402.2,Mechanical devices,nan,nan
+382402.3,Electromechanical devices,nan,nan
+382403.0,Vehicle instruments,nan,nan
+382499.1,Fluid meters,nan,nan
+382499.2,Counting devices,nan,nan
+382501.0,Engine electrical test equipment,nan,nan
+382502.1,Test equipment for electronic,nan,nan
+382502.2,Test equipment for electric measurement,nan,nan
+382503.0,Electrical energy measuring equipment,nan,nan
+382599.0,Instruments to measure electricity,nan,nan
+382601.1,Spectroscopic measuring equipment,nan,nan
+382601.2,Other optical properties measuring equipment.,nan,nan
+382602.0,Analytical optical instruments,nan,nan
+382603.0,Liquid testing apparatus,nan,nan
+382604.0,Blood testing apparatus,nan,nan
+382605.0,Gas testing apparatus,nan,nan
+382606.1,Instruments measuring magnetic properties,nan,nan
+382606.2,Instruments measuring electrical properties,nan,nan
+382607.0,Instruments measuring thermal properties,nan,nan
+382699.0,Analytical instruments,nan,nan
+382701.1,Optical instruments,nan,nan
+382701.2,Optical apparatus,nan,nan
+382702.1,Lens coating equipment,nan,nan
+382702.2,Lens grinding equipment,nan,nan
+382799.1,Optical instruments,nan,nan
+382799.2,Optical lenses,nan,nan
+382901.1,Aircraft measurement equipment,nan,nan
+382901.2,Motor vehicle measurement equipment,nan,nan
+382902.1,Geophysical testing equipment,nan,nan
+382902.2,Meteorological testing equipment,nan,nan
+382903.1,Surveying equipment,nan,nan
+382903.2,Drafting equipment,nan,nan
+382904.0,Physical property testing equipment,nan,nan
+382905.1,Nuclear radiation apparatus,nan,nan
+382905.2,Nuclear testing apparatus,nan,nan
+382906.1,Automatic turnstiles,nan,nan
+382906.2,Automatic turnstiles related apparatus,nan,nan
+382907.1,Thermometers,nan,nan
+382907.2,Temperature sensors,nan,nan
+382999.1,Measuring devices,nan,nan
+382999.2,Controlling devices,nan,nan
+384101.1,Ophthalmic instruments,nan,nan
+384101.2,Ophthalmic apparatus,nan,nan
+384102.0,Diagnostic apparatus medical,nan,nan
+384103.1,Veterinarians' instruments,nan,nan
+384103.2,Veterinarians' apparatus,nan,nan
+384104.1,Surgical instruments,nan,nan
+384105.1,Medical instruments,nan,nan
+384105.2,Medical equipment,nan,nan
+384105.3,blood and bone work,nan,nan
+384199.1,Surgical instruments,nan,nan
+384199.2,Medical instruments,nan,nan
+384201.0,Personal safety equipment,nan,nan
+384202.1,Cotton,nan,nan
+384202.2,Cotton applicators,nan,nan
+384203.0,Prosthetic appliances,nan,nan
+384204.0,Orthopedic appliances,nan,nan
+384205.1,Bandages,nan,nan
+384205.2,Dressings,nan,nan
+384299.0,Surgical appliances and Surgical supplies,nan,nan
+384301.0,Dental equipment,nan,nan
+384302.0,Dental materials,nan,nan
+384499.1,Xray apparatus,nan,nan
+384499.2,Xray apparatus tubes,nan,nan
+384501.0,Electromedical apparatus,nan,nan
+384502.0,Electrotherapeutic apparatus,nan,nan
+384599.0,Electromedical equipment,nan,nan
+385101.1,Frames lenses,nan,nan
+385101.2,and parts for eyeglass,nan,nan
+385101.3,Parts for spectacle,nan,nan
+385102.0,Protective eyeware,nan,nan
+385199.0,Ophthalmic goods,nan,nan
+386101.1,Sensitized film,nan,nan
+386101.2,Sensitized cloth,nan,nan
+386101.3,Sensitized paper,nan,nan
+386102.1,Photographic processing equipment,nan,nan
+386102.2,Photographic processing chemicals products,nan,nan
+386103.1,Photographic Cameras,nan,nan
+386103.2,Cameras related equipment,nan,nan
+386104.1,Photographic film holders,nan,nan
+386104.2,Plate holders,nan,nan
+386104.3,Paper holders,nan,nan
+386105.1,Reproduction machines,nan,nan
+386105.2,Reproduction equipment,nan,nan
+386106.0,Photographic processing chemicals,nan,nan
+386199.1,Photographic equipment,nan,nan
+386199.2,Photographic supplies,nan,nan
+387399.1,Watches parts,nan,nan
+387399.2,clocks parts,nan,nan
+387399.3,watchcases parts,nan,nan
+39.0,MANUFACTURING VARIOUS,nan,nan
+391101.0,Jewelry apparel,nan,nan
+391102.1,Cigar accessories,nan,nan
+391103.1,Jewelry mountings,nan,nan
+391103.2,Jewelry trimmings,nan,nan
+391104.0,Precious metal cases,nan,nan
+391401.0,Silverware,nan,nan
+391402.0,Nickle silverware,nan,nan
+391403.0,Pewter ware,nan,nan
+391404.0,Plated ware (all metals),nan,nan
+391405.0,Stainless steel ware,nan,nan
+391499.1,Silverware,nan,nan
+391501.1,Jewelers' findings,nan,nan
+391501.2,Jewelers' materials,nan,nan
+391502.1,Lapidary work,nan,nan
+391502.2,and diamond cutting,nan,nan
+391502.3,Diamond polishing,nan,nan
+391599.1,Jewelers' materials,nan,nan
+391599.2,Jewelers' lapidary work,nan,nan
+393101.1,Keyboard instruments,nan,nan
+393101.2,Keyboard instruments parts,nan,nan
+393102.1,String instruments,nan,nan
+393102.2,String instruments parts,nan,nan
+393103.1,Woodwind instruments,nan,nan
+393103.2,Woodwind instruments parts,nan,nan
+393104.1,Brass instruments,nan,nan
+393104.2,Brass instruments parts,nan,nan
+393105.1,Percussion instruments,nan,nan
+393105.2,Percussion instruments parts,nan,nan
+393199.0,Musical instruments,nan,nan
+394201.1,Dolls and doll clothing,nan,nan
+394299.2,Dolls and stuffed toys,nan,nan
+394401.0,Children's vehicles except bicycles,nan,nan
+394402.1,Electronic games,nan,nan
+394402.2,Electronic toys,nan,nan
+394403.1,Board games,nan,nan
+394403.2,puzles,nan,nan
+394403.3,Games models except electronic,nan,nan
+394404.0,Toy guns,nan,nan
+394405.0,Toy musical instruments,nan,nan
+394406.1,Toy trains,nan,nan
+394406.2,Toyairplanes,nan,nan
+394407.1,Baby carriages,nan,nan
+394407.2,Baby carriages restraint seats,nan,nan
+394499.1,children's games,nan,nan
+394499.2,children's toys,nan,nan
+394499.3,Children's vehicles,nan,nan
+394901.0,Golf equipment,nan,nan
+394902.0,Fishing equipment,nan,nan
+394903.0,Exercise equipment,nan,nan
+394904.0,Winter sports equipment,nan,nan
+394905.0,Hunting equipment,nan,nan
+394906.0,Water sports equipment,nan,nan
+394907.0,Protective sporting equipment,nan,nan
+394908.1,Darts equipment and supplies,nan,nan
+394908.2,Table sports equipment and supplies,nan,nan
+394909.0,Racket sports equipment,nan,nan
+394910.1,Bowling equipment,nan,nan
+394910.2,Bowling supplies,nan,nan
+394911.1,Baseball sport equipment,nan,nan
+394911.2,softball sport equipment,nan,nan
+394911.3,Cricket sport equipment,nan,nan
+394912.1,Croquet equipment and supplies,nan,nan
+394912.2,Polo equipment and supplies,nan,nan
+394913.0,Team sports equipment,nan,nan
+394999.1,Sporting goods,nan,nan
+394999.2,Athletic goods,nan,nan
+395199.1,Pens,nan,nan
+395199.2,Pens and mechanical pencils,nan,nan
+395201.0,Artists' materials except pencils and leads,nan,nan
+395202.0,Artists' equipment,nan,nan
+395203.1,Pencils,nan,nan
+395203.2,Pencils leads including artists,nan,nan
+395299.0,Lead pencils and art goods,nan,nan
+395301.1,Embossing seals,nan,nan
+395301.2,Hand stamps,nan,nan
+395399.0,Marking devices,nan,nan
+395501.1,Carbon paper,nan,nan
+395599.2,Inked ribbons,nan,nan
+396101.1,Jewelry apparel,nan,nan
+396101.2,nonprecious metals,nan,nan
+396102.0,Costume novelties,nan,nan
+396199.0,Costume jewelry,nan,nan
+396501.1,Buttons,nan,nan
+396502.1,Pins,nan,nan
+396502.2,Needles,nan,nan
+396503.0,Fasteners,nan,nan
+396599.1,Fasteners,nan,nan
+399101.0,Brooms,nan,nan
+399102.1,Paint brushes,nan,nan
+399102.2,Varnish brushes,nan,nan
+399103.0,Brushesexcept paint and varnish,nan,nan
+399301.0,Electric signs,nan,nan
+399399.1,Advertising Signs,nan,nan
+399399.2,Advertising specialties,nan,nan
+399599.0,Burial caskets,nan,nan
+399699.0,Hard surface floor coverings,nan,nan
+399901.1,Barber equipment,nan,nan
+399901.2,Beauty shop equipment,nan,nan
+399902.1,Hair,nan,nan
+399902.2,Hairbased products,nan,nan
+399903.1,Feathers,nan,nan
+399903.2,Feather products,nan,nan
+399904.0,Furs,nan,nan
+399905.1,Cigarette products and accessories,nan,nan
+399905.2,Cigar products and accessories,nan,nan
+399906.1,Umbrellas parts,nan,nan
+399906.2,Canes parts,nan,nan
+399907.1,Artificial trees,nan,nan
+399907.2,Artificial flowers,nan,nan
+399908.1,Novelties,nan,nan
+399908.2,bricabrac,nan,nan
+399908.3,Hobby kits,nan,nan
+399909.0,Beekeepers' supplies,nan,nan
+399910.0,Coinoperated amusement machines,nan,nan
+399911.0,Modelsexcept toy,nan,nan
+399912.1,Identification badges,nan,nan
+399912.2,Identification insignia,nan,nan
+399913.0,Advertising display products,nan,nan
+399914.1,Handbag frames and handles,nan,nan
+399914.2,Luggage frames and handles,nan,nan
+399999.0,Manufacturing industries,nan,nan
+40.0,RAIL TRANSPORT,nan,nan
+401199.1,Railroads,nan,nan
+401199.2,Railroads linehaul operating,nan,nan
+401399.1,Switching services,nan,nan
+401399.2,Terminal services,nan,nan
+41.0,LOCAL AND INTERURBAN TRANSPORT OF PASSENGERS IN TRANSIT AND INTERURBAN ROAD,nan,nan
+411101.0,Bus transportation,nan,nan
+411102.1,Street transportation,nan,nan
+411102.2,Trolley car transportation,nan,nan
+411103.0,Airport transportation,nan,nan
+411104.0,Passenger rail transportation,nan,nan
+411199.1,Local transit,nan,nan
+411199.2,Suburban transit,nan,nan
+411901.0,Local rental transportation,nan,nan
+411999.0,Local passenger transportation,nan,nan
+413199.1,Intercity transportation,nan,nan
+413199.2,Rural bus transportation,nan,nan
+417399.1,Bus terminal,nan,nan
+417399.2,Service facilities,nan,nan
+42.0,AUTOMOTIVE CARGO TRANSPORTATION AND STORAGE,nan,nan
+421201.1,Animal transportation services,nan,nan
+421201.2,Farm product transportation services,nan,nan
+421202.0,Liquid transfer services,nan,nan
+421203.1,Lumber trucking,nan,nan
+421203.2,Timber trucking,nan,nan
+421204.0,Moving services,nan,nan
+421299.0,Local trucking without storage,nan,nan
+421399.0,Truckingexcept local,nan,nan
+421499.0,Local trucking with storage,nan,nan
+421599.0,Courier services except by air,nan,nan
+422101.0,Elevator storage,nan,nan
+422199.1,Farm product warehousing,nan,nan
+422199.2,Farm product storage,nan,nan
+422299.1,Refrigerated warehousing,nan,nan
+422299.2,Refrigerated storage,nan,nan
+422599.1,General warehousing,nan,nan
+422599.2,General storage,nan,nan
+422601.0,Liquid storage,nan,nan
+422602.1,Household goods,nan,nan
+422602.2,Furniture storage,nan,nan
+422699.1,Special warehousing,nan,nan
+422699.2,Special storage,nan,nan
+44.0,WATER TRANSPORTATION,nan,nan
+442499.0,Deep sea domestic transportation of freight,nan,nan
+444901.1,Canal freight transportation,nan,nan
+444901.2,Intracoastal freight transportation,nan,nan
+444999.0,Water transportation of freight,nan,nan
+448299.0,Ferries,nan,nan
+448999.0,Water passenger transportation,nan,nan
+449101.1,Marine loading services,nan,nan
+449101.2,Marine unloading services,nan,nan
+449102.1,Docks,nan,nan
+449102.2,piers,nan,nan
+449102.3,Terminals,nan,nan
+449199.0,Marine cargo handling,nan,nan
+449299.1,Towing service,nan,nan
+449299.2,Tugboat service,nan,nan
+449399.0,Marinas,nan,nan
+449901.1,Marine salvaging services,nan,nan
+449901.2,Marine surveying services,nan,nan
+449902.0,Water transportation cleaning services,nan,nan
+449903.1,Boat and ship rental,nan,nan
+449903.2,Boat and ship leasing except pleasure,nan,nan
+449904.1,Marine dismantling services,nan,nan
+449904.2,Marine scrapping services,nan,nan
+449999.0,Water transportation services,nan,nan
+45.0,AIR TRANSPORTATION,nan,nan
+451299.0,Scheduled air transportation,nan,nan
+451399.0,Air courier services,nan,nan
+452201.0,Nonscheduled charter services,nan,nan
+452299.0,Nonscheduled air transportation,nan,nan
+458101.1,Hangars storage facilities,nan,nan
+458101.2,Other aircraft storage facilities,nan,nan
+458102.1,Aircraft maintenance services,nan,nan
+458102.2,Aircraft repair services,nan,nan
+458103.1,Airports,nan,nan
+458103.2,Flying fields,nan,nan
+458199.1,Airports,nan,nan
+458199.2,flying fields,nan,nan
+458199.3,Airports and flying fields services,nan,nan
+46.0,PIPES EXCEPT NATURAL GAS,nan,nan
+461399.0,Refined petroleum pipelines,nan,nan
+461999.0,Pipelines,nan,nan
+47.0,TRANSPORTATION SERVICES,nan,nan
+472499.0,Travel agencies,nan,nan
+472599.0,Tour operators,nan,nan
+472901.0,Transportation ticket offices,nan,nan
+472999.0,Passenger transportation arrangement,nan,nan
+473101.1,Transportation agents,nan,nan
+473101.2,Transportation brokers,nan,nan
+473102.0,Freight forwarding,nan,nan
+473199.0,Freight transportation arrangement,nan,nan
+474199.0,Rental of railroad cars,nan,nan
+478399.1,Packing,nan,nan
+478399.2,Crating,nan,nan
+478501.0,Toll operations,nan,nan
+478502.0,Transportation inspection services,nan,nan
+478599.1,Inspection,nan,nan
+478599.2,Fixed facilities,nan,nan
+478901.1,Cargo loading services,nan,nan
+478901.2,Cargo unloading services,nan,nan
+478902.0,Passenger train services,nan,nan
+478903.0,Horse drawn transportation services,nan,nan
+478904.1,Railroad maintenance services,nan,nan
+478904.2,Railroad repair services,nan,nan
+478999.0,Transportation services,nan,nan
+48.0,COMMUNICATIONS,nan,nan
+481299.0,Radiotelephone communication,nan,nan
+481301.1,Local telephone communications,nan,nan
+481301.2,Long distance telephone communications,nan,nan
+481302.0,Online service providers,nan,nan
+481399.0,Telephone communication except radio,nan,nan
+482201.0,Photographic message services,nan,nan
+482202.1,Cable services,nan,nan
+482202.2,telegram services,nan,nan
+482202.3,Telex services,nan,nan
+482299.1,Telegraph communications,nan,nan
+482299.2,Other communications,nan,nan
+483201.1,Radio broadcasting stations,nan,nan
+483201.2,Radio broadcasting stations music format,nan,nan
+483202.0,Radio broadcasting stations except music format,nan,nan
+483299.0,Ethnic programming,nan,nan
+483399.0,Television broadcasting stations,nan,nan
+484199.1,Cable services,nan,nan
+484199.2,Other pay television services,nan,nan
+489999.0,Communication services,nan,nan
+49.0,ELECTRICAL GAS AND SANITARY SERIES,nan,nan
+491199.0,Electric services,nan,nan
+492501.1,Mixed natural gas,nan,nan
+492501.2,Manufactured gas except petroleum,nan,nan
+492599.1,Gas production,nan,nan
+492599.2,Gas distribution,nan,nan
+493100.1,Electric services,nan,nan
+493100.2,Other services combined,nan,nan
+493199.0,Cogeneration of electric power,nan,nan
+495301.1,Hazardous waste collection,nan,nan
+495301.2,Hazardous waste disposal,nan,nan
+495302.1,Refuse collection services,nan,nan
+495302.2,Refuse disposal services,nan,nan
+495303.0,Nonhazardous waste disposal sites,nan,nan
+495399.0,Refuse systems,nan,nan
+495901.1,Road maintenance services,nan,nan
+495901.2,airport maintenance services,nan,nan
+495901.3,Parking lot maintenance services,nan,nan
+495902.0,Disease control,nan,nan
+495903.1,Toxic waste cleanup,nan,nan
+495903.2,Hazardous waste cleanup,nan,nan
+495999.0,Sanitary services,nan,nan
+496199.1,Steam supply,nan,nan
+496199.2,Airconditioning supply,nan,nan
+497199.0,Irrigation systems,nan,nan
+50.0,WHOLESALE TRADE OF DURABLE GOODS,nan,nan
+501201.0,Automotive brokers,nan,nan
+501202.0,Commercial vehicles,nan,nan
+501203.1,Recreational vehicles,nan,nan
+501203.2,motor homes,nan,nan
+501203.3,Recreational trailers,nan,nan
+501204.0,Motorized cycles,nan,nan
+501301.1,Automotive supplies,nan,nan
+501301.2,Automotive parts,nan,nan
+501302.1,Automotive servicing,nan,nan
+501302.2,Automotive equipment,nan,nan
+501399.1,Motor vehicle supplies,nan,nan
+501399.2,Motor vehicle new parts,nan,nan
+501499.1,Tires,nan,nan
+501499.2,Tubes,nan,nan
+501501.1,Automotive used parts,nan,nan
+501501.2,Automotive used supplies,nan,nan
+501502.0,Automotive servicing equipment used,nan,nan
+501599.0,Motor vehicle used parts,nan,nan
+502101.1,Office furniture,nan,nan
+502101.2,Public building furniture,nan,nan
+502102.0,Household furniture,nan,nan
+502103.1,Beds,nan,nan
+502103.2,Bedding,nan,nan
+502199.0,Furniture,nan,nan
+502301.0,Kitchenware,nan,nan
+502302.1,Linens,nan,nan
+502302.2,Towels,nan,nan
+502303.0,Window furnishings,nan,nan
+502304.0,Floor coverings,nan,nan
+502305.1,Decorative home furnishings,nan,nan
+502305.2,Decorative home supplies,nan,nan
+502399.0,Homefurnishings,nan,nan
+503101.0,Building materials exterior,nan,nan
+503102.0,Building materials interior,nan,nan
+503103.1,Doors,nan,nan
+503103.2,Windows,nan,nan
+503199.1,Lumber plywood,nan,nan
+503199.2,Lumber millwork,nan,nan
+503201.0,Paving materials,nan,nan
+503202.0,Plastering materials,nan,nan
+503203.1,Tile products,nan,nan
+503203.2,Clay products,nan,nan
+503204.0,Building Stone,nan,nan
+503205.1,Concrete building products,nan,nan
+503205.2,Cinder building products,nan,nan
+503206.1,Lime building products,nan,nan
+503299.0,Brick construction,nan,nan
+503299.2,Stone construction,nan,nan
+503301.1,Roofing materials,nan,nan
+503301.2,Siding materials,nan,nan
+503302.0,Insulation materials,nan,nan
+503901.0,Prefabricated structures,nan,nan
+503902.0,Glass construction materials,nan,nan
+503999.0,Construction materials,nan,nan
+504301.0,Photographic processing equipment,nan,nan
+504302.1,Cameras equipment,nan,nan
+504302.2,Photographic equipment,nan,nan
+504303.0,Motion picture equipment,nan,nan
+504401.0,Calculating machines,nan,nan
+504402.0,Copying equipment,nan,nan
+504403.1,Typewriter equipment,nan,nan
+504403.2,Dictation equipment,nan,nan
+504404.1,Addressing machines,nan,nan
+504404.2,Mailing machines,nan,nan
+504499.0,Office equipment,nan,nan
+504501.0,Computer peripheral equipment,nan,nan
+504599.1,Computers,nan,nan
+504599.2,Computer peripherals,nan,nan
+504599.3,Software,nan,nan
+504601.1,Store fixtures,nan,nan
+504601.2,Display equipment,nan,nan
+504602.0,Coinoperated equipment,nan,nan
+504603.1,Commercial cooking,nan,nan
+504603.2,Food service equipment,nan,nan
+504699.0,Commercial equipment,nan,nan
+504701.1,Hospital equipment,nan,nan
+504701.2,Hospital furniture,nan,nan
+504702.1,Dental equipment,nan,nan
+504702.2,Dental supplies,nan,nan
+504703.1,Medical equipment,nan,nan
+504799.2,Hospital equipment,nan,nan
+504899.0,Ophthalmic goods,nan,nan
+504901.1,Scientific equipment and supplies,nan,nan
+504901.2,Engineering equipment and supplies,nan,nan
+504999.0,Professional equipment,nan,nan
+505101.1,Metal wires,nan,nan
+505101.2,Metal ties,nan,nan
+505101.3,Metal cables,nan,nan
+505101.4,Metal screening,nan,nan
+505102.1,Iron products,nan,nan
+505102.2,Steel (ferrous) products,nan,nan
+505103.0,Copper products,nan,nan
+505104.0,Miscellaneous nonferrous products,nan,nan
+505199.1,Metals service centers,nan,nan
+505199.2,Metals offices,nan,nan
+505201.0,Metallic ores,nan,nan
+505202.1,Coal,nan,nan
+505202.2,Coke,nan,nan
+505299.1,Coal,nan,nan
+505299.2,Other minerals and ores,nan,nan
+506301.1,Transformers equipment,nan,nan
+506301.2,Transmission equipment,nan,nan
+506302.1,Electrical fittings,nan,nan
+506302.2,Construction materials,nan,nan
+506303.1,Wire,nan,nan
+506303.2,Cable,nan,nan
+506304.0,Lighting fixtures,nan,nan
+506305.1,Electric alarms,nan,nan
+506305.2,Electric signaling equipment,nan,nan
+506306.0,Batteries,nan,nan
+506399.1,Electrical apparatus,nan,nan
+506399.2,Electrical equipment,nan,nan
+506401.0,Electrical appliances major,nan,nan
+506402.0,Electrical entertainment equipment,nan,nan
+506403.1,Air conditioning,nan,nan
+506403.2,Air appliances,nan,nan
+506499.1,Electrical appliances,nan,nan
+506499.3,Radio,nan,nan
+506501.1,Telephone equipment,nan,nan
+506501.2,Telegraphic equipment,nan,nan
+506502.0,Communication equipment,nan,nan
+506503.0,Electronic parts,nan,nan
+506504.1,Radio equipment and parts,nan,nan
+506504.2,Television equipment and parts,nan,nan
+506599.1,Electronic parts,nan,nan
+506599.2,Electronic equipment,nan,nan
+507201.1,Bolts,nan,nan
+507201.2,nuts,nan,nan
+507201.3,Screws,nan,nan
+507202.0,Hand tools,nan,nan
+507203.1,Power tools,nan,nan
+507203.2,Power accessories,nan,nan
+507204.0,Miscellaneous fasteners,nan,nan
+507299.0,Hardware,nan,nan
+507401.1,Water heaters,nan,nan
+507401.2,Purification equipment,nan,nan
+507402.0,Heatingequipment (hydronic),nan,nan
+507403.1,Plumbing fittings,nan,nan
+507403.2,Plumbing supplies,nan,nan
+507499.1,Plumbing supplies,nan,nan
+507499.2,Hydronic heating supplies,nan,nan
+507501.1,Air conditioning equipment and supplies,nan,nan
+507501.2,Ventilation equipment and supplies,nan,nan
+507502.1,Warm air heating equipment,nan,nan
+507502.2,Warm air heating supplies,nan,nan
+507801.0,Refrigerated display equipment,nan,nan
+507802.0,Refrigerated beverage dispensers,nan,nan
+507803.0,Commercial refrigeration equipment,nan,nan
+507899.1,Refrigeration equipment,nan,nan
+507899.2,Refrigeration supplies,nan,nan
+508201.0,Road construction equipment,nan,nan
+508202.1,Logging machinery and equipment,nan,nan
+508202.2,Forestry machinery and equipment,nan,nan
+508203.1,General construction machinery,nan,nan
+508203.2,Construction equipment,nan,nan
+508204.1,Mining machinery,nan,nan
+508204.2,Mining equipment except petroleum,nan,nan
+508299.1,Construction machinery,nan,nan
+508299.2,Mining machinery,nan,nan
+508301.1,Poultry equipment,nan,nan
+508302.1,Lawn machinery and equipment,nan,nan
+508302.2,Garden machinery and equipment,nan,nan
+508303.1,Agricultural machinery,nan,nan
+508303.2,Agricultural equipment,nan,nan
+508304.1,Dairy machinery,nan,nan
+508304.2,Dairy equipment,nan,nan
+508399.1,Farm machinery,nan,nan
+508399.2,Garden machinery,nan,nan
+508401.1,Food industry,nan,nan
+508401.2,Food industry machinery,nan,nan
+508402.1,Textile machinery,nan,nan
+508403.1,Paper,nan,nan
+508403.2,sawmill,nan,nan
+508403.3,Woodworking machinery,nan,nan
+508404.0,Petroleum industry Petroleum industry machinery,nan,nan
+508405.1,Machine tools,nan,nan
+508405.2,Metalworking machinery,nan,nan
+508406.1,Engines equipment,nan,nan
+508406.2,Transportation equipment,nan,nan
+508407.1,control Instruments,nan,nan
+508407.2,Control equipment,nan,nan
+508408.0,Materials handling machinery,nan,nan
+508409.1,Processing equipment,nan,nan
+508409.2,Packaging equipment,nan,nan
+508499.1,Industrial machinery,nan,nan
+508499.2,Industrial equipment,nan,nan
+508501.0,Commercial containers,nan,nan
+508502.1,Hose,nan,nan
+508502.2,belting,nan,nan
+508502.3,Packing,nan,nan
+508503.1,Valves,nan,nan
+508503.2,pistons,nan,nan
+508503.3,Fittings,nan,nan
+508504.1,Fasteners,nan,nan
+508504.2,Fastening equipment,nan,nan
+508505.1,Bearings,nan,nan
+508505.2,bushings,nan,nan
+508505.3,wheels,nan,nan
+508505.4,Gears,nan,nan
+508506.0,Industrial tools,nan,nan
+508507.1,Rope,nan,nan
+508507.2,cord,nan,nan
+508507.3,Thread,nan,nan
+508508.1,Abrasives,nan,nan
+508508.2,Adhesives,nan,nan
+508509.1,Power transmission equipment,nan,nan
+508509.2,Power transmission apparatus,nan,nan
+508510.1,Gaskets,nan,nan
+508510.2,Seals,nan,nan
+508599.0,Industrial supplies,nan,nan
+508701.1,Beauty salon equipment and supplies,nan,nan
+508701.2,Barber shop equipment and supplies,nan,nan
+508702.1,Laundry equipment and supplies,nan,nan
+508702.2,Dry cleaning equipment and supplies,nan,nan
+508703.1,Cleaning equipment and supplies,nan,nan
+508703.2,Maintenance equipment and supplies,nan,nan
+508704.1,Tailors' supplies,nan,nan
+508704.2,Shoe repair supplies,nan,nan
+508705.0,Firefightingequipment,nan,nan
+508706.1,Cemetery equipment and supplies,nan,nan
+508706.2,Funeral director's equipment and supplies,nan,nan
+508799.0,Service establishment equipment,nan,nan
+508801.1,Marine crafts,nan,nan
+508801.2,Marine supplies,nan,nan
+508802.0,Combat vehicles,nan,nan
+508803.1,Aircraft supplies and parts,nan,nan
+508803.2,Space vehicle supplies and parts,nan,nan
+508899.1,Transportation equipment,nan,nan
+508899.2,Transportation supplies,nan,nan
+509101.1,Watersports equipment,nan,nan
+509101.2,Watersports supplies,nan,nan
+509102.1,Golf equipment and supplies,nan,nan
+509102.2,Skiing equipment and supplies,nan,nan
+509103.1,Fishing,nan,nan
+509103.2,Fishing equipment,nan,nan
+509103.3,Fishing supplies,nan,nan
+509104.1,Hunting equipment,nan,nan
+509104.2,Hunting supplies,nan,nan
+509105.1,Fitness equipment,nan,nan
+509105.2,Fitness supplies,nan,nan
+509106.1,Bicycle equipment,nan,nan
+509106.2,Bicycle supplies,nan,nan
+509107.1,Boats equipment,nan,nan
+509107.3,watercrafts equipment,nan,nan
+509199.1,Sporting goods,nan,nan
+509199.2,Recreation goods,nan,nan
+509201.0,Hobby supplies,nan,nan
+509202.1,Toys,nan,nan
+509202.2,Games,nan,nan
+509203.1,Toy novelties,nan,nan
+509203.2,Amusements,nan,nan
+509299.1,Toys goods and supplies,nan,nan
+509299.2,Hobby goods and supplies,nan,nan
+509301.1,Waste paper,nan,nan
+509301.2,Cloth materials,nan,nan
+509302.1,Metal scrap,nan,nan
+509302.2,Waste materials,nan,nan
+509399.1,Scrap materials,nan,nan
+509401.1,Precious stones,nan,nan
+509401.2,Precious metals,nan,nan
+509402.1,Coins,nan,nan
+509402.2,medals,nan,nan
+509402.3,Trophies,nan,nan
+509403.1,Clocks parts,nan,nan
+509403.2,watches parts,nan,nan
+509499.1,Jewelry,nan,nan
+509499.2,Precious stones,nan,nan
+509901.1,Firearms,nan,nan
+509901.2,Ammunitionexcept sporting,nan,nan
+509902.1,Wood,nan,nan
+509902.2,Wood byproducts,nan,nan
+509903.1,Safety equipment,nan,nan
+509903.2,Safety supplies,nan,nan
+509904.1,Children's carriages,nan,nan
+509904.2,Children's strollers,nan,nan
+509904.3,Children's restraint seats,nan,nan
+509905.1,Video equipment,nan,nan
+509905.2,Audio equipment,nan,nan
+509906.0,Musical instruments,nan,nan
+509907.1,Antiques,nan,nan
+509907.2,souvenirs,nan,nan
+509907.3,Novelties,nan,nan
+509908.1,Coinoperated machines,nan,nan
+509908.2,Mechanisms,nan,nan
+509999.0,Durable goods,nan,nan
+51.0,WHOLESALE TRADE OF NONDURABLE GOODS,nan,nan
+511199.1,Printing paper,nan,nan
+511199.2,Writing paper,nan,nan
+511201.1,Writing instruments,nan,nan
+511201.2,Writing supplies,nan,nan
+511202.1,Social stationery,nan,nan
+511202.2,Greeting cards,nan,nan
+511203.1,Albums,nan,nan
+511203.2,scrapbooks,nan,nan
+511203.3,Binders,nan,nan
+511204.1,Computer,nan,nan
+511204.2,Photocopying supplies,nan,nan
+511205.0,Office filing supplies,nan,nan
+511299.1,Stationery supplies,nan,nan
+511299.2,Office supplies,nan,nan
+511301.0,Shipping supplies,nan,nan
+511302.1,Disposable plates,nan,nan
+511302.2,Disposable cups,nan,nan
+511302.3,Disposable napkins,nan,nan
+511302.4,Disposable eating utensils,nan,nan
+511303.1,Boxes,nan,nan
+511303.2,Containers,nan,nan
+511399.1,Industrial service paper,nan,nan
+511399.2,Personal service paper,nan,nan
+512201.1,Cosmetics,nan,nan
+512201.2,perfumes,nan,nan
+512201.3,Hair products,nan,nan
+512202.0,Toiletries,nan,nan
+512203.1,Drugs,nan,nan
+512203.2,Drug proprietaries,nan,nan
+512299.1,Drugs sundries,nan,nan
+513101.1,Piece goods,nan,nan
+513101.2,Other fabrics,nan,nan
+513102.1,Sewing supplies,nan,nan
+513102.2,Sewing notions,nan,nan
+513601.1,Men's and boys' hats,nan,nan
+513601.2,Men's and boys' scarves,nan,nan
+513601.3,Men's and boys' gloves,nan,nan
+513602.1,Men's and boys' robes,nan,nan
+513602.2,Men's and boys' nightwear,nan,nan
+513602.3,Men's and boys' undergarments,nan,nan
+513603.0,Men's and boys' outerwear,nan,nan
+513604.0,Men's and boys' furnishings,nan,nan
+513605.1,Men's and boys' suits,nan,nan
+513605.2,Men's and boys' trousers,nan,nan
+513606.1,Men's and boys' sportswear,nan,nan
+513606.2,Men's and boys' work clothing,nan,nan
+513699.0,Men's and boy's clothing,nan,nan
+513701.0,Women's and children's outerwear,nan,nan
+513702.1,Women's and children's lingerie,nan,nan
+513702.2,Women's and children's undergarments,nan,nan
+513703.1,Women's and children's sportswear,nan,nan
+513703.2,Women's and children's swimsuits,nan,nan
+513703.3,Women's and children's sportswear,nan,nan
+513704.0,Women's and children's accessories,nan,nan
+513705.0,Children's goods,nan,nan
+513706.1,Women's and children's dresses,nan,nan
+513706.2,Women's and children's suits,nan,nan
+513706.3,Women's and children's skirts,nan,nan
+513706.4,Women's and children's blouses,nan,nan
+513799.0,Women's and children's clothing,nan,nan
+513999.0,Footwear,nan,nan
+514201.1,Frozen vegetables,nan,nan
+514201.2,Frozen fruit products,nan,nan
+514202.1,Frozen fish,nan,nan
+514202.3,Frozen poultry,nan,nan
+514299.0,Packaged frozen goods,nan,nan
+514301.0,Milk,nan,nan
+514399.0,Dairy products except dried or canned,nan,nan
+514499.1,Poultry,nan,nan
+514501.0,Fountain supplies,nan,nan
+514502.0,Snack foods,nan,nan
+514599.0,Confectionery,nan,nan
+514699.1,Fish,nan,nan
+514699.2,Seafoods,nan,nan
+514799.1,Meats,nan,nan
+514799.2,Meat products,nan,nan
+514801.0,Fruits,nan,nan
+514802.0,Vegetables,nan,nan
+514901.1,Cooking oils,nan,nan
+514901.2,Cooking shortenings,nan,nan
+514902.0,Pet foods,nan,nan
+514903.1,Seasonings,nan,nan
+514903.2,sauces,nan,nan
+514903.3,Seasonings sauces extracts,nan,nan
+514904.1,Pasta,nan,nan
+514904.2,Rice,nan,nan
+514905.0,Beverages except coffee and tea,nan,nan
+514906.1,Organic food,nan,nan
+514906.2,Diet food,nan,nan
+514907.1,Crackers,nan,nan
+514907.2,cookies,nan,nan
+514907.3,Bakery products,nan,nan
+514908.1,Dried foods,nan,nan
+514908.2,Canned foods,nan,nan
+514909.1,Coffee,nan,nan
+514910.1,Sugar,nan,nan
+514910.2,honey,nan,nan
+514910.3,molasses,nan,nan
+514910.4,Syrups,nan,nan
+514911.0,Baking supplies,nan,nan
+514999.1,Groceries,nan,nan
+514999.2,Groceries related products,nan,nan
+515301.0,Grains,nan,nan
+515302.0,Field beans,nan,nan
+515399.1,Grain,nan,nan
+515399.2,Field beans,nan,nan
+515499.0,Livestock,nan,nan
+515901.1,Cotton merchants,nan,nan
+515901.2,Cotton products,nan,nan
+515902.0,Farm animals,nan,nan
+515903.1,Feathers.,nan,nan
+515903.2,Pelts,nan,nan
+515904.1,Wool,nan,nan
+515904.2,Silk,nan,nan
+515905.1,Nuts,nan,nan
+515905.2,Nut byproducts,nan,nan
+515906.1,Tobacco distributors,nan,nan
+515906.2,Tobacco products,nan,nan
+515999.0,Farmproduct raw materials,nan,nan
+516201.0,Resins,nan,nan
+516299.1,Plastics materials,nan,nan
+516299.2,Plastic basic shapes,nan,nan
+516901.1,Alkalines,nan,nan
+516901.2,Chlorine,nan,nan
+516902.0,Industrial gases,nan,nan
+516903.1,Detergents,nan,nan
+516903.2,Soaps except specialty cleaning,nan,nan
+516904.1,Specialty cleaning,nan,nan
+516904.2,Sanitation preparations,nan,nan
+516905.1,Adhesives,nan,nan
+516905.2,Sealants,nan,nan
+516906.0,Aromatic chemicals,nan,nan
+516907.0,Chemical additives,nan,nan
+516908.1,Synthetic resins,nan,nan
+516908.2,rubber,nan,nan
+516908.3,Plastic materials,nan,nan
+516909.1,Food additives,nan,nan
+516909.2,Food preservatives,nan,nan
+516910.1,Noncorrosive products,nan,nan
+516910.2,Noncorrosive materials,nan,nan
+516911.1,Industrial salts,nan,nan
+516911.2,Industrial polishes,nan,nan
+516912.1,Alcohols,nan,nan
+516912.2,Alcohols and antifreeze compounds,nan,nan
+516999.1,Chemicals,nan,nan
+516999.2,Allied chemical products,nan,nan
+517199.1,Petroleum bulk stations,nan,nan
+517199.2,Petroleum bulk terminals,nan,nan
+517201.0,Gases,nan,nan
+517202.1,Engine fuels,nan,nan
+517299.0,Petroleum products,nan,nan
+518199.1,Beer,nan,nan
+518199.2,Beer ale,nan,nan
+518201.0,Wine,nan,nan
+518202.0,Liquor,nan,nan
+518299.1,Wine,nan,nan
+518299.2,Distilled beverages,nan,nan
+519101.1,Fertilizers,nan,nan
+519101.2,Agricultural chemicals,nan,nan
+519102.0,Animal feeds,nan,nan
+519103.1,Seeds,nan,nan
+519103.2,Bulbs,nan,nan
+519104.0,Equestrian equipment,nan,nan
+519199.0,Farm supplies,nan,nan
+519299.1,Books,nan,nan
+519299.2,periodicals,nan,nan
+519299.3,Newspapers,nan,nan
+519301.0,Florists' supplies,nan,nan
+519302.1,Flowers,nan,nan
+519302.2,Nursery stock,nan,nan
+519401.0,Smoking tobacco,nan,nan
+519402.0,Smokeless tobacco,nan,nan
+519801.0,Paints,nan,nan
+519899.1,Paints,nan,nan
+519899.2,varnishes,nan,nan
+519899.3,Paints and varnishes supplies,nan,nan
+519901.1,Art goods,nan,nan
+519901.2,Art goods supplies,nan,nan
+519902.1,Gifts,nan,nan
+519902.2,Novelties,nan,nan
+519903.1,Pets,nan,nan
+519903.2,Pet supplies,nan,nan
+519904.1,Fabrics,nan,nan
+519904.2,yarns,nan,nan
+519904.3,Knit goods,nan,nan
+519905.1,Leather,nan,nan
+519905.2,leather goods,nan,nan
+519905.3,Furs,nan,nan
+519906.1,Bags,nan,nan
+519906.2,baskets,nan,nan
+519907.0,Smokers' supplies,nan,nan
+519908.1,Oil,nan,nan
+519908.2,Greases (animal or vegetable),nan,nan
+519909.1,Foams,nan,nan
+519909.2,Rubber,nan,nan
+519910.1,Posters,nan,nan
+519910.2,Decals,nan,nan
+519999.0,Nondurable goods,nan,nan
+52.0,DEALERS OF BUILDING MATERIALS HARDWARE GARDEN SUPPLIES AND MOBILE HOMES,nan,nan
+521101.0,Lumber products,nan,nan
+521102.1,Door products,nan,nan
+521102.2,Window products,nan,nan
+521103.1,Insulation products,nan,nan
+521103.2,Energy conservation products,nan,nan
+521104.0,Prefabricated buildings,nan,nan
+521105.1,Masonry materials,nan,nan
+521105.2,Masonry supplies,nan,nan
+521199.1,building Lumber,nan,nan
+521199.2,Other building materials,nan,nan
+523101.0,Glass,nan,nan
+523102.1,Paint,nan,nan
+523102.2,Painting supplies,nan,nan
+523103.0,Wallcoverings,nan,nan
+525101.0,Tools,nan,nan
+525199.0,Hardware stores,nan,nan
+526101.1,Lawn equipment,nan,nan
+526101.2,Garden equipment,nan,nan
+526102.1,Lawn supplies,nan,nan
+526102.2,Garden supplies,nan,nan
+526103.0,Retail nurseries,nan,nan
+527199.0,Mobile home dealers,nan,nan
+53.0,GENERAL MERCHANDISE STORES,nan,nan
+531199.0,Department stores,nan,nan
+539999.0,Miscellaneous general merchandise stores,nan,nan
+54.0,FOOD STORES,nan,nan
+541101.0,Supermarkets,nan,nan
+541102.0,Convenience stores,nan,nan
+541199.0,Grocery stores,nan,nan
+542101.1,Fish markets,nan,nan
+542101.2,Seafood markets,nan,nan
+542102.1,Meat markets,nan,nan
+542102.2,Freezer provisioners,nan,nan
+543199.1,Fruit markets,nan,nan
+543199.2,Vegetable markets,nan,nan
+544199.1,Candy stores,nan,nan
+544199.2,nut stores,nan,nan
+544199.0,Confectionery stores,nan,nan
+545199.1,Dairy products stores,nan,nan
+546199.0,Retail bakeries,nan,nan
+549901.1,Health food stores,nan,nan
+549901.2,Dietetic food stores,nan,nan
+549902.0,Beverage stores,nan,nan
+549999.0,Miscellaneous food stores,nan,nan
+55.0,AUTOMOTIVE DEALERS AND GASOLINE SERVICE STATIONS,nan,nan
+551199.2,Used car dealers,nan,nan
+552199.0,Used car dealers,nan,nan
+553101.1,Auto equipment and parts,nan,nan
+553101.2,Truck equipment and parts,nan,nan
+553199.1,Auto supply stores,nan,nan
+553199.2,Home supply stores,nan,nan
+554199.0,Gasoline service stations,nan,nan
+555101.0,Motor boat dealers,nan,nan
+555102.1,Canoe dealers,nan,nan
+555102.2,Kayak dealers,nan,nan
+555103.1,Sailboats,nan,nan
+555103.2,Sailboats equipment,nan,nan
+555104.1,Marine supplies,nan,nan
+555104.2,Marine equipment,nan,nan
+556101.1,Camper dealers,nan,nan
+556101.2,Travel trailer dealers,nan,nan
+556199.0,Recreational vehicle dealers,nan,nan
+557199.0,Motorcycle dealers,nan,nan
+559901.0,Aircraft dealers,nan,nan
+559999.0,Automotive dealers,nan,nan
+56.0,CLOTHING AND ACCESSORIES STORES,nan,nan
+561199.1,Men's clothing stores,nan,nan
+561199.2,Boys' clothing stores,nan,nan
+562101.0,Women's specialty clothing stores,nan,nan
+562199.0,Women's clothing stores,nan,nan
+563201.0,Fur apparel,nan,nan
+563202.1,Women's dancewear,nan,nan
+563202.2,women's hosiery,nan,nan
+563202.3,Women's lingerie,nan,nan
+563299.1,Women's accessory,nan,nan
+563299.2,Women's specialty stores,nan,nan
+564199.1,Children's wear stores,nan,nan
+564199.2,Infants' wear stores,nan,nan
+565199.0,Family clothing stores,nan,nan
+566101.1,Custom shoes,nan,nan
+566101.2,Orthopedic shoes,nan,nan
+566199.0,Shoe stores,nan,nan
+569901.1,Uniforms,nan,nan
+569901.2,Work clothing,nan,nan
+569902.1,Costumes,nan,nan
+569902.2,Wigs,nan,nan
+569903.0,Sports apparel,nan,nan
+569904.1,Customized clothing,nan,nan
+569904.2,Customized apparel,nan,nan
+569999.1,Miscellaneous apparel,nan,nan
+569999.2,Accessory stores,nan,nan
+57.0,FURNITURE FURNITURE AND HOME EQUIPMENT STORES,nan,nan
+571201.1,Beds,nan,nan
+571201.2,Beds accessories,nan,nan
+571202.1,Customized furniture,nan,nan
+571202.2,Customized cabinets,nan,nan
+571299.0,Furniture stores,nan,nan
+571399.0,Floor covering stores,nan,nan
+571499.1,Drapery stores,nan,nan
+571499.2,Upholstery stores,nan,nan
+571901.0,Kitchenware,nan,nan
+571902.1,Lighting,nan,nan
+571902.2,lamps,nan,nan
+571902.3,Lighting accessories,nan,nan
+571903.1,Fireplaces,nan,nan
+571903.2,Wood burning stoves,nan,nan
+571904.0,Window furnishings,nan,nan
+571905.1,Beddings,nan,nan
+571905.2,Linens,nan,nan
+571906.1,Pictures,nan,nan
+571906.2,Mirrors,nan,nan
+571999.0,Miscellaneous homefurnishings stores,nan,nan
+572201.0,Gas household appliances,nan,nan
+572202.0,Electric household appliances,nan,nan
+572299.0,Household appliance stores,nan,nan
+573101.0,Antennas,nan,nan
+573102.1,Video cameras,nan,nan
+573102.2,recorders,nan,nan
+573102.3,Video accessories,nan,nan
+573199.1,Radio,nan,nan
+573199.3,Electronic stores,nan,nan
+573401.0,Computer peripheral equipment,nan,nan
+573402.1,Computer software,nan,nan
+573402.2,Computer accessories,nan,nan
+573499.1,Computer stores,nan,nan
+573499.2,Software stores,nan,nan
+573501.1,Video discs,nan,nan
+573501.2,Tapes prerecorded,nan,nan
+573502.1,Records,nan,nan
+573502.2,audio discs,nan,nan
+573502.3,Tapes,nan,nan
+573601.0,Keyboard instruments,nan,nan
+573699.0,Musical instrument stores,nan,nan
+58.0,PLACES TO EAT AND DRINK,nan,nan
+581201.0,Ethnic food restaurants,nan,nan
+581202.1,Ice cream stands,nan,nan
+581202.2,soft drink stands,nan,nan
+581202.3,Soda fountain stands,nan,nan
+581203.1,Fast food restaurants,nan,nan
+581203.2,Fast food stands,nan,nan
+581204.1,Lunchrooms,nan,nan
+581204.2,Cafeteries,nan,nan
+581205.0,Family restaurants,nan,nan
+581206.0,Pizza restaurants,nan,nan
+581207.0,Seafood restaurants,nan,nan
+581208.1,Steak restaurants,nan,nan
+581208.2,Barbecue restaurants,nan,nan
+581299.0,Eating places,nan,nan
+581301.1,Bars,nan,nan
+581301.2,Lounges,nan,nan
+581302.0,Night clubs,nan,nan
+59.0,MISCELLANEOUS RETAIL SALE,nan,nan
+591299.1,Drug stores,nan,nan
+591299.2,Proprietary stores,nan,nan
+592101.1,Wine,nan,nan
+592101.2,Beer,nan,nan
+592199.0,Liquor stores,nan,nan
+593201.1,Home furnishings,nan,nan
+593202.0,Antiques,nan,nan
+593203.0,Book stores secondhand,nan,nan
+593204.1,Clothing secondhand,nan,nan
+593204.2,Shoes secondhand,nan,nan
+593205.1,Office furniture,nan,nan
+593205.2,Store fixtures secondhand,nan,nan
+593299.0,Used merchandise stores,nan,nan
+594101.0,Fishing equipment,nan,nan
+594102.0,Hunting equipment,nan,nan
+594103.1,Golf shops,nan,nan
+594103.2,tennis shops,nan,nan
+594103.3,Ski shops,nan,nan
+594104.0,Exercise equipment,nan,nan
+594105.0,Water sport equipment,nan,nan
+594106.1,Camping equipment,nan,nan
+594106.2,Backpacking equipment,nan,nan
+594107.0,Team sports equipment,nan,nan
+594199.1,Sporting goods,nan,nan
+594199.2,Bicycle shops,nan,nan
+594299.1,Book stores,nan,nan
+594399.2,Stationery stores,nan,nan
+594401.1,Clock stores,nan,nan
+594401.2,Watch stores,nan,nan
+594499.0,Jewelry stores,nan,nan
+594501.1,Hobby supplies,nan,nan
+594501.2,Craft supplies,nan,nan
+594502.1,Toys,nan,nan
+594502.2,Games,nan,nan
+594599.1,Hobby shops,nan,nan
+594599.2,toy shops,nan,nan
+594599.3,Game shops,nan,nan
+594699.1,Camera stores,nan,nan
+594699.2,Photographic supply stores,nan,nan
+594701.0,Gifts and novelties,nan,nan
+594799.1,Gift shop,nan,nan
+594799.2,novelty shop,nan,nan
+594799.3,Souvenir shop,nan,nan
+594899.1,Luggage stores,nan,nan
+594899.2,Leather goods stores,nan,nan
+594901.0,Fabric stores piece goods,nan,nan
+594902.1,Sewing,nan,nan
+594902.2,Needlework,nan,nan
+596101.0,Food mail order,nan,nan
+596102.1,Computer equipment mail order,nan,nan
+596102.2,Electronics mail order,nan,nan
+596103.1,Book clubs,nan,nan
+596103.2,Record clubs,nan,nan
+596104.1,Stamps mail order,nan,nan
+596104.2,coins mail order,nan,nan
+596104.3,Other collectibles mail order,nan,nan
+596199.1,Catalog houses,nan,nan
+596199.2,Mailorder houses,nan,nan
+596201.0,Food vending machines,nan,nan
+596202.0,Beverage vending machines,nan,nan
+596299.0,Merchandising machineoperators,nan,nan
+596301.1,Beverage services,nan,nan
+596301.2,Beverage direct sales,nan,nan
+596302.1,Food services,nan,nan
+596302.2,Food direct sales,nan,nan
+596303.1,Encyclopedias direct sales,nan,nan
+596303.2,Publications direct sales,nan,nan
+596304.0,Home related products direct sales,nan,nan
+596399.0,Direct selling establishments,nan,nan
+598499.0,Liquefied petroleum gas dealers,nan,nan
+598999.0,Fuel dealers,nan,nan
+599299.0,Florists,nan,nan
+599399.1,Tobacco stores,nan,nan
+599399.2,Tobacco stands,nan,nan
+599499.1,News dealers,nan,nan
+599499.2,Newsstands,nan,nan
+599599.0,Optical goods stores,nan,nan
+599901.1,Alarm equipment stores,nan,nan
+599901.2,Safety equipment stores,nan,nan
+599902.1,Art supplies,nan,nan
+599902.2,Architectural supplies,nan,nan
+599903.1,Banners,nan,nan
+599903.2,flags,nan,nan
+599903.3,decals,nan,nan
+599903.4,Posters,nan,nan
+599904.1,Binoculars,nan,nan
+599904.2,Telescopes,nan,nan
+599905.1,Coins,nan,nan
+599906.1,Telephone equipment,nan,nan
+599906.2,Communication equipment,nan,nan
+599907.1,Engine equipment and supplies,nan,nan
+599907.2,Motor equipment and supplies,nan,nan
+599908.1,Farm equipment,nan,nan
+599908.2,Farm supplies,nan,nan
+599909.1,Medical apparatus,nan,nan
+599909.2,Medical supplies,nan,nan
+599910.1,Monuments,nan,nan
+599910.2,Tombstones,nan,nan
+599911.1,Pets,nan,nan
+599911.2,Pet supplies,nan,nan
+599912.1,Swimming pools equipment and supplies,nan,nan
+599912.2,hot tubs equipment and supplies.,nan,nan
+599912.3,Sauna equipment and supplies,nan,nan
+599913.1,Toiletries,nan,nan
+599913.2,cosmetics,nan,nan
+599913.3,Perfumes,nan,nan
+599914.1,Typewriters machines,nan,nan
+599914.2,Business machines,nan,nan
+599915.1,Gems,nan,nan
+599915.2,Precious stones,nan,nan
+599916.1,Art,nan,nan
+599916.2,picture frames,nan,nan
+599916.3,Decorations,nan,nan
+599917.1,Educational aids materials,nan,nan
+599917.2,Electronic training materials,nan,nan
+599918.1,Infant furnishings,nan,nan
+599918.2,Infant equipment,nan,nan
+599999.0,Miscellaneous retail stores,nan,nan
+60.0,DEPOSIT INSTITUTIONS,nan,nan
+601199.0,Federal reserve banks,nan,nan
+601999.0,Central reserve depository,nan,nan
+602199.0,National commercial Banks,nan,nan
+602299.0,State commercial Banks,nan,nan
+603599.0,Federal savings institutions,nan,nan
+603699.0,Savings institutions except federal,nan,nan
+606299.0,State credit unions,nan,nan
+608199.1,Foreign bank,nan,nan
+608199.2,Foreign branches,nan,nan
+608199.3,Foreign agencies,nan,nan
+608299.1,Foreign trade,nan,nan
+608299.2,International Banks,nan,nan
+609901.0,Check clearing services,nan,nan
+609999.0,Functions related to deposit banking,nan,nan
+61.0,NONDEPOSIT CREDIT INSTITUTIONS,nan,nan
+611101.0,Federal mortgage credit agencies,nan,nan
+611102.0,Mutual association credit agencies,nan,nan
+611199.1,Federal credit,nan,nan
+611199.2,Federally sponsored credit,nan,nan
+614101.1,Automobile finance companies,nan,nan
+614101.2,Consumer finance companies,nan,nan
+614199.0,Personal credit institutions,nan,nan
+615301.0,Working capital financing,nan,nan
+615302.0,Factoring services,nan,nan
+615303.0,Installment paper,nan,nan
+615399.0,Shortterm business credit,nan,nan
+615901.0,Agricultural credit institutions,nan,nan
+615902.1,Equipment finance leasing companies,nan,nan
+615902.2,Vehicle finance leasing companies,nan,nan
+615999.0,Miscellaneous business credit institutions,nan,nan
+616299.1,Mortgage bankers,nan,nan
+616299.2,Mortgage correspondents,nan,nan
+616399.0,Loan brokers,nan,nan
+62.0,BROKERS DEALERS EXCHANGES AND SERVICES IN SECURITIES AND COMMODITIES,nan,nan
+621101.0,Security brokers and Security dealers,nan,nan
+621102.0,Flotation companies,nan,nan
+621103.1,Mineral leasing and royalty dealers,nan,nan
+621103.2,oil leasing and royalty dealers,nan,nan
+621103.3,Gas leasing and royalty dealers,nan,nan
+622199.1,Commodity contracts dealers,nan,nan
+622199.2,Commodity contracts brokers,nan,nan
+623199.1,Security exchanges,nan,nan
+623199.2,Commodity exchanges,nan,nan
+628299.0,Investment advice,nan,nan
+628901.0,Protective committees,nan,nan
+628902.0,Security transfer agents,nan,nan
+628903.1,Security clearinghouses,nan,nan
+628903.2,Commodity clearinghouses,nan,nan
+628999.1,Security services,nan,nan
+628999.2,Commodity services,nan,nan
+63.0,INSURANCE COMPANIES,nan,nan
+631101.0,Mutual association life insurance,nan,nan
+631199.0,Life insurance,nan,nan
+632101.1,Accident insurance carriers,nan,nan
+632101.2,Health insurance carriers,nan,nan
+632102.1,Mutual accident associations,nan,nan
+632102.2,Mutual health associations,nan,nan
+632199.1,Accident insurance,nan,nan
+632199.2,Health insurance,nan,nan
+632499.1,Hospital service plans,nan,nan
+632499.2,Medical service plans,nan,nan
+633101.0,Agricultural insurance,nan,nan
+633102.1,Fire insurance and carriers,nan,nan
+633102.2,marine insurance and carriers,nan,nan
+633102.3,Casualty insurance and carriers,nan,nan
+633199.1,Fire insurance,nan,nan
+633199.2,marine insurance,nan,nan
+633199.3,Casualty insurance,nan,nan
+635101.0,Surety insurance bonding,nan,nan
+635102.0,Fidelity insurance,nan,nan
+635199.0,Surety insurance,nan,nan
+636199.0,Title insurance,nan,nan
+637101.0,Pensions,nan,nan
+637102.0,Union funds,nan,nan
+639901.0,Deposit insurance,nan,nan
+639999.0,Insurance carriers,nan,nan
+64.0,INSURANCE AGENTS BROKERS AND SERVICES,nan,nan
+641101.1,Insurance information services,nan,nan
+641101.2,Consulting services,nan,nan
+641102.0,Insurance adjusters,nan,nan
+641103.1,Insurance agents,nan,nan
+641103.2,Insurance brokers,nan,nan
+641199.0,Insurance service,nan,nan
+65.0,REAL ESTATE,nan,nan
+651201.1,Commercial building operation,nan,nan
+651201.2,Industrial building operation,nan,nan
+651202.1,Property operation,nan,nan
+651202.2,Establishment operation,nan,nan
+651203.1,auditoriums operation,nan,nan
+651203.2,Theaters operation,nan,nan
+651204.1,piers operation,nan,nan
+651204.2,Docks operation,nan,nan
+651399.0,Apartment building operators,nan,nan
+651499.0,Dwelling operators except apartments,nan,nan
+651999.0,Real property lessors,nan,nan
+653101.1,Real estate brokers,nan,nan
+653101.2,Real estate agents,nan,nan
+653102.0,Real estate managers,nan,nan
+653103.0,Real estate listing services,nan,nan
+653104.1,Real estate leasing,nan,nan
+653104.2,Real estate rentals,nan,nan
+653199.1,Real estate agents,nan,nan
+653199.2,Real estate managers,nan,nan
+654199.0,Title abstract offices,nan,nan
+655299.1,Subdividers,nan,nan
+655299.2,Developers,nan,nan
+655399.1,Cemetery subdividers,nan,nan
+655399.2,Cemetery developers,nan,nan
+67.0,OWNING AND OTHER INVESTMENTS,nan,nan
+671999.0,Holding companies,nan,nan
+672299.0,Management investment openend,nan,nan
+672699.0,Investment offices,nan,nan
+673299.1,Educational trusts,nan,nan
+673299.2,Religious trusts,nan,nan
+673301.1,Private estate trusts,nan,nan
+673301.2,personal investment trusts,nan,nan
+673301.3,Vacation fund trusts,nan,nan
+673399.0,Trusts,nan,nan
+679401.1,Music licensing,nan,nan
+679401.2,Music royalties,nan,nan
+679499.1,Patent owners,nan,nan
+679499.2,Patent lessors,nan,nan
+679899.0,Real estate investment trusts,nan,nan
+679901.0,Commodity investors,nan,nan
+679999.0,Investors,nan,nan
+70.0,HOTELS LODGING HOUSES CAMPS AND OTHER PLACES OF ACCOMMODATION,nan,nan
+701101.0,Motels,nan,nan
+701102.0,Vacation lodges,nan,nan
+701103.0,Hotels,nan,nan
+701104.0,Inns,nan,nan
+701199.1,Hotels,nan,nan
+701199.2,motels,nan,nan
+702199.1,Rooming houses,nan,nan
+702199.2,Boarding houses,nan,nan
+703201.0,Recreational camps,nan,nan
+703202.0,Youth camps,nan,nan
+703203.0,Sporting camps,nan,nan
+703299.1,Sporting camps,nan,nan
+703299.2,Recreational camps,nan,nan
+703399.1,Trailer Parks,nan,nan
+703399.2,Campsites,nan,nan
+704101.1,Fraternities,nan,nan
+704101.2,Sororities,nan,nan
+704102.0,Rooming houses,nan,nan
+704199.0,Membershipbasis organization hotels,nan,nan
+72.0,PERSONAL SERVICES,nan,nan
+721199.1,Family power laundries,nan,nan
+721199.2,Commercial power laundries,nan,nan
+721201.1,Laundry agents,nan,nan
+721202.0,Garment pressing,nan,nan
+721301.0,Linen supply nonclothing,nan,nan
+721302.0,Linen supply clothing,nan,nan
+721599.1,Coinoperated laundries,nan,nan
+721599.2,Coinoperated cleaning,nan,nan
+721699.0,Drycleaning plants except rugs,nan,nan
+721701.1,Carpet cleaning on customer premises,nan,nan
+721701.2,Upholstery cleaning on customer premises,nan,nan
+721702.1,Carpet cleaning plants,nan,nan
+721702.2,Upholstery cleaning plants,nan,nan
+721801.0,Industrial equipment launderers,nan,nan
+721802.0,Industrial clothing launderers,nan,nan
+721901.1,Garment making,nan,nan
+721901.2,Garment alteration,nan,nan
+721901.3,Garment repair,nan,nan
+721902.1,Accessory and nongarment cleaning,nan,nan
+721902.2,Accessory and nongarment repair,nan,nan
+721903.1,Infant laundry,nan,nan
+721903.2,Infant garment services,nan,nan
+721904.0,Hand laundries,nan,nan
+721999.1,Laundry services,nan,nan
+721999.2,Garment services,nan,nan
+722199.0,Photographic studios portrait,nan,nan
+723101.1,Cosmetology salons,nan,nan
+723101.2,Personal hygiene salons,nan,nan
+723102.0,Beauty schools,nan,nan
+723199.0,Beauty shops,nan,nan
+724199.0,Barber shops,nan,nan
+725101.0,Shoe repair shops,nan,nan
+725199.1,Shoe repair,nan,nan
+725199.2,Shoeshine parlors,nan,nan
+726199.1,Funeral service,nan,nan
+726199.2,Crematories,nan,nan
+729901.0,Personal appearance services,nan,nan
+729902.1,Massage parlor services,nan,nan
+729902.2,Steam bath services,nan,nan
+729903.1,Dating services,nan,nan
+729903.2,Escort services,nan,nan
+729904.1,House services,nan,nan
+729904.2,Babysitting services,nan,nan
+729905.1,Facility rental,nan,nan
+729905.2,Party planning services,nan,nan
+729906.1,Personal document,nan,nan
+729906.2,Information services,nan,nan
+729907.0,Station operation services,nan,nan
+729908.0,Stitching services,nan,nan
+729909.0,Clothing rental services,nan,nan
+729910.0,Personal financial services,nan,nan
+729911.1,Personal item care services,nan,nan
+729911.2,Personal item storage services,nan,nan
+729912.0,Consumer purchasing services,nan,nan
+729999.0,Miscellaneous personal services,nan,nan
+731199.0,Advertising agencies,nan,nan
+73.0,BUSINESS SERVICES,nan,nan
+731299.0,Outdoor advertising services,nan,nan
+731301.1,Electronic media advertising,nan,nan
+731301.2,advertising representatives,nan,nan
+731302.1,Printed media advertising,nan,nan
+731302.2,advertising representatives,nan,nan
+731901.0,Transit advertising services,nan,nan
+731902.1,Distribution of advertising material,nan,nan
+731903.0,Aerial advertising services,nan,nan
+731999.0,Advertising,nan,nan
+732299.1,Adjustment services,nan,nan
+732299.2,Collection services,nan,nan
+732399.0,Credit reporting services,nan,nan
+733199.0,Direct mail advertising services,nan,nan
+733499.1,Photocopying services,nan,nan
+733499.2,Duplicating services,nan,nan
+733599.0,Commercial photography,nan,nan
+733601.0,Art design services,nan,nan
+733602.1,Film strip production,nan,nan
+733602.2,slide production,nan,nan
+733602.3,Still film production,nan,nan
+733699.1,Commercial art,nan,nan
+733699.2,Graphic design,nan,nan
+733801.0,Formal writing services,nan,nan
+733802.0,Stenographic services,nan,nan
+733899.1,Secretarial reporting,nan,nan
+733899.2,Court reporting,nan,nan
+734201.0,Disinfecting services,nan,nan
+734202.0,Pest control services,nan,nan
+734901.1,Building cleaning services,nan,nan
+734901.2,Office cleaning services,nan,nan
+734902.0,Building component cleaning service,nan,nan
+734999.0,Building maintenance services,nan,nan
+735299.0,Medical equipment rental,nan,nan
+735301.0,Oil equipment rental services,nan,nan
+735399.0,Heavy construction equipment rental,nan,nan
+735901.1,Home cleaning rental services.,nan,nan
+735901.2,Maintenance equipment rental services,nan,nan
+735902.0,Coinoperated machine rental services,nan,nan
+735903.0,Pallet rental services,nan,nan
+735904.1,Aircraft rental services.,nan,nan
+735904.2,Industrial truck rental services,nan,nan
+735905.1,Business machine equipment rental,nan,nan
+735905.2,Electronic equipment rental services,nan,nan
+735906.1,Party supplies services,nan,nan
+735906.2,Party rental services,nan,nan
+735907.1,Home appliance rental services,nan,nan
+735907.2,Furniture rental services,nan,nan
+735907.3,Entertainment rental services,nan,nan
+735908.1,Animal rental services,nan,nan
+735908.2,Plant rental services,nan,nan
+735909.0,Musical instrument rental services,nan,nan
+735999.1,Equipment rental,nan,nan
+735999.2,Equipment leasing,nan,nan
+736101.0,Placement agencies,nan,nan
+736102.0,Registries,nan,nan
+736301.0,Labor resource services,nan,nan
+736399.0,Help supply services,nan,nan
+737101.0,Custom computer programming services,nan,nan
+737102.0,Computer software writing services,nan,nan
+737103.1,Computer software development,nan,nan
+737103.2,Computer software applications,nan,nan
+737299.0,Prepackaged software,nan,nan
+737301.1,Systems software,nan,nan
+737301.2,software development services,nan,nan
+737302.0,Systems integration services,nan,nan
+737303.1,Computer system,nan,nan
+737303.2,Computer selling services,nan,nan
+737304.0,Computeraided system services,nan,nan
+737401.0,Computer processing services,nan,nan
+737499.1,Data processing,nan,nan
+737499.2,Data preparation,nan,nan
+737599.0,Information retrieval services,nan,nan
+737799.1,Computer rental,nan,nan
+737799.2,Computer leasing,nan,nan
+737899.1,Computer maintenance,nan,nan
+737899.2,Computer repair,nan,nan
+737901.0,Computer related maintenance services,nan,nan
+737902.0,Computer related consulting services,nan,nan
+738101.0,Guard services,nan,nan
+738102.0,Detective services,nan,nan
+738299.0,Security systems services,nan,nan
+738399.0,News syndicates,nan,nan
+738401.0,Photographic services,nan,nan
+738402.0,Film developing services,nan,nan
+738901.1,Personal service agents,nan,nan
+738901.2,Personal service brokers,nan,nan
+738902.1,Inspection services,nan,nan
+738902.2,Testing services,nan,nan
+738903.1,Advertising services,nan,nan
+738903.2,promotional services,nan,nan
+738903.3,Trade show services,nan,nan
+738904.1,Textile services,nan,nan
+738904.2,Apparel services,nan,nan
+738905.0,Reservation services,nan,nan
+738906.0,Interior design services,nan,nan
+738907.0,Finishing services,nan,nan
+738908.0,Mapmaking services,nan,nan
+738909.0,Financial services,nan,nan
+738910.0,Telephone services,nan,nan
+738911.1,Music services,nan,nan
+738911.2,Broadcasting services,nan,nan
+738912.1,Packaging services,nan,nan
+738912.2,Labeling services,nan,nan
+738913.1,Legal services,nan,nan
+738913.2,Tax services,nan,nan
+738914.1,Auction services,nan,nan
+738914.2,appraisal services,nan,nan
+738914.3,Exchange services,nan,nan
+738915.1,Lettering services,nan,nan
+738915.2,Sign painting services,nan,nan
+738916.1,Mailing services,nan,nan
+738916.2,Messenger services,nan,nan
+738917.0,Brokers' services,nan,nan
+738918.0,Design services,nan,nan
+738919.0,Metal cutting services,nan,nan
+738999.0,Business services,nan,nan
+75.0,AUTOMOTIVE REPAIR SERVICES AND PARKING,nan,nan
+751399.1,Truck rental,nan,nan
+751399.2,Truck leasing no drivers,nan,nan
+751499.0,Passenger car rental,nan,nan
+751901.0,Recreational vehicle rental,nan,nan
+751999.0,Utility trailer rental,nan,nan
+752101.0,Outdoor parking services,nan,nan
+752102.0,Indoor parking services,nan,nan
+753201.0,Interior repair services,nan,nan
+753202.1,Lettering services,nan,nan
+753202.2,Painting services,nan,nan
+753203.0,Customizing services nonfactory basis,nan,nan
+753204.0,Exterior repair services,nan,nan
+753299.1,Top and body repair shops,nan,nan
+753299.2,Top and body paint shops,nan,nan
+753399.0,Auto exhaust system repair shops,nan,nan
+753499.1,Tire retreading shops,nan,nan
+753499.2,Tire repair shops,nan,nan
+753801.0,Engine repair,nan,nan
+753899.0,General automotive repair shops,nan,nan
+753901.1,Frame repair services,nan,nan
+753901.2,Front end repair services,nan,nan
+753902.0,Powertrain components repair services,nan,nan
+753903.0,Electrical services,nan,nan
+753904.0,Brake services,nan,nan
+753999.0,Automotive repair shops,nan,nan
+754299.0,Carwashes,nan,nan
+754901.0,Automotive maintenance services,nan,nan
+754902.0,Automotive customizing services nonfactory basis,nan,nan
+754903.0,Towing services,nan,nan
+754999.0,Automotive services,nan,nan
+76.0,MISCELLANEOUS REPAIR SERVICES,nan,nan
+762201.0,Communication equipment repair,nan,nan
+762202.1,Radio repair,nan,nan
+762202.2,Radio installation,nan,nan
+762203.0,Home entertainment repair services,nan,nan
+762204.1,Antenna repair,nan,nan
+762204.2,Antenna installation,nan,nan
+762399.1,Refrigeration service,nan,nan
+762399.2,Repair service,nan,nan
+762901.0,Electrical personal use appliance repair,nan,nan
+762902.0,Electrical equipment repair services,nan,nan
+762903.0,Electrical household appliance repair,nan,nan
+762999.0,Electrical repair shops,nan,nan
+763101.0,Time piece repair services,nan,nan
+763102.0,Jewelry repair services,nan,nan
+764101.0,Upholstery work,nan,nan
+764102.1,Furniture repair,nan,nan
+764102.2,Furniture maintenance,nan,nan
+769299.0,Welding repair,nan,nan
+769401.0,Rewinding services,nan,nan
+769402.0,Motor repair services,nan,nan
+769499.0,Armature rewinding shops,nan,nan
+769901.0,Professional instrument repair services,nan,nan
+769902.1,Tank repair services,nan,nan
+769902.2,Tank cleaning services,nan,nan
+769903.1,Boiler repair services,nan,nan
+769903.2,Heating repair services,nan,nan
+769904.0,Waste cleaning services,nan,nan
+769905.0,Industrial equipment services,nan,nan
+769906.0,Nautical repair services,nan,nan
+769907.0,Hospital equipment repair services,nan,nan
+769908.0,Scientific equipment repair service,nan,nan
+769909.0,Recreational sporting equipment repair services,nan,nan
+769910.0,Musical instrument repair services,nan,nan
+769911.1,Lock services,nan,nan
+769911.2,Key services,nan,nan
+769912.1,Metal reshaping services,nan,nan
+769912.2,Metal replating services,nan,nan
+769913.0,Recreational vehicle repair services,nan,nan
+769914.1,Agricultural equipment,nan,nan
+769914.2,Agricultural repair services,nan,nan
+769915.1,Photographic repair services,nan,nan
+769915.2,Optical goods equipment repair services,nan,nan
+769916.0,Household appliance repair services,nan,nan
+769917.0,Cleaning services,nan,nan
+769918.0,General household repair services,nan,nan
+769919.0,Leather goods repair services.,nan,nan
+769919.1,Luggage repair services,nan,nan
+769920.0,Customizing services,nan,nan
+769921.0,Gun services,nan,nan
+769922.1,Aircraft repair services,nan,nan
+769922.2,Heavy equipment repair services,nan,nan
+769923.0,Tool repair services,nan,nan
+769924.0,Miscellaneous automotive repair services,nan,nan
+769925.0,Miscellaneous building item repair services,nan,nan
+769926.0,Window blind repair services,nan,nan
+769927.1,Hobby services,nan,nan
+769927.2,Collectors services,nan,nan
+769999.0,Repair services,nan,nan
+78.0,IMAGES IN MOTION,nan,nan
+781201.0,Motion picture production,nan,nan
+781202.0,Video production,nan,nan
+781299.1,Motion picture,nan,nan
+781299.2,Video production,nan,nan
+781901.1,Personnel services motion picture production,nan,nan
+781902.1,Reproduction services motion picture production,nan,nan
+781903.1,Editing services motion picture production,nan,nan
+781904.1,Equipment and prop rental motion picture production,nan,nan
+781905.1,Motion picture developing services,nan,nan
+781905.2,Motion picture laboratory services,nan,nan
+781999.0,Services allied to motion pictures,nan,nan
+782201.0,Film exchange services,nan,nan
+782202.0,Film rental services,nan,nan
+782203.0,Motion picture distribution,nan,nan
+782204.1,Television tape distribution,nan,nan
+782204.2,Video tape distribution,nan,nan
+782901.0,Motion picture booking agencies,nan,nan
+782999.0,Motion picture distribution services,nan,nan
+783299.0,Motion picture theaters except drivein,nan,nan
+784199.0,Video tape rental,nan,nan
+79.0,AMUSEMENT AND RECREATION SERVICES,nan,nan
+791101.0,Dance hall services,nan,nan
+791102.1,Dance instructor,nan,nan
+791102.2,Dance school services,nan,nan
+792201.1,Theatrical talent,nan,nan
+792201.2,Theatrical booking agencies,nan,nan
+792202.0,Theatrical production services,nan,nan
+792203.0,Theatrical companies,nan,nan
+792204.0,Theatrical producers,nan,nan
+792205.0,Theatrical rental services,nan,nan
+792206.1,Costume design services,nan,nan
+792206.2,Scenery design services,nan,nan
+792299.1,Theatrical producers,nan,nan
+792299.2,Theatrical services,nan,nan
+792901.0,Musical entertainers,nan,nan
+792999.1,Entertainers,nan,nan
+792999.2,Entertainment groups,nan,nan
+793399.0,Bowling centers,nan,nan
+794101.1,Professional sports clubs,nan,nan
+794101.2,Semiprofessional sports clubs,nan,nan
+794102.0,Stadium events operator services,nan,nan
+794199.1,Sports clubs,nan,nan
+794199.2,Sports clubs managers,nan,nan
+794199.3,Sports clubs promoters,nan,nan
+794801.1,Motor vehicle racing,nan,nan
+794801.2,Motor vehicle drivers,nan,nan
+794802.0,Race track operation,nan,nan
+794803.0,Racehorse care,nan,nan
+794804.1,Dog racing and drivers,nan,nan
+794804.2,Horse racing and drivers,nan,nan
+799101.1,Physical fitness clubs,nan,nan
+799101.2,Physical training equipment,nan,nan
+799102.0,Weight reducing clubs,nan,nan
+799103.0,Exercise facilities,nan,nan
+799301.0,Music machines,nan,nan
+799302.0,Game machines,nan,nan
+799303.0,Arcades,nan,nan
+799304.0,Gambling machines,nan,nan
+799699.0,Amusement parks,nan,nan
+799701.0,Ice sports,nan,nan
+799702.1,Boating clubs,nan,nan
+799702.2,Swimming clubs,nan,nan
+799703.1,Gun clubs,nan,nan
+799703.2,Hunting clubs,nan,nan
+799704.0,Outdoor field clubs,nan,nan
+799705.1,Indoor court clubs,nan,nan
+799705.2,Outdoor court clubs,nan,nan
+799799.1,Membership sports clubs,nan,nan
+799799.2,Membership recreation clubs,nan,nan
+799901.1,Tennis services,nan,nan
+799901.2,Tennis professionals,nan,nan
+799902.1,Golf services,nan,nan
+799902.2,Golf professionals,nan,nan
+799903.0,Indoor court clubs,nan,nan
+799904.0,Table sports parlor operation,nan,nan
+799905.1,Bicycle services,nan,nan
+799905.2,Motorcycle rental services,nan,nan
+799906.0,Skating rink operation services,nan,nan
+799907.1,Shooting facilities,nan,nan
+799907.2,Archery lanes,nan,nan
+799908.1,Card services,nan,nan
+799908.2,Game services,nan,nan
+799909.1,Animal shows,nan,nan
+799909.2,Animal circuses,nan,nan
+799910.1,Exhibition services,nan,nan
+799910.2,Carnival operation services,nan,nan
+799911.1,Instruction schools services,nan,nan
+799911.2,Instruction camps services,nan,nan
+799912.1,Riding services,nan,nan
+799912.2,Rodeo services,nan,nan
+799913.1,Gambling services,nan,nan
+799913.2,Lottery services,nan,nan
+799914.1,Beach sports equipment rental and services.,nan,nan
+799914.2,Water sports equipment rental and services.,nan,nan
+799915.1,Tourist attractions,nan,nan
+799915.2,amusement park concessions and rides,nan,nan
+799916.1,Tour services,nan,nan
+799916.2,Guide services,nan,nan
+799999.1,Amusement,nan,nan
+799999.2,Recreation,nan,nan
+80.0,HEALTH SERVICES,nan,nan
+801101.0,Internal medicine practitioners,nan,nan
+801102.0,Medical centers,nan,nan
+801103.0,Medical insurance associations,nan,nan
+801104.1,Psychiatrists,nan,nan
+801104.2,Psychoanalysts,nan,nan
+801105.1,Specialized medical practitioners,nan,nan
+801105.2,Internal medical practitioners,nan,nan
+801199.1,Offices of medical doctors,nan,nan
+801199.2,Clinics of medical doctors,nan,nan
+802101.0,Specialized dental practitioners,nan,nan
+802102.1,Dental clinics,nan,nan
+802102.2,Dental offices,nan,nan
+802199.1,Offices of dentists,nan,nan
+804201.0,Specialized optometrists,nan,nan
+804299.1,Offices of optometrists,nan,nan
+804299.2,Clinics of optometrists,nan,nan
+804901.0,Nutrition specialist,nan,nan
+804902.0,Physical therapist,nan,nan
+804903.0,Speech specialist,nan,nan
+804904.1,Psychologist,nan,nan
+804904.2,psychotherapist,nan,nan
+804904.3,Hypnotist,nan,nan
+804905.1,Nurses,nan,nan
+804905.2,Other medical assistants,nan,nan
+804999.0,Offices of health practitioners,nan,nan
+805199.0,Skilled nursing care facilities,nan,nan
+805299.0,Intermediate care facilities,nan,nan
+805999.1,Nursing,nan,nan
+805999.2,Personal care,nan,nan
+806299.1,General medical hospitals,nan,nan
+806299.2,Surgical hospitals,nan,nan
+806399.0,Psychiatric hospitals,nan,nan
+806901.0,Substance abuse hospitals,nan,nan
+806902.0,Chronic disease hospital,nan,nan
+806903.0,Respiratory hospital,nan,nan
+806999.1,Specialty hospitals except psychiatric,nan,nan
+806999.2,Specialty hospitals except psychiatric,nan,nan
+807101.0,Testing laboratories,nan,nan
+807199.0,Medical laboratories,nan,nan
+807299.0,Dental laboratories,nan,nan
+808299.0,Home health care services,nan,nan
+809301.0,Substance abuse clinics (outpatient),nan,nan
+809302.0,Respiratory health clinic,nan,nan
+809303.1,Family planning clinics,nan,nan
+809303.2,Birth control clinics,nan,nan
+809399.0,Specialty outpatient clinics,nan,nan
+809901.0,Blood related health services,nan,nan
+809902.1,Physical examination,nan,nan
+809902.2,Testing physical services,nan,nan
+809999.1,Health services,nan,nan
+809999.2,Allied Health services,nan,nan
+81.0,LEGAL SERVICES,nan,nan
+811101.0,Specialized legal services,nan,nan
+811102.0,Specialized law offices,nan,nan
+811199.0,Legal services,nan,nan
+82.0,EDUCATIONAL SERVICES,nan,nan
+821101.1,Catholic elementary schools,nan,nan
+821101.2,Catholic secondary schools,nan,nan
+821102.1,Private elementary schools,nan,nan
+821102.2,Private secondary schools,nan,nan
+821103.1,Public elementary schools,nan,nan
+821103.2,Public secondary schools,nan,nan
+821104.0,Specialty education,nan,nan
+821199.1,Elementary schools,nan,nan
+821199.2,Secondary schools,nan,nan
+822101.1,Colleges,nan,nan
+822102.0,Professional schools,nan,nan
+822299.0,Junior colleges,nan,nan
+823101.0,Specialized libraries,nan,nan
+823102.1,College libraries,nan,nan
+823102.2,Military post libraries,nan,nan
+823103.0,General public libraries,nan,nan
+823104.0,Library services,nan,nan
+824399.0,Data processing schools,nan,nan
+824499.1,Business schools,nan,nan
+824499.2,Secretarial schools,nan,nan
+824901.0,Trade school,nan,nan
+824902.0,Business training services,nan,nan
+824903.0,Medical training services,nan,nan
+824999.0,Vocational schools,nan,nan
+829901.1,Arts schools,nan,nan
+829901.2,Crafts schools,nan,nan
+829902.0,Educational services,nan,nan
+829903.1,Music schools,nan,nan
+829903.2,Drama schools,nan,nan
+829904.0,Vehicle driving school,nan,nan
+829905.1,Reading schools,nan,nan
+829905.2,Speaking schools,nan,nan
+829999.1,Schools services,nan,nan
+829999.2,Educational services,nan,nan
+83.0,SOCIAL SERVICES,nan,nan
+832201.0,Geriatric social service,nan,nan
+832202.0,Child related social services,nan,nan
+832203.0,Emergency social services,nan,nan
+832204.0,Rehabilitation services,nan,nan
+832205.0,Family counseling services,nan,nan
+832206.0,General counseling services,nan,nan
+832207.0,Social services for the handicapped,nan,nan
+832208.0,Substance abuse counseling,nan,nan
+832299.1,Individual services,nan,nan
+832299.2,Family services,nan,nan
+833101.0,Job training services,nan,nan
+833199.1,Job training,nan,nan
+833199.2,Job training related services,nan,nan
+835199.0,Child day care services,nan,nan
+836101.0,Residential care for children,nan,nan
+836102.0,Juvenile correctional facilities,nan,nan
+836103.1,Residential care for the handicapped,nan,nan
+836103.2,Residential care for the handicapped,nan,nan
+836104.0,Geriatric residential care,nan,nan
+836199.0,Residential care,nan,nan
+839901.0,Comunista development groups,nan,nan
+839999.0,Social services,nan,nan
+84.0,MUSEUMS ART GALLERIES AND BOTANICAL AND ZOOLOGICAL GARDENS,nan,nan
+841201.0,Art gallery,nan,nan
+841299.1,Museums,nan,nan
+841299.2,Art galleries,nan,nan
+842201.1,Aquariums,nan,nan
+842201.2,Zoological gardens,nan,nan
+842202.1,Arboreta,nan,nan
+842202.2,Botanical gardens,nan,nan
+86.0,MEMBER ORGANIZATIONS,nan,nan
+861101.0,Trade associations,nan,nan
+861102.0,Growers' associations,nan,nan
+861103.0,Regulatory associations,nan,nan
+861199.0,Business associations,nan,nan
+862101.0,Medical fieldrelated associations,nan,nan
+862199.0,Professional organizations.,nan,nan
+863199.0,Labor organizations,nan,nan
+864101.0,Civic associations,nan,nan
+864102.0,Fraternal associations,nan,nan
+864103.0,Youth organizations,nan,nan
+864104.0,Social associations,nan,nan
+864105.0,Dwellingrelated associations,nan,nan
+864199.1,Civic associations,nan,nan
+864199.2,Social associations,nan,nan
+865199.0,Political organizations,nan,nan
+866101.1,Churches,nan,nan
+866101.2,temples,nan,nan
+866101.3,Shrines,nan,nan
+866102.0,Nonchurch religious organizations,nan,nan
+869901.0,Athletic organizations,nan,nan
+869902.1,Reading rooms,nan,nan
+869902.2,Other cultural organizations,nan,nan
+869999.0,Membership organizations,nan,nan
+87.0,ENGINEERING ACCOUNTING RESEARCH ADMINISTRATION AND RELATED SERVICES,nan,nan
+871101.0,Sanitary engineers,nan,nan
+871102.0,Industrial engineers,nan,nan
+871103.1,Petroleum engineers,nan,nan
+871103.2,Mining engineers,nan,nan
+871103.3,Chemical engineers,nan,nan
+871104.1,Construction engineering,nan,nan
+871104.2,Civil engineering,nan,nan
+871199.0,Engineering services,nan,nan
+871201.0,Architectural engineering,nan,nan
+871399.0,Surveying services,nan,nan
+872101.0,Auditing services,nan,nan
+872102.0,Accounting services except auditing,nan,nan
+872199.1,Accounting,nan,nan
+872199.2,auditing,nan,nan
+872199.3,Bookkeeping,nan,nan
+873101.0,Biological research,nan,nan
+873102.0,Commercial physical research,nan,nan
+873103.0,Natural resource research,nan,nan
+873201.1,Market analysis,nan,nan
+873201.2,business analysis,nan,nan
+873201.3,Economic research,nan,nan
+873202.1,Commercial research,nan,nan
+873202.2,sociological research,nan,nan
+873202.3,Educational research,nan,nan
+873301.0,Noncommercial biological research organization,nan,nan
+873302.0,Noncommercial social research organization,nan,nan
+873399.0,Noncommercial research organizations,nan,nan
+873401.0,Radiation laboratories,nan,nan
+873402.0,Product testing laboratories,nan,nan
+873403.0,Pollution testing,nan,nan
+873499.0,Testing laboratories,nan,nan
+874101.0,Business management,nan,nan
+874199.0,Management services,nan,nan
+874201.1,Industrial consulting services,nan,nan
+874201.2,Labor consulting services,nan,nan
+874202.0,Human resource consulting services,nan,nan
+874203.0,Marketing consulting services,nan,nan
+874204.0,Industry specialist consultants,nan,nan
+874205.1,Business planning services,nan,nan
+874205.2,Business organizing services,nan,nan
+874299.0,Management consulting services,nan,nan
+874399.0,Public relations services,nan,nan
+874499.0,Facilities support services,nan,nan
+874801.0,Testing services,nan,nan
+874802.1,Urban planning services,nan,nan
+874802.2,Urban consulting services,nan,nan
+874803.0,Communications consulting,nan,nan
+874804.1,Systems analysis consulting services,nan,nan
+874804.2,Engineering consulting services,nan,nan
+874899.0,Business consulting,nan,nan
+88.0,PRIVATE HOUSES,nan,nan
+881101.0,Residential farms,nan,nan
+881102.0,Domestic services,nan,nan
+881199.0,Private households,nan,nan
+89.0,VARIOUS SERVICES,nan,nan
+899901.1,Artists,nan,nan
+899901.2,Artists' studios,nan,nan
+899902.0,Artrelated services,nan,nan
+899903.1,Commercial writings,nan,nan
+899903.2,Literary writings,nan,nan
+899904.0,Song writings,nan,nan
+899905.0,Weather related services,nan,nan
+899906.0,Lecturing services,nan,nan
+899907.0,Earth science services,nan,nan
+899908.0,Communication services,nan,nan
+899909.0,Scientific consulting,nan,nan
+899910.0,Personal services,nan,nan
+899999.0,Services,nan,nan
+91.0,EXECUTIVE LEGISLATIVE AND GENERAL GOVERNMENT EXCEPT FINANCE,nan,nan
+911101.0,National executive offices,nan,nan
+911102.1,State executive offices,nan,nan
+911102.2,Local executive offices,nan,nan
+912101.0,National Legislative bodies,nan,nan
+912102.1,State legislative bodies,nan,nan
+912102.2,Local legislative offices,nan,nan
+913199.0,Executive and legislative combined,nan,nan
+919901.0,General government administration,nan,nan
+919999.0,General government,nan,nan
+92.0,JUSTICE PUBLIC ORDER AND SECURITY,nan,nan
+921199.0,Courts,nan,nan
+922101.1,Interstate police protection,nan,nan
+922101.2,Federal police protection,nan,nan
+922102.0,Regional police protection,nan,nan
+922201.0,Prosecuting parties,nan,nan
+922202.0,Legal counsel,nan,nan
+922399.0,Correctional institutions,nan,nan
+922499.0,Fire protection,nan,nan
+922901.0,Safety statistics centers,nan,nan
+922999.1,Public order,nan,nan
+922999.2,Public order and safety,nan,nan
+93.0,PUBLIC FINANCES TAXATION AND MONETARY POLICY,nan,nan
+931101.0,Taxation,nan,nan
+931102.1,Public finance,nan,nan
+94.0,MANAGEMENT OF HUMAN RESOURCES PROGRAMS,nan,nan
+941199.0,Administration of educational programs,nan,nan
+943199.0,Administration of public health programs,nan,nan
+944101.0,Income maintenance programs,nan,nan
+944102.1,Administration of social resources,nan,nan
+944102.2,Administration human resources,nan,nan
+95.0,MANAGEMENT OF ENVIRONMENTAL QUALITY AND HOUSING PROGRAMS,nan,nan
+951101.0,Environmental agencies,nan,nan
+951102.0,Waste management agencies,nan,nan
+951201.0,Wildlife conservation agencies,nan,nan
+951202.0,Land conservation agencies,nan,nan
+951299.1,Land conservation,nan,nan
+951299.2,mineral conservation,nan,nan
+951299.3,Wildlife conservation,nan,nan
+953199.0,Housing programs,nan,nan
+953201.1,Community development,nan,nan
+953201.2,Rural development,nan,nan
+953202.1,Urban renewal,nan,nan
+953202.2,Urban development,nan,nan
+953299.0,Urban and community development,nan,nan
+96.0,ADMINISTRATION OF ECONOMIC PROGRAMS,nan,nan
+961199.0,Administration of general economic programs,nan,nan
+962101.0,Aircraft regulating agencies,nan,nan
+962102.0,Licensing agencies,nan,nan
+962103.1,Water vessels,nan,nan
+962103.2,Port regulating agencies,nan,nan
+962199.1,Regulation of transportation,nan,nan
+962199.2,Administration of transportation,nan,nan
+963199.1,Regulation of utilities,nan,nan
+963199.2,administration of utilities,nan,nan
+964199.0,Regulation of agricultural marketing,nan,nan
+965101.0,Financial regulatory agency,nan,nan
+965102.0,Labor regulatory agency,nan,nan
+965199.0,Regulation of miscellaneous commercial sectors,nan,nan
+966199.1,Space research,nan,nan
+966199.2,Space technology,nan,nan
+971199.0,National security,nan,nan
+972199.0,International affairs,nan,nan

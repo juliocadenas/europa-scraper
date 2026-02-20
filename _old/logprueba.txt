@@ -1,0 +1,830 @@
+venv_wsl) julio@JULIO:/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX$  python3 iniciar_servidor.py
+====================================================
+      INICIANDO SERVIDOR EUROPA SCRAPER
+====================================================
+✅ IP del servidor detectada: 172.23.48.1
+   Usa esta dirección en el cliente: 172.23.48.1:8001
+----------------------------------------------------
+2025-11-26 13:13:14,034 - INFO - root - Logging initialized to logs/server.log
+2025-11-26 13:13:14,058 - INFO - root - Rutas registradas:
+2025-11-26 13:13:14,059 - INFO - root -   {'GET', 'HEAD'} /openapi.json
+2025-11-26 13:13:14,060 - INFO - root -   {'GET', 'HEAD'} /docs
+2025-11-26 13:13:14,062 - INFO - root -   {'GET', 'HEAD'} /docs/oauth2-redirect
+2025-11-26 13:13:14,064 - INFO - root -   {'GET', 'HEAD'} /redoc
+2025-11-26 13:13:14,066 - INFO - root -   {'POST'} /start_scraping
+2025-11-26 13:13:14,068 - INFO - root -   {'POST'} /stop_scraping
+2025-11-26 13:13:14,069 - INFO - root -   {'GET'} /detailed_status
+2025-11-26 13:13:14,070 - INFO - root -   {'POST'} /upload_courses
+2025-11-26 13:13:14,073 - INFO - root -   {'GET'} /get_all_courses
+2025-11-26 13:13:14,074 - INFO - root -   {'GET'} /
+2025-11-26 13:13:14,075 - INFO - root -   {'GET'} /ping
+2025-11-26 13:13:14,077 - INFO - root - Iniciando servidor en http://0.0.0.0:8001
+2025-11-26 13:13:14,180 - DEBUG - asyncio - Using selector: EpollSelector
+INFO:     Started server process [29168]
+INFO:     Waiting for application startup.
+2025-11-26 13:13:15,237 - INFO - root - Iniciando servidor y gestor de multiprocesamiento...
+====================================================
+      INICIANDO SERVIDOR EUROPA SCRAPER
+====================================================
+✅ IP del servidor detectada: 172.23.48.1
+   Usa esta dirección en el cliente: 172.23.48.1:8001
+----------------------------------------------------
+2025-11-26 13:13:15,635 - INFO - root - Iniciado broadcasting de presencia del servidor
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+2025-11-26 13:13:15,636 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+2025-11-26 13:13:20,639 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+2025-11-26 13:13:25,642 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:56854 - "GET / HTTP/1.1" 200 OK
+2025-11-26 13:13:30,102 - INFO - utils.sqlite_handler - SQLiteHandler inicializado con base de datos: /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/courses.db
+2025-11-26 13:13:30,129 - INFO - utils.sqlite_handler - El esquema de la tabla 'courses' ya está actualizado.
+2025-11-26 13:13:30,160 - INFO - utils.sqlite_handler - Obtenidos 28 cursos desde la base de datos SQLite
+INFO:     127.0.0.1:56862 - "GET /get_all_courses HTTP/1.1" 200 OK
+2025-11-26 13:13:30,643 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:56864 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56874 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:13:35,646 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:53130 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:13:40,648 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:53142 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:13:45,651 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:53152 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:13:48,400 - INFO - root - Recibido nuevo trabajo de scraping: {'query': '01.0 a 011908.0', 'job_params': {'from_sic': '01.0', 'to_sic': '011908.0', 'min_words': '3', 'search_engine': 'Cordis Europa', 'proxy_enabled': False, 'proxy_rotation': True, 'captcha_solving_enabled': True, 'captcha_service': 'Manual', 'request_delay': '3.0', 'page_timeout': '60', 'output_format': 'CSV', 'headless_mode': False}}
+2025-11-26 13:13:48,402 - INFO - root - Usando formato anidado: 01.0 a 011908.0
+2025-11-26 13:13:48,409 - INFO - utils.sqlite_handler - SQLiteHandler inicializado con base de datos: /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/courses.db
+2025-11-26 13:13:48,468 - INFO - utils.sqlite_handler - El esquema de la tabla 'courses' ya está actualizado.
+2025-11-26 13:13:48,526 - INFO - utils.sqlite_handler - Obtenidos 28 cursos desde la base de datos SQLite
+2025-11-26 13:13:48,535 - INFO - root - Se procesarán 10 cursos. Dividiendo en lotes de 10.
+2025-11-26 13:13:48,537 - INFO - root - Parámetros del trabajo: {'from_sic': '01.0', 'to_sic': '011908.0', 'search_engine': 'Cordis Europa', 'min_words': 3, 'is_headless': False}
+2025-11-26 13:13:48,541 - INFO - root - Iniciando un pool de 8 procesos trabajadores...
+INFO:     127.0.0.1:42900 - "POST /start_scraping HTTP/1.1" 202 Accepted
+====================================================
+      INICIANDO SERVIDOR EUROPA SCRAPER
+====================================================
+====================================================
+      INICIANDO SERVIDOR EUROPA SCRAPER
+====================================================
+====================================================
+      INICIANDO SERVIDOR EUROPA SCRAPER
+====================================================
+✅ IP del servidor detectada: 172.23.48.1
+   Usa esta dirección en el cliente: 172.23.48.1:8001
+----------------------------------------------------
+====================================================
+      INICIANDO SERVIDOR EUROPA SCRAPER
+====================================================
+✅ IP del servidor detectada: 172.23.48.1
+   Usa esta dirección en el cliente: 172.23.48.1:8001
+----------------------------------------------------
+====================================================
+====================================================
+      INICIANDO SERVIDOR EUROPA SCRAPER
+      INICIANDO SERVIDOR EUROPA SCRAPER
+====================================================
+====================================================
+====================================================
+      INICIANDO SERVIDOR EUROPA SCRAPER
+====================================================
+✅ IP del servidor detectada: 172.23.48.1
+   Usa esta dirección en el cliente: 172.23.48.1:8001
+----------------------------------------------------
+✅ IP del servidor detectada: 172.23.48.1
+   Usa esta dirección en el cliente: 172.23.48.1:8001
+----------------------------------------------------
+✅ IP del servidor detectada: 172.23.48.1
+   Usa esta dirección en el cliente: 172.23.48.1:8001
+----------------------------------------------------
+✅ IP del servidor detectada: 172.23.48.1
+   Usa esta dirección en el cliente: 172.23.48.1:8001
+----------------------------------------------------
+✅ IP del servidor detectada: 172.23.48.1
+   Usa esta dirección en el cliente: 172.23.48.1:8001
+----------------------------------------------------
+====================================================
+      INICIANDO SERVIDOR EUROPA SCRAPER
+====================================================
+✅ IP del servidor detectada: 172.23.48.1
+   Usa esta dirección en el cliente: 172.23.48.1:8001
+----------------------------------------------------
+INFO:     127.0.0.1:42916 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:13:50,654 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:42926 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:13:55,661 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:35542 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:14:00,663 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:35546 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35558 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:14:05,691 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:38280 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:14:10,694 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:38288 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38302 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:14:15,695 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+2025-11-26 13:14:16,227 - INFO - root - Logging initialized to /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/logs/worker_0.log
+2025-11-26 13:14:16,228 - INFO - root - Logging initialized to /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/logs/worker_1.log
+2025-11-26 13:14:16,232 - INFO - root - Worker 1 iniciado.
+2025-11-26 13:14:16,233 - INFO - root - Worker 0 iniciado.
+2025-11-26 13:14:16,246 - INFO - scraper.config - Loaded configuration from /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/client/config.json
+2025-11-26 13:14:16,248 - INFO - scraper.config - Loaded configuration from /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/client/config.json
+2025-11-26 13:14:16,248 - INFO - scraper.config - Configuration manager initialized
+2025-11-26 13:14:16,249 - INFO - scraper.config - Configuration manager initialized
+2025-11-26 13:14:16,250 - INFO - root - Worker 1: Inicializando componentes para la primera tarea.
+2025-11-26 13:14:16,252 - INFO - utils.user_agent_manager - Inicializado UserAgentManager con 32 User-Agents
+2025-11-26 13:14:16,253 - INFO - root - Worker 1: Modo headless = False
+2025-11-26 13:14:16,258 - INFO - utils.scraper.browser_manager - Starting Playwright...
+2025-11-26 13:14:16,375 - INFO - root - Logging initialized to /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/logs/worker_2.log
+2025-11-26 13:14:16,379 - INFO - root - Logging initialized to /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/logs/worker_5.log
+2025-11-26 13:14:16,379 - INFO - root - Worker 2 iniciado.
+2025-11-26 13:14:16,385 - INFO - root - Worker 5 iniciado.
+2025-11-26 13:14:16,395 - INFO - scraper.config - Loaded configuration from /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/client/config.json
+2025-11-26 13:14:16,396 - INFO - scraper.config - Configuration manager initialized
+2025-11-26 13:14:16,397 - INFO - scraper.config - Loaded configuration from /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/client/config.json
+2025-11-26 13:14:16,399 - INFO - scraper.config - Configuration manager initialized
+2025-11-26 13:14:16,656 - INFO - root - Logging initialized to /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/logs/worker_3.log
+2025-11-26 13:14:16,657 - INFO - root - Logging initialized to /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/logs/worker_4.log
+2025-11-26 13:14:16,662 - INFO - root - Worker 3 iniciado.
+2025-11-26 13:14:16,663 - INFO - root - Worker 4 iniciado.
+2025-11-26 13:14:16,676 - INFO - scraper.config - Loaded configuration from /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/client/config.json
+2025-11-26 13:14:16,677 - INFO - scraper.config - Loaded configuration from /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/client/config.json
+2025-11-26 13:14:16,677 - INFO - scraper.config - Configuration manager initialized
+2025-11-26 13:14:16,678 - INFO - scraper.config - Configuration manager initialized
+INFO:     127.0.0.1:39998 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:14:20,697 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+2025-11-26 13:14:21,731 - INFO - root - Logging initialized to /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/logs/worker_6.log
+2025-11-26 13:14:21,735 - INFO - root - Worker 6 iniciado.
+2025-11-26 13:14:21,746 - INFO - scraper.config - Loaded configuration from /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/client/config.json
+2025-11-26 13:14:21,747 - INFO - scraper.config - Configuration manager initialized
+INFO:     127.0.0.1:40002 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:14:22,445 - INFO - root - Logging initialized to /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/logs/worker_7.log
+2025-11-26 13:14:22,449 - INFO - root - Worker 7 iniciado.
+2025-11-26 13:14:22,459 - INFO - scraper.config - Loaded configuration from /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/client/config.json
+2025-11-26 13:14:22,459 - INFO - scraper.config - Configuration manager initialized
+INFO:     127.0.0.1:40016 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:14:25,699 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:55592 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:14:30,700 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:55602 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:14:35,702 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:55618 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39060 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:14:40,318 - INFO - utils.scraper.browser_manager - Launching browser...
+2025-11-26 13:14:40,319 - INFO - utils.scraper.browser_manager - Playwright will launch browser with headless=False
+2025-11-26 13:14:40,703 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+2025-11-26 13:14:41,145 - INFO - utils.scraper.browser_manager - Creating browser context with enhanced fingerprinting protection...
+2025-11-26 13:14:41,146 - INFO - utils.scraper.browser_manager - Using locale: en-CA, timezone: America/Vancouver
+2025-11-26 13:14:41,276 - INFO - utils.scraper.browser_manager - Browser initialized successfully with stealth enhancements.
+2025-11-26 13:14:41,277 - INFO - root - Worker 1: Navegador inicializado correctamente
+2025-11-26 13:14:41,287 - INFO - utils.proxy_manager - ProxyManager inicializado (proxies deshabilitados por defecto)
+2025-11-26 13:14:41,288 - INFO - utils.user_agent_manager - Inicializado UserAgentManager con 32 User-Agents
+2025-11-26 13:14:41,288 - INFO - utils.adaptive_delay - Inicializado AdaptiveDelay con retraso inicial=2.0s, máximo=60.0s, jitter=0.25
+2025-11-26 13:14:41,290 - INFO - utils.url_cache - Inicializado URLCache en /tmp/url_cache (max_age=86400s, max_size=100.0MB)
+2025-11-26 13:14:41,290 - INFO - utils.url_cache - Limpieza de caché completada. Tamaño actual: 0.0MB
+2025-11-26 13:14:41,291 - INFO - utils.url_cache - Inicializado URLCache en /tmp/url_cache (max_age=86400s, max_size=100.0MB)
+2025-11-26 13:14:41,292 - INFO - utils.url_cache - Limpieza de caché completada. Tamaño actual: 0.0MB
+2025-11-26 13:14:41,292 - INFO - utils.sqlite_handler - SQLiteHandler inicializado con base de datos: /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/controllers/../courses.db
+2025-11-26 13:14:41,313 - INFO - utils.sqlite_handler - El esquema de la tabla 'courses' ya está actualizado.
+2025-11-26 13:14:41,316 - INFO - root - Worker 1 recibió lote 01.0..011908.0 con 10 cursos y parámetros: {'from_sic': '01.0', 'to_sic': '011908.0', 'search_engine': 'Cordis Europa', 'min_words': 3, 'is_headless': False}
+2025-11-26 13:14:41,317 - INFO - controllers.scraper_controller - Resultado de check_playwright_browser: True
+2025-11-26 13:14:41,318 - INFO - controllers.scraper_controller - Creando tarea de fondo para scraping: {'de_sic': '01.0', 'a_sic': '011908.0', 'de_curso': 'AGRICULTURAL PRODUCTION CROPS', 'a_curso': 'Sugar beets', 'min_palabras': 3, 'motor': 'Cordis Europa', 'dominio': 'None'}
+2025-11-26 13:14:41,370 - INFO - utils.scraper.result_manager - CSV file created for worker 1: results/results_01.0_AGRICULTURAL_PRODUCTION_to_011908.0_Sugar_beets_cordis_europa_worker_1_20251126_131441.csv
+2025-11-26 13:14:41,374 - INFO - utils.scraper.result_manager - File for omitted results for worker 1: omitidos/omitidos_01.0_AGRICULTURAL_PRODUCTION_to_011908.0_Sugar_beets_cordis_europa_worker_1_20251126_131441.xlsx
+2025-11-26 13:14:41,378 - INFO - controllers.scraper_controller - ✅ Archivo CSV creado exitosamente: results/results_01.0_AGRICULTURAL_PRODUCTION_to_011908.0_Sugar_beets_cordis_europa_worker_1_20251126_131441.csv
+2025-11-26 13:14:41,381 - INFO - controllers.scraper_controller -    Tamaño inicial del archivo: 55 bytes
+2025-11-26 13:14:41,382 - INFO - controllers.scraper_controller - Usando conexión directa (sin proxies)
+2025-11-26 13:14:41,424 - INFO - utils.sqlite_handler - TOTAL de códigos SIC con nombres de curso cargados desde SQLite: 28
+2025-11-26 13:14:41,429 - INFO - controllers.scraper_controller - Código 'desde' encontrado en posición 0: 01.0 - AGRICULTURAL PRODUCTION CROPS
+2025-11-26 13:14:41,430 - INFO - controllers.scraper_controller - Código 'hasta' encontrado en posición 9: 011908.0 - Sugar beets
+2025-11-26 13:14:41,430 - INFO - controllers.scraper_controller - RANGO CALCULADO: desde posición 0 hasta 9 (inclusive)
+2025-11-26 13:14:41,431 - INFO - controllers.scraper_controller - TOTAL DE CURSOS EN RANGO: 10
+2025-11-26 13:14:41,432 - INFO - controllers.scraper_controller -   Curso 1: 01.0 - AGRICULTURAL PRODUCTION CROPS (Estado: procesando, Servidor: UNKNOWN_SERVER)
+2025-11-26 13:14:41,432 - INFO - controllers.scraper_controller -   Curso 2: 011901.1 - Pea farms (Estado: procesando, Servidor: UNKNOWN_SERVER)
+2025-11-26 13:14:41,433 - INFO - controllers.scraper_controller -   Curso 3: 011901.2 - Vegetable farms (Estado: procesando, Servidor: UNKNOWN_SERVER)
+2025-11-26 13:14:41,434 - INFO - controllers.scraper_controller -   Curso 4: 011902.0 - Feeder grains (Estado: procesando, Servidor: UNKNOWN_SERVER)
+2025-11-26 13:14:41,434 - INFO - controllers.scraper_controller -   Curso 5: 011903.0 - Oil grains (Estado: procesando, Servidor: UNKNOWN_SERVER)
+2025-11-26 13:14:41,435 - INFO - controllers.scraper_controller -   Curso 6: 011904.0 - Field seed (Estado: procesando, Servidor: UNKNOWN_SERVER)
+2025-11-26 13:14:41,436 - INFO - controllers.scraper_controller -   Curso 7: 011905.0 - Cotton (Estado: procesando, Servidor: UNKNOWN_SERVER)
+2025-11-26 13:14:41,436 - INFO - controllers.scraper_controller -   Curso 8: 011906.0 - Rice (Estado: procesando, Servidor: UNKNOWN_SERVER)
+2025-11-26 13:14:41,437 - INFO - controllers.scraper_controller -   Curso 9: 011907.0 - Tobacco (Estado: procesando, Servidor: UNKNOWN_SERVER)
+2025-11-26 13:14:41,438 - INFO - controllers.scraper_controller -   Curso 10: 011908.0 - Sugar beets (Estado: procesando, Servidor: UNKNOWN_SERVER)
+2025-11-26 13:14:41,438 - INFO - controllers.scraper_controller - CURSOS EN RANGO CALCULADOS: 10 códigos SIC desde '01.0' hasta '011908.0'
+2025-11-26 13:14:41,439 - INFO - controllers.scraper_controller - TOTAL DE CURSOS A PROCESAR: 10
+2025-11-26 13:14:41,440 - INFO - controllers.scraper_controller - Marcando 10 cursos como 'PROCESANDO' en el servidor UNKNOWN_SERVER...
+2025-11-26 13:14:41,516 - INFO - utils.sqlite_handler - 10 cursos actualizados a 'PROCESANDO' en el servidor 'UNKNOWN_SERVER' en SQLite.
+2025-11-26 13:14:41,521 - INFO - controllers.scraper_controller - === FASE 1: BÚSQUEDA DE RESULTADOS con Cordis Europa ====
+2025-11-26 13:14:41,523 - INFO - controllers.scraper_controller - Total de cursos a procesar en búsqueda: 10
+2025-11-26 13:14:41,526 - INFO - controllers.scraper_controller - Buscando 'AGRICULTURAL PRODUCTION CROPS' con código SIC 01.0 (1/10)
+2025-11-26 13:14:41,527 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+2025-11-26 13:14:41,627 - INFO - utils.sqlite_handler - Estado del curso '01.0 - AGRICULTURAL PRODUCTION CROPS' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-26 13:14:41,633 - INFO - utils.scraper.search_engine - Iniciando búsqueda en Cordis Europa para: 'AGRICULTURAL PRODUCTION CROPS'
+2025-11-26 13:14:42,424 - INFO - utils.scraper.search_engine - Navegando a la página 1: https://cordis.europa.eu/search?q=AGRICULTURAL%20PRODUCTION%20CROPS&p=1&num=10&srt=Relevance:decreasing&archived=true
+INFO:     127.0.0.1:39070 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:14:45,705 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+2025-11-26 13:14:45,973 - INFO - utils.scraper.search_engine - Esperando el banner de cookies...
+INFO:     127.0.0.1:39084 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55604 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:14:50,707 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:55612 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:14:55,711 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:48604 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:15:00,714 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+2025-11-26 13:15:01,030 - WARNING - utils.scraper.search_engine - No se pudo gestionar el banner de cookies (puede que no haya aparecido o que haya fallado el selector): Locator.wait_for: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator("div.cdk-overlay-container").locator("button.co-cookie-consent__button-accept-all") to be visible
+
+2025-11-26 13:15:01,032 - INFO - utils.scraper.search_engine - Procesando página 1 de resultados de Cordis...
+INFO:     127.0.0.1:48618 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48626 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:15:05,716 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:38422 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:15:10,718 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:38434 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38446 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:15:15,720 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:58782 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:15:20,722 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:58796 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:15:25,725 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:58804 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56914 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:15:30,726 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+2025-11-26 13:15:31,147 - ERROR - utils.scraper.search_engine - Error CRÍTICO en search_cordis_europa: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 831, in search_cordis_europa
+    await page.wait_for_selector('app-card-project, app-card-result, div.no-results', timeout=30000)
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/async_api/_generated.py", line 8181, in wait_for_selector
+    await self._impl_obj.wait_for_selector(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_page.py", line 422, in wait_for_selector
+    return await self._main_frame.wait_for_selector(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_frame.py", line 369, in wait_for_selector
+    await self._channel.send(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+
+INFO:     127.0.0.1:56920 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:15:34,422 - INFO - controllers.scraper_controller - Encontrados 0 resultados para 'AGRICULTURAL PRODUCTION CROPS'
+2025-11-26 13:15:34,424 - INFO - controllers.scraper_controller - No se encontraron resultados para 'AGRICULTURAL PRODUCTION CROPS' con código SIC 01.0
+2025-11-26 13:15:34,426 - INFO - controllers.scraper_controller - Buscando 'Pea farms' con código SIC 011901.1 (2/10)
+2025-11-26 13:15:34,428 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+2025-11-26 13:15:34,586 - INFO - utils.sqlite_handler - Estado del curso '011901.1 - Pea farms' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-26 13:15:34,594 - INFO - utils.scraper.search_engine - Iniciando búsqueda en Cordis Europa para: 'Pea farms'
+2025-11-26 13:15:34,802 - INFO - utils.scraper.search_engine - Navegando a la página 1: https://cordis.europa.eu/search?q=Pea%20farms&p=1&num=10&srt=Relevance:decreasing&archived=true
+2025-11-26 13:15:35,545 - INFO - utils.scraper.search_engine - Esperando el banner de cookies...
+2025-11-26 13:15:35,728 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:56936 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44732 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:15:40,730 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:44746 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:15:45,737 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:33810 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:15:50,586 - WARNING - utils.scraper.search_engine - No se pudo gestionar el banner de cookies (puede que no haya aparecido o que haya fallado el selector): Locator.wait_for: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator("div.cdk-overlay-container").locator("button.co-cookie-consent__button-accept-all") to be visible
+
+2025-11-26 13:15:50,588 - INFO - utils.scraper.search_engine - Procesando página 1 de resultados de Cordis...
+INFO:     127.0.0.1:33812 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:15:50,739 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:33816 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:15:55,742 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:57844 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:16:00,744 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:57856 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57860 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:16:05,747 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:45848 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:16:10,749 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:45856 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45866 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:16:15,753 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:34218 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:16:20,683 - ERROR - utils.scraper.search_engine - Error CRÍTICO en search_cordis_europa: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 831, in search_cordis_europa
+    await page.wait_for_selector('app-card-project, app-card-result, div.no-results', timeout=30000)
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/async_api/_generated.py", line 8181, in wait_for_selector
+    await self._impl_obj.wait_for_selector(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_page.py", line 422, in wait_for_selector
+    return await self._main_frame.wait_for_selector(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_frame.py", line 369, in wait_for_selector
+    await self._channel.send(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+
+2025-11-26 13:16:20,756 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+2025-11-26 13:16:21,649 - INFO - controllers.scraper_controller - Encontrados 0 resultados para 'Pea farms'
+2025-11-26 13:16:21,652 - INFO - controllers.scraper_controller - No se encontraron resultados para 'Pea farms' con código SIC 011901.1
+2025-11-26 13:16:21,655 - INFO - controllers.scraper_controller - Buscando 'Vegetable farms' con código SIC 011901.2 (3/10)
+2025-11-26 13:16:21,658 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+2025-11-26 13:16:21,827 - INFO - utils.sqlite_handler - Estado del curso '011901.2 - Vegetable farms' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-26 13:16:21,833 - INFO - utils.scraper.search_engine - Iniciando búsqueda en Cordis Europa para: 'Vegetable farms'
+2025-11-26 13:16:21,991 - INFO - utils.scraper.search_engine - Navegando a la página 1: https://cordis.europa.eu/search?q=Vegetable%20farms&p=1&num=10&srt=Relevance:decreasing&archived=true
+INFO:     127.0.0.1:34222 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:16:22,900 - INFO - utils.scraper.search_engine - Esperando el banner de cookies...
+2025-11-26 13:16:25,760 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:34234 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39962 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:16:30,762 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:39968 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:16:35,766 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:39984 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:16:37,933 - WARNING - utils.scraper.search_engine - No se pudo gestionar el banner de cookies (puede que no haya aparecido o que haya fallado el selector): Locator.wait_for: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator("div.cdk-overlay-container").locator("button.co-cookie-consent__button-accept-all") to be visible
+
+2025-11-26 13:16:37,934 - INFO - utils.scraper.search_engine - Procesando página 1 de resultados de Cordis...
+INFO:     127.0.0.1:51752 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:16:40,770 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:51768 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:16:45,771 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:60494 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:16:50,775 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:60502 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60516 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:16:55,780 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:58860 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:17:00,781 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:58866 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58876 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:17:05,783 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+2025-11-26 13:17:07,984 - ERROR - utils.scraper.search_engine - Error CRÍTICO en search_cordis_europa: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 831, in search_cordis_europa
+    await page.wait_for_selector('app-card-project, app-card-result, div.no-results', timeout=30000)
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/async_api/_generated.py", line 8181, in wait_for_selector
+    await self._impl_obj.wait_for_selector(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_page.py", line 422, in wait_for_selector
+    return await self._main_frame.wait_for_selector(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_frame.py", line 369, in wait_for_selector
+    await self._channel.send(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+
+INFO:     127.0.0.1:36344 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:17:08,921 - INFO - controllers.scraper_controller - Encontrados 0 resultados para 'Vegetable farms'
+2025-11-26 13:17:08,923 - INFO - controllers.scraper_controller - No se encontraron resultados para 'Vegetable farms' con código SIC 011901.2
+2025-11-26 13:17:08,930 - INFO - controllers.scraper_controller - Buscando 'Feeder grains' con código SIC 011902.0 (4/10)
+2025-11-26 13:17:08,933 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+2025-11-26 13:17:09,024 - INFO - utils.sqlite_handler - Estado del curso '011902.0 - Feeder grains' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-26 13:17:09,030 - INFO - utils.scraper.search_engine - Iniciando búsqueda en Cordis Europa para: 'Feeder grains'
+2025-11-26 13:17:09,168 - INFO - utils.scraper.search_engine - Navegando a la página 1: https://cordis.europa.eu/search?q=Feeder%20grains&p=1&num=10&srt=Relevance:decreasing&archived=true
+2025-11-26 13:17:09,754 - INFO - utils.scraper.search_engine - Esperando el banner de cookies...
+2025-11-26 13:17:10,787 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:36356 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:17:15,793 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:36358 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42628 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:17:20,800 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:42636 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:17:24,839 - WARNING - utils.scraper.search_engine - No se pudo gestionar el banner de cookies (puede que no haya aparecido o que haya fallado el selector): Locator.wait_for: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator("div.cdk-overlay-container").locator("button.co-cookie-consent__button-accept-all") to be visible
+
+2025-11-26 13:17:24,840 - INFO - utils.scraper.search_engine - Procesando página 1 de resultados de Cordis...
+2025-11-26 13:17:25,802 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:42644 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54354 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:17:30,805 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:54356 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:17:35,807 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:59600 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59614 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:17:40,808 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:59624 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:17:45,810 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:51444 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:17:50,812 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:51460 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51468 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:17:54,877 - ERROR - utils.scraper.search_engine - Error CRÍTICO en search_cordis_europa: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 831, in search_cordis_europa
+    await page.wait_for_selector('app-card-project, app-card-result, div.no-results', timeout=30000)
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/async_api/_generated.py", line 8181, in wait_for_selector
+    await self._impl_obj.wait_for_selector(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_page.py", line 422, in wait_for_selector
+    return await self._main_frame.wait_for_selector(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_frame.py", line 369, in wait_for_selector
+    await self._channel.send(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+
+2025-11-26 13:17:55,600 - INFO - controllers.scraper_controller - Encontrados 0 resultados para 'Feeder grains'
+2025-11-26 13:17:55,602 - INFO - controllers.scraper_controller - No se encontraron resultados para 'Feeder grains' con código SIC 011902.0
+2025-11-26 13:17:55,604 - INFO - controllers.scraper_controller - Buscando 'Oil grains' con código SIC 011903.0 (5/10)
+2025-11-26 13:17:55,605 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+2025-11-26 13:17:55,686 - INFO - utils.sqlite_handler - Estado del curso '011903.0 - Oil grains' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-26 13:17:55,690 - INFO - utils.scraper.search_engine - Iniciando búsqueda en Cordis Europa para: 'Oil grains'
+2025-11-26 13:17:55,803 - INFO - utils.scraper.search_engine - Navegando a la página 1: https://cordis.europa.eu/search?q=Oil%20grains&p=1&num=10&srt=Relevance:decreasing&archived=true
+2025-11-26 13:17:55,814 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+2025-11-26 13:17:56,593 - INFO - utils.scraper.search_engine - Esperando el banner de cookies...
+INFO:     127.0.0.1:42510 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:18:00,828 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:42524 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42528 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:18:05,832 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:39454 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:18:10,836 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+2025-11-26 13:18:11,630 - WARNING - utils.scraper.search_engine - No se pudo gestionar el banner de cookies (puede que no haya aparecido o que haya fallado el selector): Locator.wait_for: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator("div.cdk-overlay-container").locator("button.co-cookie-consent__button-accept-all") to be visible
+
+2025-11-26 13:18:11,632 - INFO - utils.scraper.search_engine - Procesando página 1 de resultados de Cordis...
+INFO:     127.0.0.1:39468 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:18:15,839 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:39472 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34422 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:18:20,841 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:34430 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:18:25,844 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:34438 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39190 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:18:30,847 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:39196 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:18:35,850 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:38892 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:18:40,854 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:38906 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:18:41,673 - ERROR - utils.scraper.search_engine - Error CRÍTICO en search_cordis_europa: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 831, in search_cordis_europa
+    await page.wait_for_selector('app-card-project, app-card-result, div.no-results', timeout=30000)
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/async_api/_generated.py", line 8181, in wait_for_selector
+    await self._impl_obj.wait_for_selector(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_page.py", line 422, in wait_for_selector
+    return await self._main_frame.wait_for_selector(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_frame.py", line 369, in wait_for_selector
+    await self._channel.send(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+
+2025-11-26 13:18:42,241 - INFO - controllers.scraper_controller - Encontrados 0 resultados para 'Oil grains'
+2025-11-26 13:18:42,244 - INFO - controllers.scraper_controller - No se encontraron resultados para 'Oil grains' con código SIC 011903.0
+2025-11-26 13:18:42,384 - INFO - controllers.scraper_controller - Buscando 'Field seed' con código SIC 011904.0 (6/10)
+2025-11-26 13:18:42,390 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+2025-11-26 13:18:42,498 - INFO - utils.sqlite_handler - Estado del curso '011904.0 - Field seed' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-26 13:18:42,504 - INFO - utils.scraper.search_engine - Iniciando búsqueda en Cordis Europa para: 'Field seed'
+2025-11-26 13:18:42,655 - INFO - utils.scraper.search_engine - Navegando a la página 1: https://cordis.europa.eu/search?q=Field%20seed&p=1&num=10&srt=Relevance:decreasing&archived=true
+2025-11-26 13:18:43,184 - INFO - utils.scraper.search_engine - Esperando el banner de cookies...
+INFO:     127.0.0.1:38908 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:18:45,855 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:36382 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:18:50,857 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:36392 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36398 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:18:55,858 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+2025-11-26 13:18:58,234 - WARNING - utils.scraper.search_engine - No se pudo gestionar el banner de cookies (puede que no haya aparecido o que haya fallado el selector): Locator.wait_for: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator("div.cdk-overlay-container").locator("button.co-cookie-consent__button-accept-all") to be visible
+
+2025-11-26 13:18:58,235 - INFO - utils.scraper.search_engine - Procesando página 1 de resultados de Cordis...
+INFO:     127.0.0.1:39526 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:19:00,861 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:39542 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39556 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:19:05,863 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:36280 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:19:10,867 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:36292 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:19:15,871 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:36304 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57746 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:19:20,874 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:57756 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:19:25,877 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:51632 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:19:28,283 - ERROR - utils.scraper.search_engine - Error CRÍTICO en search_cordis_europa: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 831, in search_cordis_europa
+    await page.wait_for_selector('app-card-project, app-card-result, div.no-results', timeout=30000)
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/async_api/_generated.py", line 8181, in wait_for_selector
+    await self._impl_obj.wait_for_selector(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_page.py", line 422, in wait_for_selector
+    return await self._main_frame.wait_for_selector(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_frame.py", line 369, in wait_for_selector
+    await self._channel.send(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+
+2025-11-26 13:19:29,159 - INFO - controllers.scraper_controller - Encontrados 0 resultados para 'Field seed'
+2025-11-26 13:19:29,161 - INFO - controllers.scraper_controller - No se encontraron resultados para 'Field seed' con código SIC 011904.0
+2025-11-26 13:19:29,163 - INFO - controllers.scraper_controller - Buscando 'Cotton' con código SIC 011905.0 (7/10)
+2025-11-26 13:19:29,165 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+2025-11-26 13:19:29,297 - INFO - utils.sqlite_handler - Estado del curso '011905.0 - Cotton' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-26 13:19:29,301 - INFO - utils.scraper.search_engine - Iniciando búsqueda en Cordis Europa para: 'Cotton'
+2025-11-26 13:19:29,448 - INFO - utils.scraper.search_engine - Navegando a la página 1: https://cordis.europa.eu/search?q=Cotton&p=1&num=10&srt=Relevance:decreasing&archived=true
+2025-11-26 13:19:29,967 - INFO - utils.scraper.search_engine - Esperando el banner de cookies...
+INFO:     127.0.0.1:51648 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:19:30,880 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:51664 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:19:35,888 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:45260 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:19:40,891 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:45270 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45274 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:19:45,014 - WARNING - utils.scraper.search_engine - No se pudo gestionar el banner de cookies (puede que no haya aparecido o que haya fallado el selector): Locator.wait_for: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator("div.cdk-overlay-container").locator("button.co-cookie-consent__button-accept-all") to be visible
+
+2025-11-26 13:19:45,015 - INFO - utils.scraper.search_engine - Procesando página 1 de resultados de Cordis...
+2025-11-26 13:19:45,894 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:52238 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:19:50,896 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:52242 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52244 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:19:55,898 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:38118 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:20:00,899 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:38130 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:20:05,901 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:38134 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36768 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:20:10,909 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:36782 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:20:15,057 - ERROR - utils.scraper.search_engine - Error CRÍTICO en search_cordis_europa: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 831, in search_cordis_europa
+    await page.wait_for_selector('app-card-project, app-card-result, div.no-results', timeout=30000)
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/async_api/_generated.py", line 8181, in wait_for_selector
+    await self._impl_obj.wait_for_selector(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_page.py", line 422, in wait_for_selector
+    return await self._main_frame.wait_for_selector(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_frame.py", line 369, in wait_for_selector
+    await self._channel.send(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+
+2025-11-26 13:20:15,645 - INFO - controllers.scraper_controller - Encontrados 0 resultados para 'Cotton'
+2025-11-26 13:20:15,647 - INFO - controllers.scraper_controller - No se encontraron resultados para 'Cotton' con código SIC 011905.0
+2025-11-26 13:20:15,651 - INFO - controllers.scraper_controller - Buscando 'Rice' con código SIC 011906.0 (8/10)
+2025-11-26 13:20:15,653 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+2025-11-26 13:20:15,786 - INFO - utils.sqlite_handler - Estado del curso '011906.0 - Rice' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-26 13:20:15,790 - INFO - utils.scraper.search_engine - Iniciando búsqueda en Cordis Europa para: 'Rice'
+2025-11-26 13:20:15,912 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+2025-11-26 13:20:15,947 - INFO - utils.scraper.search_engine - Navegando a la página 1: https://cordis.europa.eu/search?q=Rice&p=1&num=10&srt=Relevance:decreasing&archived=true
+2025-11-26 13:20:16,500 - INFO - utils.scraper.search_engine - Esperando el banner de cookies...
+INFO:     127.0.0.1:36794 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49680 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:20:20,914 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:49688 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:20:25,918 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:45316 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:20:30,920 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:45332 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:20:31,540 - WARNING - utils.scraper.search_engine - No se pudo gestionar el banner de cookies (puede que no haya aparecido o que haya fallado el selector): Locator.wait_for: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator("div.cdk-overlay-container").locator("button.co-cookie-consent__button-accept-all") to be visible
+
+2025-11-26 13:20:31,542 - INFO - utils.scraper.search_engine - Procesando página 1 de resultados de Cordis...
+INFO:     127.0.0.1:45342 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:20:35,922 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:40716 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:20:40,925 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:40730 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40744 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:20:45,927 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:58440 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:20:50,931 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:58452 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58454 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:20:55,934 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:60044 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:21:00,936 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+2025-11-26 13:21:01,623 - ERROR - utils.scraper.search_engine - Error CRÍTICO en search_cordis_europa: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 831, in search_cordis_europa
+    await page.wait_for_selector('app-card-project, app-card-result, div.no-results', timeout=30000)
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/async_api/_generated.py", line 8181, in wait_for_selector
+    await self._impl_obj.wait_for_selector(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_page.py", line 422, in wait_for_selector
+    return await self._main_frame.wait_for_selector(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_frame.py", line 369, in wait_for_selector
+    await self._channel.send(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+
+2025-11-26 13:21:02,272 - INFO - controllers.scraper_controller - Encontrados 0 resultados para 'Rice'
+2025-11-26 13:21:02,273 - INFO - controllers.scraper_controller - No se encontraron resultados para 'Rice' con código SIC 011906.0
+2025-11-26 13:21:02,274 - INFO - controllers.scraper_controller - Buscando 'Tobacco' con código SIC 011907.0 (9/10)
+2025-11-26 13:21:02,275 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+2025-11-26 13:21:02,338 - INFO - utils.sqlite_handler - Estado del curso '011907.0 - Tobacco' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-26 13:21:02,341 - INFO - utils.scraper.search_engine - Iniciando búsqueda en Cordis Europa para: 'Tobacco'
+2025-11-26 13:21:02,429 - INFO - utils.scraper.search_engine - Navegando a la página 1: https://cordis.europa.eu/search?q=Tobacco&p=1&num=10&srt=Relevance:decreasing&archived=true
+2025-11-26 13:21:02,918 - INFO - utils.scraper.search_engine - Esperando el banner de cookies...
+INFO:     127.0.0.1:60056 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:21:05,938 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:60072 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40568 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:21:10,940 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:40574 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:21:15,942 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:60362 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:21:17,994 - WARNING - utils.scraper.search_engine - No se pudo gestionar el banner de cookies (puede que no haya aparecido o que haya fallado el selector): Locator.wait_for: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator("div.cdk-overlay-container").locator("button.co-cookie-consent__button-accept-all") to be visible
+
+2025-11-26 13:21:17,995 - INFO - utils.scraper.search_engine - Procesando página 1 de resultados de Cordis...
+INFO:     127.0.0.1:60374 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:21:20,944 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:60390 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:21:25,947 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:58632 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:21:30,951 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:58640 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58644 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:21:35,955 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:46516 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:21:40,957 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:46532 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46546 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:21:45,960 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+2025-11-26 13:21:48,064 - ERROR - utils.scraper.search_engine - Error CRÍTICO en search_cordis_europa: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 831, in search_cordis_europa
+    await page.wait_for_selector('app-card-project, app-card-result, div.no-results', timeout=30000)
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/async_api/_generated.py", line 8181, in wait_for_selector
+    await self._impl_obj.wait_for_selector(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_page.py", line 422, in wait_for_selector
+    return await self._main_frame.wait_for_selector(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_frame.py", line 369, in wait_for_selector
+    await self._channel.send(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+
+2025-11-26 13:21:48,943 - INFO - controllers.scraper_controller - Encontrados 0 resultados para 'Tobacco'
+2025-11-26 13:21:48,948 - INFO - controllers.scraper_controller - No se encontraron resultados para 'Tobacco' con código SIC 011907.0
+2025-11-26 13:21:48,956 - INFO - controllers.scraper_controller - Buscando 'Sugar beets' con código SIC 011908.0 (10/10)
+2025-11-26 13:21:48,961 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+INFO:     127.0.0.1:45004 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:21:49,096 - INFO - utils.sqlite_handler - Estado del curso '011908.0 - Sugar beets' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-26 13:21:49,101 - INFO - utils.scraper.search_engine - Iniciando búsqueda en Cordis Europa para: 'Sugar beets'
+2025-11-26 13:21:49,186 - INFO - utils.scraper.search_engine - Navegando a la página 1: https://cordis.europa.eu/search?q=Sugar%20beets&p=1&num=10&srt=Relevance:decreasing&archived=true
+2025-11-26 13:21:50,128 - INFO - utils.scraper.search_engine - Esperando el banner de cookies...
+2025-11-26 13:21:50,964 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:45012 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:21:55,970 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:45022 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39438 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:22:01,439 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:39444 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:22:05,636 - WARNING - utils.scraper.search_engine - No se pudo gestionar el banner de cookies (puede que no haya aparecido o que haya fallado el selector): Locator.wait_for: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator("div.cdk-overlay-container").locator("button.co-cookie-consent__button-accept-all") to be visible
+
+2025-11-26 13:22:05,638 - INFO - utils.scraper.search_engine - Procesando página 1 de resultados de Cordis...
+2025-11-26 13:22:06,445 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:39446 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50048 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:22:11,446 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:50052 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:22:16,447 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:57820 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57826 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:22:21,449 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:57840 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:22:26,451 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:53666 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:22:31,454 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:53678 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53688 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:22:35,674 - ERROR - utils.scraper.search_engine - Error CRÍTICO en search_cordis_europa: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 831, in search_cordis_europa
+    await page.wait_for_selector('app-card-project, app-card-result, div.no-results', timeout=30000)
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/async_api/_generated.py", line 8181, in wait_for_selector
+    await self._impl_obj.wait_for_selector(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_page.py", line 422, in wait_for_selector
+    return await self._main_frame.wait_for_selector(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_frame.py", line 369, in wait_for_selector
+    await self._channel.send(
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/venv_wsl/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("app-card-project, app-card-result, div.no-results") to be visible
+
+2025-11-26 13:22:36,457 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+2025-11-26 13:22:36,511 - INFO - controllers.scraper_controller - Encontrados 0 resultados para 'Sugar beets'
+2025-11-26 13:22:36,514 - INFO - controllers.scraper_controller - No se encontraron resultados para 'Sugar beets' con código SIC 011908.0
+2025-11-26 13:22:36,634 - WARNING - controllers.scraper_controller - No se encontraron resultados para procesar
+2025-11-26 13:22:36,636 - INFO - root - Worker 1 completó el lote 01.0..011908.0.
+2025-11-26 13:22:36,638 - INFO - root - Todas las tareas de la cola han sido completadas.
+2025-11-26 13:22:36,640 - INFO - root - Enviando señal de finalización a todos los trabajadores...
+2025-11-26 13:22:36,645 - INFO - root - Worker 0 recibió señal de finalización.
+2025-11-26 13:22:36,645 - INFO - root - Worker 2 recibió señal de finalización.
+2025-11-26 13:22:36,647 - INFO - root - Worker 4 recibió señal de finalización.
+2025-11-26 13:22:36,647 - INFO - root - Worker 3 recibió señal de finalización.
+2025-11-26 13:22:36,646 - INFO - root - Worker 5 recibió señal de finalización.
+2025-11-26 13:22:36,647 - INFO - root - Worker 6 recibió señal de finalización.
+2025-11-26 13:22:36,648 - INFO - root - Worker 1 recibió señal de finalización.
+2025-11-26 13:22:36,649 - INFO - root - Worker 7 recibió señal de finalización.
+2025-11-26 13:22:38,061 - INFO - root - Pool de trabajadores detenido.
+INFO:     127.0.0.1:55594 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:22:41,458 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:55598 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55600 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:22:46,475 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:37194 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:22:51,477 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:37208 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:22:56,480 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:37212 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37278 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:23:01,483 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:37284 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:23:06,496 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:37286 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44300 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:23:11,502 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:44306 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:23:16,505 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:47478 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:23:21,508 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001
+INFO:     127.0.0.1:47492 - "GET /detailed_status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47502 - "GET /detailed_status HTTP/1.1" 200 OK
+2025-11-26 13:23:26,510 - DEBUG - root - Broadcast enviado: EUROPA_SCRAPER_SERVER;172.23.53.181;8001

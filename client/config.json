@@ -1,0 +1,47 @@
+{
+    "data_dir": "data",
+    "log_dir": "logs",
+    "max_results_per_search": 10,
+    "relevance_threshold": 0.5,
+    "concurrent_searches": 3,
+    "captcha_solving_enabled": true,
+    "captcha_service": "Manual",
+    "captcha_api_key": "",
+    "proxy_enabled": false,
+    "proxy_rotation": true,
+    "proxy_timeout": "30",
+    "proxy_list": "",
+    "min_words": "3",
+    "request_delay": "3.0",
+    "page_timeout": "60",
+    "user_agent": "",
+    "output_dir": "results",
+    "output_format": "CSV",
+    "log_level": "DEBUG",
+    "save_logs": true,
+    "headless_mode": false,
+    "scraping": {
+        "minimum_words_per_page": 3
+    },
+    "proxies": {
+        "enabled": false,
+        "rotation_enabled": true,
+        "test_timeout": 30,
+        "max_retries": 3
+    },
+    "sqlite_cloud": {
+        "enabled": false,
+        "url": "https://cn6wjw2rhk.g3.sqlite.cloud:443",
+        "username": "",
+        "password": "",
+        "default_table": "courses",
+        "connection_timeout": 30,
+        "max_connections": 5
+    },
+    "server": {
+        "host": "usr-brief-essex-moss.trycloudflare.com",
+        "port": 443,
+        "auto_detect_wsl": false
+    },
+    "num_workers": "2"
+}

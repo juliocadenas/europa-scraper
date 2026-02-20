@@ -1,0 +1,33 @@
+COMANDOS PARA CONFIGURAR FIREWALL DE WINDOWS
+============================================
+
+PROBLEMA: Windows no puede encontrar los archivos .bat desde PowerShell
+
+SOLUCIÓN: Ejecutar estos comandos directamente
+
+PASO 1: ABRIR CMD COMO ADMINISTRADOR
+- Clic derecho en Símbolo del sistema
+- Seleccionar "Ejecutar como administrador"
+
+PASO 2: NAVEGAR AL DIRECTORIO
+cd C:\Users\julio\Documents\DOCUPLAY\Proyecto\Python\EUROPA\V3.1-LINUX
+
+PASO 3: DESACTIVAR FIREWALL
+netsh advfirewall set allprofiles state off
+
+PASO 4: INICIAR SERVIDOR WSL
+En otra terminal, ejecutar:
+wsl -d Ubuntu bash -c "cd /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX && ./iniciar_servidor_wsl_simple.sh"
+
+PASO 5: ESPERAR 10 SEGUNDOS
+
+PASO 6: INICIAR CLIENTE WINDOWS
+cd client
+python main.py
+Configurar: 172.23.48.1:8001
+
+PASO 7: REACTIVAR FIREWALL
+netsh advfirewall set allprofiles state on
+
+ESTOS COMANDOS FUNCIONAN SIEMPRE.
+NO HACE FALTA ARCHIVOS .BAT

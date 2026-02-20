@@ -1,0 +1,212 @@
+2025-11-25 23:26:21,702 - INFO - root - Logging initialized to /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/logs/worker_5.log
+2025-11-25 23:26:21,714 - INFO - root - Worker 5 iniciado.
+2025-11-25 23:26:21,737 - INFO - scraper.config - Loaded configuration from /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/client/config.json
+2025-11-25 23:26:21,741 - INFO - scraper.config - Configuration manager initialized
+2025-11-25 23:26:21,743 - INFO - root - Worker 5: Inicializando componentes para la primera tarea.
+2025-11-25 23:26:21,747 - INFO - utils.user_agent_manager - Inicializado UserAgentManager con 32 User-Agents
+2025-11-25 23:26:21,750 - INFO - root - Worker 5: Modo headless = False
+2025-11-25 23:26:21,761 - INFO - utils.scraper.browser_manager - Starting Playwright...
+2025-11-25 23:26:45,609 - INFO - utils.scraper.browser_manager - Launching browser...
+2025-11-25 23:26:45,610 - INFO - utils.scraper.browser_manager - Playwright will launch browser with headless=False
+2025-11-25 23:26:46,650 - INFO - utils.scraper.browser_manager - Creating browser context with enhanced fingerprinting protection...
+2025-11-25 23:26:46,651 - INFO - utils.scraper.browser_manager - Using locale: en-AU, timezone: Europe/Paris
+2025-11-25 23:26:46,733 - INFO - utils.scraper.browser_manager - Browser initialized successfully with stealth enhancements.
+2025-11-25 23:26:46,735 - INFO - root - Worker 5: Navegador inicializado correctamente
+2025-11-25 23:26:46,759 - INFO - utils.proxy_manager - ProxyManager inicializado (proxies deshabilitados por defecto)
+2025-11-25 23:26:46,760 - INFO - utils.user_agent_manager - Inicializado UserAgentManager con 32 User-Agents
+2025-11-25 23:26:46,761 - INFO - utils.adaptive_delay - Inicializado AdaptiveDelay con retraso inicial=2.0s, máximo=60.0s, jitter=0.25
+2025-11-25 23:26:46,763 - INFO - utils.url_cache - Inicializado URLCache en /tmp/url_cache (max_age=86400s, max_size=100.0MB)
+2025-11-25 23:26:46,765 - INFO - utils.url_cache - Limpieza de caché completada. Tamaño actual: 0.0MB
+2025-11-25 23:26:46,767 - INFO - utils.url_cache - Inicializado URLCache en /tmp/url_cache (max_age=86400s, max_size=100.0MB)
+2025-11-25 23:26:46,768 - INFO - utils.url_cache - Limpieza de caché completada. Tamaño actual: 0.0MB
+2025-11-25 23:26:46,768 - INFO - utils.sqlite_handler - SQLiteHandler inicializado con base de datos: /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/controllers/../courses.db
+2025-11-25 23:26:46,824 - INFO - utils.sqlite_handler - El esquema de la tabla 'courses' ya está actualizado.
+2025-11-25 23:26:46,828 - INFO - root - Worker 5 recibió lote 011901.1..011908.0 con 9 cursos y parámetros: {'from_sic': '011901.1', 'to_sic': '011908.0', 'search_engine': 'Cordis Europa', 'min_words': '3', 'is_headless': False}
+2025-11-25 23:26:46,833 - INFO - controllers.scraper_controller - Resultado de check_playwright_browser: True
+2025-11-25 23:26:46,835 - INFO - controllers.scraper_controller - Creando tarea de fondo para scraping: {'de_sic': '011901.1', 'a_sic': '011908.0', 'de_curso': 'Pea farms', 'a_curso': 'Sugar beets', 'min_palabras': 3, 'motor': 'Cordis Europa', 'dominio': 'None'}
+2025-11-25 23:26:46,945 - INFO - utils.scraper.result_manager - CSV file created for worker 5: results/results_011901.1_Pea_farms_to_011908.0_Sugar_beets_cordis_europa_worker_5_20251125_232646.csv
+2025-11-25 23:26:46,948 - INFO - utils.scraper.result_manager - File for omitted results for worker 5: omitidos/omitidos_011901.1_Pea_farms_to_011908.0_Sugar_beets_cordis_europa_worker_5_20251125_232646.xlsx
+2025-11-25 23:26:46,952 - INFO - controllers.scraper_controller - ✅ Archivo CSV creado exitosamente: results/results_011901.1_Pea_farms_to_011908.0_Sugar_beets_cordis_europa_worker_5_20251125_232646.csv
+2025-11-25 23:26:46,956 - INFO - controllers.scraper_controller -    Tamaño inicial del archivo: 55 bytes
+2025-11-25 23:26:46,957 - INFO - controllers.scraper_controller - Usando conexión directa (sin proxies)
+2025-11-25 23:26:46,999 - INFO - utils.sqlite_handler - TOTAL de códigos SIC con nombres de curso cargados desde SQLite: 28
+2025-11-25 23:26:47,002 - INFO - controllers.scraper_controller - Código 'desde' encontrado en posición 1: 011901.1 - Pea farms
+2025-11-25 23:26:47,003 - INFO - controllers.scraper_controller - Código 'hasta' encontrado en posición 9: 011908.0 - Sugar beets
+2025-11-25 23:26:47,004 - INFO - controllers.scraper_controller - RANGO CALCULADO: desde posición 1 hasta 9 (inclusive)
+2025-11-25 23:26:47,004 - INFO - controllers.scraper_controller - TOTAL DE CURSOS EN RANGO: 9
+2025-11-25 23:26:47,005 - INFO - controllers.scraper_controller -   Curso 1: 011901.1 - Pea farms (Estado: PROCESANDO, Servidor: UNKNOWN_SERVER)
+2025-11-25 23:26:47,008 - INFO - controllers.scraper_controller -   Curso 2: 011901.2 - Vegetable farms (Estado: PROCESANDO, Servidor: UNKNOWN_SERVER)
+2025-11-25 23:26:47,009 - INFO - controllers.scraper_controller -   Curso 3: 011902.0 - Feeder grains (Estado: PROCESANDO, Servidor: UNKNOWN_SERVER)
+2025-11-25 23:26:47,009 - INFO - controllers.scraper_controller -   Curso 4: 011903.0 - Oil grains (Estado: PROCESANDO, Servidor: UNKNOWN_SERVER)
+2025-11-25 23:26:47,010 - INFO - controllers.scraper_controller -   Curso 5: 011904.0 - Field seed (Estado: PROCESANDO, Servidor: UNKNOWN_SERVER)
+2025-11-25 23:26:47,011 - INFO - controllers.scraper_controller -   Curso 6: 011905.0 - Cotton (Estado: PROCESANDO, Servidor: UNKNOWN_SERVER)
+2025-11-25 23:26:47,012 - INFO - controllers.scraper_controller -   Curso 7: 011906.0 - Rice (Estado: PROCESANDO, Servidor: UNKNOWN_SERVER)
+2025-11-25 23:26:47,012 - INFO - controllers.scraper_controller -   Curso 8: 011907.0 - Tobacco (Estado: PROCESANDO, Servidor: UNKNOWN_SERVER)
+2025-11-25 23:26:47,013 - INFO - controllers.scraper_controller -   Curso 9: 011908.0 - Sugar beets (Estado: PROCESANDO, Servidor: UNKNOWN_SERVER)
+2025-11-25 23:26:47,014 - INFO - controllers.scraper_controller - CURSOS EN RANGO CALCULADOS: 9 códigos SIC desde '011901.1' hasta '011908.0'
+2025-11-25 23:26:47,014 - INFO - controllers.scraper_controller - TOTAL DE CURSOS A PROCESAR: 9
+2025-11-25 23:26:47,015 - INFO - controllers.scraper_controller - Marcando 9 cursos como 'PROCESANDO' en el servidor UNKNOWN_SERVER...
+2025-11-25 23:26:47,048 - INFO - utils.sqlite_handler - 9 cursos actualizados a 'PROCESANDO' en el servidor 'UNKNOWN_SERVER' en SQLite.
+2025-11-25 23:26:47,050 - INFO - controllers.scraper_controller - === FASE 1: BÚSQUEDA DE RESULTADOS con Cordis Europa ====
+2025-11-25 23:26:47,051 - INFO - controllers.scraper_controller - Total de cursos a procesar en búsqueda: 9
+2025-11-25 23:26:47,052 - INFO - controllers.scraper_controller - Buscando 'Pea farms' con código SIC 011901.1 (1/9)
+2025-11-25 23:26:47,052 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+2025-11-25 23:26:47,101 - INFO - utils.sqlite_handler - Estado del curso '011901.1 - Pea farms' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-25 23:27:07,124 - ERROR - utils.scraper.search_engine - Error general en search_cordis_europa: 
+2025-11-25 23:27:07,126 - ERROR - controllers.scraper_controller - Error durante la búsqueda de 'Pea farms': cannot access local variable 'page' where it is not associated with a value
+2025-11-25 23:27:07,150 - ERROR - controllers.scraper_controller - Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/controllers/scraper_controller.py", line 339, in _process_search_phase
+    search_results = await self.search_engine.get_search_results(search_term, search_engine, site_domain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 610, in get_search_results
+    return await self.search_cordis_europa(search_term)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 835, in search_cordis_europa
+    if page:
+       ^^^^
+UnboundLocalError: cannot access local variable 'page' where it is not associated with a value
+
+2025-11-25 23:27:07,152 - INFO - controllers.scraper_controller - Buscando 'Vegetable farms' con código SIC 011901.2 (2/9)
+2025-11-25 23:27:07,152 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+2025-11-25 23:27:07,215 - INFO - utils.sqlite_handler - Estado del curso '011901.2 - Vegetable farms' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-25 23:27:27,242 - ERROR - utils.scraper.search_engine - Error general en search_cordis_europa: 
+2025-11-25 23:27:27,243 - ERROR - controllers.scraper_controller - Error durante la búsqueda de 'Vegetable farms': cannot access local variable 'page' where it is not associated with a value
+2025-11-25 23:27:27,252 - ERROR - controllers.scraper_controller - Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/controllers/scraper_controller.py", line 339, in _process_search_phase
+    search_results = await self.search_engine.get_search_results(search_term, search_engine, site_domain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 610, in get_search_results
+    return await self.search_cordis_europa(search_term)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 835, in search_cordis_europa
+    if page:
+       ^^^^
+UnboundLocalError: cannot access local variable 'page' where it is not associated with a value
+
+2025-11-25 23:27:27,253 - INFO - controllers.scraper_controller - Buscando 'Feeder grains' con código SIC 011902.0 (3/9)
+2025-11-25 23:27:27,254 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+2025-11-25 23:27:27,346 - INFO - utils.sqlite_handler - Estado del curso '011902.0 - Feeder grains' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-25 23:27:47,371 - ERROR - utils.scraper.search_engine - Error general en search_cordis_europa: 
+2025-11-25 23:27:47,372 - ERROR - controllers.scraper_controller - Error durante la búsqueda de 'Feeder grains': cannot access local variable 'page' where it is not associated with a value
+2025-11-25 23:27:47,386 - ERROR - controllers.scraper_controller - Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/controllers/scraper_controller.py", line 339, in _process_search_phase
+    search_results = await self.search_engine.get_search_results(search_term, search_engine, site_domain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 610, in get_search_results
+    return await self.search_cordis_europa(search_term)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 835, in search_cordis_europa
+    if page:
+       ^^^^
+UnboundLocalError: cannot access local variable 'page' where it is not associated with a value
+
+2025-11-25 23:27:47,388 - INFO - controllers.scraper_controller - Buscando 'Oil grains' con código SIC 011903.0 (4/9)
+2025-11-25 23:27:47,389 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+2025-11-25 23:27:47,456 - INFO - utils.sqlite_handler - Estado del curso '011903.0 - Oil grains' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-25 23:28:07,480 - ERROR - utils.scraper.search_engine - Error general en search_cordis_europa: 
+2025-11-25 23:28:07,484 - ERROR - controllers.scraper_controller - Error durante la búsqueda de 'Oil grains': cannot access local variable 'page' where it is not associated with a value
+2025-11-25 23:28:07,532 - ERROR - controllers.scraper_controller - Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/controllers/scraper_controller.py", line 339, in _process_search_phase
+    search_results = await self.search_engine.get_search_results(search_term, search_engine, site_domain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 610, in get_search_results
+    return await self.search_cordis_europa(search_term)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 835, in search_cordis_europa
+    if page:
+       ^^^^
+UnboundLocalError: cannot access local variable 'page' where it is not associated with a value
+
+2025-11-25 23:28:07,535 - INFO - controllers.scraper_controller - Buscando 'Field seed' con código SIC 011904.0 (5/9)
+2025-11-25 23:28:07,538 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+2025-11-25 23:28:07,636 - INFO - utils.sqlite_handler - Estado del curso '011904.0 - Field seed' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-25 23:28:27,663 - ERROR - utils.scraper.search_engine - Error general en search_cordis_europa: 
+2025-11-25 23:28:27,664 - ERROR - controllers.scraper_controller - Error durante la búsqueda de 'Field seed': cannot access local variable 'page' where it is not associated with a value
+2025-11-25 23:28:27,673 - ERROR - controllers.scraper_controller - Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/controllers/scraper_controller.py", line 339, in _process_search_phase
+    search_results = await self.search_engine.get_search_results(search_term, search_engine, site_domain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 610, in get_search_results
+    return await self.search_cordis_europa(search_term)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 835, in search_cordis_europa
+    if page:
+       ^^^^
+UnboundLocalError: cannot access local variable 'page' where it is not associated with a value
+
+2025-11-25 23:28:27,674 - INFO - controllers.scraper_controller - Buscando 'Cotton' con código SIC 011905.0 (6/9)
+2025-11-25 23:28:27,675 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+2025-11-25 23:28:27,723 - INFO - utils.sqlite_handler - Estado del curso '011905.0 - Cotton' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-25 23:28:47,747 - ERROR - utils.scraper.search_engine - Error general en search_cordis_europa: 
+2025-11-25 23:28:47,748 - ERROR - controllers.scraper_controller - Error durante la búsqueda de 'Cotton': cannot access local variable 'page' where it is not associated with a value
+2025-11-25 23:28:47,757 - ERROR - controllers.scraper_controller - Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/controllers/scraper_controller.py", line 339, in _process_search_phase
+    search_results = await self.search_engine.get_search_results(search_term, search_engine, site_domain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 610, in get_search_results
+    return await self.search_cordis_europa(search_term)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 835, in search_cordis_europa
+    if page:
+       ^^^^
+UnboundLocalError: cannot access local variable 'page' where it is not associated with a value
+
+2025-11-25 23:28:47,761 - INFO - controllers.scraper_controller - Buscando 'Rice' con código SIC 011906.0 (7/9)
+2025-11-25 23:28:47,762 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+2025-11-25 23:28:47,818 - INFO - utils.sqlite_handler - Estado del curso '011906.0 - Rice' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-25 23:29:07,841 - ERROR - utils.scraper.search_engine - Error general en search_cordis_europa: 
+2025-11-25 23:29:07,854 - ERROR - controllers.scraper_controller - Error durante la búsqueda de 'Rice': cannot access local variable 'page' where it is not associated with a value
+2025-11-25 23:29:07,919 - ERROR - controllers.scraper_controller - Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/controllers/scraper_controller.py", line 339, in _process_search_phase
+    search_results = await self.search_engine.get_search_results(search_term, search_engine, site_domain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 610, in get_search_results
+    return await self.search_cordis_europa(search_term)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 835, in search_cordis_europa
+    if page:
+       ^^^^
+UnboundLocalError: cannot access local variable 'page' where it is not associated with a value
+
+2025-11-25 23:29:07,920 - INFO - controllers.scraper_controller - Buscando 'Tobacco' con código SIC 011907.0 (8/9)
+2025-11-25 23:29:07,921 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+2025-11-25 23:29:08,009 - INFO - utils.sqlite_handler - Estado del curso '011907.0 - Tobacco' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-25 23:29:28,020 - ERROR - utils.scraper.search_engine - Error general en search_cordis_europa: 
+2025-11-25 23:29:28,021 - ERROR - controllers.scraper_controller - Error durante la búsqueda de 'Tobacco': cannot access local variable 'page' where it is not associated with a value
+2025-11-25 23:29:28,033 - ERROR - controllers.scraper_controller - Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/controllers/scraper_controller.py", line 339, in _process_search_phase
+    search_results = await self.search_engine.get_search_results(search_term, search_engine, site_domain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 610, in get_search_results
+    return await self.search_cordis_europa(search_term)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 835, in search_cordis_europa
+    if page:
+       ^^^^
+UnboundLocalError: cannot access local variable 'page' where it is not associated with a value
+
+2025-11-25 23:29:28,035 - INFO - controllers.scraper_controller - Buscando 'Sugar beets' con código SIC 011908.0 (9/9)
+2025-11-25 23:29:28,036 - INFO - controllers.scraper_controller - DEBUG: Motor de búsqueda seleccionado: 'Cordis Europa', Dominio: 'None'
+2025-11-25 23:29:28,118 - INFO - utils.sqlite_handler - Estado del curso '011908.0 - Sugar beets' actualizado a 'procesando' en el servidor 'UNKNOWN_SERVER'.
+2025-11-25 23:29:48,143 - ERROR - utils.scraper.search_engine - Error general en search_cordis_europa: 
+2025-11-25 23:29:48,144 - ERROR - controllers.scraper_controller - Error durante la búsqueda de 'Sugar beets': cannot access local variable 'page' where it is not associated with a value
+2025-11-25 23:29:48,161 - ERROR - controllers.scraper_controller - Traceback (most recent call last):
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/controllers/scraper_controller.py", line 339, in _process_search_phase
+    search_results = await self.search_engine.get_search_results(search_term, search_engine, site_domain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 610, in get_search_results
+    return await self.search_cordis_europa(search_term)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/utils/scraper/search_engine.py", line 835, in search_cordis_europa
+    if page:
+       ^^^^
+UnboundLocalError: cannot access local variable 'page' where it is not associated with a value
+
+2025-11-25 23:29:48,163 - WARNING - controllers.scraper_controller - No se encontraron resultados para procesar
+2025-11-25 23:29:48,167 - INFO - root - Worker 5 completó el lote 011901.1..011908.0.
+2025-11-25 23:29:48,179 - INFO - root - Worker 5 recibió señal de finalización.
+2025-11-25 23:38:01,130 - INFO - root - Logging initialized to /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/logs/worker_5.log
+2025-11-25 23:38:01,137 - INFO - root - Worker 5 iniciado.
+2025-11-25 23:38:01,152 - INFO - scraper.config - Loaded configuration from /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/client/config.json
+2025-11-25 23:38:01,155 - INFO - scraper.config - Configuration manager initialized
+2025-11-25 23:39:44,763 - INFO - root - Worker 5 recibió señal de finalización.

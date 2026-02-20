@@ -1,0 +1,37 @@
+EUROPA SCRAPER - SOLUCIÓN MANUAL DEFINITIVA
+=============================================
+
+ESTADO ACTUAL:
+✅ Servidor corriendo en WSL en: http://0.0.0.0:8001
+✅ Cliente intentando conectar a: http://localhost:8001
+❌ No hay conexión (firewall o configuración)
+
+SOLUCIÓN MANUAL PASO A PASO:
+
+PASO 1: OBTENER IP WSL
+Ejecutar en WSL:
+ip route show | grep default | awk '{print $3}'
+Anota esa IP (ej: 172.23.48.1)
+
+PASO 2: DETENER SERVIDOR ACTUAL
+En la terminal del servidor WSL: Ctrl+C
+
+PASO 3: INICIAR SERVIDOR CON IP ESPECÍFICA
+Ejecutar en WSL:
+cd /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX/server
+python3 main_wsl_corregido.py --host 172.23.48.1 --port 8001
+
+PASO 4: CONFIGURAR FIREWALL
+Ejecutar como administrador:
+netsh advfirewall firewall add rule name="Europa Scraper" dir=in action=allow protocol=TCP localport=8001
+
+PASO 5: INICIAR CLIENTE
+En Windows:
+cd client
+python main.py
+Configurar: 172.23.48.1:8001
+
+PASO 6: VERIFICAR
+El cliente debería conectar exitosamente.
+
+ESTO ES TODO. NADA MÁS.

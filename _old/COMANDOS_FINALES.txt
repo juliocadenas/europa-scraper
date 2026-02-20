@@ -1,0 +1,21 @@
+COMANDOS FINALES - EUROPA SCRAPER
+========================================
+
+COPIA Y PEGA ESTOS COMANDOS EN POWERSHELL:
+
+1. PARA INICIAR EL SERVIDOR:
+========================================
+wsl -d Ubuntu bash -c "cd /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX && source venv_wsl/bin/activate && cd server && python main.py"
+
+2. PARA INICIAR EL CLIENTE (en otra ventana de PowerShell):
+========================================
+cd client
+python main.py
+
+3. SI FALTAN DEPENDENCIAS:
+========================================
+wsl -d Ubuntu bash -c "cd /mnt/c/Users/julio/Documents/DOCUPLAY/Proyecto/Python/EUROPA/V3.1-LINUX && ./venv_wsl/bin/pip install httpx aiohttp aiofiles beautifulsoup4 lxml openpyxl selenium webdriver-manager playwright pyee greenlet typing-extensions python-multipart python-dotenv pandas requests fastapi uvicorn[standard]"
+
+========================================
+ESO ES TODO. SIN MÁS SCRIPTS. SOLO ESTOS COMANDOS.
+========================================
