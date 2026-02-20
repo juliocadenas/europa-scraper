@@ -270,28 +270,43 @@ class ScraperGUI(ttk.Frame):
         self.right_paned = ttk.PanedWindow(self.right_column, orient=tk.VERTICAL)
         self.right_paned.pack(fill=tk.BOTH, expand=True)
         
-        # 1. Auditoría Tree (Historial Técnico)
-        self.audit_pane = ttk.LabelFrame(self.right_paned, text="Auditoría de Procesos (Historial Técnico)", padding=5)
+        # 1. Auditoría Tree (Historial Técnico) - ESTRUCTURA JERÁRQUICA
+        self.audit_pane = ttk.LabelFrame(self.right_paned, text="Auditoría de Procesos (por Worker)", padding=5)
         self.right_paned.add(self.audit_pane, weight=1)
-        self.audit_tree = ttk.Treeview(self.audit_pane, columns=('Time', 'Type', 'Source', 'Message'), show='headings')
-        for col in ('Time', 'Type', 'Source', 'Message'):
-            self.audit_tree.heading(col, text=col)
-        self.audit_tree.column('Time', width=80, anchor=tk.CENTER)
-        self.audit_tree.column('Type', width=90, anchor=tk.CENTER)
-        self.audit_tree.column('Source', width=90, anchor=tk.CENTER)
-        self.audit_tree.column('Message', width=450)
+        
+        # TreeView jerárquico: Workers como padres, eventos como hijos
+        self.audit_tree = ttk.Treeview(self.audit_pane, columns=('Time', 'Type', 'Message'), show='tree headings')
+        self.audit_tree.heading('#0', text='Worker')
+        self.audit_tree.heading('Time', text='Hora')
+        self.audit_tree.heading('Type', text='Tipo')
+        self.audit_tree.heading('Message', text='Mensaje')
+        
+        # Columna #0 (Worker) más ancha para ver el nombre
+        self.audit_tree.column('#0', width=100, anchor=tk.W)
+        self.audit_tree.column('Time', width=70, anchor=tk.CENTER)
+        self.audit_tree.column('Type', width=80, anchor=tk.CENTER)
+        self.audit_tree.column('Message', width=350, anchor=tk.W)
+        
         self.audit_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         sb2 = ttk.Scrollbar(self.audit_pane, orient=tk.VERTICAL, command=self.audit_tree.yview)
         self.audit_tree.configure(yscrollcommand=sb2.set)
         sb2.pack(side=tk.RIGHT, fill=tk.Y)
         
+        # Tags para tipos de eventos
         self.audit_tree.tag_configure('ERROR', foreground='white', background='#d32f2f')
         self.audit_tree.tag_configure('WARNING', foreground='black', background='#fbc02d')
         self.audit_tree.tag_configure('SUCCESS', foreground='white', background='#388e3c')
         self.audit_tree.tag_configure('SCRAPER', foreground='blue')
         self.audit_tree.tag_configure('SYSTEM', foreground='gray')
+        self.audit_tree.tag_configure('INFO', foreground='black')
+        # Tags para nodos padre (workers)
+        self.audit_tree.tag_configure('worker_node', font=('Arial', 10, 'bold'))
+        
         self.audit_tree.bind('<<TreeviewSelect>>', self._on_audit_select)
         self.audit_tree.bind("<Button-3>", self._show_context_menu)
+        
+        # Diccionario para tracking de workers y sus eventos
+        self.audit_worker_nodes = {}  # worker_id -> node_id en el tree
 
         # 2. Resultados (Botín) con botones integrados
         self.results_container = ttk.LabelFrame(self.right_paned, text="Resultados Finales", padding=5)
@@ -420,14 +435,43 @@ class ScraperGUI(ttk.Frame):
                  self.progress_frame.update_progress(100, "Inactivo")
 
     def update_audit_log(self, events):
-        """Actualiza el historial de auditoría."""
+        """Actualiza el historial de auditoría con estructura jerárquica por Worker."""
         if not hasattr(self, 'audit_details_map'): self.audit_details_map = {}
+        if not hasattr(self, 'audit_worker_nodes'): self.audit_worker_nodes = {}
+        
         for ev in events:
-            row_id = f"ev_{ev['id']}"
+            event_id = ev.get('id')
+            source = ev.get('source', 'System')
+            ev_type = ev.get('type', 'INFO')
+            timestamp = ev.get('timestamp', '')
             msg = ev.get('message', '')
-            self.audit_details_map[row_id] = f"{ev.get('timestamp')}\n{msg}\n\n{json.dumps(ev.get('details'), indent=2)}"
+            
+            # Extraer el worker_id del source (ej: "Worker-1" -> "worker_1")
+            worker_key = source.replace('-', '_').lower() if source else 'system'
+            worker_display = source if source else 'System'
+            
+            # Crear nodo padre del worker si no existe
+            if worker_key not in self.audit_worker_nodes:
+                # Insertar nodo padre para este worker
+                node_id = self.audit_tree.insert('', 'end', text=worker_display, 
+                                                   values=('', '', f'Eventos de {worker_display}'),
+                                                   tags=('worker_node',), open=True)
+                self.audit_worker_nodes[worker_key] = node_id
+            
+            parent_node = self.audit_worker_nodes[worker_key]
+            
+            # Crear ID único para el evento
+            row_id = f"ev_{event_id}"
+            
+            # Guardar detalles completos
+            self.audit_details_map[row_id] = f"{timestamp}\n{msg}\n\n{json.dumps(ev.get('details', {}), indent=2)}"
+            
+            # Insertar evento como hijo del worker (solo si no existe)
             if not self.audit_tree.exists(row_id):
-                self.audit_tree.insert('', 0, iid=row_id, values=(ev.get('timestamp'), ev.get('type'), ev.get('source'), msg), tags=(ev.get('type'),))
+                self.audit_tree.insert(parent_node, 'end', iid=row_id, 
+                                        text='',  # Sin texto en columna #0 para hijos
+                                        values=(timestamp, ev_type, msg[:80]),  # Truncar mensaje
+                                        tags=(ev_type,))
 
     def _on_audit_select(self, event):
         sel = self.audit_tree.selection()
@@ -660,6 +704,8 @@ class ScraperGUI(ttk.Frame):
                     self.audit_tree.delete(*self.audit_tree.get_children())
                     if hasattr(self, 'audit_details_map'):
                         self.audit_details_map.clear()
+                    if hasattr(self, 'audit_worker_nodes'):
+                        self.audit_worker_nodes.clear()
                     
                     # 5. Limpiar detalles del proceso seleccionado
                     self.details_text.config(state=tk.NORMAL)
