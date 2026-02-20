@@ -38,12 +38,12 @@ class SearchConfigTab:
         engine_frame = ttk.LabelFrame(self.main_frame, text="Motor de Búsqueda", padding="15")
         engine_frame.pack(fill=tk.X, padx=15, pady=5)
         
-        self.search_engine_var = tk.StringVar(value="Google")
+        self.search_engine_var = tk.StringVar(value="Cordis Europa API")
         
         engine_combo = ttk.Combobox(
             engine_frame, 
             textvariable=self.search_engine_var,
-            values=["Google", "Bing", "DuckDuckGo"],
+            values=["Cordis Europa API", "Cordis Europa", "Google", "Bing", "DuckDuckGo", "Common Crawl", "Wayback Machine"],
             state="readonly",
             font=("Arial", 10)
         )
