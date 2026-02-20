@@ -259,6 +259,7 @@ class ScraperGUI(ttk.Frame):
 
         # Tags y Bindings
         self.worker_tree.bind("<Button-3>", self._show_context_menu)
+        self.worker_tree.bind('<<TreeviewSelect>>', self._on_course_select_sync_worker)
         
         # --- COLUMNA DERECHA (AUDITORÍA, DETALLES Y RESULTADOS) ---
         self.right_paned = ttk.PanedWindow(self.right_column, orient=tk.VERTICAL)
@@ -372,6 +373,85 @@ class ScraperGUI(ttk.Frame):
         self.details_text.delete(1.0, tk.END)
         self.details_text.insert(tk.END, full_details)
         self.details_text.config(state=tk.DISABLED)
+
+    def _on_course_select_sync_worker(self, event):
+        """
+        Cuando se selecciona un curso en el Monitor de Actividad Local,
+        busca y resalta el worker correspondiente en la Auditoría de Procesos.
+        """
+        selection = self.worker_tree.selection()
+        if not selection:
+            return
+        
+        row_id = selection[0]
+        
+        # Obtener el SIC code del curso seleccionado
+        # El row_id tiene formato "course_{sic}" donde sic usa _ en lugar de .
+        # Ejemplo: "course_013399_2" para SIC "013399.2"
+        if not row_id.startswith("course_"):
+            return
+        
+        # Extraer SIC code del row_id
+        sic_encoded = row_id.replace("course_", "")
+        sic_code = sic_encoded.replace("_", ".")
+        
+        # Buscar en los eventos de auditoría qué worker está procesando este SIC
+        # Los eventos tienen formato: source="Worker-X", message contiene el SIC o nombre del curso
+        worker_to_highlight = None
+        
+        if hasattr(self, 'worker_messages'):
+            for worker_key, messages in self.worker_messages.items():
+                for msg in messages:
+                    # Buscar si el mensaje menciona este SIC code
+                    if sic_code in msg or sic_encoded in msg:
+                        worker_to_highlight = worker_key
+                        break
+                if worker_to_highlight:
+                    break
+        
+        # Si no encontramos por mensajes, buscar por el nodo del worker que está "working"
+        # Buscar en el estado actual de los workers
+        if not worker_to_highlight and hasattr(self, 'audit_worker_nodes'):
+            # Buscar el worker que tiene el curso en su current_task
+            for worker_key, node_id in self.audit_worker_nodes.items():
+                if self.audit_tree.exists(node_id):
+                    # Verificar si hay eventos recientes de este worker que mencionen el SIC
+                    children = self.audit_tree.get_children(node_id)
+                    for child in children:
+                        values = self.audit_tree.item(child, 'values')
+                        if values and len(values) >= 3:
+                            msg = str(values[2])  # Columna Message
+                            if sic_code in msg or sic_encoded in msg:
+                                worker_to_highlight = worker_key
+                                break
+                if worker_to_highlight:
+                    break
+        
+        # Resaltar el worker encontrado
+        if worker_to_highlight and hasattr(self, 'audit_worker_nodes'):
+            node_id = self.audit_worker_nodes.get(worker_to_highlight)
+            if node_id and self.audit_tree.exists(node_id):
+                # Expandir el nodo del worker
+                self.audit_tree.item(node_id, open=True)
+                
+                # Seleccionar el nodo del worker
+                self.audit_tree.selection_set(node_id)
+                self.audit_tree.see(node_id)
+                
+                # Resaltar visualmente (cambiar fondo temporalmente)
+                self.audit_tree.tag_configure('highlighted', background='#ffeb3b')  # Amarillo
+                self.audit_tree.item(node_id, tags=('highlighted', 'worker_node'))
+                
+                # Quitar el resaltado después de 3 segundos
+                self.master.after(3000, lambda nid=node_id: self._remove_highlight(nid))
+                
+                # Actualizar el panel de detalles
+                self._on_audit_select(None)
+
+    def _remove_highlight(self, node_id):
+        """Quita el resaltado de un nodo del árbol de auditoría."""
+        if self.audit_tree.exists(node_id):
+            self.audit_tree.item(node_id, tags=('worker_node',))
 
     def _render_status(self, workers, courses):
         """Renderiza el estado dinámico de los cursos en el Monitor Principal."""
