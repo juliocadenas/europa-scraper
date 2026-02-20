@@ -9,15 +9,44 @@ import re
 
 logger = logging.getLogger(__name__)
 
+# ==============================================================================
+# JOYA DE LA CORONA - COLUMNAS INAMOVIBLES DEL CSV
+# ==============================================================================
+# Estas columnas son INAMOVIBLES. NO SE PUEDEN CAMBIAR bajo ninguna circunstancia.
+# Cualquier cambio aquí rompe toda la integridad del sistema de resultados.
+# 
+# ESTRUCTURA DEL CSV (INAMOVIBLE):
+#   - sic_code:     Código SIC del curso
+#   - course_name:  Nombre del curso
+#   - title:        Título del resultado encontrado
+#   - description:  Descripción del resultado
+#   - url:          URL del resultado (UNA SOLA COLUMNA, NO SE DESCOMPONE)
+#   - total_words:  Conteo de palabras
+#   - lang:         Idioma del resultado (en, es, de, fr, it, pl)
+#
+# PARA CORDIS MULTI-IDIOMA:
+#   - La URL base en inglés se modifica agregando "/" + código de idioma
+#   - Ejemplo: https://cordis.europa.eu/article/id/12345/en
+#   - Ejemplo: https://cordis.europa.eu/article/id/12345/es
+#   - La columna URL contiene la URL completa con el sufijo de idioma
+# ==============================================================================
+CSV_COLUMNS = [
+    'sic_code', 'course_name', 'title', 
+    'description', 'url', 'total_words', 'lang'
+]
+# ==============================================================================
+
 class ResultManager:
     """
     Manages scraping results and storage.
     
-    NUEVO MODELO:
+    NUEVO MODELO (V3.1):
     - Un archivo CSV por curso: {codigo_sic}-{nombre_curso}.csv
-    - Sin carpetas por idioma
+    - Sin carpetas por idioma (todos los resultados en el mismo archivo)
     - El campo 'lang' diferencia los idiomas dentro del mismo archivo
     - Archivo de omitidos: {codigo_sic}-{nombre_curso}_omitidos.xlsx
+    
+    IMPORTANTE: Las columnas del CSV son INAMOVIBLES. Ver CSV_COLUMNS arriba.
     """
     
     def __init__(self):
@@ -45,7 +74,7 @@ class ResultManager:
         """
         Inicializa los archivos de salida para un CURSO INDIVIDUAL.
         
-        NUEVO FORMATO:
+        NUEVO FORMATO V3.1:
         - Archivo de resultados: results/{sic_code}-{course_name}.csv
         - Archivo de omitidos: results/omitidos/{sic_code}-{course_name}_omitidos.xlsx
         
@@ -78,12 +107,11 @@ class ResultManager:
         # Archivo de resultados: results/{sic_code}-{course_name}.csv
         self.output_file = os.path.join(results_dir, f"{base_filename}.csv")
         
-        # Crear archivo CSV con columnas predefinidas (incluye 'lang')
-        columns = [
-            'sic_code', 'course_name', 'title', 
-            'description', 'url', 'total_words', 'lang'
-        ]
-        pd.DataFrame(columns=columns).to_csv(self.output_file, index=False)
+        # ==============================================================================
+        # JOYA DE LA CORONA - CREAR CSV CON COLUMNAS INAMOVIBLES
+        # ==============================================================================
+        pd.DataFrame(columns=CSV_COLUMNS).to_csv(self.output_file, index=False)
+        # ==============================================================================
         
         logger.info(f"CSV file created for course {from_sic}: {self.output_file}")
         
@@ -124,6 +152,13 @@ class ResultManager:
         Appends a result to the CSV file.
         Todos los resultados van al mismo archivo, el campo 'lang' indica el idioma.
         
+        ==============================================================================
+        JOYA DE LA CORONA - SOLO SE ESCRIBEN LAS COLUMNAS INAMOVIBLES
+        ==============================================================================
+        Cualquier campo extra en 'result' que no esté en CSV_COLUMNS será ignorado.
+        Esto garantiza que la estructura del CSV sea consistente.
+        ==============================================================================
+        
         Args:
             result: Result dictionary
             
@@ -135,7 +170,16 @@ class ResultManager:
             if 'lang' not in result:
                 result['lang'] = 'en'
             
-            df = pd.DataFrame([result])
+            # ==============================================================================
+            # JOYA DE LA CORONA - FILTRAR SOLO COLUMNAS INAMOVIBLES
+            # ==============================================================================
+            # Crear un diccionario con SOLO las columnas permitidas
+            # Esto evita que campos extra (source, mediatype, rcn, etc.) se agreguen al CSV
+            filtered_result = {}
+            for col in CSV_COLUMNS:
+                filtered_result[col] = result.get(col, '')
+            
+            df = pd.DataFrame([filtered_result])
             
             # Append sin header (el archivo ya tiene las columnas)
             df.to_csv(self.output_file, mode='a', header=False, index=False)
