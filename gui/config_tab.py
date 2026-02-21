@@ -287,6 +287,29 @@ class ConfigTab:
         self.headless_mode_var.trace_add("write", lambda *args: self._on_headless_mode_changed())
         ttk.Checkbutton(logging_frame, text="Ejecutar navegador en modo Headless (sin interfaz gráfica)",
                        variable=self.headless_mode_var).pack(anchor=tk.W, pady=2)
+        
+        # Configuración de archivos de resultados
+        results_config_frame = ttk.LabelFrame(general_frame, text="Configuración de Archivos de Resultados", padding="10")
+        results_config_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        # Modo de salida de resultados
+        output_mode_frame = ttk.Frame(results_config_frame)
+        output_mode_frame.pack(fill=tk.X, pady=2)
+        ttk.Label(output_mode_frame, text="Modo de archivos de resultados:").pack(side=tk.LEFT)
+        
+        self.results_output_mode_var = tk.StringVar(value="Por curso")
+        results_mode_combo = ttk.Combobox(output_mode_frame, textvariable=self.results_output_mode_var,
+                                          values=["Por curso", "Conglomerado"], state="readonly", width=20)
+        results_mode_combo.pack(side=tk.LEFT, padx=(5, 0))
+        
+        # Descripción de los modos
+        mode_desc_frame = ttk.Frame(results_config_frame)
+        mode_desc_frame.pack(fill=tk.X, pady=2)
+        mode_desc_label = ttk.Label(mode_desc_frame, 
+                                    text="• Por curso: Un archivo CSV por cada curso procesado (recomendado)\n"
+                                         "• Conglomerado: Un solo archivo CSV con todos los resultados",
+                                    font=("Arial", 8), foreground="gray")
+        mode_desc_label.pack(anchor=tk.W)
 
     def _create_database_tab(self):
         """Crea la pestaña de configuración de base de datos."""
@@ -648,7 +671,8 @@ class ConfigTab:
             "output_format": self.output_format_var.get(),
             "log_level": self.log_level_var.get(),
             "save_logs": self.save_logs_var.get(),
-            "headless_mode": self.headless_mode_var.get() # Guardar estado del modo headless
+            "headless_mode": self.headless_mode_var.get(), # Guardar estado del modo headless
+            "results_output_mode": self.results_output_mode_var.get()  # Modo de archivos de resultados
         }
         # La configuración de CAPTCHA se obtiene directamente del config_manager
         config_data.update({
@@ -681,6 +705,7 @@ class ConfigTab:
             self.log_level_var.set(self.config.get("log_level", "INFO"))
             self.save_logs_var.set(self.config.get("save_logs", True))
             self.headless_mode_var.set(self.config.get("headless_mode", True)) # Cargar estado del modo headless
+            self.results_output_mode_var.set(self.config.get("results_output_mode", "Por curso"))  # Modo de archivos
             
             logger.info("Configuración cargada en la GUI")
             

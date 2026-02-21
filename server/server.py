@@ -736,6 +736,11 @@ class ScraperServer:
                 raise HTTPException(status_code=404, detail="No se encontraron cursos en el rango SIC especificado.")
 
             # 3. Crear diccionario de parámetros para los workers
+            # Incluir results_output_mode del request
+            results_output_mode = request_data.get('results_output_mode', 'Por curso') if isinstance(request_data, dict) else 'Por curso'
+            if 'job_params' in request_data and isinstance(request_data['job_params'], dict):
+                results_output_mode = request_data['job_params'].get('results_output_mode', results_output_mode)
+            
             job_params_dict = {
                 'from_sic': from_sic,
                 'to_sic': to_sic,
@@ -743,7 +748,8 @@ class ScraperServer:
                 'min_words': min_words,
                 'is_headless': is_headless,
                 'search_mode': search_mode,
-                'require_keywords': require_keywords
+                'require_keywords': require_keywords,
+                'results_output_mode': results_output_mode
             }
             
             # 4. Poner cada curso como una tarea individual en la cola

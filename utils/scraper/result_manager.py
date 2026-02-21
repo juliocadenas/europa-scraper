@@ -42,7 +42,8 @@ class ResultManager:
     Manages scraping results and storage.
     
     NUEVO MODELO (V3.1):
-    - Un archivo CSV por curso: {codigo_sic}-{nombre_curso}.csv
+    - Modo "Por curso" (por defecto): Un archivo CSV por curso: {codigo_sic}-{nombre_curso}.csv
+    - Modo "Conglomerado": Un archivo CSV para todo el lote
     - Sin carpetas por idioma (todos los resultados en el mismo archivo)
     - El campo 'lang' diferencia los idiomas dentro del mismo archivo
     - Archivo de omitidos: {codigo_sic}-{nombre_curso}_omitidos.xlsx
@@ -50,14 +51,21 @@ class ResultManager:
     IMPORTANTE: Las columnas del CSV son INAMOVIBLES. Ver CSV_COLUMNS arriba.
     """
     
-    def __init__(self):
-        """Initialize the result manager."""
+    def __init__(self, output_mode: str = "Por curso"):
+        """
+        Initialize the result manager.
+        
+        Args:
+            output_mode: "Por curso" (un archivo por curso) o "Conglomerado" (un archivo para todo)
+        """
         self.results = []
         self.omitted_results = []
         self.output_file = ""
         self.omitted_file = ""
         self.current_sic_code = ""
         self.current_course_name = ""
+        self.output_mode = output_mode  # "Por curso" o "Conglomerado"
+        self.course_files = {}  # Diccionario para tracking de archivos por curso en modo "Por curso"
     
     def _sanitize_filename(self, name: str) -> str:
         """
@@ -134,13 +142,73 @@ class ResultManager:
         
         return self.output_file, self.omitted_file
     
+    def initialize_course_file(self, sic_code: str, course_name: str) -> str:
+        """
+        Inicializa un archivo CSV para un CURSO INDIVIDUAL (modo "Por curso").
+        
+        FORMATO DEL NOMBRE DEL ARCHIVO:
+        {codigo_sic}-{nombre_curso}_{timestamp}.csv
+        
+        Ejemplo: 011901.1-Pea_farms_20260220_165500.csv
+        
+        Args:
+            sic_code: Código SIC del curso
+            course_name: Nombre del curso
+            
+        Returns:
+            Path al archivo CSV creado
+        """
+        # Sanitizar nombre del curso
+        sanitized_course = self._sanitize_filename(course_name) if course_name else 'unknown'
+        
+        # Crear timestamp para el nombre del archivo
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        
+        # NOMBRE DEL ARCHIVO: {codigo_sic}-{nombre_curso}_{timestamp}
+        base_filename = f"{sic_code}-{sanitized_course}_{timestamp}"
+        
+        # Usar rutas absolutas
+        project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        results_dir = os.path.join(project_root, 'results')
+        os.makedirs(results_dir, exist_ok=True)
+        
+        # Archivo de resultados
+        course_file = os.path.join(results_dir, f"{base_filename}.csv")
+        
+        # Crear CSV con columnas
+        pd.DataFrame(columns=CSV_COLUMNS).to_csv(course_file, index=False, quoting=csv.QUOTE_ALL)
+        
+        # Guardar en el diccionario de archivos por curso
+        self.course_files[sic_code] = course_file
+        
+        logger.info(f"Created course file: {course_file}")
+        
+        return course_file
+    
+    def get_course_file(self, sic_code: str, course_name: str) -> str:
+        """
+        Obtiene el archivo CSV para un curso. Si no existe, lo crea.
+        
+        Args:
+            sic_code: Código SIC del curso
+            course_name: Nombre del curso
+            
+        Returns:
+            Path al archivo CSV
+        """
+        if sic_code not in self.course_files:
+            return self.initialize_course_file(sic_code, course_name)
+        return self.course_files[sic_code]
+    
     def add_result(self, result: Dict[str, Any]) -> bool:
         """
         Adds a result to the results list and CSV file.
-        Todos los resultados van al mismo archivo, diferenciados por el campo 'lang'.
+        
+        - Modo "Por curso": Cada resultado va al archivo de su curso
+        - Modo "Conglomerado": Todos los resultados van al mismo archivo
         
         Args:
-            result: Result dictionary (debe incluir 'lang')
+            result: Result dictionary (debe incluir 'sic_code', 'course_name', 'lang')
             
         Returns:
             True if successful, False otherwise
@@ -149,16 +217,30 @@ class ResultManager:
             # Add to results list
             self.results.append(result)
             
-            # Add to CSV file (mismo archivo para todos los idiomas)
-            return self.append_to_csv(result)
+            # Determinar el archivo de salida según el modo
+            if self.output_mode == "Por curso":
+                # Obtener/crear archivo para este curso específico
+                sic_code = result.get('sic_code', '')
+                course_name = result.get('course_name', '')
+                
+                if not sic_code:
+                    logger.warning("Result missing sic_code, using conglomerado file")
+                    target_file = self.output_file
+                else:
+                    target_file = self.get_course_file(sic_code, course_name)
+            else:
+                # Modo conglomerado: usar el archivo general
+                target_file = self.output_file
+            
+            # Add to CSV file
+            return self.append_to_csv(result, target_file)
         except Exception as e:
             logger.error(f"Error adding result: {str(e)}")
             return False
 
-    def append_to_csv(self, result: Dict[str, Any]) -> bool:
+    def append_to_csv(self, result: Dict[str, Any], target_file: str = None) -> bool:
         """
         Appends a result to the CSV file.
-        Todos los resultados van al mismo archivo, el campo 'lang' indica el idioma.
         
         ==============================================================================
         JOYA DE LA CORONA - SOLO SE ESCRIBEN LAS COLUMNAS INAMOVIBLES
@@ -169,11 +251,19 @@ class ResultManager:
         
         Args:
             result: Result dictionary
+            target_file: Path al archivo CSV (si es None, usa self.output_file)
             
         Returns:
             True if successful, False otherwise
         """
         try:
+            # Usar el archivo especificado o el por defecto
+            output_file = target_file or self.output_file
+            
+            if not output_file:
+                logger.error("No output file specified")
+                return False
+            
             # Asegurar que el resultado tenga el campo 'lang'
             if 'lang' not in result:
                 result['lang'] = 'en'
@@ -192,7 +282,7 @@ class ResultManager:
             # Append sin header (el archivo ya tiene las columnas)
             # Usar quoting=csv.QUOTE_ALL para que todos los campos estén entre comillas
             # Esto evita que las comas dentro de los campos se interpreten como delimitadores
-            df.to_csv(self.output_file, mode='a', header=False, index=False, quoting=csv.QUOTE_ALL)
+            df.to_csv(output_file, mode='a', header=False, index=False, quoting=csv.QUOTE_ALL)
             return True
         except Exception as e:
             logger.error(f"Error appending to CSV: {str(e)}")

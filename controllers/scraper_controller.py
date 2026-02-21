@@ -923,6 +923,11 @@ class ScraperController(ScraperControllerBase):
           search_engine = params.get('search_engine', 'DuckDuckGo') if isinstance(params, dict) else 'DuckDuckGo'
           site_domain = params.get('site_domain') if isinstance(params, dict) else None
           
+          # NUEVO: Configurar modo de salida de resultados (Por curso o Conglomerado)
+          output_mode = params.get('results_output_mode', 'Por curso') if isinstance(params, dict) else 'Por curso'
+          self.result_manager.output_mode = output_mode
+          logger.info(f"Modo de salida de resultados: {output_mode}")
+          
           # Decide whether browser is needed based on requested search engine
           # Browser is NOT required for 'Wayback Machine' or 'Cordis Europa API' (API-only) searches.
           if search_engine not in ['Wayback Machine', 'Cordis Europa API']:

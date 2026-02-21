@@ -1,0 +1,18 @@
+2026-02-20 21:43:37.940037: Botón Iniciar Scraping presionado
+2026-02-20 21:43:37.942047: Selección: From=(1,), To=(18,)
+2026-02-20 21:43:37.944058: Params preparados: {'from_sic': '011901.1', 'to_sic': '016199.2', 'search_engine': 'Cordis Europa API', 'search_mode': 'broad', 'require_keywords': False, 'is_headless': False, 'min_words': 3, 'num_workers': 25}
+2026-02-20 21:43:37.944058: URL Servidor: https://scraper.docuplay.com
+2026-02-20 21:43:37.950089: Lanzando thread de scraping...
+2026-02-20 21:43:37.985891: Thread lanzado OK
+2026-02-20 21:49:28.106439: Botón Iniciar Scraping presionado
+2026-02-20 21:49:28.108407: Selección: From=(1,), To=(18,)
+2026-02-20 21:49:28.109405: Params preparados: {'from_sic': '011901.1', 'to_sic': '016199.2', 'search_engine': 'Cordis Europa API', 'search_mode': 'broad', 'require_keywords': False, 'is_headless': False, 'min_words': 3, 'num_workers': 25}
+2026-02-20 21:49:28.110408: URL Servidor: https://scraper.docuplay.com
+2026-02-20 21:49:28.113966: Lanzando thread de scraping...
+2026-02-20 21:49:28.116957: Thread lanzado OK
+2026-02-20 21:53:32.372720: Botón Iniciar Scraping presionado
+2026-02-20 21:53:32.376758: Selección: From=(1,), To=(13,)
+2026-02-20 21:53:32.380780: Params preparados: {'from_sic': '011901.1', 'to_sic': '016101.0', 'search_engine': 'Cordis Europa API', 'search_mode': 'broad', 'require_keywords': False, 'is_headless': False, 'min_words': 3, 'num_workers': 25}
+2026-02-20 21:53:32.383313: URL Servidor: https://scraper.docuplay.com
+2026-02-20 21:53:32.393374: Lanzando thread de scraping...
+2026-02-20 21:53:32.398925: Thread lanzado OK

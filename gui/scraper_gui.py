@@ -238,7 +238,20 @@ class ScraperGUI(ttk.Frame):
         self.mon_btn_frame = ttk.Frame(self.monitor_area)
         self.mon_btn_frame.pack(side=tk.BOTTOM, fill=tk.X, pady=2)
         ttk.Button(self.mon_btn_frame, text="Ver Detalles de Worker", command=self._show_worker_details).pack(side=tk.LEFT, padx=5, expand=True, fill=tk.X)
-        ttk.Button(self.mon_btn_frame, text="🔍 Ver Cursos Fallidos", command=self._show_failed_courses).pack(side=tk.LEFT, padx=5, expand=True, fill=tk.X)
+        
+        # BOTON DE CURSOS FALLIDOS - BOTON ROJO GRANDE Y VISIBLE
+        print("=" * 60)
+        print("✅✅✅ BOTON 'VER CURSOS FALLIDOS' AGREGADO - VERSION CON DEBUG")
+        print("=" * 60)
+        
+        # Crear un estilo especial para el botón de cursos fallidos
+        style = ttk.Style()
+        style.configure("FailedCourses.TButton", font=("Arial", 11, "bold"))
+        
+        btn_failed = ttk.Button(self.mon_btn_frame, text="❌ CURSOS FALLIDOS", 
+                                command=self._show_failed_courses, style="FailedCourses.TButton")
+        btn_failed.pack(side=tk.LEFT, padx=5, expand=True, fill=tk.X)
+        
         ttk.Button(self.mon_btn_frame, text="⚠️ Resetear Sistema (Emergencia)", command=self._force_reset_client_state).pack(side=tk.RIGHT, padx=5, expand=True, fill=tk.X)
 
         # PanedWindow solo para tener formato si se quiere, o usar un Frame simple
@@ -386,44 +399,44 @@ class ScraperGUI(ttk.Frame):
         
         row_id = selection[0]
         
-        # Obtener el SIC code del curso seleccionado
-        # El row_id tiene formato "course_{sic}" donde sic usa _ en lugar de .
-        # Ejemplo: "course_013399_2" para SIC "013399.2"
-        if not row_id.startswith("course_"):
+        # Obtener los valores del curso seleccionado directamente del tree
+        item_values = self.worker_tree.item(row_id, 'values')
+        if not item_values or len(item_values) < 3:
             return
         
-        # Extraer SIC code del row_id
-        sic_encoded = row_id.replace("course_", "")
-        sic_code = sic_encoded.replace("_", ".")
+        # Los valores son: (SIC, Status, Course, Progress)
+        sic_code = str(item_values[0])  # SIC code
+        course_name = str(item_values[2]) if len(item_values) > 2 else ""  # Course name
         
-        # Buscar en los eventos de auditoría qué worker está procesando este SIC
-        # Los eventos tienen formato: source="Worker-X", message contiene el SIC o nombre del curso
+        print(f"DEBUG: Seleccionado curso SIC={sic_code}, Nombre={course_name}")
+        
+        # Buscar en los eventos de auditoría qué worker procesó este curso
         worker_to_highlight = None
         
+        # Método 1: Buscar en los mensajes compilados de cada worker
         if hasattr(self, 'worker_messages'):
             for worker_key, messages in self.worker_messages.items():
                 for msg in messages:
-                    # Buscar si el mensaje menciona este SIC code
-                    if sic_code in msg or sic_encoded in msg:
+                    # Buscar si el mensaje menciona el SIC o el nombre del curso
+                    if sic_code in msg or (course_name and course_name[:30] in msg):
                         worker_to_highlight = worker_key
+                        print(f"DEBUG: Encontrado worker {worker_key} por mensaje: {msg[:50]}")
                         break
                 if worker_to_highlight:
                     break
         
-        # Si no encontramos por mensajes, buscar por el nodo del worker que está "working"
-        # Buscar en el estado actual de los workers
+        # Método 2: Buscar en los nodos hijos de cada worker en el árbol
         if not worker_to_highlight and hasattr(self, 'audit_worker_nodes'):
-            # Buscar el worker que tiene el curso en su current_task
             for worker_key, node_id in self.audit_worker_nodes.items():
                 if self.audit_tree.exists(node_id):
-                    # Verificar si hay eventos recientes de este worker que mencionen el SIC
                     children = self.audit_tree.get_children(node_id)
                     for child in children:
                         values = self.audit_tree.item(child, 'values')
                         if values and len(values) >= 3:
                             msg = str(values[2])  # Columna Message
-                            if sic_code in msg or sic_encoded in msg:
+                            if sic_code in msg or (course_name and course_name[:30] in msg):
                                 worker_to_highlight = worker_key
+                                print(f"DEBUG: Encontrado worker {worker_key} por árbol: {msg[:50]}")
                                 break
                 if worker_to_highlight:
                     break
@@ -432,8 +445,8 @@ class ScraperGUI(ttk.Frame):
         if worker_to_highlight and hasattr(self, 'audit_worker_nodes'):
             node_id = self.audit_worker_nodes.get(worker_to_highlight)
             if node_id and self.audit_tree.exists(node_id):
-                # Expandir el nodo del worker
-                self.audit_tree.item(node_id, open=True)
+                # NO expandir el nodo - solo seleccionarlo e iluminarlo
+                # self.audit_tree.item(node_id, open=True)  # Comentado: no expandir
                 
                 # Seleccionar el nodo del worker
                 self.audit_tree.selection_set(node_id)
@@ -448,6 +461,10 @@ class ScraperGUI(ttk.Frame):
                 
                 # Actualizar el panel de detalles
                 self._on_audit_select(None)
+                
+                print(f"DEBUG: Worker {worker_to_highlight} resaltado correctamente")
+        else:
+            print(f"DEBUG: No se encontró worker para SIC={sic_code}")
 
     def _remove_highlight(self, node_id):
         """Quita el resaltado de un nodo del árbol de auditoría."""

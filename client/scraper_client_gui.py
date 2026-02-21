@@ -433,7 +433,8 @@ class ScraperClientGUI(ttk.Frame):
             'min_words': self.config.get('min_words', 30),
             'search_engine': search_engine,
             'site_domain': site_domain,
-            'is_headless': self.config.get("headless_mode", True)
+            'is_headless': self.config.get("headless_mode", True),
+            'results_output_mode': self.config.get("results_output_mode", "Por curso")
         }
 
         self.timer_manager.start()
