@@ -144,11 +144,124 @@ class ScraperGUI(ttk.Frame):
         self.main_frame = ttk.Frame(self.notebook, padding="10")
         self.notebook.add(self.main_frame, text="Principal")
         
+        # Pestaña Monitor de Estado Expandido (al lado de Principal)
+        self.monitor_expanded_tab = ttk.Frame(self.notebook, padding="10")
+        self.notebook.add(self.monitor_expanded_tab, text="📊 Monitor de Estado")
+        
         self._create_server_config_tab()
         self.config_tab = ConfigTab(self.notebook, self.config)
         self.search_config_tab = SearchConfigTab(self.notebook, self.config)
+        
+        # Inicializar la pestaña de Monitor Expandido
+        self._setup_expanded_monitor_tab()
 
-        # PanedWindow Horizontal Maestro (SIC | MONITOR+DETALLES | RESULTADOS)
+        # === ESTILO VERDE BRILLANTE PARA BARRA DE PROGRESO ===
+        style.configure("Green.Horizontal.TProgressbar", 
+                        troughcolor='#e0e0e0', 
+                        background='#00ff00',  # Verde encendido
+                        lightcolor='#00ff00',
+                        darkcolor='#00cc00')
+        
+        # === MONITOR DE ESTADO INTEGRADO EN LA PARTE SUPERIOR ===
+        # Crear el monitor de estado como parte del main_frame (no como pestaña separada)
+        self.status_monitor_frame = ttk.LabelFrame(self.main_frame, text="📊 Monitor de Estado del Sistema", padding="5")
+        self.status_monitor_frame.pack(fill=tk.X, pady=(0, 5))
+        
+        # Fila 1: Estado y Progreso
+        self.monitor_top_frame = ttk.Frame(self.status_monitor_frame)
+        self.monitor_top_frame.pack(fill=tk.X, pady=2)
+        
+        # Indicador de estado
+        self.status_indicator_label = ttk.Label(
+            self.monitor_top_frame, 
+            text="● INACTIVO", 
+            font=("Arial", 14, "bold"),
+            foreground="gray"
+        )
+        self.status_indicator_label.pack(side=tk.LEFT, padx=10)
+        
+        # Mensaje de estado
+        self.status_msg_label = ttk.Label(
+            self.monitor_top_frame,
+            text="Sistema listo para iniciar",
+            font=("Arial", 10)
+        )
+        self.status_msg_label.pack(side=tk.LEFT, padx=10)
+        
+        # Barra de progreso verde
+        self.main_progress_var = tk.DoubleVar(value=0)
+        self.main_progress_bar = ttk.Progressbar(
+            self.monitor_top_frame, 
+            variable=self.main_progress_var,
+            maximum=100,
+            mode='determinate',
+            length=300,
+            style="Green.Horizontal.TProgressbar"
+        )
+        self.main_progress_bar.pack(side=tk.LEFT, padx=10, fill=tk.X, expand=True)
+        
+        # Etiqueta de porcentaje
+        self.main_progress_label = ttk.Label(
+            self.monitor_top_frame,
+            text="0%",
+            font=("Arial", 10, "bold"),
+            width=6
+        )
+        self.main_progress_label.pack(side=tk.LEFT, padx=5)
+        
+        # Fila 2: Estadísticas rápidas
+        self.monitor_stats_frame = ttk.Frame(self.status_monitor_frame)
+        self.monitor_stats_frame.pack(fill=tk.X, pady=2)
+        
+        self.stat_completed = ttk.Label(self.monitor_stats_frame, text="✅ Completados: 0", font=("Arial", 9))
+        self.stat_completed.pack(side=tk.LEFT, padx=15)
+        
+        self.stat_pending = ttk.Label(self.monitor_stats_frame, text="⏳ Pendientes: 0", font=("Arial", 9))
+        self.stat_pending.pack(side=tk.LEFT, padx=15)
+        
+        self.stat_failed = ttk.Label(self.monitor_stats_frame, text="❌ Fallidos: 0", font=("Arial", 9), foreground="red")
+        self.stat_failed.pack(side=tk.LEFT, padx=15)
+        
+        # Fila 3: Log detallado con colores (colapsable)
+        self.log_toggle_frame = ttk.Frame(self.status_monitor_frame)
+        self.log_toggle_frame.pack(fill=tk.X, pady=2)
+        
+        self.log_visible = tk.BooleanVar(value=False)
+        self.log_toggle_btn = ttk.Checkbutton(
+            self.log_toggle_frame, 
+            text="📋 Mostrar Log Detallado", 
+            variable=self.log_visible,
+            command=self._toggle_log_panel
+        )
+        self.log_toggle_btn.pack(side=tk.LEFT, padx=5)
+        
+        # Panel de log (inicialmente oculto)
+        self.log_panel_frame = ttk.Frame(self.status_monitor_frame)
+        # No se hace pack aquí, se controla con _toggle_log_panel
+        
+        self.detailed_log_text = tk.Text(
+            self.log_panel_frame, 
+            font=("Consolas", 9), 
+            height=6, 
+            wrap=tk.WORD,
+            bg="#1e1e1e",  # Fondo oscuro
+            fg="#ffffff",   # Texto blanco
+            insertbackground="white"
+        )
+        self.detailed_log_scrollbar = ttk.Scrollbar(self.log_panel_frame, orient=tk.VERTICAL, command=self.detailed_log_text.yview)
+        self.detailed_log_text.configure(yscrollcommand=self.detailed_log_scrollbar.set)
+        
+        # Tags para colores del log
+        self.detailed_log_text.tag_configure('ERROR', foreground='#ff4444', background='#330000')    # Rojo
+        self.detailed_log_text.tag_configure('WARNING', foreground='#ffaa00', background='#332200')  # Naranja
+        self.detailed_log_text.tag_configure('SUCCESS', foreground='#00ff00', background='#003300')  # Verde
+        self.detailed_log_text.tag_configure('INFO', foreground='#00aaff', background='#001133')     # Azul
+        
+        # Inicializar el StatusMonitorTab para compatibilidad (interno, no visible como pestaña)
+        self.status_monitor_tab = StatusMonitorTab(None, self)
+        self.status_monitor_tab.frame = self.status_monitor_frame  # Referencia al frame integrado
+        
+        # PanedWindow Horizontal Maestro (SIC | MONITOR+DETALLES | RESULTADOS) - REDIMENSIONABLE
         self.paned_window = ttk.PanedWindow(self.main_frame, orient=tk.HORIZONTAL)
         self.paned_window.pack(fill=tk.BOTH, expand=True)
         
@@ -156,9 +269,9 @@ class ScraperGUI(ttk.Frame):
         self.center_column = ttk.Frame(self.paned_window)
         self.right_column = ttk.Frame(self.paned_window)
         
-        self.paned_window.add(self.left_column, weight=4)   # SIC
+        self.paned_window.add(self.left_column, weight=3)   # SIC - más estrecho
         self.paned_window.add(self.center_column, weight=5) # Monitor/Detalles
-        self.paned_window.add(self.right_column, weight=3)  # Resultados
+        self.paned_window.add(self.right_column, weight=4)  # Resultados
         
         # --- COLUMNA IZQUIERDA (SELECCIÓN DE CÓDIGOS) ---
         self.sic_frame = ttk.LabelFrame(self.left_column, text="Selección de Código", padding=10)
@@ -320,23 +433,33 @@ class ScraperGUI(ttk.Frame):
         # 2. DETALLES DEL PROCESO SELECCIONADO (AHORA A LA DERECHA, DEBAJO DE AUDITORÍA)
         self.details_area = ttk.LabelFrame(self.right_paned, text="Detalles del Proceso Seleccionado", padding=5)
         self.right_paned.add(self.details_area, weight=1)
-        self.details_text = tk.Text(self.details_area, font=("Consolas", 10), state=tk.DISABLED, bg="#f5f5f5", height=6)
-        self.details_text.pack(fill=tk.BOTH, expand=True)
-
-        # 3. Resultados (Botín) con botones integrados
-        self.results_container = ttk.LabelFrame(self.right_paned, text="Resultados Finales", padding=5)
-        self.right_paned.add(self.results_container, weight=1)
         
-        # Botones JUSTO DEBAJO del título "Resultados Finales" (ANTES del contenido para que sean visibles)
+        # Frame contenedor con scrollbar
+        self.details_container = ttk.Frame(self.details_area)
+        self.details_container.pack(fill=tk.BOTH, expand=True)
+        
+        self.details_text = tk.Text(self.details_container, font=("Consolas", 10), state=tk.DISABLED, bg="#f5f5f5", height=6, wrap=tk.WORD)
+        self.details_scrollbar = ttk.Scrollbar(self.details_container, orient=tk.VERTICAL, command=self.details_text.yview)
+        self.details_text.configure(yscrollcommand=self.details_scrollbar.set)
+        
+        self.details_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.details_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # 3. Resultados (solo botones, sin área de texto redundante)
+        self.results_container = ttk.LabelFrame(self.right_paned, text="Acciones de Resultados", padding=5)
+        self.right_paned.add(self.results_container, weight=0)
+        
+        # Botones de acciones
         self.results_btns = ttk.Frame(self.results_container)
-        self.results_btns.pack(fill=tk.X, pady=(0, 5), before=None)
+        self.results_btns.pack(fill=tk.X, pady=5)
         ttk.Button(self.results_btns, text="📥 Exportar ZIP", command=self._on_export_results).pack(side=tk.LEFT, padx=2, pady=2, fill=tk.X, expand=True)
         ttk.Button(self.results_btns, text="📂 Ver Archivos", command=self._on_open_results_folder).pack(side=tk.LEFT, padx=2, pady=2, fill=tk.X, expand=True)
         ttk.Button(self.results_btns, text="🗑️ Limpiar", command=self._cleanup_files_action).pack(side=tk.LEFT, padx=2, pady=2, fill=tk.X, expand=True)
         
-        # Contenido de resultados (DESPUÉS de los botones)
-        self.results_frame = ResultsFrame(self.results_container)
-        self.results_frame.pack(fill=tk.BOTH, expand=True)
+        # ResultsFrame eliminado - su función de log ahora está en el Monitor de Estado
+        # Mantenemos una referencia dummy para compatibilidad con código existente
+        self.results_frame = DummyResultsFrame()
+        self.results_frame.set_gui(self)
 
         # Ajuste final de sashes
         self.paned_window.update()
@@ -372,6 +495,160 @@ class ScraperGUI(ttk.Frame):
         self.connection_status_label.grid(row=3, column=1, padx=10, sticky=tk.E)
         
         config_frame.columnconfigure(1, weight=1)
+    
+    def _setup_expanded_monitor_tab(self):
+        """Crea la pestaña de Monitor de Estado Expandido con toda la información detallada."""
+        # === PANED WINDOW VERTICAL PARA DIVIDIR SECCIONES ===
+        self.expanded_paned = ttk.PanedWindow(self.monitor_expanded_tab, orient=tk.VERTICAL)
+        self.expanded_paned.pack(fill=tk.BOTH, expand=True)
+        
+        # === SECCIÓN 1: ESTADO GENERAL Y PROGRESO (ARRIBA) ===
+        top_frame = ttk.Frame(self.expanded_paned)
+        self.expanded_paned.add(top_frame, weight=1)
+        
+        # Estado del Sistema
+        status_frame = ttk.LabelFrame(top_frame, text="Estado del Sistema", padding="10")
+        status_frame.pack(fill=tk.X, pady=5, padx=5)
+        
+        # Indicador de estado grande
+        self.expanded_status_label = ttk.Label(
+            status_frame, 
+            text="● INACTIVO", 
+            font=("Arial", 24, "bold"),
+            foreground="gray"
+        )
+        self.expanded_status_label.pack(side=tk.LEFT, padx=20)
+        
+        # Mensaje de estado
+        self.expanded_status_msg = ttk.Label(
+            status_frame,
+            text="Sistema listo para iniciar",
+            font=("Arial", 14)
+        )
+        self.expanded_status_msg.pack(side=tk.LEFT, padx=20, fill=tk.X, expand=True)
+        
+        # Progreso General con barra verde
+        progress_frame = ttk.LabelFrame(top_frame, text="Progreso General", padding="10")
+        progress_frame.pack(fill=tk.X, pady=5, padx=5)
+        
+        # Barra de progreso verde grande
+        self.expanded_progress_var = tk.DoubleVar(value=0)
+        self.expanded_progress_bar = ttk.Progressbar(
+            progress_frame, 
+            variable=self.expanded_progress_var,
+            maximum=100,
+            mode='determinate',
+            length=600,
+            style="Green.Horizontal.TProgressbar"
+        )
+        self.expanded_progress_bar.pack(fill=tk.X, pady=5)
+        
+        # Etiqueta de porcentaje grande
+        self.expanded_progress_label = ttk.Label(
+            progress_frame,
+            text="0% - Sin progreso",
+            font=("Arial", 16, "bold")
+        )
+        self.expanded_progress_label.pack()
+        
+        # Estadísticas detalladas
+        stats_frame = ttk.Frame(progress_frame)
+        stats_frame.pack(fill=tk.X, pady=10)
+        
+        self.exp_stat_completed = ttk.Label(stats_frame, text="✅ Completados: 0", font=("Arial", 12))
+        self.exp_stat_completed.pack(side=tk.LEFT, padx=20)
+        
+        self.exp_stat_pending = ttk.Label(stats_frame, text="⏳ Pendientes: 0", font=("Arial", 12))
+        self.exp_stat_pending.pack(side=tk.LEFT, padx=20)
+        
+        self.exp_stat_failed = ttk.Label(stats_frame, text="❌ Fallidos: 0", font=("Arial", 12), foreground="red")
+        self.exp_stat_failed.pack(side=tk.LEFT, padx=20)
+        
+        self.exp_stat_in_progress = ttk.Label(stats_frame, text="🔄 En Progreso: 0", font=("Arial", 12), foreground="blue")
+        self.exp_stat_in_progress.pack(side=tk.LEFT, padx=20)
+        
+        # === SECCIÓN 2: ERRORES CRÍTICOS (CENTRO) ===
+        errors_frame = ttk.LabelFrame(self.expanded_paned, text="⚠️ Errores Críticos", padding="10")
+        self.expanded_paned.add(errors_frame, weight=1)
+        
+        # Lista de errores con scrollbar
+        errors_container = ttk.Frame(errors_frame)
+        errors_container.pack(fill=tk.BOTH, expand=True)
+        
+        self.expanded_errors_text = tk.Text(
+            errors_container, 
+            font=("Consolas", 11), 
+            height=8, 
+            wrap=tk.WORD,
+            bg="#1e1e1e",
+            fg="#ff4444",
+            insertbackground="white"
+        )
+        self.expanded_errors_scrollbar = ttk.Scrollbar(errors_container, orient=tk.VERTICAL, command=self.expanded_errors_text.yview)
+        self.expanded_errors_text.configure(yscrollcommand=self.expanded_errors_scrollbar.set)
+        
+        self.expanded_errors_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.expanded_errors_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        
+        self.expanded_errors_text.insert(tk.END, "No hay errores críticos registrados.\n")
+        self.expanded_errors_text.config(state=tk.DISABLED)
+        
+        # Botón para limpiar errores
+        ttk.Button(errors_frame, text="🗑️ Limpiar Errores", command=self._clear_expanded_errors).pack(pady=5)
+        
+        # === SECCIÓN 3: LOG DETALLADO CON COLORES (ABAJO) ===
+        log_frame = ttk.LabelFrame(self.expanded_paned, text="📋 Log Detallado del Proceso", padding="10")
+        self.expanded_paned.add(log_frame, weight=2)
+        
+        # Área de log con scrollbar
+        log_container = ttk.Frame(log_frame)
+        log_container.pack(fill=tk.BOTH, expand=True)
+        
+        self.expanded_log_text = tk.Text(
+            log_container, 
+            font=("Consolas", 10), 
+            height=15, 
+            wrap=tk.WORD,
+            bg="#1e1e1e",  # Fondo oscuro
+            fg="#ffffff",   # Texto blanco
+            insertbackground="white"
+        )
+        self.expanded_log_scrollbar = ttk.Scrollbar(log_container, orient=tk.VERTICAL, command=self.expanded_log_text.yview)
+        self.expanded_log_text.configure(yscrollcommand=self.expanded_log_scrollbar.set)
+        
+        self.expanded_log_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.expanded_log_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        
+        # Configurar tags para colores
+        self.expanded_log_text.tag_configure('ERROR', foreground='#ff4444', background='#330000')    # Rojo
+        self.expanded_log_text.tag_configure('WARNING', foreground='#ffaa00', background='#332200')  # Naranja
+        self.expanded_log_text.tag_configure('SUCCESS', foreground='#00ff00', background='#003300')  # Verde
+        self.expanded_log_text.tag_configure('INFO', foreground='#00aaff', background='#001133')     # Azul
+        
+        # Botones de control
+        btn_frame = ttk.Frame(log_frame)
+        btn_frame.pack(fill=tk.X, pady=5)
+        
+        ttk.Button(btn_frame, text="🗑️ Limpiar Log", command=self._clear_expanded_log).pack(side=tk.LEFT, padx=5)
+        ttk.Button(btn_frame, text="📋 Copiar Log", command=self._copy_expanded_log).pack(side=tk.LEFT, padx=5)
+    
+    def _clear_expanded_errors(self):
+        """Limpia la lista de errores en la pestaña expandida."""
+        self.expanded_errors_text.config(state=tk.NORMAL)
+        self.expanded_errors_text.delete(1.0, tk.END)
+        self.expanded_errors_text.insert(tk.END, "No hay errores críticos registrados.\n")
+        self.expanded_errors_text.config(state=tk.DISABLED)
+    
+    def _clear_expanded_log(self):
+        """Limpia el log en la pestaña expandida."""
+        self.expanded_log_text.delete(1.0, tk.END)
+    
+    def _copy_expanded_log(self):
+        """Copia el log de la pestaña expandida al portapapeles."""
+        log_content = self.expanded_log_text.get(1.0, tk.END)
+        self.monitor_expanded_tab.clipboard_clear()
+        self.monitor_expanded_tab.clipboard_append(log_content)
+        messagebox.showinfo("Copiado", "Log copiado al portapapeles.")
 
     def _start_status_polling(self):
         """Este método ahora es manejado externamente por la ClientApp."""
@@ -470,6 +747,96 @@ class ScraperGUI(ttk.Frame):
         """Quita el resaltado de un nodo del árbol de auditoría."""
         if self.audit_tree.exists(node_id):
             self.audit_tree.item(node_id, tags=('worker_node',))
+    
+    def _update_status_monitor(self, workers, courses):
+        """Actualiza el Monitor de Estado en AMBAS pestañas (Principal y Expandida)."""
+        # Calcular estadísticas
+        total_courses = len(courses)
+        completed = sum(1 for c in courses if c.get('status') == 'Completado')
+        pending = sum(1 for c in courses if c.get('status') == 'Pendiente')
+        failed = sum(1 for c in courses if c.get('status') in ['Error', 'Fallido'])
+        in_progress = sum(1 for c in courses if c.get('status') == 'En progreso')
+        
+        # Calcular progreso promedio
+        if total_courses > 0:
+            avg_progress = sum(c.get('progress', 0) for c in courses) / total_courses
+        else:
+            avg_progress = 0
+        
+        # Determinar estado del sistema
+        active_workers = 0
+        if isinstance(workers, dict):
+            active_workers = sum(1 for w in workers.values() if w.get('status') not in ['Idle', 'Error'])
+        
+        if active_workers > 0 or in_progress > 0:
+            status = "ACTIVO"
+            message = f"Procesando {in_progress} cursos con {active_workers} workers activos"
+        elif failed > 0 and completed + failed == total_courses:
+            status = "DETENIDO"
+            message = f"Proceso terminado con {failed} errores"
+        elif completed == total_courses and total_courses > 0:
+            status = "DETENIDO"
+            message = "Proceso completado exitosamente"
+        else:
+            status = "INACTIVO"
+            message = "Sistema listo para iniciar"
+        
+        # === ACTUALIZAR PESTAÑA PRINCIPAL ===
+        # Actualizar indicador de estado
+        if status == "ACTIVO":
+            self.status_indicator_label.config(text="● ACTIVO", foreground="#00ff00")  # Verde brillante
+        elif status == "DETENIDO":
+            self.status_indicator_label.config(text="● DETENIDO", foreground="#ff4444")  # Rojo
+        else:
+            self.status_indicator_label.config(text="● INACTIVO", foreground="gray")
+        
+        # Actualizar mensaje
+        self.status_msg_label.config(text=message)
+        
+        # Actualizar barra de progreso verde (Principal)
+        self.main_progress_var.set(avg_progress)
+        self.main_progress_label.config(text=f"{avg_progress:.0f}%")
+        
+        # Actualizar estadísticas (Principal)
+        self.stat_completed.config(text=f"✅ Completados: {completed}")
+        self.stat_pending.config(text=f"⏳ Pendientes: {pending}")
+        self.stat_failed.config(text=f"❌ Fallidos: {failed}")
+        
+        # === ACTUALIZAR PESTAÑA MONITOR EXPANDIDO ===
+        if hasattr(self, 'expanded_status_label'):
+            # Estado
+            if status == "ACTIVO":
+                self.expanded_status_label.config(text="● ACTIVO", foreground="#00ff00")
+            elif status == "DETENIDO":
+                self.expanded_status_label.config(text="● DETENIDO", foreground="#ff4444")
+            else:
+                self.expanded_status_label.config(text="● INACTIVO", foreground="gray")
+            
+            # Mensaje
+            self.expanded_status_msg.config(text=message)
+            
+            # Barra de progreso verde (Expandido)
+            self.expanded_progress_var.set(avg_progress)
+            self.expanded_progress_label.config(text=f"{avg_progress:.1f}% - {message}")
+            
+            # Estadísticas detalladas (Expandido)
+            self.exp_stat_completed.config(text=f"✅ Completados: {completed}")
+            self.exp_stat_pending.config(text=f"⏳ Pendientes: {pending}")
+            self.exp_stat_failed.config(text=f"❌ Fallidos: {failed}")
+            self.exp_stat_in_progress.config(text=f"🔄 En Progreso: {in_progress}")
+        
+        # Agregar entrada al log detallado si hay actividad significativa
+        if not hasattr(self, 'last_logged_progress'):
+            self.last_logged_progress = 0
+        
+        if status == "ACTIVO" and avg_progress - self.last_logged_progress >= 5:
+            self._add_to_detailed_log(f"Progreso: {avg_progress:.1f}% - {completed}/{total_courses} cursos", "INFO")
+            self.last_logged_progress = avg_progress
+        
+        # También actualizar el status_monitor_tab para compatibilidad
+        if hasattr(self, 'status_monitor_tab') and self.status_monitor_tab:
+            self.status_monitor_tab.update_status(status, message, avg_progress)
+            self.status_monitor_tab.update_stats(completed, pending, failed)
 
     def _render_status(self, workers, courses):
         """Renderiza el estado dinámico de los cursos en el Monitor Principal."""
@@ -483,22 +850,22 @@ class ScraperGUI(ttk.Frame):
              courses_list = courses.values()
         else:
              courses_list = courses
-             
+              
         for c in courses_list:
              sic = c.get('sic', 'N/A')
              name = c.get('name', 'N/A')
              status = c.get('status', 'Pendiente')
              progress = int(c.get('progress', 0))
-             
+              
              row_id = f"course_{sic.replace('.', '_')}"
              vals = (sic, status.capitalize(), name, f"{progress}%")
-             
+              
              self.row_details_map[row_id] = f"Curso: {sic} - {name}\nEstado Actual: {status}\nProgreso: {progress}%"
-             
+              
              if self.worker_tree.exists(row_id):
-                 self.worker_tree.item(row_id, values=vals)
+                  self.worker_tree.item(row_id, values=vals)
              else:
-                 self.worker_tree.insert('', 'end', iid=row_id, values=vals)
+                  self.worker_tree.insert('', 'end', iid=row_id, values=vals)
 
         # 2. Agregar mensajes de los workers si están atascados o iniciando (opcional, solo para feedback transitorio)
         # Limpiamos los transitorios primero
@@ -531,6 +898,9 @@ class ScraperGUI(ttk.Frame):
                  self.progress_frame.update_progress(0, "Iniciando...")
              else:
                  self.progress_frame.update_progress(100, "Inactivo")
+        
+        # === ACTUALIZAR MONITOR DE ESTADO ===
+        self._update_status_monitor(workers, courses_list if isinstance(courses_list, list) else list(courses_list))
 
     def _get_worker_sort_key(self, source):
         """Extrae el número del worker para ordenamiento numérico.
@@ -617,6 +987,11 @@ class ScraperGUI(ttk.Frame):
                     # Formato: [TIMESTAMP] TIPO: Mensaje
                     formatted_msg = f"[{timestamp}] {ev_type}: {msg}"
                     self.worker_messages[worker_key].append(formatted_msg)
+            
+            # === AGREGAR AL LOG DETALLADO CON COLORES ===
+            if hasattr(self, 'detailed_log_text'):
+                log_level = ev_type if ev_type in ['ERROR', 'WARNING', 'SUCCESS', 'INFO'] else 'INFO'
+                self._add_to_detailed_log(f"[{source}] {msg}", log_level)
         
         # Reordenar workers si se agregó uno nuevo
         if needs_reorder:
@@ -1111,6 +1486,53 @@ class ScraperGUI(ttk.Frame):
     def _on_to_sic_select(self, e): pass
     def _update_timer_display(self, t): self.queue.put(('update_timer', t))
     def _log_callback(self, l): self.queue.put(('log', l))
+    
+    def _toggle_log_panel(self):
+        """Muestra u oculta el panel de log detallado."""
+        if self.log_visible.get():
+            self.detailed_log_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+            self.detailed_log_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+            self.log_panel_frame.pack(fill=tk.BOTH, expand=True, pady=2)
+        else:
+            self.log_panel_frame.pack_forget()
+            self.detailed_log_text.pack_forget()
+            self.detailed_log_scrollbar.pack_forget()
+    
+    def _add_to_detailed_log(self, message, level="INFO"):
+        """Agrega una entrada al log detallado con color según su naturaleza (en AMBAS pestañas)."""
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        formatted_entry = f"[{timestamp}] {message}\n"
+        
+        # Agregar al log de la pestaña Principal
+        self.detailed_log_text.insert(tk.END, formatted_entry, level)
+        self.detailed_log_text.see(tk.END)
+        
+        # Agregar al log de la pestaña Expandida
+        if hasattr(self, 'expanded_log_text'):
+            self.expanded_log_text.insert(tk.END, formatted_entry, level)
+            self.expanded_log_text.see(tk.END)
+        
+        # Si es ERROR, también agregar a la lista de errores expandida
+        if level == "ERROR" and hasattr(self, 'expanded_errors_text'):
+            self.expanded_errors_text.config(state=tk.NORMAL)
+            self.expanded_errors_text.delete(1.0, tk.END)
+            self.expanded_errors_text.insert(tk.END, formatted_entry)
+            self.expanded_errors_text.config(state=tk.DISABLED)
+            self.expanded_errors_text.see(tk.END)
+    
+    def handle_scraping_finished(self):
+        """Maneja el evento de finalización del scraping."""
+        self.results_frame.add_log("✅ Proceso de scraping finalizado.")
+        self.progress_frame.update_progress(100, "Completado")
+        # Actualizar el estado del monitor si existe
+        if hasattr(self, 'status_monitor_tab'):
+            self.status_monitor_tab.update_status("DETENIDO", "Proceso completado", 100)
+    
+    def handle_scraping_stopped(self, data):
+        """Maneja el evento de detención del scraping."""
+        self.results_frame.add_log("⏹️ Proceso de scraping detenido por el usuario.")
+        if hasattr(self, 'status_monitor_tab'):
+            self.status_monitor_tab.update_status("DETENIDO", "Detenido por usuario", None)
     def _connect_and_load_initial_data(self):
         """Conecta al servidor en un hilo de fondo para no bloquear la GUI."""
         url = self.server_url.get()
@@ -1308,6 +1730,220 @@ class ServerFilesWindow(tk.Toplevel):
                     self.refresh()
                 else: messagebox.showerror("Error", f"Fallo: {r.status_code}")
             except Exception as e: messagebox.showerror("Error", str(e))
+
+class DummyResultsFrame:
+    """
+    Clase dummy para compatibilidad con código que llama a results_frame.add_log().
+    Redirige los logs al Monitor de Estado en lugar de mostrarlos en un frame separado.
+    """
+    def __init__(self):
+        self.gui = None
+    
+    def set_gui(self, gui):
+        """Establece referencia al GUI principal."""
+        self.gui = gui
+    
+    def add_log(self, message):
+        """Redirige logs al log detallado del Monitor de Estado."""
+        # Determinar el nivel del log basado en el contenido
+        if "ERROR" in message or "❌" in message or "Error" in message:
+            level = "ERROR"
+        elif "WARNING" in message or "⚠️" in message:
+            level = "WARNING"
+        elif "✅" in message or "Completado" in message or "exitosamente" in message:
+            level = "SUCCESS"
+        else:
+            level = "INFO"
+        
+        # Agregar al log detallado si el GUI está disponible
+        if self.gui and hasattr(self.gui, '_add_to_detailed_log'):
+            self.gui._add_to_detailed_log(message, level)
+
+
+class StatusMonitorTab:
+    """
+    Monitor de Estado del Sistema (ahora integrado en la pestaña Principal)
+    =======================================================================
+    Muestra:
+    - Estado actual del proceso (activo/detenido)
+    - Porcentaje de avance general
+    - Lista de errores críticos
+    - Log detallado del proceso
+    
+    NOTA: Esta clase ahora es solo para compatibilidad interna.
+    El monitor real está integrado en la pestaña Principal.
+    """
+    
+    def __init__(self, notebook, gui):
+        self.gui = gui
+        # Si notebook es None, crear un frame dummy para compatibilidad
+        if notebook is not None:
+            self.frame = ttk.Frame(notebook, padding="10")
+            self._setup_ui_standalone()
+        else:
+            self.frame = None  # Modo integrado
+        
+        # Variables de estado
+        self.current_status = "INACTIVO"
+        self.current_progress = 0
+        self.current_message = "Sistema listo"
+        self.error_count = 0
+        self.critical_errors = []
+        self.last_log_progress = 0
+    
+    def _setup_ui_standalone(self):
+        """Configura la interfaz cuando está como pestaña separada (no usado actualmente)."""
+        pass  # El modo standalone ya no se usa
+    
+    def _setup_ui(self):
+        """Configura la interfaz del monitor de estado."""
+        
+        # === SECCIÓN 1: ESTADO GENERAL ===
+        status_frame = ttk.LabelFrame(self.frame, text="Estado del Sistema", padding="10")
+        status_frame.pack(fill=tk.X, pady=5)
+        
+        # Indicador de estado con color
+        self.status_indicator_frame = ttk.Frame(status_frame)
+        self.status_indicator_frame.pack(fill=tk.X)
+        
+        # Etiqueta de estado
+        self.status_label = ttk.Label(
+            self.status_indicator_frame, 
+            text="● INACTIVO", 
+            font=("Arial", 18, "bold"),
+            foreground="gray"
+        )
+        self.status_label.pack(side=tk.LEFT, padx=10)
+        
+        # Mensaje de estado
+        self.status_message = ttk.Label(
+            self.status_indicator_frame,
+            text="Sistema listo para iniciar",
+            font=("Arial", 11)
+        )
+        self.status_message.pack(side=tk.LEFT, padx=20)
+        
+        # === SECCIÓN 2: PROGRESO GENERAL ===
+        progress_frame = ttk.LabelFrame(self.frame, text="Progreso General", padding="10")
+        progress_frame.pack(fill=tk.X, pady=5)
+        
+        # Barra de progreso
+        self.progress_var = tk.DoubleVar(value=0)
+        self.progress_bar = ttk.Progressbar(
+            progress_frame, 
+            variable=self.progress_var,
+            maximum=100,
+            mode='determinate',
+            length=400
+        )
+        self.progress_bar.pack(fill=tk.X, pady=5)
+        
+        # Etiqueta de porcentaje
+        self.progress_label = ttk.Label(
+            progress_frame,
+            text="0% - Sin progreso",
+            font=("Arial", 12, "bold")
+        )
+        self.progress_label.pack()
+        
+        # Estadísticas rápidas
+        stats_frame = ttk.Frame(progress_frame)
+        stats_frame.pack(fill=tk.X, pady=5)
+        
+        self.courses_completed_label = ttk.Label(stats_frame, text="✅ Completados: 0")
+        self.courses_completed_label.pack(side=tk.LEFT, padx=10)
+        
+        self.courses_pending_label = ttk.Label(stats_frame, text="⏳ Pendientes: 0")
+        self.courses_pending_label.pack(side=tk.LEFT, padx=10)
+        
+        self.courses_failed_label = ttk.Label(stats_frame, text="❌ Fallidos: 0", foreground="red")
+        self.courses_failed_label.pack(side=tk.LEFT, padx=10)
+        
+        # === SECCIÓN 3: ERRORES CRÍTICOS ===
+        errors_frame = ttk.LabelFrame(self.frame, text="⚠️ Errores Críticos", padding="10")
+        errors_frame.pack(fill=tk.BOTH, expand=True, pady=5)
+        
+        # Lista de errores con scrollbar
+        errors_container = ttk.Frame(errors_frame)
+        errors_container.pack(fill=tk.BOTH, expand=True)
+        
+        self.errors_text = tk.Text(
+            errors_container, 
+            font=("Consolas", 10), 
+            height=8, 
+            wrap=tk.WORD,
+            bg="#fff5f5"
+        )
+        self.errors_scrollbar = ttk.Scrollbar(errors_container, orient=tk.VERTICAL, command=self.errors_text.yview)
+        self.errors_text.configure(yscrollcommand=self.errors_scrollbar.set)
+        
+        self.errors_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.errors_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        
+        self.errors_text.insert(tk.END, "No hay errores críticos registrados.\n")
+        self.errors_text.config(state=tk.DISABLED)
+        
+        # Botón para limpiar errores
+        ttk.Button(errors_frame, text="🗑️ Limpiar Errores", command=self._clear_errors).pack(pady=5)
+        
+        # === SECCIÓN 4: LOG DETALLADO ===
+        log_frame = ttk.LabelFrame(self.frame, text="📋 Log Detallado del Proceso", padding="10")
+        log_frame.pack(fill=tk.BOTH, expand=True, pady=5)
+        
+        # Área de log con scrollbar
+        log_container = ttk.Frame(log_frame)
+        log_container.pack(fill=tk.BOTH, expand=True)
+        
+        self.log_text = tk.Text(
+            log_container, 
+            font=("Consolas", 9), 
+            height=10, 
+            wrap=tk.WORD,
+            bg="#f5f5f5"
+        )
+        self.log_scrollbar = ttk.Scrollbar(log_container, orient=tk.VERTICAL, command=self.log_text.yview)
+        self.log_text.configure(yscrollcommand=self.log_scrollbar.set)
+        
+        self.log_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.log_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        
+        # Configurar tags para colores
+        self.log_text.tag_configure('ERROR', foreground='red')
+        self.log_text.tag_configure('WARNING', foreground='orange')
+        self.log_text.tag_configure('SUCCESS', foreground='green')
+        self.log_text.tag_configure('INFO', foreground='blue')
+        
+        # Botones de control
+        btn_frame = ttk.Frame(log_frame)
+        btn_frame.pack(fill=tk.X, pady=5)
+        
+        ttk.Button(btn_frame, text="🗑️ Limpiar Log", command=self._clear_log).pack(side=tk.LEFT, padx=5)
+        ttk.Button(btn_frame, text="📋 Copiar Log", command=self._copy_log).pack(side=tk.LEFT, padx=5)
+    
+    def update_status(self, status, message=None, progress=None):
+        """Actualiza el estado del sistema (compatibilidad)."""
+        self.current_status = status
+        if message:
+            self.current_message = message
+        if progress is not None:
+            self.current_progress = progress
+    
+    def update_stats(self, completed=0, pending=0, failed=0):
+        """Actualiza las estadísticas de cursos (compatibilidad)."""
+        pass  # Ahora manejado por _update_status_monitor
+    
+    def add_error(self, error_message, source="System"):
+        """Agrega un error crítico a la lista (compatibilidad)."""
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        formatted_error = f"[{timestamp}] [{source}] {error_message}\n"
+        self.critical_errors.append(formatted_error)
+        self.error_count += 1
+    
+    def add_log_entry(self, message, level="INFO"):
+        """Agrega una entrada al log detallado (compatibilidad)."""
+        # Ahora manejado por _add_to_detailed_log
+        pass
+
 
 if __name__ == "__main__":
     pass

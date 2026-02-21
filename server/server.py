@@ -618,6 +618,9 @@ class ScraperServer:
         self.app.get("/api/debug_info")(self.debug_info)
         self.app.get("/api/version")(self.version_endpoint)
         
+        # Endpoint de actualización remota de código
+        self.app.post("/api/update_code")(self.update_code_endpoint)
+        
         # Endpoints de análisis de fallos
         self.app.get("/api/failed_courses")(self.get_failed_courses_summary)
         self.app.get("/api/course_details")(self.get_course_details)
