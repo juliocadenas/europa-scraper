@@ -10,13 +10,14 @@ EU_LANGUAGES = ['en', 'es', 'de', 'fr', 'it', 'pl']
 
 class CordisApiClient:
     """
-    V28 - MULTI-LANGUAGE VERSION
+    V29 - SMART MULTI-LANGUAGE VERSION
     
     Uses the OFFICIAL Cordis JSON endpoint that works:
     https://cordis.europa.eu/search?q=QUERY&format=json&p=PAGE&num=100
     
-    NEW: Generates one record per language (en, es, de, fr, it, pl) for each article.
-    URL format: https://cordis.europa.eu/article/id/{ID}/{lang}
+    NEW: Detects availableLanguages from API response:
+    - If multiple languages available → creates records with /en, /es, etc.
+    - If only one language → creates single record without language suffix
     """
 
     SEARCH_URL = "https://cordis.europa.eu/search"
@@ -29,16 +30,39 @@ class CordisApiClient:
             'Accept-Language': 'en-US,en;q=0.9',
         }
     
+    def _parse_available_languages(self, available_langs_str: str) -> List[str]:
+        """
+        Parsea el campo 'availableLanguages' de la API de CORDIS.
+        
+        Args:
+            available_langs_str: String como "de,en,es,fr,it,pl" o "en"
+            
+        Returns:
+            Lista de códigos de idioma disponibles
+        """
+        if not available_langs_str:
+            return ['en']  # Default to English
+        
+        # Split by comma and strip whitespace
+        langs = [lang.strip() for lang in available_langs_str.split(',') if lang.strip()]
+        
+        # Filter to only valid EU languages
+        valid_langs = [lang for lang in langs if lang in EU_LANGUAGES]
+        
+        return valid_langs if valid_langs else ['en']
+    
     async def search_projects_and_publications(self, query_term: str, search_mode: str = 'broad', max_results: int = 50000, progress_callback=None) -> List[Dict[str, Any]]:
         """
-        V28 - Multi-language version.
+        V29 - Smart Multi-language version.
         
         1. First request gets totalHits
         2. Paginates through ALL pages to collect every result
-        3. For each result, generates 6 records (one per EU language)
+        3. For each result, checks 'availableLanguages' field:
+           - If multiple languages → creates records with /en, /es, etc.
+           - If only one language → creates single record without suffix
         4. Returns complete list for tabulation
         """
-        logger.info(f"*** V28 MULTI-LANG ACTIVADA ***: Iniciando búsqueda JSON en Cordis para '{query_term}'")
+        logger.info(f"*** V29 SMART MULTI-LANG ACTIVADA ***: Iniciando búsqueda JSON en Cordis para '{query_term}'")
         
         all_results = []
         page = 1
@@ -51,7 +75,7 @@ class CordisApiClient:
             # Build URL: https://cordis.europa.eu/search?q=QUERY&format=json&p=PAGE&num=100
             search_url = f"{self.SEARCH_URL}?q={encoded_query}&format=json&p={page}&num={results_per_page}"
             
-            logger.info(f"V28 - Fetching page {page}: {search_url}")
+            logger.info(f"V29 - Fetching page {page}: {search_url}")
             
             loop = asyncio.get_running_loop()
             def _fetch():
@@ -62,13 +86,13 @@ class CordisApiClient:
                 response = await loop.run_in_executor(None, _fetch)
                 
                 if response.status_code != 200:
-                    logger.error(f"V28 - Error fetching page {page}: Status {response.status_code}")
+                    logger.error(f"V29 - Error fetching page {page}: Status {response.status_code}")
                     break
                 
                 try:
                     data = response.json()
                 except Exception as e:
-                    logger.error(f"V28 - JSON parse error on page {page}: {e}")
+                    logger.error(f"V29 - JSON parse error on page {page}: {e}")
                     break
                 
                 # Extract header info
@@ -78,10 +102,10 @@ class CordisApiClient:
                 if total_hits is None:
                     total_hits_str = header.get('totalHits', '0')
                     total_hits = int(total_hits_str) if total_hits_str else 0
-                    logger.info(f"*** V28 - TOTAL EN CORDIS: {total_hits} resultados ***")
+                    logger.info(f"*** V29 - TOTAL EN CORDIS: {total_hits} resultados ***")
                     
                     if total_hits == 0:
-                        logger.warning("V28 - No results found for this query")
+                        logger.warning("V29 - No results found for this query")
                         break
                 
                 # Extract hits - Cordis returns them in data['hits'] as a list
@@ -108,13 +132,16 @@ class CordisApiClient:
                     hits = []
                 
                 if not hits:
-                    logger.warning(f"V28 - Page {page}: Found totalHits={total_hits} but extracted 0 hits.")
-                    logger.warning(f"V28 - Root data keys: {list(data.keys())}")
+                    logger.warning(f"V29 - Page {page}: Found totalHits={total_hits} but extracted 0 hits.")
+                    logger.warning(f"V29 - Root data keys: {list(data.keys())}")
                     if 'hits' in data:
-                        logger.warning(f"V28 - data['hits'] type: {type(data['hits'])}")
+                        logger.warning(f"V29 - data['hits'] type: {type(data['hits'])}")
                     break
                 
                 page_count = 0
+                multi_lang_count = 0
+                single_lang_count = 0
+                
                 for hit in hits:
                     # Each hit contains various content types: article, project, result, etc.
                     # We need to extract from whichever is present
@@ -137,6 +164,13 @@ class CordisApiClient:
                     title = content.get('title', content.get('acronym', 'No Title'))
                     teaser = content.get('teaser', content.get('objective', ''))
                     
+                    # V29: Detectar idiomas disponibles desde la API
+                    available_langs_str = content.get('availableLanguages', '')
+                    primary_lang = content.get('language', 'en')
+                    
+                    # Parsear idiomas disponibles
+                    available_langs = self._parse_available_languages(available_langs_str)
+                    
                     # Build base URL based on content type (without language suffix)
                     if content_type == 'project':
                         base_url = f"https://cordis.europa.eu/project/id/{item_id}"
@@ -149,42 +183,52 @@ class CordisApiClient:
                     else:
                         base_url = f"https://cordis.europa.eu/search?q={encoded_query}"
                     
-                    # V28: Generate one record for EACH EU language
-                    for lang in EU_LANGUAGES:
-                        # URL with language suffix
-                        url_with_lang = f"{base_url}/{lang}"
-                        
+                    # V29: Lógica inteligente de idiomas
+                    if len(available_langs) > 1:
+                        # Múltiples idiomas disponibles → crear registro por cada idioma
+                        multi_lang_count += 1
+                        for lang in available_langs:
+                            # URL with language suffix
+                            url_with_lang = f"{base_url}/{lang}"
+                            
+                            all_results.append({
+                                'url': url_with_lang,
+                                'title': title,
+                                'description': teaser[:1000] if teaser else f"Cordis {content_type}: {title}",
+                                'source': 'Cordis Europa API V29',
+                                'mediatype': content_type,
+                                'rcn': rcn,
+                                'lang': lang
+                            })
+                            page_count += 1
+                    else:
+                        # Solo un idioma → crear un solo registro SIN sufijo de idioma
+                        single_lang_count += 1
                         all_results.append({
-                            'url': url_with_lang,
+                            'url': base_url,  # Sin sufijo de idioma
                             'title': title,
                             'description': teaser[:1000] if teaser else f"Cordis {content_type}: {title}",
-                            'source': 'Cordis Europa API V28',
+                            'source': 'Cordis Europa API V29',
                             'mediatype': content_type,
                             'rcn': rcn,
-                            'lang': lang
+                            'lang': available_langs[0] if available_langs else primary_lang
                         })
                         page_count += 1
                 
-                logger.info(f"V28 - Page {page}: Found {page_count} results (x6 langs). Total acumulado: {len(all_results)} de {total_hits * 6}")
+                logger.info(f"V29 - Page {page}: {page_count} resultados. Multi-idioma: {multi_lang_count}, Single-idioma: {single_lang_count}. Total acumulado: {len(all_results)}")
                 
                 # Update GUI with progress
                 if progress_callback:
-                    # Formato estandarizado para que la GUI identifique el curso
-                    progress_callback(0, f"Cordis API | Página {page} | {len(all_results)//6}/{total_hits} artículos (x6 idiomas)", {})
-                
-                # Check if we have collected all expected results (multiplied by 6 for languages)
-                if len(all_results) >= total_hits * 6:
-                    logger.info(f"V28 - Collected all {total_hits} results x6 languages. Done!")
-                    break
+                    progress_callback(0, f"Cordis API | Página {page} | {len(all_results)} resultados", {})
                 
                 # Safety limit
                 if len(all_results) >= max_results:
-                    logger.info(f"V28 - Reached safety limit ({max_results}). Stopping.")
+                    logger.info(f"V29 - Reached safety limit ({max_results}). Stopping.")
                     break
                 
                 # Check if this was the last page (NO results on this page)
                 if page_count == 0:
-                    logger.info(f"V28 - No more results on page {page}. Stopping.")
+                    logger.info(f"V29 - No more results on page {page}. Stopping.")
                     break
                 
                 page += 1
@@ -193,7 +237,7 @@ class CordisApiClient:
                 await asyncio.sleep(0.3)
                 
             except Exception as e:
-                logger.error(f"V28 - Error on page {page}: {e}")
+                logger.error(f"V29 - Error on page {page}: {e}")
                 # Try to continue with next page
                 page += 1
                 if page > 1000:  # Safety: max 1000 pages
@@ -201,7 +245,7 @@ class CordisApiClient:
                 await asyncio.sleep(2.0)
                 continue
         
-        logger.info(f"*** V28 COMPLETADO ***: Recopilados {len(all_results)} resultados de Cordis ({len(all_results)//6} artículos x 6 idiomas)")
+        logger.info(f"*** V29 COMPLETADO ***: Recopilados {len(all_results)} resultados de Cordis")
         return all_results
 
     # Legacy compatibility
