@@ -108,8 +108,11 @@ class CordisApiClient:
                     logger.error(f"V29 - JSON parse error on page {page}: {e}")
                     break
                 
-                # Extract header info
-                header = data.get('result', {}).get('header', {})
+                # Extract header info - handle case where 'result' might not be a dict
+                result_data = data.get('result', {})
+                if not isinstance(result_data, dict):
+                    result_data = {}
+                header = result_data.get('header', {}) if isinstance(result_data, dict) else {}
                 
                 # Get total hits from first page
                 if total_hits is None:
