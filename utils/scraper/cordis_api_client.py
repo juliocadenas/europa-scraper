@@ -51,7 +51,7 @@ class CordisApiClient:
         
         return valid_langs if valid_langs else ['en']
     
-    async def search_projects_and_publications(self, query_term: str, search_mode: str = 'broad', max_results: int = 50000, progress_callback=None) -> List[Dict[str, Any]]:
+    async def search_projects_and_publications(self, query_term: str, search_mode: str = 'broad', max_results: int = 50000, progress_callback=None, languages: List[str] = None) -> List[Dict[str, Any]]:
         """
         V29 - Smart Multi-language version.
         
@@ -61,8 +61,21 @@ class CordisApiClient:
            - If multiple languages → creates records with /en, /es, etc.
            - If only one language → creates single record without suffix
         4. Returns complete list for tabulation
+        
+        Args:
+            query_term: Término de búsqueda
+            search_mode: Modo de búsqueda ('broad' o 'exact')
+            max_results: Número máximo de resultados
+            progress_callback: Callback para reportar progreso
+            languages: Lista de idiomas a incluir (ej: ['en', 'es', 'de']). 
+                      Si es None, incluye todos los idiomas disponibles.
         """
+        # Si no se especifican idiomas, usar todos los disponibles
+        if languages is None:
+            languages = EU_LANGUAGES
+        
         logger.info(f"*** V29 SMART MULTI-LANG ACTIVADA ***: Iniciando búsqueda JSON en Cordis para '{query_term}'")
+        logger.info(f"*** Idiomas seleccionados: {languages} ***")
         
         all_results = []
         page = 1
@@ -183,11 +196,18 @@ class CordisApiClient:
                     else:
                         base_url = f"https://cordis.europa.eu/search?q={encoded_query}"
                     
-                    # V29: Lógica inteligente de idiomas
-                    if len(available_langs) > 1:
-                        # Múltiples idiomas disponibles → crear registro por cada idioma
+                    # V29: Lógica inteligente de idiomas con FILTRADO por languages seleccionados
+                    # Filtrar idiomas disponibles para incluir solo los seleccionados por el usuario
+                    filtered_langs = [lang for lang in available_langs if lang in languages]
+                    
+                    # Si ningún idioma está en la selección del usuario, saltar este resultado
+                    if not filtered_langs:
+                        continue
+                    
+                    if len(filtered_langs) > 1:
+                        # Múltiples idiomas disponibles → crear registro por cada idioma seleccionado
                         multi_lang_count += 1
-                        for lang in available_langs:
+                        for lang in filtered_langs:
                             # URL with language suffix
                             url_with_lang = f"{base_url}/{lang}"
                             
@@ -211,7 +231,7 @@ class CordisApiClient:
                             'source': 'Cordis Europa API V29',
                             'mediatype': content_type,
                             'rcn': rcn,
-                            'lang': available_langs[0] if available_langs else primary_lang
+                            'lang': filtered_langs[0] if filtered_langs else primary_lang
                         })
                         page_count += 1
                 

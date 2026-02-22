@@ -646,9 +646,16 @@ class ScraperController(ScraperControllerBase):
       return all_search_results
 
 
-  async def _process_cordis_api_phase(self, courses_in_range: List[Tuple[str, str, str, str]], search_mode: str = 'broad', progress_callback: Optional[Callable] = None) -> List[Dict[str, Any]]:
+  async def _process_cordis_api_phase(self, courses_in_range: List[Tuple[str, str, str, str]], search_mode: str = 'broad', progress_callback: Optional[Callable] = None, languages: List[str] = None) -> List[Dict[str, Any]]:
       """
       Ejecuta la fase de búsqueda usando la API de Cordis Europa.
+      
+      Args:
+          courses_in_range: Lista de cursos a procesar
+          search_mode: Modo de búsqueda ('broad' o 'exact')
+          progress_callback: Callback para reportar progreso
+          languages: Lista de idiomas a incluir (ej: ['en', 'es', 'de']). 
+                    Si es None, usa todos los idiomas disponibles.
       """
       all_search_results = []
       total_courses = len(courses_in_range)
@@ -656,6 +663,7 @@ class ScraperController(ScraperControllerBase):
       
       logger.info(f"=== FASE 1: BÚSQUEDA DE RESULTADOS con CORDIS EUROPA API ====")
       logger.info(f"Total de cursos a procesar en búsqueda: {total_courses}")
+      logger.info(f"Idiomas CORDIS seleccionados: {languages}")
       
       for sic_code, course_name, status, server in courses_in_range:
           if self.stop_requested:
@@ -681,7 +689,7 @@ class ScraperController(ScraperControllerBase):
           self._emit_event("SEARCH", f"Iniciando búsqueda para '{search_term}' en Cordis API", {"sic": sic_code, "course": course_name, "engine": "Cordis API"})
           
           try:
-              results = await self.cordis_api_client.search_projects_and_publications(search_term, search_mode=search_mode, progress_callback=progress_callback)
+              results = await self.cordis_api_client.search_projects_and_publications(search_term, search_mode=search_mode, progress_callback=progress_callback, languages=languages)
               
               for r in results:
                   r['sic_code'] = sic_code
@@ -1060,7 +1068,9 @@ class ScraperController(ScraperControllerBase):
               # Pass gov_only flag to the wayback phase
               all_search_results = await self._process_wayback_machine_search_phase(courses_in_range, site_domain, progress_callback, gov_only=gov_only)
           elif search_engine == 'Cordis Europa API':
-               all_search_results = await self._process_cordis_api_phase(courses_in_range, progress_callback=progress_callback)
+               # Obtener idiomas CORDIS desde la configuración
+               cordis_languages = params.get('cordis_languages', ['en', 'es', 'de', 'fr', 'it', 'pl']) if isinstance(params, dict) else ['en', 'es', 'de', 'fr', 'it', 'pl']
+               all_search_results = await self._process_cordis_api_phase(courses_in_range, progress_callback=progress_callback, languages=cordis_languages)
           else:
               all_search_results = await self._process_search_phase(courses_in_range, progress_callback, search_engine, site_domain)
       

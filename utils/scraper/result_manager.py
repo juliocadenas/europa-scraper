@@ -104,8 +104,16 @@ class ResultManager:
         self.current_course_name = from_course
         
         # Sanitizar nombres de cursos para el archivo
-        sanitized_from_course = self._sanitize_filename(from_course) if from_course else 'unknown'
-        sanitized_to_course = self._sanitize_filename(to_course) if to_course else 'unknown'
+        # FALLBACK: Si el nombre del curso está vacío, usar el código SIC
+        if from_course and from_course.strip():
+            sanitized_from_course = self._sanitize_filename(from_course)
+        else:
+            sanitized_from_course = f"course_{from_sic}" if from_sic else 'unknown'
+        
+        if to_course and to_course.strip():
+            sanitized_to_course = self._sanitize_filename(to_course)
+        else:
+            sanitized_to_course = f"course_{to_sic}" if to_sic else 'unknown'
         
         # Crear timestamp para el nombre del archivo
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
@@ -159,7 +167,11 @@ class ResultManager:
             Path al archivo CSV creado
         """
         # Sanitizar nombre del curso
-        sanitized_course = self._sanitize_filename(course_name) if course_name else 'unknown'
+        # FALLBACK: Si el nombre del curso está vacío, usar el código SIC
+        if course_name and course_name.strip():
+            sanitized_course = self._sanitize_filename(course_name)
+        else:
+            sanitized_course = f"course_{sic_code}" if sic_code else 'unknown'
         
         # Crear timestamp para el nombre del archivo
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')

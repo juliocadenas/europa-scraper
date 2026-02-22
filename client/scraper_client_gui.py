@@ -87,8 +87,12 @@ class ScraperClientGUI(ttk.Frame):
         try:
             config = Config()
             self.config_tab = ConfigTab(self.scraper_notebook, config)
+            logger.info("Pestaña de configuración inicializada correctamente")
         except Exception as e:
             logger.error(f"Error inicializando pestaña de configuración: {e}")
+            import traceback
+            logger.error(traceback.format_exc())
+            messagebox.showerror("Error", f"Error inicializando pestaña de configuración: {e}")
 
         self.log_tab = ttk.Frame(self.scraper_notebook)
         self.scraper_notebook.add(self.log_tab, text='Log de Resultados')
@@ -434,7 +438,8 @@ class ScraperClientGUI(ttk.Frame):
             'search_engine': search_engine,
             'site_domain': site_domain,
             'is_headless': self.config.get("headless_mode", True),
-            'results_output_mode': self.config.get("results_output_mode", "Por curso")
+            'results_output_mode': self.config.get("results_output_mode", "Por curso"),
+            'cordis_languages': self.config.get("cordis_languages", ["en", "es", "de", "fr", "it", "pl"])
         }
 
         self.timer_manager.start()

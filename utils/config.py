@@ -34,7 +34,8 @@ class Config:
             "captcha_solving_enabled": False,
             "captcha_service": "manual",
             "captcha_api_key": "",
-            "headless_mode": True
+            "headless_mode": True,
+            "cordis_languages": ["en", "es", "de", "fr", "it", "pl"]  # Idiomas CORDIS por defecto
         }
         
         try:

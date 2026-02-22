@@ -833,6 +833,12 @@ class ScraperGUI(ttk.Frame):
             self._add_to_detailed_log(f"Progreso: {avg_progress:.1f}% - {completed}/{total_courses} cursos", "INFO")
             self.last_logged_progress = avg_progress
         
+        # === DETENER TIMER CUANDO EL PROCESO TERMINA ===
+        if status == "DETENIDO" and avg_progress >= 100:
+            if hasattr(self, 'timer_manager') and self.timer_manager.timer_running:
+                self.timer_manager.stop()
+                logger.info("Timer detenido automáticamente al alcanzar 100% de progreso")
+        
         # También actualizar el status_monitor_tab para compatibilidad
         if hasattr(self, 'status_monitor_tab') and self.status_monitor_tab:
             self.status_monitor_tab.update_status(status, message, avg_progress)

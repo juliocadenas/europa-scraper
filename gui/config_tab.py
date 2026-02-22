@@ -80,6 +80,7 @@ class ConfigTab:
         self._create_proxy_tab()
         self._create_captcha_tab()
         self._create_general_tab()
+        self._create_cordis_languages_tab()  # NUEVA: Sub-pestaña dedicada para idiomas CORDIS
         self._create_database_tab()
         self._create_presets_tab()
     
@@ -310,7 +311,107 @@ class ConfigTab:
                                          "• Conglomerado: Un solo archivo CSV con todos los resultados",
                                     font=("Arial", 8), foreground="gray")
         mode_desc_label.pack(anchor=tk.W)
-
+    
+    def _create_cordis_languages_tab(self):
+        """Crea la sub-pestaña dedicada para idiomas CORDIS."""
+        cordis_frame = ttk.Frame(self.config_notebook)
+        self.config_notebook.add(cordis_frame, text="🌐 Idiomas CORDIS")
+        
+        # Título
+        title_frame = ttk.Frame(cordis_frame)
+        title_frame.pack(fill=tk.X, padx=20, pady=10)
+        
+        ttk.Label(title_frame, 
+                 text="Selección de Idiomas para CORDIS Europa API",
+                 font=("Arial", 14, "bold")).pack(anchor=tk.W)
+        
+        ttk.Label(title_frame, 
+                 text="Seleccione los idiomas en los que desea obtener resultados de CORDIS Europa.",
+                 font=("Arial", 10)).pack(anchor=tk.W, pady=(5, 0))
+        
+        # Frame principal para los idiomas
+        lang_main_frame = ttk.LabelFrame(cordis_frame, text="Idiomas Disponibles", padding="20")
+        lang_main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
+        
+        # Variables para los idiomas
+        self.cordis_lang_en_var = tk.BooleanVar(value=True)
+        self.cordis_lang_es_var = tk.BooleanVar(value=True)
+        self.cordis_lang_de_var = tk.BooleanVar(value=True)
+        self.cordis_lang_fr_var = tk.BooleanVar(value=True)
+        self.cordis_lang_it_var = tk.BooleanVar(value=True)
+        self.cordis_lang_pl_var = tk.BooleanVar(value=True)
+        
+        # Primera fila de idiomas
+        row1_frame = ttk.Frame(lang_main_frame)
+        row1_frame.pack(fill=tk.X, pady=10)
+        
+        # English
+        en_frame = ttk.Frame(row1_frame)
+        en_frame.pack(side=tk.LEFT, expand=True, padx=10)
+        ttk.Checkbutton(en_frame, text="🇬🇧 English (en)", 
+                       variable=self.cordis_lang_en_var, style="Large.TCheckbutton").pack(anchor=tk.W)
+        ttk.Label(en_frame, text="Resultados en inglés", font=("Arial", 8), foreground="gray").pack(anchor=tk.W)
+        
+        # Español
+        es_frame = ttk.Frame(row1_frame)
+        es_frame.pack(side=tk.LEFT, expand=True, padx=10)
+        ttk.Checkbutton(es_frame, text="🇪🇸 Español (es)", 
+                       variable=self.cordis_lang_es_var).pack(anchor=tk.W)
+        ttk.Label(es_frame, text="Resultados en español", font=("Arial", 8), foreground="gray").pack(anchor=tk.W)
+        
+        # Deutsch
+        de_frame = ttk.Frame(row1_frame)
+        de_frame.pack(side=tk.LEFT, expand=True, padx=10)
+        ttk.Checkbutton(de_frame, text="🇩🇪 Deutsch (de)", 
+                       variable=self.cordis_lang_de_var).pack(anchor=tk.W)
+        ttk.Label(de_frame, text="Resultados en alemán", font=("Arial", 8), foreground="gray").pack(anchor=tk.W)
+        
+        # Segunda fila de idiomas
+        row2_frame = ttk.Frame(lang_main_frame)
+        row2_frame.pack(fill=tk.X, pady=10)
+        
+        # Français
+        fr_frame = ttk.Frame(row2_frame)
+        fr_frame.pack(side=tk.LEFT, expand=True, padx=10)
+        ttk.Checkbutton(fr_frame, text="🇫🇷 Français (fr)", 
+                       variable=self.cordis_lang_fr_var).pack(anchor=tk.W)
+        ttk.Label(fr_frame, text="Resultados en francés", font=("Arial", 8), foreground="gray").pack(anchor=tk.W)
+        
+        # Italiano
+        it_frame = ttk.Frame(row2_frame)
+        it_frame.pack(side=tk.LEFT, expand=True, padx=10)
+        ttk.Checkbutton(it_frame, text="🇮🇹 Italiano (it)", 
+                       variable=self.cordis_lang_it_var).pack(anchor=tk.W)
+        ttk.Label(it_frame, text="Resultados en italiano", font=("Arial", 8), foreground="gray").pack(anchor=tk.W)
+        
+        # Polski
+        pl_frame = ttk.Frame(row2_frame)
+        pl_frame.pack(side=tk.LEFT, expand=True, padx=10)
+        ttk.Checkbutton(pl_frame, text="🇵🇱 Polski (pl)", 
+                       variable=self.cordis_lang_pl_var).pack(anchor=tk.W)
+        ttk.Label(pl_frame, text="Resultados en polaco", font=("Arial", 8), foreground="gray").pack(anchor=tk.W)
+        
+        # Botones de acción
+        buttons_frame = ttk.Frame(lang_main_frame)
+        buttons_frame.pack(fill=tk.X, pady=20)
+        
+        ttk.Button(buttons_frame, text="✓ Seleccionar todos", 
+                  command=self._select_all_cordis_languages).pack(side=tk.LEFT, padx=10)
+        ttk.Button(buttons_frame, text="✗ Deseleccionar todos", 
+                  command=self._deselect_all_cordis_languages).pack(side=tk.LEFT, padx=10)
+        ttk.Button(buttons_frame, text="💾 Guardar Configuración", 
+                  command=self._apply_config).pack(side=tk.RIGHT, padx=10)
+        
+        # Información adicional
+        info_frame = ttk.LabelFrame(cordis_frame, text="Información", padding="10")
+        info_frame.pack(fill=tk.X, padx=20, pady=10)
+        
+        ttk.Label(info_frame, 
+                 text="• Los idiomas seleccionados se usarán para filtrar los resultados de la API de CORDIS Europa.\n"
+                      "• Si no selecciona ningún idioma, se usarán todos los idiomas disponibles.\n"
+                      "• Los cambios se aplicarán en la próxima búsqueda que realice.",
+                 font=("Arial", 9), justify=tk.LEFT).pack(anchor=tk.W)
+    
     def _create_database_tab(self):
         """Crea la pestaña de configuración de base de datos."""
         database_frame = ttk.Frame(self.config_notebook)
@@ -443,6 +544,52 @@ class ConfigTab:
         self.config.set("headless_mode", self.headless_mode_var.get())
         self.config.save_config()
         logger.info(f"Headless mode changed to: {self.headless_mode_var.get()}")
+    
+    def _select_all_cordis_languages(self):
+        """Selecciona todos los idiomas de CORDIS."""
+        self.cordis_lang_en_var.set(True)
+        self.cordis_lang_es_var.set(True)
+        self.cordis_lang_de_var.set(True)
+        self.cordis_lang_fr_var.set(True)
+        self.cordis_lang_it_var.set(True)
+        self.cordis_lang_pl_var.set(True)
+        logger.info("Todos los idiomas CORDIS seleccionados")
+    
+    def _deselect_all_cordis_languages(self):
+        """Deselecciona todos los idiomas de CORDIS."""
+        self.cordis_lang_en_var.set(False)
+        self.cordis_lang_es_var.set(False)
+        self.cordis_lang_de_var.set(False)
+        self.cordis_lang_fr_var.set(False)
+        self.cordis_lang_it_var.set(False)
+        self.cordis_lang_pl_var.set(False)
+        logger.info("Todos los idiomas CORDIS deseleccionados")
+    
+    def _get_cordis_languages(self) -> List[str]:
+        """Obtiene la lista de idiomas CORDIS seleccionados."""
+        languages = []
+        if self.cordis_lang_en_var.get():
+            languages.append('en')
+        if self.cordis_lang_es_var.get():
+            languages.append('es')
+        if self.cordis_lang_de_var.get():
+            languages.append('de')
+        if self.cordis_lang_fr_var.get():
+            languages.append('fr')
+        if self.cordis_lang_it_var.get():
+            languages.append('it')
+        if self.cordis_lang_pl_var.get():
+            languages.append('pl')
+        return languages
+    
+    def _set_cordis_languages(self, languages: List[str]):
+        """Establece los idiomas CORDIS desde una lista."""
+        self.cordis_lang_en_var.set('en' in languages)
+        self.cordis_lang_es_var.set('es' in languages)
+        self.cordis_lang_de_var.set('de' in languages)
+        self.cordis_lang_fr_var.set('fr' in languages)
+        self.cordis_lang_it_var.set('it' in languages)
+        self.cordis_lang_pl_var.set('pl' in languages)
     
     def _load_proxies_from_file(self):
         """Carga proxies desde un archivo."""
@@ -672,7 +819,8 @@ class ConfigTab:
             "log_level": self.log_level_var.get(),
             "save_logs": self.save_logs_var.get(),
             "headless_mode": self.headless_mode_var.get(), # Guardar estado del modo headless
-            "results_output_mode": self.results_output_mode_var.get()  # Modo de archivos de resultados
+            "results_output_mode": self.results_output_mode_var.get(),  # Modo de archivos de resultados
+            "cordis_languages": self._get_cordis_languages()  # Idiomas CORDIS seleccionados
         }
         # La configuración de CAPTCHA se obtiene directamente del config_manager
         config_data.update({
@@ -706,6 +854,10 @@ class ConfigTab:
             self.save_logs_var.set(self.config.get("save_logs", True))
             self.headless_mode_var.set(self.config.get("headless_mode", True)) # Cargar estado del modo headless
             self.results_output_mode_var.set(self.config.get("results_output_mode", "Por curso"))  # Modo de archivos
+            
+            # Cargar idiomas CORDIS (por defecto todos seleccionados)
+            cordis_languages = self.config.get("cordis_languages", ['en', 'es', 'de', 'fr', 'it', 'pl'])
+            self._set_cordis_languages(cordis_languages)
             
             logger.info("Configuración cargada en la GUI")
             
