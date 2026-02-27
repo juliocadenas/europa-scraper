@@ -2351,7 +2351,7 @@ class ServerFilesWindow(tk.Toplevel):
                 total_files = len(files)
 
                 self.status_label.config(
-                    text=f"Directorio: {dir_path} | Archivos: {total_files} | Total Filas: {total_lines:,}",
+                    text=f"Directorio: {dir_path} | Archivos: {total_files} | Total Contenidos: {total_lines:,}",
                     foreground="blue",
                 )
 
