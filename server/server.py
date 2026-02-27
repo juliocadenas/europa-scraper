@@ -1475,7 +1475,7 @@ class ScraperServer:
             )
 
     async def list_results_files(self):
-        """Lista todos los archivos CSV/XLSX en la carpeta results y sus subcarpetas."""
+        """Lista todos los archivos CSV/XLSX en la carpeta results con conteo de líneas."""
         try:
             results_dir = os.path.join(project_root, "results")
             self.logger.info(f"Listando archivos recursivamente en: {results_dir}")
@@ -1486,9 +1486,11 @@ class ScraperServer:
                     "files": [],
                     "message": f"La carpeta results no existe: {results_dir}",
                     "results_dir": results_dir,
+                    "total_lines": 0,
                 }
 
             files_info = []
+            total_lines = 0
             # Búsqueda recursiva
             for root, dirs, files in os.walk(results_dir):
                 for filename in files:
@@ -1498,6 +1500,20 @@ class ScraperServer:
                         relative_path = os.path.relpath(filepath, results_dir).replace(
                             "\\", "/"
                         )
+
+                        # Contar líneas para archivos CSV
+                        line_count = 0
+                        if filename.endswith(".csv"):
+                            try:
+                                with open(
+                                    filepath, "r", encoding="utf-8", errors="replace"
+                                ) as f:
+                                    line_count = sum(1 for _ in f)
+                                total_lines += line_count
+                            except Exception as e:
+                                self.logger.warning(
+                                    f"Error contando líneas {filepath}: {e}"
+                                )
 
                         # Determinar categoría basado en la subcarpeta
                         category = "General"
@@ -1519,6 +1535,7 @@ class ScraperServer:
                                     "%Y-%m-%d %H:%M:%S", time.localtime(stat.st_mtime)
                                 ),
                                 "category": category,
+                                "line_count": line_count,
                             }
                         )
 
@@ -1529,6 +1546,7 @@ class ScraperServer:
                 "files": files_info,
                 "total": len(files_info),
                 "results_dir": results_dir,
+                "total_lines": total_lines,
             }
         except Exception as e:
             self.logger.error(f"Error listando archivos: {e}")
@@ -1551,6 +1569,7 @@ class ScraperServer:
 
             total_lines = 0
             total_files = 0
+            files_counts = []
 
             for root, dirs, files in os.walk(results_dir):
                 for filename in files:
@@ -1563,6 +1582,15 @@ class ScraperServer:
                                 line_count = sum(1 for _ in f)
                             total_lines += line_count
                             total_files += 1
+                            files_counts.append(
+                                {
+                                    "name": filename,
+                                    "path": os.path.relpath(
+                                        filepath, results_dir
+                                    ).replace("\\", "/"),
+                                    "line_count": line_count,
+                                }
+                            )
                         except Exception as e:
                             self.logger.warning(f"Error leyendo {filepath}: {e}")
 
@@ -1571,6 +1599,7 @@ class ScraperServer:
                 "total_lines": total_lines,
                 "total_files": total_files,
                 "results_dir": results_dir,
+                "files": files_counts,
             }
         except Exception as e:
             self.logger.error(f"Error contando líneas: {e}")

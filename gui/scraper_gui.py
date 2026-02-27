@@ -597,7 +597,9 @@ class ScraperGUI(ttk.Frame):
             command=self._on_open_results_folder,
         ).pack(side=tk.LEFT, padx=2, pady=2, fill=tk.X, expand=True)
         ttk.Button(
-            self.results_btns, text="🗑️ Limpiar", command=self._cleanup_files_action
+            self.results_btns,
+            text="📁 Archivos Resultados/Omitidos",
+            command=self._cleanup_files_action,
         ).pack(side=tk.LEFT, padx=2, pady=2, fill=tk.X, expand=True)
         ttk.Button(
             self.results_btns,
@@ -1210,15 +1212,26 @@ class ScraperGUI(ttk.Frame):
         else:
             courses_list = courses
 
-        # Obtener conteos de líneas del manager
+        # Obtener conteos de líneas del manager local
         line_counts = line_count_manager.get_all_counts()
+
+        # También usar los conteos del servidor si existen
+        server_counts = getattr(self, "_line_counts_map", {})
 
         # Función helper para encontrar líneas de un curso
         def get_lines_for_course(sic, name):
+            # Buscar primero en conteos del servidor (más actualizados)
+            search_terms = [name.lower().replace(" ", "_"), sic.replace(".", "_")]
+
+            # Buscar en server_counts
+            for term in search_terms:
+                for fname, count in server_counts.items():
+                    if term in fname:
+                        return f"📄{count}"
+
+            # Luego buscar en line_counts local
             if not line_counts:
                 return "--"
-            # Intentar hacer match por nombre de archivo
-            search_terms = [name.lower().replace(" ", "_"), sic.replace(".", "_")]
             for file_path, count in line_counts.items():
                 fname = os.path.basename(file_path).lower()
                 for term in search_terms:
@@ -2018,7 +2031,69 @@ class ScraperGUI(ttk.Frame):
         )
 
     def _cleanup_files_action(self):
+        # Primero obtener los conteos de líneas
+        self._fetch_line_counts()
+        # Luego abrir la ventana de archivos
         ServerFilesWindow(self.master, self.server_url.get())
+
+    def _fetch_line_counts(self):
+        """Obtiene los conteos de líneas del servidor y actualiza la UI."""
+
+        def do_fetch():
+            try:
+                url = self.server_url.get()
+                response = requests.get(f"{url}/api/results_line_count", timeout=120)
+
+                if response.status_code == 200:
+                    data = response.json()
+                    total_lines = data.get("total_lines", 0)
+                    total_files = data.get("total_files", 0)
+                    files_counts = data.get("files", [])
+
+                    # Actualizar etiquetas de total
+                    self.master.after(
+                        0,
+                        lambda: self.stat_lines.config(
+                            text=f"📄 Resultados: {total_lines:,} líneas ({total_files} archivos)"
+                        ),
+                    )
+                    if hasattr(self, "exp_stat_lines"):
+                        self.master.after(
+                            0,
+                            lambda: self.exp_stat_lines.config(
+                                text=f"📄 Resultados: {total_lines:,} líneas ({total_files} archivos)"
+                            ),
+                        )
+
+                    # Guardar conteos para usar en la columna Resultados
+                    self._line_counts_map = {}
+                    for f in files_counts:
+                        name = f.get("name", "")
+                        path = f.get("path", "")
+                        count = f.get("line_count", 0)
+                        # Mapear por nombre de archivo
+                        self._line_counts_map[name.lower()] = count
+                        self._line_counts_map[path.lower()] = count
+
+                    # Actualizar vista si hay datos de cursos
+                    if hasattr(self, "_last_courses_data"):
+                        self.master.after(
+                            0,
+                            lambda: self._render_status(
+                                self._last_workers_data, self._last_courses_data
+                            ),
+                        )
+
+                    logger.info(
+                        f"Conteo de líneas actualizado: {total_lines} en {total_files} archivos"
+                    )
+                else:
+                    logger.error(f"Error del servidor: {response.status_code}")
+
+            except Exception as e:
+                logger.error(f"Error obteniendo conteos: {e}")
+
+        threading.Thread(target=do_fetch, daemon=True, name="FetchLineCounts").start()
 
     def _on_search_from(self, e):
         q = self.search_from_entry.get().lower()
