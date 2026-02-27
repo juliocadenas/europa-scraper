@@ -2299,17 +2299,19 @@ class ServerFilesWindow(tk.Toplevel):
         tree_frame = ttk.Frame(frame)
         tree_frame.pack(fill=tk.BOTH, expand=True)
 
-        columns = ("name", "category", "size", "date")
+        columns = ("name", "category", "size", "lines", "date")
         tree = ttk.Treeview(tree_frame, columns=columns, show="headings")
         tree.heading("name", text="Archivo")
         tree.heading("category", text="Cat")
         tree.heading("size", text="Tamaño")
+        tree.heading("lines", text="Filas")
         tree.heading("date", text="Fecha Modificación")
 
-        tree.column("name", width=300)
-        tree.column("category", width=80, anchor=tk.CENTER)
-        tree.column("size", width=100, anchor=tk.E)
-        tree.column("date", width=150, anchor=tk.CENTER)
+        tree.column("name", width=280)
+        tree.column("category", width=60, anchor=tk.CENTER)
+        tree.column("size", width=80, anchor=tk.E)
+        tree.column("lines", width=80, anchor=tk.E)
+        tree.column("date", width=130, anchor=tk.CENTER)
 
         tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
@@ -2338,21 +2340,28 @@ class ServerFilesWindow(tk.Toplevel):
         self.status_label.config(text="Estado: Actualizando...", foreground="black")
 
         try:
-            r = requests.get(f"{self.url}/api/list_results", timeout=15)
+            r = requests.get(f"{self.url}/api/list_results", timeout=30)
             if r.status_code == 200:
                 data = r.json()
                 files = data.get("files", [])
                 dir_path = data.get("results_dir", "/app/results")
+                total_lines = data.get("total_lines", 0)
+
+                # Calcular total de archivos
+                total_files = len(files)
+
                 self.status_label.config(
-                    text=f"Directorio: {dir_path} | Archivos: {len(files)}",
+                    text=f"Directorio: {dir_path} | Archivos: {total_files} | Total Filas: {total_lines:,}",
                     foreground="blue",
                 )
 
                 for f in files:
+                    line_count = f.get("line_count", 0)
                     vals = (
                         f["name"],
                         f["category"],
                         f["size_human"],
+                        f"{line_count:,}" if line_count else "0",
                         f["modified_human"],
                     )
                     if f["category"] == "Omitidos":
