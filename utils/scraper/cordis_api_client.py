@@ -422,6 +422,8 @@ class CordisApiClient:
                     )
                     break
 
+                print(f"V29 - ✅ Continuando a página {page + 1}...", flush=True)
+                print(f"V29 - ✅ Continuando a página {page + 1}...", flush=True)
                 logger.warning(f"V29 - ✅ Continuando a página {page + 1}...")
                 logger.info(f"V29 - Avanzando a página {page + 1}...")
                 page += 1
