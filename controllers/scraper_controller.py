@@ -1004,6 +1004,10 @@ class ScraperController(ScraperControllerBase):
             # ACTUALIZADO: El guión es opcional para casos como "101.0 Iron mining"
             search_term = re.sub(r"^[\d\.]+\s*[-–]?\s*", "", search_term).strip()
 
+            # LIMPIAR SUFIJOS como " (3)", " (2)", " (1)" que vienen en el nombre del curso
+            # Esto causa que CORDIS devuelva menos resultados
+            search_term = re.sub(r"\s*\(\d+\)\s*$", "", search_term).strip()
+
             logger.info(
                 f"Buscando en Cordis API: '{search_term}' (Original: '{course_name if course_name else sic_code}')"
             )
