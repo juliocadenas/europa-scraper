@@ -195,6 +195,10 @@ class CordisApiClient:
                     if total_hits_callback:
                         total_hits_callback(total_hits)
 
+                    logger.warning(
+                        f"V29 - ✅ Callback completado, continuando procesamiento..."
+                    )
+
                     if total_hits == 0:
                         logger.warning("V29 - No results found for this query")
                         break
