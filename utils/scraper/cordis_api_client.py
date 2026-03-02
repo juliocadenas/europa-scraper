@@ -390,16 +390,19 @@ class CordisApiClient:
 
                 # Safety limit
                 if len(all_results) >= max_results:
-                    logger.info(
-                        f"V29 - Reached safety limit ({max_results}). Stopping."
+                    logger.warning(
+                        f"V29 - 💥 BREAK: Reached safety limit ({max_results}). Stopping."
                     )
                     break
 
                 # Check if this was the last page (NO results on this page)
                 if page_count == 0:
-                    logger.info(f"V29 - No more results on page {page}. Stopping.")
+                    logger.warning(
+                        f"V29 - 💥 BREAK: page_count=0, no more results on page {page}. Stopping."
+                    )
                     break
 
+                logger.warning(f"V29 - ✅ Continuando a página {page + 1}...")
                 logger.info(f"V29 - Avanzando a página {page + 1}...")
                 page += 1
 
