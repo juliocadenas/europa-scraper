@@ -119,10 +119,10 @@ class CordisApiClient:
             return total_hits
 
         except Exception as e:
-            logger.error(f"Error checking total hits for '{query_term}': {e}")
-            return 0
+            logger.error(f"DET download error: {e}")
+            return []
 
-    async def search_projects_and_publications(
+    async def _search_single(
         self,
         query_term: str,
         search_mode: str = "broad",
@@ -131,72 +131,16 @@ class CordisApiClient:
         languages: List[str] = None,
         total_hits_callback=None,
     ) -> List[Dict[str, Any]]:
-        """
-        V29 - Smart Multi-language version con soporte para grandes volúmenes.
+        """Búsqueda simple sin división por años."""
+        # Usar el código de búsqueda actual (que está después de este método)
+        # Copiar el código de búsqueda existente aquí
+        debug_to_file(f"_search_single called for '{query_term}'")
 
-        Si detecta más de 3,000 resultados, divide la búsqueda por años
-        para obtener más resultados totales.
-        """
-        # DEBUG: Verify function is called
-        debug_to_file(
-            f"FUNCTION CALLED: search_projects_and_publications('{query_term}')"
-        )
-        logger.critical(
-            f"V29 - FUNCTION CALLED: search_projects_and_publications('{query_term}')"
-        )
-
-        # Primera búsqueda para obtener total_hits
+        # Código de búsqueda normal (la parte del while loop)
         encoded_query = quote_plus(query_term)
-        search_url = (
-            f"{self.SEARCH_URL}?q={encoded_query}&format=json&p=1&num=1&archived=true"
-        )
 
-        try:
-            import requests
-
-            response = requests.get(search_url, headers=self.headers, timeout=30)
-            data = response.json()
-            total_hits_str = (
-                data.get("result", {}).get("header", {}).get("totalHits", "0")
-            )
-            total_hits = int(total_hits_str) if total_hits_str else 0
-
-            debug_to_file(f"Total hits for '{query_term}': {total_hits}")
-
-            # Si hay más de 3,000 resultados, usar estrategia de años
-            if total_hits > 3000:
-                logger.warning(
-                    f"V29 - Detectados {total_hits} resultados. Usando estrategia de años."
-                )
-                return await self._search_by_years(
-                    query_term, search_mode, max_results, progress_callback, languages
-                )
-            else:
-                # Usar búsqueda normal
-                return await self._search_single(
-                    query_term,
-                    search_mode,
-                    max_results,
-                    progress_callback,
-                    languages,
-                    total_hits_callback,
-                )
-        except Exception as e:
-            debug_to_file(f"Error en búsqueda inicial: {e}")
-            # Fallback a búsqueda normal
-            return await self._search_single(
-                query_term,
-                search_mode,
-                max_results,
-                progress_callback,
-                languages,
-                total_hits_callback,
-            )
         if languages is None or (isinstance(languages, list) and len(languages) == 0):
             languages = EU_LANGUAGES
-
-        # Preparar query antes del log
-        encoded_query = quote_plus(query_term)
 
         logger.info(
             f"*** V29 SMART MULTI-LANG ACTIVADA ***: Iniciando búsqueda JSON en Cordis para '{query_term}'"
@@ -209,14 +153,13 @@ class CordisApiClient:
 
         all_results = []
         page = 1
-        results_per_page = 100  # Max allowed
+        results_per_page = 100
         total_hits = None
 
         logger.warning(
             f"V29 - 🚀 INICIANDO PAGINACIÓN para '{query_term}' - Esperando {results_per_page} resultados por página"
         )
 
-        # DEBUG: Write to file for multiprocess debugging
         debug_to_file(f"=" * 60)
         debug_to_file(f"START: query={query_term}, max_results={max_results}")
         debug_to_file(f"=" * 60)
@@ -229,10 +172,7 @@ class CordisApiClient:
                 f"V29 - 🔄 WHILE LOOP: page={page}, total_hits={total_hits}, results={len(all_results)}"
             )
 
-            # Build URL: https://cordis.europa.eu/search?q=QUERY&format=json&p=PAGE&num=100
-            # Incluir archived=true para buscar también contenido archivado
             search_url = f"{self.SEARCH_URL}?q={encoded_query}&format=json&p={page}&num={results_per_page}&archived=true"
-
             logger.info(f"V29 - 🔄 Obteniendo página {page}...")
 
             loop = asyncio.get_running_loop()
@@ -257,7 +197,6 @@ class CordisApiClient:
                     logger.error(f"V29 - JSON parse error on page {page}: {e}")
                     break
 
-                # Extract header info - handle case where 'result' might not be a dict
                 result_data = data.get("result", {})
                 if not isinstance(result_data, dict):
                     result_data = {}
@@ -267,7 +206,6 @@ class CordisApiClient:
                     else {}
                 )
 
-                # Get total hits from first page
                 if total_hits is None:
                     total_hits_str = header.get("totalHits", "0")
                     total_hits = int(total_hits_str) if total_hits_str else 0
@@ -275,7 +213,6 @@ class CordisApiClient:
                         f"*** V29 - TOTAL EN CORDIS: {total_hits} resultados ***"
                     )
 
-                    # Notificar al callback si existe
                     if total_hits_callback:
                         total_hits_callback(total_hits)
 
@@ -287,21 +224,17 @@ class CordisApiClient:
                         logger.warning("V29 - No results found for this query")
                         break
 
-                # Extract hits - Cordis returns them in data['hits'] as a list
                 hits = []
 
-                # DEBUG: Log data structure
                 logger.warning(
                     f"V29 - DEBUG: Page {page}, data keys: {list(data.keys())}"
                 )
 
-                # Structure 1 (ACTUAL CORDIS STRUCTURE): data['hits'] direct list
                 if "hits" in data and isinstance(data["hits"], list):
                     hits = data["hits"]
                     logger.warning(
                         f"V29 - DEBUG: Using Structure 1, hits count: {len(hits)}"
                     )
-                # Structure 2: data['hits'] as dict with 'hit' key
                 elif "hits" in data and isinstance(data["hits"], dict):
                     hits = data["hits"].get("hit", [])
                     debug_to_file(
@@ -311,11 +244,6 @@ class CordisApiClient:
                     logger.warning(
                         f"V29 - DEBUG: Using Structure 2, hits count: {len(hits) if hits else 0}, data['hits'] keys: {list(data['hits'].keys())}"
                     )
-                    debug_to_file(f"DEBUG: data['hits'] content: {data['hits']}")
-                    logger.warning(
-                        f"V29 - DEBUG: Using Structure 2, hits count: {len(hits) if hits else 0}, data['hits'] keys: {list(data['hits'].keys())}"
-                    )
-                # Structure 3: result.hits (legacy fallback)
                 elif "result" in data and "hits" in data["result"]:
                     result_hits = data["result"]["hits"]
                     if isinstance(result_hits, dict) and "hit" in result_hits:
@@ -326,7 +254,6 @@ class CordisApiClient:
                         f"V29 - DEBUG: Using Structure 3, hits count: {len(hits) if hits else 0}"
                     )
 
-                # Ensure hits is a list
                 if isinstance(hits, dict):
                     hits = [hits]
                 elif not isinstance(hits, list):
@@ -346,12 +273,9 @@ class CordisApiClient:
                 single_lang_count = 0
 
                 for hit in hits:
-                    # Each hit contains various content types: article, project, result, etc.
-                    # We need to extract from whichever is present
                     content = None
                     content_type = "unknown"
 
-                    # Check for different content types
                     for ctype in [
                         "article",
                         "project",
@@ -367,53 +291,30 @@ class CordisApiClient:
                     if not content:
                         continue
 
-                    # Extract fields
                     rcn = content.get("rcn", "")
-                    item_id = content.get("id", rcn)
-                    title = content.get("title", content.get("acronym", "No Title"))
-                    teaser = content.get("teaser", content.get("objective", ""))
-
-                    # V29: Detectar idiomas disponibles desde la API
-                    available_langs_str = content.get("availableLanguages", "")
+                    title = content.get("title", "No Title")
+                    teaser = content.get("teaser", "")
+                    available_langs = content.get("availableLanguages", [])
                     primary_lang = content.get("language", "en")
 
-                    # Parsear idiomas disponibles
-                    available_langs = self._parse_available_languages(
-                        available_langs_str
-                    )
+                    if not available_langs:
+                        available_langs = [primary_lang]
 
-                    # Build base URL based on content type (without language suffix)
-                    if content_type == "project":
-                        base_url = f"https://cordis.europa.eu/project/id/{item_id}"
-                    elif content_type == "article":
-                        base_url = f"https://cordis.europa.eu/article/id/{item_id}"
-                    elif content_type == "result":
-                        base_url = f"https://cordis.europa.eu/result/id/{item_id}"
-                    elif content_type == "publication":
-                        base_url = f"https://cordis.europa.eu/publication/id/{item_id}"
-                    else:
-                        base_url = f"https://cordis.europa.eu/search?q={encoded_query}"
-
-                    # V29: Lógica inteligente de idiomas con FILTRADO por languages seleccionados
-                    # Filtrar idiomas disponibles para incluir solo los seleccionados por el usuario
                     filtered_langs = [
                         lang for lang in available_langs if lang in languages
                     ]
 
-                    # Si ningún idioma está en la selección del usuario, saltar este resultado
                     if not filtered_langs:
-                        continue
+                        filtered_langs = [primary_lang]
+
+                    base_url = f"https://cordis.europa.eu/{content_type}/id/{rcn}"
 
                     if len(filtered_langs) > 1:
-                        # Múltiples idiomas disponibles → crear registro por cada idioma seleccionado
                         multi_lang_count += 1
                         for lang in filtered_langs:
-                            # URL with language suffix
-                            url_with_lang = f"{base_url}/{lang}"
-
                             all_results.append(
                                 {
-                                    "url": url_with_lang,
+                                    "url": f"{base_url}/{lang}",
                                     "title": title,
                                     "description": teaser[:1000]
                                     if teaser
@@ -426,11 +327,10 @@ class CordisApiClient:
                             )
                             page_count += 1
                     else:
-                        # Solo un idioma → crear un solo registro SIN sufijo de idioma
                         single_lang_count += 1
                         all_results.append(
                             {
-                                "url": base_url,  # Sin sufijo de idioma
+                                "url": base_url,
                                 "title": title,
                                 "description": teaser[:1000]
                                 if teaser
@@ -458,7 +358,6 @@ class CordisApiClient:
                     f"═══════════════════════════════════════════════════════════"
                 )
 
-                # Emitir evento para GUI SI el callback no causa errores
                 try:
                     if progress_callback:
                         progress_callback(
@@ -475,7 +374,6 @@ class CordisApiClient:
                         f"V29 - Progress callback error (continuando): {cb_err}"
                     )
 
-                # Safety limit
                 if len(all_results) >= max_results:
                     debug_to_file(f"BREAK: Reached max_results={max_results}")
                     logger.warning(
@@ -483,7 +381,6 @@ class CordisApiClient:
                     )
                     break
 
-                # Check if this was the last page (NO results on this page)
                 if page_count == 0:
                     debug_to_file(f"BREAK: page_count=0 on page {page}")
                     debug_to_file(
@@ -505,20 +402,61 @@ class CordisApiClient:
                 logger.info(f"V29 - Avanzando a página {page + 1}...")
                 page += 1
 
-                # Be nice to server - 0.1 seconds between requests (reducido para mayor velocidad)
                 await asyncio.sleep(0.1)
 
             except Exception as e:
                 logger.error(f"V29 - Error on page {page}: {e}")
-                # Try to continue with next page
                 page += 1
-                if page > 1000:  # Safety: max 1000 pages
+                if page > 1000:
                     break
                 await asyncio.sleep(2.0)
                 continue
 
         logger.info(
             f"*** V29 COMPLETADO ***: Recopilados {len(all_results)} resultados de Cordis"
+        )
+        return all_results
+
+    async def _search_by_years(
+        self,
+        query_term: str,
+        search_mode: str = "broad",
+        max_results: int = 1000000,
+        progress_callback=None,
+        languages: List[str] = None,
+    ) -> List[Dict[str, Any]]:
+        """Divide la búsqueda por años para obtener más resultados."""
+        debug_to_file(f"_search_by_years called for '{query_term}'")
+        logger.warning(f"V29 - Usando estrategia de años para '{query_term}'")
+
+        all_results = []
+        years = list(range(2014, 2026))  # 2014-2025
+
+        for year in years:
+            year_query = f"{query_term} {year}"
+            debug_to_file(f"Searching year {year}: '{year_query}'")
+            logger.info(f"V29 - Buscando año {year}: '{year_query}'")
+
+            year_results = await self._search_single(
+                year_query,
+                search_mode=search_mode,
+                max_results=max_results,
+                progress_callback=progress_callback,
+                languages=languages,
+                total_hits_callback=None,
+            )
+
+            debug_to_file(f"Year {year}: {len(year_results)} results")
+            logger.info(f"V29 - Año {year}: {len(year_results)} resultados")
+            all_results.extend(year_results)
+
+            if len(all_results) >= max_results:
+                debug_to_file(f"Reached max_results in year loop")
+                break
+
+        debug_to_file(f"_search_by_years total: {len(all_results)} results")
+        logger.warning(
+            f"V29 - Total con estrategia de años: {len(all_results)} resultados"
         )
         return all_results
 
