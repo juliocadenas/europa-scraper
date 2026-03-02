@@ -48,6 +48,10 @@ class CordisApiClient:
     """
 
     SEARCH_URL = "https://cordis.europa.eu/search"
+    DET_API_URL = "https://cordis.europa.eu/dataextractions/api"
+    DET_API_KEY = "f1bd9899469be604b0b85dc2eea3438abfd580c7"  # API key para DET
+    DET_API_URL = "https://cordis.europa.eu/dataextractions/api"
+    DET_API_KEY = "f1bd9899469be604b0b85dc2eea3438abfd580c7"  # API key para DET
 
     def __init__(self, api_key: str = None):
         self.api_key = api_key
@@ -128,7 +132,10 @@ class CordisApiClient:
         total_hits_callback=None,
     ) -> List[Dict[str, Any]]:
         """
-        V29 - Smart Multi-language version.
+        V29 - Smart Multi-language version con soporte para grandes volúmenes.
+
+        Si detecta más de 3,000 resultados, divide la búsqueda por años
+        para obtener más resultados totales.
         """
         # DEBUG: Verify function is called
         debug_to_file(
@@ -138,7 +145,53 @@ class CordisApiClient:
             f"V29 - FUNCTION CALLED: search_projects_and_publications('{query_term}')"
         )
 
-        # Si no se especifican idiomas o está vacía, usar todos los disponibles
+        # Primera búsqueda para obtener total_hits
+        encoded_query = quote_plus(query_term)
+        search_url = (
+            f"{self.SEARCH_URL}?q={encoded_query}&format=json&p=1&num=1&archived=true"
+        )
+
+        try:
+            import requests
+
+            response = requests.get(search_url, headers=self.headers, timeout=30)
+            data = response.json()
+            total_hits_str = (
+                data.get("result", {}).get("header", {}).get("totalHits", "0")
+            )
+            total_hits = int(total_hits_str) if total_hits_str else 0
+
+            debug_to_file(f"Total hits for '{query_term}': {total_hits}")
+
+            # Si hay más de 3,000 resultados, usar estrategia de años
+            if total_hits > 3000:
+                logger.warning(
+                    f"V29 - Detectados {total_hits} resultados. Usando estrategia de años."
+                )
+                return await self._search_by_years(
+                    query_term, search_mode, max_results, progress_callback, languages
+                )
+            else:
+                # Usar búsqueda normal
+                return await self._search_single(
+                    query_term,
+                    search_mode,
+                    max_results,
+                    progress_callback,
+                    languages,
+                    total_hits_callback,
+                )
+        except Exception as e:
+            debug_to_file(f"Error en búsqueda inicial: {e}")
+            # Fallback a búsqueda normal
+            return await self._search_single(
+                query_term,
+                search_mode,
+                max_results,
+                progress_callback,
+                languages,
+                total_hits_callback,
+            )
         if languages is None or (isinstance(languages, list) and len(languages) == 0):
             languages = EU_LANGUAGES
 
@@ -251,8 +304,16 @@ class CordisApiClient:
                 # Structure 2: data['hits'] as dict with 'hit' key
                 elif "hits" in data and isinstance(data["hits"], dict):
                     hits = data["hits"].get("hit", [])
+                    debug_to_file(
+                        f"DEBUG: data['hits'] keys: {list(data['hits'].keys())}"
+                    )
+                    debug_to_file(f"DEBUG: data['hits'] content: {data['hits']}")
                     logger.warning(
-                        f"V29 - DEBUG: Using Structure 2, hits count: {len(hits) if hits else 0}"
+                        f"V29 - DEBUG: Using Structure 2, hits count: {len(hits) if hits else 0}, data['hits'] keys: {list(data['hits'].keys())}"
+                    )
+                    debug_to_file(f"DEBUG: data['hits'] content: {data['hits']}")
+                    logger.warning(
+                        f"V29 - DEBUG: Using Structure 2, hits count: {len(hits) if hits else 0}, data['hits'] keys: {list(data['hits'].keys())}"
                     )
                 # Structure 3: result.hits (legacy fallback)
                 elif "result" in data and "hits" in data["result"]:
