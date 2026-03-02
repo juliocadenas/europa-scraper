@@ -161,6 +161,16 @@ class CordisApiClient:
             f"V29 - 🚀 INICIANDO PAGINACIÓN para '{query_term}' - Esperando {results_per_page} resultados por página"
         )
 
+        # DEBUG: Print directo para forzar salida
+        print(f"\n\n{'=' * 60}", flush=True)
+        print(f"DEBUG CORDIS: Iniciando paginación para '{query_term}'", flush=True)
+        print(f"{'=' * 60}\n\n", flush=True)
+
+        # DEBUG: Print directo para forzar salida
+        print(f"\n\n{'=' * 60}", flush=True)
+        print(f"DEBUG CORDIS: Iniciando paginación para '{query_term}'", flush=True)
+        print(f"{'=' * 60}\n\n", flush=True)
+
         while True:
             # Build URL: https://cordis.europa.eu/search?q=QUERY&format=json&p=PAGE&num=100
             # Incluir archived=true para buscar también contenido archivado
