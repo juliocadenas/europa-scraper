@@ -121,22 +121,15 @@ class CordisApiClient:
     ) -> List[Dict[str, Any]]:
         """
         V29 - Smart Multi-language version.
-
-        1. First request gets totalHits
-        2. Paginates through ALL pages to collect every result
-        3. For each result, checks 'availableLanguages' field:
-           - If multiple languages → creates records with /en, /es, etc.
-           - If only one language → creates single record without suffix
-        4. Returns complete list for tabulation
-
-        Args:
-            query_term: Término de búsqueda
-            search_mode: Modo de búsqueda ('broad' o 'exact')
-            max_results: Número máximo de resultados
-            progress_callback: Callback para reportar progreso
-            languages: Lista de idiomas a incluir (ej: ['en', 'es', 'de']).
-                      Si es None, incluye todos los idiomas disponibles.
         """
+        # DEBUG: Verify function is called
+        debug_to_file(
+            f"FUNCTION CALLED: search_projects_and_publications('{query_term}')"
+        )
+        logger.critical(
+            f"V29 - FUNCTION CALLED: search_projects_and_publications('{query_term}')"
+        )
+
         # Si no se especifican idiomas o está vacía, usar todos los disponibles
         if languages is None or (isinstance(languages, list) and len(languages) == 0):
             languages = EU_LANGUAGES
