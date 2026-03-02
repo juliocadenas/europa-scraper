@@ -254,11 +254,9 @@ class CordisApiClient:
                 elif not isinstance(hits, list):
                     hits = []
 
-                # LOG DE PROGRESO CADA PÁGINA
+                # LOG DE PROGRESO CADA 10 PÁGINAS (conservador para no saturar UI)
                 current_results = len(all_results)
-                if (
-                    page % 5 == 0 or len(hits) > 0
-                ):  # Log cada 5 páginas o si hay resultados
+                if page % 10 == 0:  # Log cada 10 páginas = ~6 mensajes/minuto
                     progress_pct = (
                         min(100, int((current_results / total_hits) * 100))
                         if total_hits > 0
