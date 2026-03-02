@@ -1,25 +1,26 @@
 import logging
 import asyncio
 import sys
+import os
 from typing import List, Dict, Any, Optional
 from urllib.parse import quote_plus
+
+# DEBUG FILE for workers
+DEBUG_FILE = "/tmp/cordis_debug.log"
+
+
+def debug_to_file(msg):
+    """Write debug message to file (for multiprocess debugging)"""
+    with open(DEBUG_FILE, "a", encoding="utf-8") as f:
+        f.write(f"{msg}\n")
+        f.flush()
+
 
 # Force DEBUG logging
 logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
-
-# Override print to also log
-original_print = print
-
-
-def debug_print(*args, **kwargs):
-    msg = " ".join(str(a) for a in args)
-    original_print(f"DEBUG: {msg}", **kwargs)
-    logger.warning(f"PRINT: {msg}")
-
-
 logger.setLevel(logging.DEBUG)
 
 # Idiomas oficiales de la UE que CORDIS soporta
@@ -161,18 +162,15 @@ class CordisApiClient:
             f"V29 - 🚀 INICIANDO PAGINACIÓN para '{query_term}' - Esperando {results_per_page} resultados por página"
         )
 
-        # DEBUG: Print directo para forzar salida
-        print(f"\n\n{'=' * 60}", flush=True, file=sys.stderr)
-        print(
-            f"DEBUG CORDIS: Iniciando paginación para '{query_term}'",
-            flush=True,
-            file=sys.stderr,
-        )
-        print(f"{'=' * 60}\n\n", flush=True, file=sys.stderr)
-
-        logger.critical(f"V29 - PRE-WHILE: page={page}, total_hits={total_hits}")
+        # DEBUG: Write to file for multiprocess debugging
+        debug_to_file(f"=" * 60)
+        debug_to_file(f"START: query={query_term}, max_results={max_results}")
+        debug_to_file(f"=" * 60)
 
         while True:
+            debug_to_file(
+                f"WHILE: page={page}, total_hits={total_hits}, results={len(all_results)}"
+            )
             logger.critical(
                 f"V29 - 🔄 WHILE LOOP: page={page}, total_hits={total_hits}, results={len(all_results)}"
             )
@@ -417,10 +415,7 @@ class CordisApiClient:
 
                 # Safety limit
                 if len(all_results) >= max_results:
-                    print(
-                        f"V29 - 💥 BREAK: Reached safety limit ({max_results}). Stopping.",
-                        flush=True,
-                    )
+                    debug_to_file(f"BREAK: Reached max_results={max_results}")
                     logger.warning(
                         f"V29 - 💥 BREAK: Reached safety limit ({max_results}). Stopping."
                     )
@@ -428,17 +423,13 @@ class CordisApiClient:
 
                 # Check if this was the last page (NO results on this page)
                 if page_count == 0:
-                    print(
-                        f"V29 - 💥 BREAK: page_count=0 on page {page}. Stopping.",
-                        flush=True,
-                    )
+                    debug_to_file(f"BREAK: page_count=0 on page {page}")
                     logger.warning(
                         f"V29 - 💥 BREAK: page_count=0, no more results on page {page}. Stopping."
                     )
                     break
 
-                print(f"V29 - ✅ Continuando a página {page + 1}...", flush=True)
-                print(f"V29 - ✅ Continuando a página {page + 1}...", flush=True)
+                debug_to_file(f"CONTINUE: page={page}, going to page {page + 1}")
                 logger.warning(f"V29 - ✅ Continuando a página {page + 1}...")
                 logger.info(f"V29 - Avanzando a página {page + 1}...")
                 page += 1
