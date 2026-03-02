@@ -123,6 +123,9 @@ class CordisApiClient:
         if languages is None or (isinstance(languages, list) and len(languages) == 0):
             languages = EU_LANGUAGES
 
+        # Preparar query antes del log
+        encoded_query = quote_plus(query_term)
+
         logger.info(
             f"*** V29 SMART MULTI-LANG ACTIVADA ***: Iniciando búsqueda JSON en Cordis para '{query_term}'"
         )
@@ -136,8 +139,6 @@ class CordisApiClient:
         page = 1
         results_per_page = 100  # Max allowed
         total_hits = None
-
-        encoded_query = quote_plus(query_term)
 
         while True:
             # Build URL: https://cordis.europa.eu/search?q=QUERY&format=json&p=PAGE&num=100
