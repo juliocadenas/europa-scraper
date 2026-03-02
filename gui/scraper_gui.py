@@ -1970,12 +1970,12 @@ class ScraperGUI(ttk.Frame):
             "¿Continuar?",
         ):
             try:
-                # 1. Resetear el servidor (detiene procesos)
-                r = requests.post(f"{self.server_url.get()}/api/reset", timeout=10)
+                # 1. Resetear el servidor (detiene procesos) - timeout aumentado
+                r = requests.post(f"{self.server_url.get()}/api/reset", timeout=60)
 
-                # 2. Limpiar archivos del servidor
+                # 2. Limpiar archivos del servidor - timeout aumentado
                 r_cleanup = requests.post(
-                    f"{self.server_url.get()}/api/cleanup_files", timeout=10
+                    f"{self.server_url.get()}/api/cleanup_files", timeout=120
                 )
 
                 if r.status_code == 200:
@@ -2340,7 +2340,8 @@ class ServerFilesWindow(tk.Toplevel):
         self.status_label.config(text="Estado: Actualizando...", foreground="black")
 
         try:
-            r = requests.get(f"{self.url}/api/list_results", timeout=30)
+            # Timeout aumentado a 120 segundos para servidores con muchos archivos
+            r = requests.get(f"{self.url}/api/list_results", timeout=120)
             if r.status_code == 200:
                 data = r.json()
                 files = data.get("files", [])
@@ -2372,6 +2373,11 @@ class ServerFilesWindow(tk.Toplevel):
                 self.status_label.config(
                     text=f"Error {r.status_code} al listar archivos.", foreground="red"
                 )
+        except requests.Timeout:
+            self.status_label.config(
+                text="Timeout al listar archivos. Servidor ocupado con muchos archivos.",
+                foreground="orange",
+            )
         except Exception as e:
             self.status_label.config(
                 text=f"Error de conexión: {str(e)[:50]}...", foreground="red"
@@ -2431,12 +2437,19 @@ class ServerFilesWindow(tk.Toplevel):
             "¿Seguro que desea BORRAR TODOS los archivos de resultados en el servidor?\nEsta acción no se puede deshacer.",
         ):
             try:
-                r = requests.post(f"{self.url}/api/cleanup_files")
+                r = requests.post(f"{self.url}/api/cleanup_files", timeout=120)
                 if r.status_code == 200:
                     messagebox.showinfo("OK", "Servidor limpio.")
-                    self.refresh()
+                    # Refresh con timeout para no bloquear GUI
+                    self.after(500, self.refresh)
                 else:
                     messagebox.showerror("Error", f"Fallo: {r.status_code}")
+            except requests.Timeout:
+                messagebox.showwarning(
+                    "Timeout",
+                    "La limpieza tardó demasiado pero probablemente fue exitosa. Intenta refresh.",
+                )
+                self.after(500, self.refresh)
             except Exception as e:
                 messagebox.showerror("Error", str(e))
 
