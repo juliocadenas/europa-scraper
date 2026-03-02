@@ -1039,19 +1039,31 @@ class ScraperController(ScraperControllerBase):
                     all_search_results.append(r)
 
                 self.stats["total_urls_found"] += len(results)
-                logger.info(
-                    f"Encontrados {len(results)} resultados en Cordis API para '{search_term}'"
-                )
+
+                # Logging detallado
+                logger.info(f"═══════════════════════════════════════════════════════")
+                logger.info(f"🎯 CURSO PROCESADO: {sic_code} - {course_name}")
+                logger.info(f"   📝 Término de búsqueda: '{search_term}'")
+                logger.info(f"   ✅ Resultados encontrados: {len(results)}")
+                logger.info(f"   📊 Progreso: {current_course}/{total_courses} cursos")
+                logger.info(f"═══════════════════════════════════════════════════════")
+
                 self._emit_event(
                     "SEARCH_COMPLETED",
-                    f"Búsqueda completada en Cordis API: {len(results)} resultados.",
-                    {"term": search_term, "engine": "Cordis API"},
+                    f"✅ {course_name}: {len(results)} resultados",
+                    {
+                        "sic": sic_code,
+                        "course": course_name,
+                        "term": search_term,
+                        "results": len(results),
+                        "progress": f"{current_course}/{total_courses}",
+                    },
                 )
 
                 if progress_callback:
                     progress_callback(
                         0,
-                        f"Buscando curso {current_course} de {total_courses} - {current_course_info} | Encontrados: {len(results)} resultados",
+                        f"📊 {current_course}/{total_courses} | {course_name} | ✅ {len(results)} resultados",
                         self.stats,
                     )
 
@@ -1091,15 +1103,46 @@ class ScraperController(ScraperControllerBase):
         logger.info(
             f"Se encontraron {self.total_results_to_process} resultados totales para procesar"
         )
+        logger.info(f"📋 Cursos con resultados: {len(results_by_course)}")
+
         self._emit_event(
             "INFO",
-            f"Iniciando tabulación de {self.total_results_to_process} resultados encontrados",
+            f"🔄 Iniciando tabulación: {self.total_results_to_process} resultados de {len(results_by_course)} cursos",
         )
 
         if progress_callback:
             progress_callback(
                 0,
-                f"Iniciando tabulación de {self.total_results_to_process} resultados encontrados",
+                f"🔄 Tabulación: {self.total_results_to_process} resultados",
+            )
+
+        # Agrupar resultados por curso ANTES de iniciar la tabulación
+        results_by_course = {}
+        for result in all_search_results:
+            sic_code = result.get("sic_code", "")
+            course_name = result.get("course_name", "")
+            key = (sic_code, course_name)
+            if key not in results_by_course:
+                results_by_course[key] = []
+            results_by_course[key].append(result)
+
+        logger.info(f"📋 Cursos con resultados: {len(results_by_course)}")
+
+        logger.info(f"═══════════════════════════════════════════════════════")
+        logger.info(f"🔄 FASE 2: TABULACIÓN DE RESULTADOS")
+        logger.info(f"   📊 Total resultados: {self.total_results_to_process}")
+        logger.info(f"   📚 Cursos a tabular: {len(results_by_course)}")
+        logger.info(f"═══════════════════════════════════════════════════════")
+
+        self._emit_event(
+            "INFO",
+            f"🔄 Tabulación: {self.total_results_to_process} resultados de {len(results_by_course)} cursos",
+        )
+
+        if progress_callback:
+            progress_callback(
+                0,
+                f"🔄 Tabulación: {self.total_results_to_process} resultados de {len(results_by_course)} cursos",
             )
 
         if self.stop_requested:
@@ -1113,15 +1156,6 @@ class ScraperController(ScraperControllerBase):
             self.result_manager.cleanup_if_empty()
 
             return processed_results
-
-        results_by_course = {}
-        for result in all_search_results:
-            sic_code = result.get("sic_code", "")
-            course_name = result.get("course_name", "")
-            key = (sic_code, course_name)
-            if key not in results_by_course:
-                results_by_course[key] = []
-            results_by_course[key].append(result)
 
         for i, ((sic_code, course_name), course_results) in enumerate(
             results_by_course.items()
@@ -1138,8 +1172,20 @@ class ScraperController(ScraperControllerBase):
             self.current_tabulation_course = i + 1
             self.progress_reporter.set_tabulation_course(self.current_tabulation_course)
 
+            logger.info(f"───────────────────────────────────────────────────────────")
             logger.info(
-                f"Tabulando curso {self.current_tabulation_course} de {total_courses}: {sic_code} - {course_name}"
+                f"📋 Tabulando curso {i + 1}/{len(results_by_course)}: {sic_code} - {course_name}"
+            )
+            logger.info(f"   📄 Resultados a procesar: {len(course_results)}")
+
+            self._emit_event(
+                "TABULATION_START",
+                f"📋 {course_name}: {len(course_results)} resultados",
+                {
+                    "sic": sic_code,
+                    "course": course_name,
+                    "results": len(course_results),
+                },
             )
 
             if progress_callback:
@@ -1262,11 +1308,27 @@ class ScraperController(ScraperControllerBase):
                 sic_code, course_name, "COMPLETADO", server_id
             )
 
-            # Debug summary for this course
-            logger.info(f"📊 DEBUG SUMMARY for course '{course_name}':")
-            logger.info(f"   - Search results found: {len(course_results)}")
-            logger.info(f"   - Processed: {len(batch_results)}")
-            logger.info(f"   - Stats: {self.stats}")
+            # Resumen detallado del curso
+            logger.info(f"═══════════════════════════════════════════════════════")
+            logger.info(f"✅ CURSO COMPLETADO: {sic_code} - {course_name}")
+            logger.info(f"   📊 Resultados encontrados: {len(course_results)}")
+            logger.info(f"   ✅ Procesados correctamente: {len(batch_results)}")
+            logger.info(f"   📈 Progreso: {i + 1}/{len(results_by_course)} cursos")
+            logger.info(
+                f"   ⏭️ Siguiente: {results_by_course[list(results_by_course.keys())[i + 1]][0].get('course_name', 'N/A') if i + 1 < len(results_by_course) else 'FIN'}"
+            )
+            logger.info(f"═══════════════════════════════════════════════════════")
+
+            self._emit_event(
+                "TABULATION_COMPLETE",
+                f"✅ {course_name}: {len(batch_results)}/{len(course_results)}",
+                {
+                    "sic": sic_code,
+                    "course": course_name,
+                    "processed": len(batch_results),
+                    "total": len(course_results),
+                },
+            )
 
         return processed_results
 
