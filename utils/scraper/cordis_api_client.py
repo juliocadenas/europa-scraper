@@ -140,6 +140,10 @@ class CordisApiClient:
         results_per_page = 100  # Max allowed
         total_hits = None
 
+        logger.warning(
+            f"V29 - 🚀 INICIANDO PAGINACIÓN para '{query_term}' - Esperando {results_per_page} resultados por página"
+        )
+
         while True:
             # Build URL: https://cordis.europa.eu/search?q=QUERY&format=json&p=PAGE&num=100
             # Incluir archived=true para buscar también contenido archivado
