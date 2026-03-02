@@ -122,6 +122,77 @@ class CordisApiClient:
             logger.error(f"DET download error: {e}")
             return []
 
+    async def search_projects_and_publications(
+        self,
+        query_term: str,
+        search_mode: str = "broad",
+        max_results: int = 1000000,
+        progress_callback=None,
+        languages: List[str] = None,
+        total_hits_callback=None,
+    ) -> List[Dict[str, Any]]:
+        """
+        V29 - Smart Multi-language version con soporte para grandes volúmenes.
+
+        Si detecta más de 3,000 resultados, divide la búsqueda por años
+        para obtener más resultados totales.
+        """
+        # DEBUG: Verify function is called
+        debug_to_file(
+            f"FUNCTION CALLED: search_projects_and_publications('{query_term}')"
+        )
+        logger.critical(
+            f"V29 - FUNCTION CALLED: search_projects_and_publications('{query_term}')"
+        )
+
+        # Primera búsqueda para obtener total_hits
+        encoded_query = quote_plus(query_term)
+        search_url = (
+            f"{self.SEARCH_URL}?q={encoded_query}&format=json&p=1&num=1&archived=true"
+        )
+
+        try:
+            import requests
+
+            response = requests.get(search_url, headers=self.headers, timeout=30)
+            data = response.json()
+            total_hits_str = (
+                data.get("result", {}).get("header", {}).get("totalHits", "0")
+            )
+            total_hits = int(total_hits_str) if total_hits_str else 0
+
+            debug_to_file(f"Total hits for '{query_term}': {total_hits}")
+
+            # Si hay más de 3,000 resultados, usar estrategia de años
+            if total_hits > 3000:
+                logger.warning(
+                    f"V29 - Detectados {total_hits} resultados. Usando estrategia de años."
+                )
+                return await self._search_by_years(
+                    query_term, search_mode, max_results, progress_callback, languages
+                )
+            else:
+                # Usar búsqueda normal
+                return await self._search_single(
+                    query_term,
+                    search_mode,
+                    max_results,
+                    progress_callback,
+                    languages,
+                    total_hits_callback,
+                )
+        except Exception as e:
+            debug_to_file(f"Error en búsqueda inicial: {e}")
+            # Fallback a búsqueda normal
+            return await self._search_single(
+                query_term,
+                search_mode,
+                max_results,
+                progress_callback,
+                languages,
+                total_hits_callback,
+            )
+
     async def _search_single(
         self,
         query_term: str,
