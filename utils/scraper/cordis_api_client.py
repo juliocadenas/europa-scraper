@@ -126,7 +126,11 @@ class CordisApiClient:
         logger.info(
             f"*** V29 SMART MULTI-LANG ACTIVADA ***: Iniciando búsqueda JSON en Cordis para '{query_term}'"
         )
+        logger.info(
+            f"*** URL Base: {self.SEARCH_URL}?q={encoded_query}&format=json&archived=true"
+        )
         logger.info(f"*** Idiomas seleccionados: {languages} ***")
+        logger.info(f"*** Modo: {search_mode} | Max results: {max_results:,} ***")
 
         all_results = []
         page = 1
@@ -140,7 +144,7 @@ class CordisApiClient:
             # Incluir archived=true para buscar también contenido archivado
             search_url = f"{self.SEARCH_URL}?q={encoded_query}&format=json&p={page}&num={results_per_page}&archived=true"
 
-            logger.info(f"V29 - Fetching page {page}: {search_url}")
+            logger.info(f"V29 - 🔄 Obteniendo página {page}...")
 
             loop = asyncio.get_running_loop()
 
@@ -327,15 +331,28 @@ class CordisApiClient:
                         page_count += 1
 
                 logger.info(
-                    f"V29 - Page {page}: {page_count} resultados. Multi-idioma: {multi_lang_count}, Single-idioma: {single_lang_count}. Total acumulado: {len(all_results)}"
+                    f"═══════════════════════════════════════════════════════════"
+                )
+                logger.info(
+                    f"📄 V29 - Página {page}/{max(1, (total_hits // 100) + 1)} procesada | Hits: {page_count} | Acumulado: {len(all_results)}/{total_hits:,}"
+                )
+                logger.info(
+                    f"    📊 Multi-idioma: {multi_lang_count} | Single-idioma: {single_lang_count}"
+                )
+                logger.info(
+                    f"═══════════════════════════════════════════════════════════"
                 )
 
-                # Update GUI with progress
+                # Emitir evento para GUI
                 if progress_callback:
                     progress_callback(
                         0,
-                        f"Cordis API | Página {page} | {len(all_results)} resultados",
-                        {},
+                        f"🔄 CORDIS: Página {page} | {len(all_results):,} resultados/{total_hits:,} total",
+                        {
+                            "page": page,
+                            "total_hits": total_hits,
+                            "collected": len(all_results),
+                        },
                     )
 
                 # Safety limit
