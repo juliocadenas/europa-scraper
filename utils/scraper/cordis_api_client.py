@@ -1,5 +1,6 @@
 import logging
 import asyncio
+import sys
 from typing import List, Dict, Any, Optional
 from urllib.parse import quote_plus
 
@@ -8,6 +9,17 @@ logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
+
+# Override print to also log
+original_print = print
+
+
+def debug_print(*args, **kwargs):
+    msg = " ".join(str(a) for a in args)
+    original_print(f"DEBUG: {msg}", **kwargs)
+    logger.warning(f"PRINT: {msg}")
+
+
 logger.setLevel(logging.DEBUG)
 
 # Idiomas oficiales de la UE que CORDIS soporta
@@ -390,6 +402,10 @@ class CordisApiClient:
 
                 # Safety limit
                 if len(all_results) >= max_results:
+                    print(
+                        f"V29 - 💥 BREAK: Reached safety limit ({max_results}). Stopping.",
+                        flush=True,
+                    )
                     logger.warning(
                         f"V29 - 💥 BREAK: Reached safety limit ({max_results}). Stopping."
                     )
@@ -397,6 +413,10 @@ class CordisApiClient:
 
                 # Check if this was the last page (NO results on this page)
                 if page_count == 0:
+                    print(
+                        f"V29 - 💥 BREAK: page_count=0 on page {page}. Stopping.",
+                        flush=True,
+                    )
                     logger.warning(
                         f"V29 - 💥 BREAK: page_count=0, no more results on page {page}. Stopping."
                     )
