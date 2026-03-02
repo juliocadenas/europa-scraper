@@ -130,13 +130,16 @@ class CordisApiClient:
             # Si hay más de 3,000 resultados, usar estrategia de años
             if total_hits > 3000:
                 logger.info(
-                    f"CORDIS: Detectados {total_hits} resultados. Usando estrategia de años."
+                    f"[CORDIS] >>> {total_hits} resultados detectados. ACTIVANDO ESTRATEGIA POR AÑOS (2014-2025) <<<"
                 )
                 return await self._search_by_years(
                     query_term, search_mode, max_results, progress_callback, languages
                 )
             else:
                 # Usar búsqueda normal
+                logger.info(
+                    f"[CORDIS] {total_hits} resultados. Usando búsqueda directa (sin años)."
+                )
                 return await self._search_single(
                     query_term,
                     search_mode,
@@ -250,6 +253,20 @@ class CordisApiClient:
                     hits = [hits]
                 elif not isinstance(hits, list):
                     hits = []
+
+                # LOG DE PROGRESO CADA PÁGINA
+                current_results = len(all_results)
+                if (
+                    page % 5 == 0 or len(hits) > 0
+                ):  # Log cada 5 páginas o si hay resultados
+                    progress_pct = (
+                        min(100, int((current_results / total_hits) * 100))
+                        if total_hits > 0
+                        else 0
+                    )
+                    logger.info(
+                        f"[CORDIS PROGRESS] Página {page} | {len(hits)} hits esta página | Total recolectado: {current_results}/{total_hits} ({progress_pct}%)"
+                    )
 
                 if not hits:
                     logger.warning(f"CORDIS: Página {page} sin resultados, deteniendo.")
@@ -393,7 +410,7 @@ class CordisApiClient:
 
         for year in years:
             year_query = f"{query_term} {year}"
-            logger.info(f"CORDIS: Buscando año {year}")
+            logger.info(f"[CORDIS AÑO {year}] Iniciando búsqueda: '{year_query}'")
 
             year_results = await self._search_single(
                 year_query,
@@ -404,14 +421,17 @@ class CordisApiClient:
                 total_hits_callback=None,
             )
 
-            logger.info(f"CORDIS: Año {year}: {len(year_results)} resultados")
+            logger.info(
+                f"[CORDIS AÑO {year}] COMPLETADO: {len(year_results)} resultados | Acumulado total: {len(all_results) + len(year_results)}"
+            )
             all_results.extend(year_results)
 
             if len(all_results) >= max_results:
+                logger.info(f"[CORDIS] Límite de {max_results} alcanzado. Deteniendo.")
                 break
 
         logger.info(
-            f"CORDIS: Total con estrategia de años: {len(all_results)} resultados"
+            f"[CORDIS] ESTRATEGIA DE AÑOS COMPLETADA: {len(all_results)} resultados totales"
         )
         return all_results
 
