@@ -1057,6 +1057,13 @@ class ScraperController(ScraperControllerBase):
                             "course": course_name,
                         },
                     )
+                    # Actualizar barra de progreso general y monitor de actividad
+                    if progress_callback:
+                        progress_callback(
+                            progress_pct,
+                            f"CORDIS: {course_name} - {collected:,}/{total_hits:,} ({progress_pct}%)",
+                            self.stats,
+                        )
 
             try:
                 results = await self.cordis_api_client.search_projects_and_publications(
@@ -1095,10 +1102,11 @@ class ScraperController(ScraperControllerBase):
                     },
                 )
 
+                # Actualizar progreso a 100% al completar
                 if progress_callback:
                     progress_callback(
-                        0,
-                        f"📊 {current_course}/{total_courses} | {course_name} | ✅ {len(results)} resultados",
+                        100,
+                        f"✅ {course_name}: {len(results)} resultados de CORDIS",
                         self.stats,
                     )
 
