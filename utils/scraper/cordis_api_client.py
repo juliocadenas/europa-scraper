@@ -137,7 +137,8 @@ class CordisApiClient:
 
         while True:
             # Build URL: https://cordis.europa.eu/search?q=QUERY&format=json&p=PAGE&num=100
-            search_url = f"{self.SEARCH_URL}?q={encoded_query}&format=json&p={page}&num={results_per_page}"
+            # Incluir archived=true para buscar también contenido archivado
+            search_url = f"{self.SEARCH_URL}?q={encoded_query}&format=json&p={page}&num={results_per_page}&archived=true"
 
             logger.info(f"V29 - Fetching page {page}: {search_url}")
 
