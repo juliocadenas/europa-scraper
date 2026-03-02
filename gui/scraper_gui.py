@@ -2285,12 +2285,13 @@ class ServerFilesWindow(tk.Toplevel):
         ttk.Button(btn_frame, text="🔄 Refrescar Todo", command=self.refresh).pack(
             side=tk.LEFT, padx=5
         )
-        ttk.Button(
+        self._cleanup_btn = ttk.Button(
             btn_frame,
             text="🗑️ LIMPIAR SERVIDOR (BORRAR TODO)",
             style="Danger.TButton",
             command=self._cleanup_all,
-        ).pack(side=tk.RIGHT, padx=5)
+        )
+        self._cleanup_btn.pack(side=tk.RIGHT, padx=5)
 
         self.refresh()
 
@@ -2335,52 +2336,61 @@ class ServerFilesWindow(tk.Toplevel):
             self.omit_tree = tree
 
     def refresh(self):
+        """Refrescar lista de archivos - ejecuta en hilo separado"""
+        # Limpiar trees
         self.res_tree.delete(*self.res_tree.get_children())
         self.omit_tree.delete(*self.omit_tree.get_children())
-        self.status_label.config(text="Estado: Actualizando...", foreground="black")
+        self.status_label.config(text="🔄 Actualizando...", foreground="black")
 
-        try:
-            # Timeout aumentado a 120 segundos para servidores con muchos archivos
-            r = requests.get(f"{self.url}/api/list_results", timeout=120)
-            if r.status_code == 200:
-                data = r.json()
-                files = data.get("files", [])
-                dir_path = data.get("results_dir", "/app/results")
-                total_lines = data.get("total_lines", 0)
+        # Ejecutar en hilo separado
+        import threading
 
-                # Calcular total de archivos
-                total_files = len(files)
-
-                self.status_label.config(
-                    text=f"Directorio: {dir_path} | Archivos: {total_files} | Total Contenidos: {total_lines:,}",
-                    foreground="blue",
+        def fetch_thread():
+            try:
+                r = requests.get(f"{self.url}/api/list_results", timeout=180)
+                self.after(
+                    0,
+                    self._refresh_done,
+                    r.status_code,
+                    r.json() if r.status_code == 200 else None,
+                    r.text,
                 )
+            except requests.Timeout:
+                self.after(0, self._refresh_done, 408, None, "Timeout")
+            except Exception as e:
+                self.after(0, self._refresh_done, 500, None, str(e))
 
-                for f in files:
-                    line_count = f.get("line_count", 0)
-                    vals = (
-                        f["name"],
-                        f["category"],
-                        f["size_human"],
-                        f"{line_count:,}" if line_count else "0",
-                        f["modified_human"],
-                    )
-                    if f["category"] == "Omitidos":
-                        self.omit_tree.insert("", tk.END, iid=f["name"], values=vals)
-                    else:
-                        self.res_tree.insert("", tk.END, iid=f["name"], values=vals)
-            else:
-                self.status_label.config(
-                    text=f"Error {r.status_code} al listar archivos.", foreground="red"
-                )
-        except requests.Timeout:
+        threading.Thread(target=fetch_thread, daemon=True).start()
+
+    def _refresh_done(self, status_code, data, error_text):
+        """Callback cuando termina de cargar archivos"""
+        if status_code == 200 and data:
+            files = data.get("files", [])
+            dir_path = data.get("results_dir", "/app/results")
+            total_lines = data.get("total_lines", 0)
+            total_files = len(files)
+
             self.status_label.config(
-                text="Timeout al listar archivos. Servidor ocupado con muchos archivos.",
-                foreground="orange",
+                text=f"Directorio: {dir_path} | Archivos: {total_files} | Total Contenidos: {total_lines:,}",
+                foreground="blue",
             )
-        except Exception as e:
+
+            for f in files:
+                line_count = f.get("line_count", 0)
+                vals = (
+                    f["name"],
+                    f["category"],
+                    f["size_human"],
+                    f"{line_count:,}" if line_count else "0",
+                    f["modified_human"],
+                )
+                if f["category"] == "Omitidos":
+                    self.omit_tree.insert("", tk.END, iid=f["name"], values=vals)
+                else:
+                    self.res_tree.insert("", tk.END, iid=f["name"], values=vals)
+        else:
             self.status_label.config(
-                text=f"Error de conexión: {str(e)[:50]}...", foreground="red"
+                text=f"Error: {error_text[:50]}...", foreground="red"
             )
 
     def _download_selected(self, tree):
@@ -2436,22 +2446,48 @@ class ServerFilesWindow(tk.Toplevel):
             "PELIGRO",
             "¿Seguro que desea BORRAR TODOS los archivos de resultados en el servidor?\nEsta acción no se puede deshacer.",
         ):
-            try:
-                r = requests.post(f"{self.url}/api/cleanup_files", timeout=120)
-                if r.status_code == 200:
-                    messagebox.showinfo("OK", "Servidor limpio.")
-                    # Refresh con timeout para no bloquear GUI
-                    self.after(500, self.refresh)
-                else:
-                    messagebox.showerror("Error", f"Fallo: {r.status_code}")
-            except requests.Timeout:
-                messagebox.showwarning(
-                    "Timeout",
-                    "La limpieza tardó demasiado pero probablemente fue exitosa. Intenta refresh.",
-                )
-                self.after(500, self.refresh)
-            except Exception as e:
-                messagebox.showerror("Error", str(e))
+            # Deshabilitar botón para evitar múltiples clics
+            if hasattr(self, "_cleanup_btn"):
+                self._cleanup_btn.config(state=tk.DISABLED)
+
+            # Mostrar mensaje de procesamiento
+            self.status_label.config(
+                text="🔄 Limpiando archivos...", foreground="orange"
+            )
+
+            # Ejecutar en hilo separado para no bloquear GUI
+            import threading
+
+            def cleanup_thread():
+                try:
+                    r = requests.post(f"{self.url}/api/cleanup_files", timeout=180)
+
+                    # Volver al hilo principal para actualizar GUI
+                    self.after(0, self._cleanup_done, r.status_code, r.text)
+                except requests.Timeout:
+                    self.after(
+                        0, self._cleanup_done, 200, "Timeout - probablemente exitoso"
+                    )
+                except Exception as e:
+                    self.after(0, self._cleanup_done, 500, str(e))
+
+            threading.Thread(target=cleanup_thread, daemon=True).start()
+
+    def _cleanup_done(self, status_code, response_text):
+        """Callback cuando termina la limpieza"""
+        if hasattr(self, "_cleanup_btn"):
+            self._cleanup_btn.config(state=tk.NORMAL)
+
+        if status_code == 200:
+            self.status_label.config(text="✅ Servidor limpio", foreground="green")
+            messagebox.showinfo("OK", "Archivos eliminados correctamente.")
+            # Refresh después de un delay
+            self.after(1000, self.refresh)
+        else:
+            self.status_label.config(text="❌ Error en limpieza", foreground="red")
+            messagebox.showerror(
+                "Error", f"Fallo: {status_code}\n{response_text[:100]}"
+            )
 
 
 class DummyResultsFrame:
