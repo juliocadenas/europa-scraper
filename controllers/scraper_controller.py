@@ -1030,11 +1030,39 @@ class ScraperController(ScraperControllerBase):
                     {"term": search_term, "total_hits": total_hits},
                 )
 
+            # Callback de progreso detallado para CORDIS
+            last_progress_emit = [0]  # Use list to allow mutation in nested function
+
+            def cordis_progress_callback(page, total_hits, collected):
+                # Emitir progreso cada 500 resultados o cada 5 páginas
+                should_emit = (collected >= last_progress_emit[0] + 500) or (
+                    page % 5 == 0
+                )
+                if should_emit:
+                    last_progress_emit[0] = collected
+                    progress_pct = (
+                        min(100, int((collected / total_hits) * 100))
+                        if total_hits > 0
+                        else 0
+                    )
+                    msg = f"⏳ CORDIS: {course_name} | Página {page} | {collected:,}/{total_hits:,} resultados ({progress_pct}%)"
+                    logger.info(msg)
+                    self._emit_event(
+                        "PROGRESS",
+                        msg,
+                        {
+                            "page": page,
+                            "collected": collected,
+                            "total": total_hits,
+                            "course": course_name,
+                        },
+                    )
+
             try:
                 results = await self.cordis_api_client.search_projects_and_publications(
                     search_term,
                     search_mode=search_mode,
-                    progress_callback=progress_callback,
+                    progress_callback=cordis_progress_callback,
                     languages=languages,
                     total_hits_callback=on_total_hits_detected,
                 )
