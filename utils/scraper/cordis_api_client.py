@@ -119,8 +119,8 @@ class CordisApiClient:
             languages: Lista de idiomas a incluir (ej: ['en', 'es', 'de']).
                       Si es None, incluye todos los idiomas disponibles.
         """
-        # Si no se especifican idiomas, usar todos los disponibles
-        if languages is None:
+        # Si no se especifican idiomas o está vacía, usar todos los disponibles
+        if languages is None or (isinstance(languages, list) and len(languages) == 0):
             languages = EU_LANGUAGES
 
         logger.info(
