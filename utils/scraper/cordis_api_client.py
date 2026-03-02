@@ -198,12 +198,23 @@ class CordisApiClient:
                 # Extract hits - Cordis returns them in data['hits'] as a list
                 hits = []
 
+                # DEBUG: Log data structure
+                logger.warning(
+                    f"V29 - DEBUG: Page {page}, data keys: {list(data.keys())}"
+                )
+
                 # Structure 1 (ACTUAL CORDIS STRUCTURE): data['hits'] direct list
                 if "hits" in data and isinstance(data["hits"], list):
                     hits = data["hits"]
+                    logger.warning(
+                        f"V29 - DEBUG: Using Structure 1, hits count: {len(hits)}"
+                    )
                 # Structure 2: data['hits'] as dict with 'hit' key
                 elif "hits" in data and isinstance(data["hits"], dict):
                     hits = data["hits"].get("hit", [])
+                    logger.warning(
+                        f"V29 - DEBUG: Using Structure 2, hits count: {len(hits) if hits else 0}"
+                    )
                 # Structure 3: result.hits (legacy fallback)
                 elif "result" in data and "hits" in data["result"]:
                     result_hits = data["result"]["hits"]
@@ -211,6 +222,9 @@ class CordisApiClient:
                         hits = result_hits["hit"]
                     elif isinstance(result_hits, list):
                         hits = result_hits
+                    logger.warning(
+                        f"V29 - DEBUG: Using Structure 3, hits count: {len(hits) if hits else 0}"
+                    )
 
                 # Ensure hits is a list
                 if isinstance(hits, dict):
