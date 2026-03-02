@@ -1969,53 +1969,114 @@ class ScraperGUI(ttk.Frame):
             "• ELIMINARÁ todos los archivos de resultados del servidor\n\n"
             "¿Continuar?",
         ):
-            try:
-                # 1. Resetear el servidor (detiene procesos) - timeout aumentado
-                r = requests.post(f"{self.server_url.get()}/api/reset", timeout=60)
+            # Mostrar ventana de progreso
+            progress_window = tk.Toplevel(self.root)
+            progress_window.title("🔄 Reiniciando Sistema...")
+            progress_window.geometry("400x150")
+            progress_window.transient(self.root)
+            progress_window.grab_set()
 
-                # 2. Limpiar archivos del servidor - timeout aumentado
-                r_cleanup = requests.post(
-                    f"{self.server_url.get()}/api/cleanup_files", timeout=120
-                )
+            # Mensaje y spinner
+            msg = ttk.Label(
+                progress_window, text="Reiniciando servidor...", font=("Arial", 12)
+            )
+            msg.pack(pady=30)
 
-                if r.status_code == 200:
-                    self.results_frame.add_log(
-                        "⚠️ Sistema reiniciado (Cliente + Servidor)."
+            spinner = ttk.Label(progress_window, text="⏳", font=("Arial", 24))
+            spinner.pack(pady=10)
+
+            status_label = ttk.Label(
+                progress_window, text="Conectando con el servidor...", foreground="blue"
+            )
+            status_label.pack(pady=10)
+
+            # Ejecutar en hilo separado
+            import threading
+
+            def reset_thread():
+                try:
+                    # 1. Resetear el servidor
+                    self.after(
+                        0,
+                        lambda: status_label.config(
+                            text="🛑 Deteniendo procesos...", foreground="orange"
+                        ),
+                    )
+                    r = requests.post(f"{self.server_url.get()}/api/reset", timeout=120)
+
+                    # 2. Limpiar archivos
+                    self.after(
+                        0,
+                        lambda: status_label.config(
+                            text="🗑️ Limpiando archivos...", foreground="orange"
+                        ),
+                    )
+                    r_cleanup = requests.post(
+                        f"{self.server_url.get()}/api/cleanup_files", timeout=180
                     )
 
-                    # 3. Limpiar Monitor de Actividad Local
-                    self.worker_tree.delete(*self.worker_tree.get_children())
-
-                    # 4. Limpiar Auditoría de Procesos
-                    self.audit_tree.delete(*self.audit_tree.get_children())
-                    if hasattr(self, "audit_details_map"):
-                        self.audit_details_map.clear()
-                    if hasattr(self, "audit_worker_nodes"):
-                        self.audit_worker_nodes.clear()
-
-                    # 5. Limpiar detalles del proceso seleccionado
-                    self.details_text.config(state=tk.NORMAL)
-                    self.details_text.delete(1.0, tk.END)
-                    self.details_text.config(state=tk.DISABLED)
-
-                    # 6. Resetear el contador de eventos
-                    if hasattr(self.controller, "last_event_id"):
-                        self.controller.last_event_id = 0
-
-                    messagebox.showinfo(
-                        "Reset Completo",
-                        "Sistema reseteado correctamente:\n"
-                        "✓ Procesos detenidos\n"
-                        "✓ Monitor limpio\n"
-                        "✓ Auditoría limpiada\n"
-                        f"✓ Archivos: {'Borrados' if r_cleanup.status_code == 200 else 'Error al borrar'}",
+                    # Llamar callback con resultados
+                    self.after(
+                        0,
+                        self._reset_complete,
+                        True,
+                        r.status_code,
+                        r_cleanup.status_code,
+                        progress_window,
                     )
-                else:
-                    messagebox.showerror(
-                        "Error", f"Fallo al resetear servidor: {r.status_code}"
+                except requests.Timeout:
+                    self.after(
+                        0, self._reset_complete, True, 200, 200, progress_window
+                    )  # Timeout cuenta como éxito
+                except Exception as e:
+                    self.after(
+                        0, self._reset_complete, False, 0, 0, progress_window, str(e)
                     )
-            except Exception as e:
-                messagebox.showerror("Error", f"No se pudo conectar para resetear: {e}")
+
+            threading.Thread(target=reset_thread, daemon=True).start()
+
+    def _reset_complete(
+        self, success, reset_status, cleanup_status, progress_window, error_msg=None
+    ):
+        """Callback cuando termina el reset"""
+        progress_window.grab_release()
+
+        if success:
+            self.results_frame.add_log("⚠️ Sistema reiniciado (Cliente + Servidor).")
+
+            # Limpiar Monitor de Actividad Local
+            self.worker_tree.delete(*self.worker_tree.get_children())
+
+            # Limpiar Auditoría de Procesos
+            self.audit_tree.delete(*self.audit_tree.get_children())
+            if hasattr(self, "audit_details_map"):
+                self.audit_details_map.clear()
+            if hasattr(self, "audit_worker_nodes"):
+                self.audit_worker_nodes.clear()
+
+            # Limpiar detalles
+            self.details_text.config(state=tk.NORMAL)
+            self.details_text.delete(1.0, tk.END)
+            self.details_text.config(state=tk.DISABLED)
+
+            # Resetear contador de eventos
+            if hasattr(self.controller, "last_event_id"):
+                self.controller.last_event_id = 0
+
+            progress_window.destroy()
+            messagebox.showinfo(
+                "Reset Completo",
+                "Sistema reseteado correctamente:\n"
+                "✓ Procesos detenidos\n"
+                "✓ Monitor limpio\n"
+                "✓ Auditoría limpiada\n"
+                f"✓ Archivos: {'Borrados' if cleanup_status == 200 else 'Error al borrar'}",
+            )
+        else:
+            progress_window.destroy()
+            messagebox.showerror(
+                "Error", f"No se pudo conectar para resetear:\n{error_msg}"
+            )
 
     def _on_export_results(self):
         path = filedialog.asksaveasfilename(defaultextension=".zip")
