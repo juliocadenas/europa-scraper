@@ -1970,10 +1970,10 @@ class ScraperGUI(ttk.Frame):
             "¿Continuar?",
         ):
             # Mostrar ventana de progreso
-            progress_window = tk.Toplevel(self.root)
+            progress_window = tk.Toplevel(self.master)
             progress_window.title("🔄 Reiniciando Sistema...")
             progress_window.geometry("400x150")
-            progress_window.transient(self.root)
+            progress_window.transient(self.master)
             progress_window.grab_set()
 
             # Mensaje y spinner
