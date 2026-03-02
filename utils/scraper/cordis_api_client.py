@@ -425,6 +425,15 @@ class CordisApiClient:
                 # Check if this was the last page (NO results on this page)
                 if page_count == 0:
                     debug_to_file(f"BREAK: page_count=0 on page {page}")
+                    debug_to_file(
+                        f"DEBUG: hits count was {len(hits)}, data keys: {list(data.keys())}"
+                    )
+                    if "hits" in data:
+                        debug_to_file(f"DEBUG: data['hits'] type: {type(data['hits'])}")
+                        if isinstance(data["hits"], list):
+                            debug_to_file(
+                                f"DEBUG: data['hits'] length: {len(data['hits'])}"
+                            )
                     logger.warning(
                         f"V29 - 💥 BREAK: page_count=0, no more results on page {page}. Stopping."
                     )
