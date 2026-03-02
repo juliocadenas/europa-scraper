@@ -3,7 +3,12 @@ import asyncio
 from typing import List, Dict, Any, Optional
 from urllib.parse import quote_plus
 
+# Force DEBUG logging
+logging.basicConfig(
+    level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 # Idiomas oficiales de la UE que CORDIS soporta
 EU_LANGUAGES = ["en", "es", "de", "fr", "it", "pl"]
