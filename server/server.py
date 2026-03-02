@@ -705,10 +705,10 @@ class ScraperServer:
             )  # Enviar una señal de "veneno" por cada trabajador
 
         for p in self.worker_pool:
-            p.join(timeout=10)  # Esperar a que los procesos terminen
+            p.join(timeout=300)  # Esperar 5 minutos a que los procesos terminen
             if p.is_alive():
                 self.logger.warning(
-                    f"El trabajador {p.pid} no terminó a tiempo, forzando terminación."
+                    f"El trabajador {p.pid} no terminó a tiempo tras 5 minutos, forzando terminación."
                 )
                 try:
                     asyncio.get_running_loop().create_task(
