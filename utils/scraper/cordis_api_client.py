@@ -26,6 +26,14 @@ logger.setLevel(logging.DEBUG)
 # Idiomas oficiales de la UE que CORDIS soporta
 EU_LANGUAGES = ["en", "es", "de", "fr", "it", "pl"]
 
+# Log al importar el módulo
+logger.critical("V29 - MODULE cordis_api_client.py LOADED")
+print("V29 - MODULE cordis_api_client.py LOADED", flush=True, file=sys.stderr)
+
+# Log al importar el módulo
+logger.critical("V29 - MODULE cordis_api_client.py LOADED")
+print("V29 - MODULE cordis_api_client.py LOADED", flush=True, file=sys.stderr)
+
 
 class CordisApiClient:
     """
