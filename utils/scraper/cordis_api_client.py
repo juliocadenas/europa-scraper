@@ -344,16 +344,21 @@ class CordisApiClient:
                     f"═══════════════════════════════════════════════════════════"
                 )
 
-                # Emitir evento para GUI
-                if progress_callback:
-                    progress_callback(
-                        0,
-                        f"🔄 CORDIS: Página {page} | {len(all_results):,} resultados/{total_hits:,} total",
-                        {
-                            "page": page,
-                            "total_hits": total_hits,
-                            "collected": len(all_results),
-                        },
+                # Emitir evento para GUI SI el callback no causa errores
+                try:
+                    if progress_callback:
+                        progress_callback(
+                            0,
+                            f"🔄 CORDIS: Página {page} | {len(all_results):,} resultados/{total_hits:,} total",
+                            {
+                                "page": page,
+                                "total_hits": total_hits,
+                                "collected": len(all_results),
+                            },
+                        )
+                except Exception as cb_err:
+                    logger.warning(
+                        f"V29 - Progress callback error (continuando): {cb_err}"
                     )
 
                 # Safety limit
@@ -368,10 +373,11 @@ class CordisApiClient:
                     logger.info(f"V29 - No more results on page {page}. Stopping.")
                     break
 
+                logger.info(f"V29 - Avanzando a página {page + 1}...")
                 page += 1
 
-                # Be nice to server - 0.3 seconds between requests
-                await asyncio.sleep(0.3)
+                # Be nice to server - 0.1 seconds between requests (reducido para mayor velocidad)
+                await asyncio.sleep(0.1)
 
             except Exception as e:
                 logger.error(f"V29 - Error on page {page}: {e}")
