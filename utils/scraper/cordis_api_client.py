@@ -359,6 +359,7 @@ class CordisApiClient:
 
                 try:
                     if progress_callback:
+                        logger.info(f"[CORDIS] 🔥 LLAMANDO callback en página {page}")
                         progress_callback(
                             page,
                             total_hits,
