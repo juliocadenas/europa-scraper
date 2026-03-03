@@ -170,6 +170,9 @@ class CordisApiClient:
         total_hits_callback=None,
     ) -> List[Dict[str, Any]]:
         """Búsqueda simple sin división por años."""
+        logger.warning(
+            f"[CORDIS _search_single] INICIANDO con term='{query_term}', callback={'YES' if progress_callback else 'NO'}"
+        )
         # Usar el código de búsqueda actual (que está después de este método)
         # Copiar el código de búsqueda existente aquí
         # Código de búsqueda normal (la parte del while loop)
