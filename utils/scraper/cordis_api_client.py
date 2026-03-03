@@ -263,7 +263,11 @@ class CordisApiClient:
                 )
 
                 # Callback de progreso cada 5 páginas (más dinámico para UI)
+                print(
+                    f"[CORDIS API CLIENT] page={page}, progress_callback={progress_callback is not None}, modulo={page % 5}"
+                )
                 if progress_callback and (page % 5 == 0):
+                    print(f"[CORDIS API CLIENT] 🔥 CALLING CALLBACK at page {page}")
                     progress_callback(page, total_hits, current_results)
 
                 # Log cada 10 páginas (conservador)
