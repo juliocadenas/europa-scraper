@@ -1136,6 +1136,9 @@ class ScraperController(ScraperControllerBase):
         logger.info(
             f"=== CORDIS SEARCH COMPLETE: {len(all_search_results)} total results collected ==="
         )
+        logger.warning(
+            f"🔍 DEBUG 2: Saliendo de CORDIS con {len(all_search_results)} resultados"
+        )
         return all_search_results
 
     async def _process_tabulation_phase(
