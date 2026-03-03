@@ -195,7 +195,12 @@ class ScraperController(ScraperControllerBase):
 
                 # Para CORDIS: usar min_words=1 porque la API ya devuelve resultados relevantes
                 # Para otros motores: usar min_words normal
-                effective_min_words = 1 if is_cordis else min_words
+                # NOTA: Si min_words de config es mayor, usar ese valor
+                effective_min_words = min(1, min_words) if is_cordis else min_words
+                if is_cordis:
+                    logger.info(
+                        f"🔍 CORDIS detected - using min_words={effective_min_words} (config: {min_words})"
+                    )
 
                 if is_cordis and description and len(description) > 50:
                     # Usar contenidodel API directamente para Cordis
