@@ -1699,11 +1699,17 @@ class ScraperController(ScraperControllerBase):
                     if isinstance(params, dict)
                     else ["en", "es", "de", "fr", "it", "pl"]
                 )
-                all_search_results = await self._process_cordis_api_phase(
-                    courses_in_range,
-                    progress_callback=progress_callback,
-                    languages=cordis_languages,
-                )
+                try:
+                    all_search_results = await self._process_cordis_api_phase(
+                        courses_in_range,
+                        progress_callback=progress_callback,
+                        languages=cordis_languages,
+                    )
+                except Exception as e:
+                    logger.error(
+                        f"❌ ERROR en fase de búsqueda CORDIS: {str(e)}", exc_info=True
+                    )
+                    all_search_results = []
             else:
                 all_search_results = await self._process_search_phase(
                     courses_in_range, progress_callback, search_engine, site_domain
