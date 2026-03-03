@@ -254,14 +254,20 @@ class CordisApiClient:
                 elif not isinstance(hits, list):
                     hits = []
 
-                # LOG DE PROGRESO CADA 10 PÁGINAS (conservador para no saturar UI)
+                # LOG cada 10 páginas, pero callback de progreso cada 5 páginas
                 current_results = len(all_results)
-                if page % 10 == 0:  # Log cada 10 páginas = ~6 mensajes/minuto
-                    progress_pct = (
-                        min(100, int((current_results / total_hits) * 100))
-                        if total_hits > 0
-                        else 0
-                    )
+                progress_pct = (
+                    min(100, int((current_results / total_hits) * 100))
+                    if total_hits > 0
+                    else 0
+                )
+
+                # Callback de progreso cada 5 páginas (más dinámico para UI)
+                if progress_callback and (page % 5 == 0):
+                    progress_callback(page, total_hits, current_results)
+
+                # Log cada 10 páginas (conservador)
+                if page % 10 == 0:
                     logger.info(
                         f"[CORDIS PROGRESS] Página {page} | {len(hits)} hits esta página | Total recolectado: {current_results}/{total_hits} ({progress_pct}%)"
                     )
