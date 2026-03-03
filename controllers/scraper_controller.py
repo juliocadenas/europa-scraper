@@ -193,14 +193,9 @@ class ScraperController(ScraperControllerBase):
                 source = result.get("source", "")
                 is_cordis = "cordis" in source.lower() or "sparql" in source.lower()
 
-                # Para CORDIS: usar min_words=1 porque la API ya devuelve resultados relevantes
-                # Para otros motores: usar min_words normal
-                # NOTA: Si min_words de config es mayor, usar ese valor
-                effective_min_words = min(1, min_words) if is_cordis else min_words
+                # Debug: mostrar valor de min_words
                 if is_cordis:
-                    logger.info(
-                        f"🔍 CORDIS detected - using min_words={effective_min_words} (config: {min_words})"
-                    )
+                    logger.info(f"🔍 CORDIS - min_words config: {min_words}")
 
                 if is_cordis and description and len(description) > 50:
                     # Usar contenidodel API directamente para Cordis
@@ -266,7 +261,7 @@ class ScraperController(ScraperControllerBase):
                 )
                 should_exclude, exclude_reason = (
                     self.text_processor.should_exclude_result(
-                        total_words, word_counts, effective_min_words
+                        total_words, word_counts, min_words
                     )
                 )
 
@@ -274,7 +269,7 @@ class ScraperController(ScraperControllerBase):
                     # Log total keywords found for debugging
                     total_keywords = sum(word_counts.values()) if word_counts else 0
                     logger.info(
-                        f"   Result EXCLUDED: {exclude_reason} (Keywords sum: {total_keywords}, min_words: {effective_min_words})"
+                        f"   Result EXCLUDED: {exclude_reason} (Keywords sum: {total_keywords}, min_words: {min_words})"
                     )
 
                     if "total keywords" in exclude_reason.lower():
@@ -287,13 +282,13 @@ class ScraperController(ScraperControllerBase):
                                 "title": title,
                                 "url": url,
                                 "description": description,
-                                "omission_reason": f"Bajo conteo de palabras clave: {total_keywords} (Mínimo: {effective_min_words})",
+                                "omission_reason": f"Bajo conteo de palabras clave: {total_keywords} (Mínimo: {min_words})",
                             }
                         )
                         self._emit_event(
                             "WARNING",
                             f"Omitido por bajo contenido ({total_keywords} palabras clave)",
-                            {"url": url, "min_words": effective_min_words},
+                            {"url": url, "min_words": min_words},
                         )
 
                     else:
