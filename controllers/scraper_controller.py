@@ -1717,6 +1717,10 @@ class ScraperController(ScraperControllerBase):
                     progress_callback(100, "No se encontraron resultados para procesar")
                 return []
 
+            logger.warning(
+                f"🔍 DEBUG: all_search_results tiene {len(all_search_results)} resultados, entrando a tabulación..."
+            )
+
             if self.stop_requested:
                 logger.info(
                     "Scraping detenido por el usuario después de la fase de búsqueda"
