@@ -127,6 +127,7 @@ class ScraperController(ScraperControllerBase):
 
     def _emit_event(self, type_str, msg, details=None):
         """Emite un evento si el callback está configurado."""
+        logger.info(f"[EMIT_EVENT] type={type_str}, msg={msg[:50]}...")
         if self.event_callback:
             try:
                 self.event_callback(type_str, msg, details)
