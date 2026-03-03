@@ -4,6 +4,7 @@ from typing import List, Dict, Any, Optional
 from urllib.parse import quote_plus
 
 logger = logging.getLogger(__name__)
+logger.critical("🔔🔔🔔 NUEVO CORDIS CARGADO - callbacks deben funcionar 🔔🔔🔔")
 
 # Idiomas oficiales de la UE que CORDIS soporta
 EU_LANGUAGES = ["en", "es", "de", "fr", "it", "pl"]
