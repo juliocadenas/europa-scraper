@@ -1034,6 +1034,9 @@ class ScraperController(ScraperControllerBase):
             last_progress_emit = [0]  # Use list to allow mutation in nested function
 
             def cordis_progress_callback(page, total_hits, collected):
+                print(
+                    f"[CORDIS CALLBACK] 📡 page={page}, total={total_hits}, collected={collected}"
+                )
                 logger.info(
                     f"[CORDIS CALLBACK] 📡 page={page}, total_hits={total_hits}, collected={collected}"
                 )
