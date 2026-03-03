@@ -1034,6 +1034,9 @@ class ScraperController(ScraperControllerBase):
             last_progress_emit = [0]  # Use list to allow mutation in nested function
 
             def cordis_progress_callback(page, total_hits, collected):
+                logger.info(
+                    f"[CORDIS CALLBACK] 📡 page={page}, total_hits={total_hits}, collected={collected}"
+                )
                 # Emitir progreso cada 500 resultados o cada 5 páginas
                 should_emit = (collected >= last_progress_emit[0] + 500) or (
                     page % 5 == 0
