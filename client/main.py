@@ -289,11 +289,18 @@ class ClientApp:
                         latest_id = max(e["id"] for e in events)
                         self.last_event_id = latest_id
                         self.queue.put(("update_audit_log", events))
-                        # Mostrar eventos de progreso CORDIS en el log
+                        # Mostrar eventos de progreso CORDIS en el log y actualizar barra
                         for event in events:
                             msg = event.get("message", "")
                             if "CORDIS" in msg or "Cordis" in msg:
                                 self.queue.put(("log", msg))
+                                # Extraer porcentaje del mensaje y actualizar barra
+                                import re
+
+                                pct_match = re.search(r"(\d+)%", msg)
+                                if pct_match:
+                                    pct = int(pct_match.group(1))
+                                    self.queue.put(("update_progress", pct))
             except Exception as e:
                 logger.error(f"Error polling events: {e}")
 
