@@ -255,17 +255,13 @@ class ScraperController(ScraperControllerBase):
                     )
                     return None
 
-                # Para CORDIS: NO aplicar filtro de min_words porque la API ya devuelve resultados relevantes
-                # Usar min_words=1 para permitir guardar todos los resultados de CORDIS
-                effective_min_words = 1 if is_cordis else min_words
-
                 total_words = self.text_processor.count_all_words(full_content)
                 word_counts = self.text_processor.estimate_keyword_occurrences(
                     full_content, search_term
                 )
                 should_exclude, exclude_reason = (
                     self.text_processor.should_exclude_result(
-                        total_words, word_counts, effective_min_words
+                        total_words, word_counts, min_words
                     )
                 )
 
@@ -273,7 +269,7 @@ class ScraperController(ScraperControllerBase):
                     # Log total keywords found for debugging
                     total_keywords = sum(word_counts.values()) if word_counts else 0
                     logger.info(
-                        f"   Result EXCLUDED: {exclude_reason} (Keywords sum: {total_keywords}, min_words: {effective_min_words})"
+                        f"   Result EXCLUDED: {exclude_reason} (Keywords sum: {total_keywords}, min_words: {min_words})"
                     )
 
                     if "total keywords" in exclude_reason.lower():
@@ -286,7 +282,7 @@ class ScraperController(ScraperControllerBase):
                                 "title": title,
                                 "url": url,
                                 "description": description,
-                                "omission_reason": f"Bajo conteo de palabras clave: {total_keywords} (Mínimo: {effective_min_words})",
+                                "omission_reason": f"Bajo conteo de palabras clave: {total_keywords} (Mínimo: {min_words})",
                             }
                         )
                         self._emit_event(
