@@ -293,7 +293,19 @@ class ClientApp:
                         for event in events:
                             msg = event.get("message", "")
                             if "CORDIS" in msg or "Cordis" in msg:
-                                self.queue.put(("log", msg))
+                                # Detectar fase para mostrar en el log
+                                fase = ""
+                                if "Página" in msg:
+                                    fase = "🔍 BÚSQUEDA | "
+                                elif any(
+                                    x in msg.lower()
+                                    for x in ["guardando", "csv", "resultados"]
+                                ):
+                                    fase = "💾 GUARDANDO | "
+                                elif "COMPLETADO" in msg or "AÑO" in msg:
+                                    fase = "✅ AÑO COMPLETO | "
+
+                                self.queue.put(("log", fase + msg))
                                 # Extraer porcentaje del mensaje y actualizar barra
                                 import re
 
