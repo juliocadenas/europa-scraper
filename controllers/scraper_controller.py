@@ -1316,6 +1316,9 @@ class ScraperController(ScraperControllerBase):
 
                 for result_data in batch_results:
                     processed_results.append(result_data)
+                    logger.info(
+                        f"💾 Intentando guardar resultado: {result_data.get('title', 'NO TITLE')[:50]}..."
+                    )
 
                     # Add the result with error handling
                     try:
