@@ -957,7 +957,7 @@ class ScraperController(ScraperControllerBase):
         courses_in_range: List[Tuple[str, str, str, str]],
         search_mode: str = "broad",
         progress_callback: Optional[Callable] = None,
-        languages: List[str] = None,
+        languages: Optional[List[str]] = None,
     ) -> List[Dict[str, Any]]:
         """
         Ejecuta la fase de búsqueda usando la API de Cordis Europa.
@@ -1077,7 +1077,9 @@ class ScraperController(ScraperControllerBase):
                     search_term,
                     search_mode=search_mode,
                     progress_callback=cordis_progress_callback,
-                    languages=languages,
+                    languages=languages
+                    if languages
+                    else ["en", "es", "de", "fr", "it", "pl"],
                     total_hits_callback=on_total_hits_detected,
                 )
 
@@ -1127,6 +1129,9 @@ class ScraperController(ScraperControllerBase):
                 )
                 continue
 
+        logger.info(
+            f"=== CORDIS SEARCH COMPLETE: {len(all_search_results)} total results collected ==="
+        )
         return all_search_results
 
     async def _process_tabulation_phase(
@@ -1149,6 +1154,15 @@ class ScraperController(ScraperControllerBase):
         self.current_tabulation_course = 0
         self.progress_reporter.set_phase(2)
 
+        results_by_course = {}
+        for result in all_search_results:
+            sic_code = result.get("sic_code", "")
+            course_name = result.get("course_name", "")
+            key = (sic_code, course_name)
+            if key not in results_by_course:
+                results_by_course[key] = []
+            results_by_course[key].append(result)
+
         logger.info(f"=== FASE 2: TABULACIÓN DE RESULTADOS ====")
         logger.info(
             f"Se encontraron {self.total_results_to_process} resultados totales para procesar"
@@ -1165,16 +1179,6 @@ class ScraperController(ScraperControllerBase):
                 0,
                 f"🔄 Tabulación: {self.total_results_to_process} resultados",
             )
-
-        # Agrupar resultados por curso ANTES de iniciar la tabulación
-        results_by_course = {}
-        for result in all_search_results:
-            sic_code = result.get("sic_code", "")
-            course_name = result.get("course_name", "")
-            key = (sic_code, course_name)
-            if key not in results_by_course:
-                results_by_course[key] = []
-            results_by_course[key].append(result)
 
         logger.info(f"📋 Cursos con resultados: {len(results_by_course)}")
 
@@ -1727,15 +1731,26 @@ class ScraperController(ScraperControllerBase):
 
             self._clean_memory()
 
-            require_keywords = params.get("require_keywords", False)
-            processed_results = await self._process_tabulation_phase(
-                all_search_results,
-                total_courses,
-                min_words,
-                search_engine,
-                progress_callback,
-                require_keywords=require_keywords,
+            logger.info(
+                f"=== PREPARANDO FASE 2: {len(all_search_results)} resultados para tabular ==="
             )
+
+            require_keywords = params.get("require_keywords", False)
+            try:
+                processed_results = await self._process_tabulation_phase(
+                    all_search_results,
+                    total_courses,
+                    min_words,
+                    search_engine,
+                    progress_callback,
+                    require_keywords=require_keywords,
+                )
+            except Exception as e:
+                logger.error(f"❌ ERROR en fase de tabulación: {str(e)}", exc_info=True)
+                self.stats["total_errors"] += 1
+                processed_results = []
+                if progress_callback:
+                    progress_callback(100, f"Error en tabulación: {str(e)}")
 
             # After tabulation, ensure all results are flushed to disk
             logger.info(

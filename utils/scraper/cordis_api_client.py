@@ -103,7 +103,7 @@ class CordisApiClient:
         search_mode: str = "broad",
         max_results: int = 1000000,
         progress_callback=None,
-        languages: List[str] = None,
+        languages: Optional[List[str]] = None,
         total_hits_callback=None,
     ) -> List[Dict[str, Any]]:
         """
@@ -167,7 +167,7 @@ class CordisApiClient:
         search_mode: str = "broad",
         max_results: int = 1000000,
         progress_callback=None,
-        languages: List[str] = None,
+        languages: Optional[List[str]] = None,
         total_hits_callback=None,
     ) -> List[Dict[str, Any]]:
         """Búsqueda simple sin división por años."""
@@ -409,7 +409,7 @@ class CordisApiClient:
         search_mode: str = "broad",
         max_results: int = 1000000,
         progress_callback=None,
-        languages: List[str] = None,
+        languages: Optional[List[str]] = None,
     ) -> List[Dict[str, Any]]:
         """Divide la búsqueda por años para obtener más resultados."""
         logger.info(f"CORDIS: Usando estrategia de años para '{query_term}'")
