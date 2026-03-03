@@ -360,13 +360,9 @@ class CordisApiClient:
                 try:
                     if progress_callback:
                         progress_callback(
-                            0,
-                            f"CORDIS: Página {page} | {len(all_results):,} resultados/{total_hits:,} total",
-                            {
-                                "page": page,
-                                "total_hits": total_hits,
-                                "collected": len(all_results),
-                            },
+                            page,
+                            total_hits,
+                            len(all_results),
                         )
                 except Exception as cb_err:
                     logger.warning(f"Progress callback error: {cb_err}")
