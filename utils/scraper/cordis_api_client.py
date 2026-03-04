@@ -415,7 +415,16 @@ class CordisApiClient:
         logger.info(f"CORDIS: Usando estrategia de años para '{query_term}'")
 
         all_results = []
-        years = list(range(2014, 2026))  # 2014-2025
+        years = list(range(2014, 2026))
+
+        cumulative_results = 0
+
+        def year_progress_wrapper(page, total_hits, collected):
+            """Wrapper que suma el progreso de todos los años"""
+            nonlocal cumulative_results
+            cumulative_results += collected
+            if progress_callback:
+                progress_callback(page, total_hits, cumulative_results)
 
         for year in years:
             year_query = f"{query_term} {year}"
@@ -425,17 +434,17 @@ class CordisApiClient:
                 year_query,
                 search_mode=search_mode,
                 max_results=max_results,
-                progress_callback=progress_callback,
+                progress_callback=year_progress_wrapper,
                 languages=languages,
                 total_hits_callback=None,
             )
 
             logger.info(
-                f"[CORDIS AÑO {year}] COMPLETADO: {len(year_results)} resultados | Acumulado total: {len(all_results) + len(year_results)}"
+                f"[CORDIS AÑO {year}] COMPLETADO: {len(year_results)} resultados | Acumulado total: {cumulative_results}"
             )
             all_results.extend(year_results)
 
-            if len(all_results) >= max_results:
+            if cumulative_results >= max_results:
                 logger.info(f"[CORDIS] Límite de {max_results} alcanzado. Deteniendo.")
                 break
 
