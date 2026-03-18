@@ -1992,6 +1992,7 @@ class ScraperGUI(ttk.Frame):
 
             # Ejecutar en hilo separado
             import threading
+            current_url = self.server_url.get()
 
             def reset_thread():
                 try:
@@ -2002,7 +2003,7 @@ class ScraperGUI(ttk.Frame):
                             text="🛑 Deteniendo procesos...", foreground="orange"
                         ),
                     )
-                    r = requests.post(f"{self.server_url.get()}/api/reset", timeout=120)
+                    r = requests.post(f"{current_url}/api/reset", timeout=120)
 
                     # 2. Limpiar archivos
                     self.after(
@@ -2012,7 +2013,7 @@ class ScraperGUI(ttk.Frame):
                         ),
                     )
                     r_cleanup = requests.post(
-                        f"{self.server_url.get()}/api/cleanup_files", timeout=180
+                        f"{current_url}/api/cleanup_files", timeout=180
                     )
 
                     # Llamar callback con resultados
@@ -2099,11 +2100,11 @@ class ScraperGUI(ttk.Frame):
 
     def _fetch_line_counts(self):
         """Obtiene los conteos de líneas del servidor y actualiza la UI."""
+        current_url = self.server_url.get()
 
         def do_fetch():
             try:
-                url = self.server_url.get()
-                response = requests.get(f"{url}/api/results_line_count", timeout=120)
+                response = requests.get(f"{current_url}/api/results_line_count", timeout=120)
 
                 if response.status_code == 200:
                     data = response.json()

@@ -20,7 +20,7 @@ import shutil
 from multiprocessing.managers import SyncManager
 from queue import Empty
 from typing import Dict, Any, Optional, List, Tuple
-from fastapi import FastAPI, HTTPException, UploadFile, File, Query
+from fastapi import FastAPI, HTTPException, UploadFile, File, Query, BackgroundTasks
 from fastapi.responses import FileResponse, HTMLResponse
 from pydantic import BaseModel
 from datetime import datetime
@@ -895,13 +895,25 @@ class ScraperServer:
 
         try:
             # Manejar múltiples formatos de entrada del frontend
+            MAX_DEFAULT_WORKERS = min(
+                48, NUM_PROCESSES
+            )  # 16 workers por defecto, máximo 16
             if "job_params" in request_data:
                 # Formato anidado del frontend (nuevo)
                 job_params = request_data["job_params"]
                 from_sic = job_params.get("from_sic", "01.0")
                 to_sic = job_params.get("to_sic", "011903.0")
                 search_engine = job_params.get("search_engine", "Cordis Europa")
-                num_workers = int(job_params.get("num_workers", NUM_PROCESSES))
+                requested_workers = job_params.get("num_workers", NUM_PROCESSES)
+                if not requested_workers or int(requested_workers) <= 0:
+                    num_workers = MAX_DEFAULT_WORKERS
+                else:
+                    num_workers = int(requested_workers)
+                    if num_workers > MAX_DEFAULT_WORKERS:
+                        num_workers = MAX_DEFAULT_WORKERS
+                        self.logger.warning(
+                            f"Solicitados {requested_workers} workers. Limitado a {MAX_DEFAULT_WORKERS}."
+                        )
                 search_mode = job_params.get("search_mode", "broad")
                 require_keywords = job_params.get("require_keywords", False)
                 self.logger.info(
@@ -926,15 +938,15 @@ class ScraperServer:
                         num_workers = MAX_DEFAULT_WORKERS
                     else:
                         num_workers = int(requested_workers)
-                        # Si pide mas de 24, avisar pero permitir por ahora (o podrías capar)
-                        if num_workers > 24:
+                        if num_workers > MAX_DEFAULT_WORKERS:
+                            num_workers = MAX_DEFAULT_WORKERS
                             self.logger.warning(
-                                f"Solicitados {num_workers} workers. Esto puede causar inestabilidad."
+                                f"Solicitados {requested_workers} workers. Limitado a {MAX_DEFAULT_WORKERS}."
                             )
                             await global_event_log.add(
                                 EventType.WARNING,
                                 "Server",
-                                f"Solicitados {num_workers} workers. Esto puede causar inestabilidad.",
+                                f"Solicitados {requested_workers} workers. Limitado a {MAX_DEFAULT_WORKERS}.",
                             )
                 else:
                     # Si es un diccionario directo
@@ -948,12 +960,16 @@ class ScraperServer:
                     search_mode = request_data.get("search_mode", "broad")
                     require_keywords = request_data.get("require_keywords", False)
 
-                    MAX_DEFAULT_WORKERS = min(8, NUM_PROCESSES)
                     requested_workers = request_data.get("num_workers")
                     if not requested_workers:
                         num_workers = MAX_DEFAULT_WORKERS
                     else:
                         num_workers = int(requested_workers)
+                        if num_workers > MAX_DEFAULT_WORKERS:
+                            num_workers = MAX_DEFAULT_WORKERS
+                            self.logger.warning(
+                                f"Solicitados {requested_workers} workers. Limitado a {MAX_DEFAULT_WORKERS}."
+                            )
                 self.logger.info(f"Usando formato directo: {from_sic} a {to_sic}")
                 job_params = request_data  # Definir job_params para el log de eventos
             await global_event_log.add(
@@ -1433,16 +1449,14 @@ class ScraperServer:
                 status_code=500, detail=f"Error creando el archivo ZIP: {str(e)}"
             )
 
-    async def cleanup_files_endpoint(self):
-        """Elimina el contenido de las carpetas 'results' y 'omitidos'."""
+    async def cleanup_files_endpoint(self, background_tasks: BackgroundTasks):
+        """Elimina el contenido de las carpetas 'results' y 'omitidos' en segundo plano."""
         try:
             results_dir = os.path.join(project_root, "results")
             omitted_dir = os.path.join(project_root, "results", "omitidos")
 
-            deleted_files = 0
-
             # Helper to clear directory contents (files and subdirs)
-            def clear_directory(directory_path):
+            def clear_directory_sync(directory_path):
                 count = 0
                 if os.path.exists(directory_path):
                     for item in os.listdir(directory_path):
@@ -1458,20 +1472,25 @@ class ScraperServer:
                             self.logger.error(f"Error borrando {item_path}: {e}")
                 return count
 
-            deleted_files += clear_directory(results_dir)
-            deleted_files += clear_directory(omitted_dir)
+            def run_cleanup():
+                try:
+                    deleted_files = 0
+                    deleted_files += clear_directory_sync(results_dir)
+                    deleted_files += clear_directory_sync(omitted_dir)
+                    self.logger.info(f"Limpieza background completada. {deleted_files} elementos eliminados.")
+                except Exception as e:
+                    self.logger.error(f"Error en tarea de fondo cleanup_files: {e}")
 
-            self.logger.info(
-                f"Endpoint /cleanup_files ejecutado. {deleted_files} elementos eliminados."
-            )
+            background_tasks.add_task(run_cleanup)
+
             return {
-                "message": f"Limpieza completada. Se eliminaron {deleted_files} archivos/carpetas de resultados y omitidos."
+                "message": "Limpieza iniciada en segundo plano. Los archivos se eliminarán progresivamente sin bloquear el servidor."
             }
 
         except Exception as e:
             self.logger.error(f"Error en cleanup_files: {e}")
             raise HTTPException(
-                status_code=500, detail=f"Error limpiando archivos: {str(e)}"
+                status_code=500, detail=f"Error iniciando la limpieza de archivos: {str(e)}"
             )
 
     async def list_results_files(self):
