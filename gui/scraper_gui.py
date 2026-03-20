@@ -1108,7 +1108,7 @@ class ScraperGUI(ttk.Frame):
         if active_workers > 0 or in_progress > 0:
             status = "ACTIVO"
             message = (
-                f"Procesando {in_progress} cursos con {active_workers} workers activos"
+                f"Procesando {in_progress} cursos ({completed}/{total_courses} completados) con {active_workers} workers activos"
             )
         elif failed > 0 and completed + failed == total_courses:
             status = "DETENIDO"
@@ -2288,6 +2288,27 @@ class ScraperGUI(ttk.Frame):
                 data = r.json()
                 workers = data.get("workers", {})
                 courses = data.get("courses", [])
+
+                # Configurar timer desde el servidor
+                start_time_iso = data.get("start_time")
+                acc_time = data.get("accumulated_time", 0)
+                
+                if start_time_iso:
+                    try:
+                        dt = datetime.fromisoformat(start_time_iso)
+                        start_str = f"Inicio: {dt.strftime('%H:%M:%S (%d/%m/%Y)')}"
+                    except (ValueError, TypeError):
+                        start_str = f"Inicio: {start_time_iso}"
+                else:
+                    start_str = "Inicio: N/A"
+
+                hours, remainder = divmod(int(acc_time), 3600)
+                minutes, seconds = divmod(remainder, 60)
+                timer_str = f"Tiempo: {hours:02}:{minutes:02}:{seconds:02} | {start_str}"
+                
+                # Actualizar el timer ui
+                self._update_timer_display(timer_str)
+
                 if courses or workers:
                     self.master.after(
                         0, lambda w=workers, c=courses: self._render_status(w, c)
