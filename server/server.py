@@ -538,6 +538,7 @@ class ScraperServer:
 
         # --- Bandera de Estado Global ---
         self.is_job_running = False
+        self.start_time = None
 
         self.app = FastAPI(
             title="Europa Scraper Server", version="3.0.0", lifespan=self._lifespan
@@ -837,6 +838,9 @@ class ScraperServer:
         self.app.get("/viewer")(self.results_viewer_html)
         self.app.get("/api/cloudflare_url")(self.get_cloudflare_url)
 
+        # Endpoint de Control de Calidad (QC Diagnose)
+        self.app.get("/api/qc-diagnose")(self.qc_diagnose_endpoint)
+
         # Agregar logging para verificar que las rutas se registraron
         self.logger.info("Rutas registradas:")
         for route in self.app.routes:
@@ -876,6 +880,7 @@ class ScraperServer:
 
         self.logger.info(f"Recibido nuevo trabajo de scraping: {request_data}")
         self.is_job_running = True
+        self.start_time = datetime.now().isoformat()
 
         # Generar un ID de tarea real
         task_id = f"task_{int(time.time())}"
@@ -1136,6 +1141,7 @@ class ScraperServer:
             )
         )
         self.is_job_running = False  # Permitir nuevos trabajos
+        self.start_time = None
         # self._stop_worker_pool() # Desactivado para que el estado final persista en la GUI
 
     def _cleanup_finished_workers(self):
@@ -1193,6 +1199,7 @@ class ScraperServer:
                 break
 
         self.is_job_running = False
+        self.start_time = None
         await global_event_log.add(
             EventType.SUCCESS, "Server", "Trabajo de scraping detenido."
         )
@@ -1219,6 +1226,7 @@ class ScraperServer:
 
         # 3. Resetear banderas
         self.is_job_running = False
+        self.start_time = None
 
         # 4. Limpiar los estados de los workers para la GUI
         if self.worker_states is not None:
@@ -1241,10 +1249,41 @@ class ScraperServer:
     async def get_detailed_status(self):
         workers_dict = dict(self.worker_states) if self.worker_states else {}
         courses_dict = dict(self.course_states) if self.course_states else {}
+        
+        # Calcular tiempo acumulado
+        accumulated_time = 0
+        if getattr(self, "is_job_running", False) and getattr(self, "start_time", None):
+            try:
+                start_dt = datetime.fromisoformat(self.start_time)
+                accumulated_time = int((datetime.now() - start_dt).total_seconds())
+            except Exception:
+                pass
+
+        # Contar total de lineas de datos en todos los CSVs de results (CONTENIDOS)
+        csv_total = 0
+        try:
+            results_dir = os.path.join(project_root, "results")
+            if os.path.isdir(results_dir):
+                for fname in os.listdir(results_dir):
+                    if fname.lower().endswith(".csv"):
+                        fpath = os.path.join(results_dir, fname)
+                        try:
+                            with open(fpath, "r", encoding="utf-8", errors="ignore") as _f:
+                                # Restamos 1 por la cabecera
+                                lines = sum(1 for ln in _f if ln.strip())
+                                csv_total += max(0, lines - 1)
+                        except Exception:
+                            pass
+        except Exception:
+            pass
+                
         return {
             "workers": workers_dict,
             "courses": courses_dict,
             "is_running": self.is_job_running,
+            "start_time": getattr(self, "start_time", None),
+            "accumulated_time": accumulated_time,
+            "csv_total": csv_total
         }
 
     async def get_all_courses(self):
@@ -2354,3 +2393,102 @@ class ScraperServer:
         os.makedirs("logs", exist_ok=True)
         self.logger.info(f"Iniciando servidor en http://{self.host}:{self.port}")
         uvicorn.run(self.app, host=self.host, port=self.port, log_level="info")
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # QC DIAGNOSE ENDPOINT
+    # ─────────────────────────────────────────────────────────────────────────
+    async def qc_diagnose_endpoint(
+        self,
+        skip_api: bool = False,
+        sample: int = 5,
+    ):
+        """
+        Ejecuta el script qc_diagnose.py en el servidor y devuelve el reporte JSON.
+        Parámetros de query:
+          - skip_api:  true/false para omitir el muestreo de la API de CORDIS
+          - sample:    número de cursos a muestrear (default 5)
+        """
+        import subprocess as sp
+        import tempfile
+        import json as _json
+
+        # Localizar el script qc_diagnose.py (misma carpeta raíz del servidor)
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        script_path = os.path.join(base_dir, "qc_diagnose.py")
+
+        if not os.path.exists(script_path):
+            raise HTTPException(
+                status_code=404,
+                detail=f"Script qc_diagnose.py no encontrado en {script_path}",
+            )
+
+        # Usar el directorio de trabajo del servidor para resultados y logs
+        results_dir = self.config.get("results_dir", "./results")
+        logs_dir    = self.config.get("logs_dir", "./logs")
+
+        # Crear archivo temporal para el reporte JSON
+        with tempfile.NamedTemporaryFile(
+            suffix=".json", delete=False, mode="w", encoding="utf-8"
+        ) as tmp:
+            output_path = tmp.name
+
+        cmd = [
+            "python3", script_path,
+            "--results-dir", results_dir,
+            "--logs-dir",    logs_dir,
+            "--sample",      str(sample),
+            "--output",      output_path,
+        ]
+        if skip_api:
+            cmd.append("--skip-api")
+
+        self.logger.info(f"[QC] Ejecutando: {' '.join(cmd)}")
+
+        try:
+            proc = sp.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=300,
+                cwd=base_dir,
+            )
+        except sp.TimeoutExpired:
+            raise HTTPException(
+                status_code=504, detail="QC Diagnose agotó el tiempo de espera (300s)"
+            )
+        except Exception as ex:
+            raise HTTPException(
+                status_code=500, detail=f"Error ejecutando QC Diagnose: {str(ex)}"
+            )
+
+        # Leer el reporte JSON generado
+        report_data = {}
+        report_txt  = proc.stdout or ""
+        if os.path.exists(output_path):
+            try:
+                with open(output_path, "r", encoding="utf-8") as f:
+                    report_data = _json.load(f)
+                # También leer el .txt generado junto al .json
+                txt_path = output_path.replace(".json", ".txt")
+                if os.path.exists(txt_path):
+                    with open(txt_path, "r", encoding="utf-8") as f:
+                        report_txt = f.read()
+                os.unlink(output_path)
+                if os.path.exists(txt_path):
+                    os.unlink(txt_path)
+            except Exception as ex:
+                self.logger.warning(f"[QC] No se pudo leer el reporte: {ex}")
+
+        csv_total  = report_data.get("csv_audit",      {}).get("total_data_lines", "?")
+        omit_total = report_data.get("omitidos_audit", {}).get("total_omitted",    "?")
+
+        return {
+            "status":     "ok" if proc.returncode == 0 else "error",
+            "returncode": proc.returncode,
+            "stderr":     proc.stderr[-500:] if proc.stderr else "",
+            "csv_total":  csv_total,
+            "omit_total": omit_total,
+            "report_txt": report_txt,
+            "report_json": report_data,
+        }
+

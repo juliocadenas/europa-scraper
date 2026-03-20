@@ -2314,6 +2314,13 @@ class ScraperGUI(ttk.Frame):
                 # Actualizar el timer en el hilo de UI
                 self.master.after(0, lambda t=timer_str: self.timer_label.config(text=t))
 
+                # Actualizar CONTENIDOS (total lineas CSV) en ambas pestañas
+                csv_total = data.get("csv_total", 0)
+                contenidos_str = f"📊 Contenidos: {csv_total:,}"
+                self.master.after(0, lambda s=contenidos_str: self.stat_lines.config(text=s))
+                if hasattr(self, "exp_stat_lines"):
+                    self.master.after(0, lambda s=contenidos_str: self.exp_stat_lines.config(text=s))
+
                 if courses or workers:
                     self.master.after(
                         0, lambda w=workers, c=courses: self._render_status(w, c)
