@@ -2311,8 +2311,8 @@ class ScraperGUI(ttk.Frame):
                 minutes, seconds = divmod(remainder, 60)
                 timer_str = f"Tiempo: {hours:02}:{minutes:02}:{seconds:02} | {start_str}"
                 
-                # Actualizar el timer ui
-                self._update_timer_display(timer_str)
+                # Actualizar el timer en el hilo de UI
+                self.master.after(0, lambda t=timer_str: self.timer_label.config(text=t))
 
                 if courses or workers:
                     self.master.after(
