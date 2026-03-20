@@ -1090,7 +1090,7 @@ class ScraperGUI(ttk.Frame):
         completed = sum(1 for c in courses if c.get("status") == "Completado")
         pending = sum(1 for c in courses if c.get("status") == "Pendiente")
         failed = sum(1 for c in courses if c.get("status") in ["Error", "Fallido"])
-        in_progress = sum(1 for c in courses if c.get("status") == "En progreso")
+        in_progress = sum(1 for c in courses if c.get("status") == "Procesando")
 
         # Calcular progreso promedio
         if total_courses > 0:
@@ -2287,7 +2287,12 @@ class ScraperGUI(ttk.Frame):
             if r.status_code == 200:
                 data = r.json()
                 workers = data.get("workers", {})
-                courses = data.get("courses", [])
+                # El servidor devuelve courses como dict {sic: {...}}, convertir a lista
+                courses_raw = data.get("courses", {})
+                if isinstance(courses_raw, dict):
+                    courses = list(courses_raw.values())
+                else:
+                    courses = courses_raw
 
                 # Configurar timer desde el servidor
                 start_time_iso = data.get("start_time")
