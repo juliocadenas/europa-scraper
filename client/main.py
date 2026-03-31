@@ -64,6 +64,8 @@ class ClientApp:
 
         # New: Track last received event ID for delta updates
         self.last_event_id = 0
+        # Throttle: only push one CORDIS log per second to avoid GUI freeze
+        self._last_cordis_log_time = 0.0
 
         self.root.protocol("WM_DELETE_WINDOW", self._on_closing)
 
@@ -105,9 +107,13 @@ class ClientApp:
         self.root.mainloop()
 
     def process_queue(self):
+        # Cap: process at most 30 messages per cycle to keep UI responsive
+        MAX_PER_CYCLE = 30
+        processed = 0
         try:
-            while True:
+            while processed < MAX_PER_CYCLE:
                 message_type, data = self.queue.get_nowait()
+                processed += 1
                 if message_type == "log":
                     self.gui._log_callback(data)
                 elif message_type == "update_progress":
@@ -125,7 +131,6 @@ class ClientApp:
                     self.gui.refresh_servers_button.config(state=tk.NORMAL)
                     self.gui.discovery_status_label.config(text="Búsqueda finalizada.")
                 elif message_type == "update_status":
-                    # data contiene el dict {'workers': {...}, 'courses': {...}, 'is_running': bool}
                     self.gui._render_status(
                         data.get("workers", {}), data.get("courses", {})
                     )
@@ -135,7 +140,7 @@ class ClientApp:
         except queue.Empty:
             pass
         finally:
-            self.root.after(100, self.process_queue)
+            self.root.after(200, self.process_queue)
 
     def start_scraping_on_server(self, server_address, params):
         if self.is_scraping:
@@ -288,35 +293,42 @@ class ClientApp:
                     if events:
                         latest_id = max(e["id"] for e in events)
                         self.last_event_id = latest_id
-                        self.queue.put(("update_audit_log", events))
-                        # Mostrar eventos de progreso CORDIS en el log y actualizar barra
-                        for event in events:
-                            msg = event.get("message", "")
-                            if "CORDIS" in msg or "Cordis" in msg:
-                                # Detectar fase para mostrar en el log
+
+                        # Solo encolar el audit log si la cola no está saturada
+                        if self.queue.qsize() < 150:
+                            self.queue.put(("update_audit_log", events))
+
+                        # THROTTLE CRÍTICO: solo 1 log de CORDIS por segundo máximo
+                        now = time.time()
+                        if now - self._last_cordis_log_time >= 1.0:
+                            import re
+                            # Encontrar el mensaje CORDIS más reciente (último de la lista)
+                            cordis_events = [
+                                e for e in events
+                                if "CORDIS" in e.get("message", "") or "Cordis" in e.get("message", "")
+                            ]
+                            if cordis_events:
+                                self._last_cordis_log_time = now
+                                event = cordis_events[-1]  # Solo el más reciente
+                                msg = event.get("message", "")
                                 fase = ""
                                 if "Página" in msg:
                                     fase = "🔍 BÚSQUEDA | "
-                                elif any(
-                                    x in msg.lower()
-                                    for x in ["guardando", "csv", "resultados"]
-                                ):
+                                elif any(x in msg.lower() for x in ["guardando", "csv", "resultados"]):
                                     fase = "💾 GUARDANDO | "
                                 elif "COMPLETADO" in msg or "AÑO" in msg:
                                     fase = "✅ AÑO COMPLETO | "
-
-                                self.queue.put(("log", fase + msg))
-                                # Extraer porcentaje del mensaje y actualizar barra
-                                import re
-
+                                if self.queue.qsize() < 150:
+                                    self.queue.put(("log", fase + msg))
+                                # Actualizar barra de progreso
                                 pct_match = re.search(r"(\d+)%", msg)
-                                if pct_match:
+                                if pct_match and self.queue.qsize() < 150:
                                     pct = int(pct_match.group(1))
                                     self.queue.put(("update_progress", pct))
             except Exception as e:
                 logger.error(f"Error polling events: {e}")
 
-            time.sleep(1)  # Polling más frecuente para ver progreso en tiempo real
+            time.sleep(2)  # Polling cada 2s para no saturar la GUI
 
     def _send_captcha_response(self, captcha_id, solution):
         try:
