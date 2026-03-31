@@ -261,7 +261,7 @@ class ScraperController(ScraperControllerBase):
                 )
                 should_exclude, exclude_reason = (
                     self.text_processor.should_exclude_result(
-                        total_words, word_counts, min_words
+                        total_words, word_counts, min_words, require_keywords
                     )
                 )
 
@@ -272,7 +272,8 @@ class ScraperController(ScraperControllerBase):
                         f"   Result EXCLUDED: {exclude_reason} (Keywords sum: {total_keywords}, min_words: {min_words})"
                     )
 
-                    if "total keywords" in exclude_reason.lower():
+                    if "total keywords found" in exclude_reason.lower():
+                        # We use this as a trigger for checking the word count limit
                         self.stats["skipped_low_words"] += 1
                         self.stats["files_not_saved"] += 1
                         self.omitted_results.append(
@@ -282,12 +283,12 @@ class ScraperController(ScraperControllerBase):
                                 "title": title,
                                 "url": url,
                                 "description": description,
-                                "omission_reason": f"Bajo conteo de palabras clave: {total_keywords} (Mínimo: {min_words})",
+                                "omission_reason": f"Pocas palabras en la página: {total_words} (Mínimo configurado: {min_words})",
                             }
                         )
                         self._emit_event(
                             "WARNING",
-                            f"Omitido por bajo contenido ({total_keywords} palabras clave)",
+                            f"Omitido por bajo contenido de texto ({total_words} palabras)",
                             {"url": url, "min_words": min_words},
                         )
 
