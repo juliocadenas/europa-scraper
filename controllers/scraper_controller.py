@@ -1739,16 +1739,15 @@ class ScraperController(ScraperControllerBase):
                 )
 
             if not all_search_results:
-                logger.error("❌ CRÍTICO: No se encontraron resultados para procesar (0 resultados de búsqueda)")
-                logger.error(f"   Motor: {search_engine} | Cursos: {total_courses} | Params: from={from_sic} to={to_sic}")
+                logger.info(f"ℹ️ 0 resultados en Cordis para este curso. Motor: {search_engine}")
                 self._emit_event(
-                    "ERROR",
-                    f"❌ 0 resultados retornados de la búsqueda. Motor: {search_engine}. Revisa logs/server.log",
+                    "INFO",
+                    f"ℹ️ 0 resultados en Cordis. Motor: {search_engine}.",
                 )
                 # Cleanup empty file if exists (Auto-fix)
                 self.result_manager.cleanup_if_empty()
                 if progress_callback:
-                    progress_callback(100, "0 resultados encontrados. Revisa el log del servidor.")
+                    progress_callback(100, "0 resultados en Cordis para este término.")
                 return []
 
             logger.warning(
