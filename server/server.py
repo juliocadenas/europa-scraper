@@ -705,43 +705,41 @@ class ScraperServer:
                 None
             )  # Enviar una señal de "veneno" por cada trabajador
 
+        # REPARACIÓN: Esperar de forma PARALELA (global) un máximo de 3 segundos
+        start_w = time.time()
+        while time.time() - start_w < 3:
+            if all(not p.is_alive() for p in self.worker_pool):
+                break
+            time.sleep(0.5)
+
+        # TERMINAR FORZOSAMENTE a todos los que no hicieron caso al veneno (en paralelo)
         for p in self.worker_pool:
-            p.join(timeout=300)  # Esperar 5 minutos a que los procesos terminen
             if p.is_alive():
-                self.logger.warning(
-                    f"El trabajador {p.pid} no terminó a tiempo tras 5 minutos, forzando terminación."
-                )
-                try:
-                    asyncio.get_running_loop().create_task(
-                        global_event_log.add(
-                            EventType.WARNING,
-                            "Server",
-                            f"El trabajador {p.pid} no terminó a tiempo, forzando terminación.",
-                        )
-                    )
-                except RuntimeError:
-                    asyncio.run(
-                        global_event_log.add(
-                            EventType.WARNING,
-                            "Server",
-                            f"El trabajador {p.pid} no terminó a tiempo, forzando terminación.",
-                        )
-                    )
+                self.logger.warning(f"Worker {p.pid} forzado a terminar (SIGTERM).")
                 p.terminate()
+
+        # RECOLECTAR zombies para liberar recursos del SO
+        for p in self.worker_pool:
+            p.join(timeout=1) # CRÍTICO: Recolectar
+            if p.is_alive():
+                self.logger.error(f"El worker {p.pid} sigue vivo. Ejecutando SIGKILL.")
+                if hasattr(p, 'kill'):
+                    p.kill()
+                p.join(timeout=1)
 
         self.worker_pool = []
         self.is_job_running = False
-        self.logger.info("Pool de trabajadores detenido.")
+        self.logger.info("Pool de trabajadores detenido sin dejar zombies.")
         try:
             asyncio.get_running_loop().create_task(
                 global_event_log.add(
-                    EventType.SYSTEM, "Server", "Pool de trabajadores detenido."
+                    EventType.SYSTEM, "Server", "Pool de trabajadores detenido sin dejar zombies."
                 )
             )
         except RuntimeError:
             asyncio.run(
                 global_event_log.add(
-                    EventType.SYSTEM, "Server", "Pool de trabajadores detenido."
+                    EventType.SYSTEM, "Server", "Pool de trabajadores detenido sin dejar zombies."
                 )
             )
 
