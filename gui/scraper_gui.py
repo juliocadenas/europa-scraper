@@ -1250,7 +1250,27 @@ class ScraperGUI(ttk.Frame):
 
             return "--"
 
+        # --- OPTIMIZACIÓN FRONTEND ---
+        # No podemos renderizar 12000 filas cada 2 segundos, colapsa Tkinter.
+        active_courses = []
+        pending_courses = []
+        completed_courses = []
+        
         for c in courses_list:
+            st = c.get("status", "Pendiente")
+            if st == "Pendiente":
+                pending_courses.append(c)
+            elif "Completado" in st or "Terminado" in st or "Error" in st:
+                completed_courses.append(c)
+            else:
+                active_courses.append(c)
+                
+        # Mostrar solo una ventana de resultados para no congelar la UI
+        # Todos los activos, últimos 150 completados, primeros 150 pendientes
+        render_list = active_courses + completed_courses[-150:] + pending_courses[:150]
+        expected_course_ids = set()
+
+        for c in render_list:
             sic = c.get("sic", "N/A")
             name = c.get("name", "N/A")
             status = c.get("status", "Pendiente")
@@ -1260,6 +1280,7 @@ class ScraperGUI(ttk.Frame):
             result_lines = get_lines_for_course(sic, name)
 
             row_id = f"course_{sic.replace('.', '_')}"
+            expected_course_ids.add(row_id)
             vals = (sic, status.capitalize(), name, f"{progress}%", result_lines)
 
             self.row_details_map[row_id] = (
@@ -1270,6 +1291,11 @@ class ScraperGUI(ttk.Frame):
                 self.worker_tree.item(row_id, values=vals)
             else:
                 self.worker_tree.insert("", "end", iid=row_id, values=vals)
+                
+        # Limpiar filas antiguas para evitar llenar la memoria
+        for item in self.worker_tree.get_children():
+            if item.startswith("course_") and item not in expected_course_ids:
+                self.worker_tree.delete(item)
 
         # 2. Agregar mensajes de los workers si están atascados o iniciando (opcional, solo para feedback transitorio)
         # Limpiamos los transitorios primero
