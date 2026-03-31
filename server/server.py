@@ -616,7 +616,7 @@ class ScraperServer:
         await global_event_log.add(
             EventType.SYSTEM, "Server", "Deteniendo el pool de trabajadores."
         )
-        self._stop_worker_pool()
+        await self._stop_worker_pool()
         self._stop_broadcasting()
         if hasattr(self, "cleanup_stop_event"):
             self.cleanup_stop_event.set()
@@ -678,7 +678,7 @@ class ScraperServer:
         for p in self.worker_pool:
             p.start()
 
-    def _stop_worker_pool(self):
+    async def _stop_worker_pool(self):
         if not self.worker_pool:
             return
 
@@ -710,7 +710,7 @@ class ScraperServer:
         while time.time() - start_w < 3:
             if all(not p.is_alive() for p in self.worker_pool):
                 break
-            time.sleep(0.5)
+            await asyncio.sleep(0.5)
 
         # TERMINAR FORZOSAMENTE a todos los que no hicieron caso al veneno (en paralelo)
         for p in self.worker_pool:
@@ -718,14 +718,17 @@ class ScraperServer:
                 self.logger.warning(f"Worker {p.pid} forzado a terminar (SIGTERM).")
                 p.terminate()
 
-        # RECOLECTAR zombies para liberar recursos del SO
-        for p in self.worker_pool:
-            p.join(timeout=1) # CRÍTICO: Recolectar
-            if p.is_alive():
-                self.logger.error(f"El worker {p.pid} sigue vivo. Ejecutando SIGKILL.")
-                if hasattr(p, 'kill'):
-                    p.kill()
-                p.join(timeout=1)
+        # RECOLECTAR zombies asíncronamente para no bloquear el Event Loop de FastAPI
+        def _reap_zombies(pool):
+            for p in pool:
+                p.join(timeout=1) # CRÍTICO: Recolectar
+                if p.is_alive():
+                    if hasattr(p, 'kill'):
+                        p.kill()
+                    p.join(timeout=1)
+        
+        # Ejecutar recolección en hilo de fondo
+        await asyncio.to_thread(_reap_zombies, self.worker_pool)
 
         self.worker_pool = []
         self.is_job_running = False
@@ -1090,7 +1093,7 @@ class ScraperServer:
                     "Server",
                     f"Reiniciando pool de workers: Solicitados {num_workers}, Activos {len(self.worker_pool)}.",
                 )
-                self._stop_worker_pool()
+                await self._stop_worker_pool()
 
             # Si el pool no está corriendo (o lo acabamos de detener), iniciarlo.
             if not self.worker_pool:
@@ -1188,7 +1191,7 @@ class ScraperServer:
             "Server",
             "Solicitud para detener el trabajo de scraping recibida.",
         )
-        self._stop_worker_pool()
+        await self._stop_worker_pool()
         # Limpiar la cola por si acaso
         while not self.work_queue.empty():
             try:
@@ -1213,7 +1216,7 @@ class ScraperServer:
         )
 
         # 1. Detener el pool de trabajadores
-        self._stop_worker_pool()
+        await self._stop_worker_pool()
 
         # 2. Limpiar la cola de trabajo
         try:
