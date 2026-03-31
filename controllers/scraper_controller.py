@@ -197,12 +197,21 @@ class ScraperController(ScraperControllerBase):
                 if is_cordis:
                     logger.info(f"🔍 CORDIS - min_words config: {min_words}")
 
-                if is_cordis and description and len(description) > 50:
-                    # Usar contenidodel API directamente para Cordis
+                if is_cordis:
+                    # SIEMPRE usar el contenido de la API para Cordis.
+                    # El browser está desactivado en modo API-only, así que la
+                    # extracción de URL siempre devuelve vacío y elimina todo.
+                    # Concatenar todos los campos de texto disponibles.
+                    extra_fields = []
+                    for field in ["objective", "summary", "teaser", "abstract"]:
+                        val = result.get(field, "")
+                        if val and isinstance(val, str):
+                            extra_fields.append(val)
+                    full_content = f"{title}\n\n{description}\n\n" + "\n\n".join(extra_fields)
+                    full_content = full_content.strip()
                     logger.info(
-                        f"Using Cordis API metadata for {title[:50]}... (skipping URL extraction)"
+                        f"[CORDIS] Usando metadata API: {len(full_content)} chars para '{title[:40]}'"
                     )
-                    full_content = f"{title}\n\n{description}"
                 else:
                     # Para otras fuentes, extraer contenido de la URL normalmente
                     try:
