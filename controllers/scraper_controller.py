@@ -1005,17 +1005,24 @@ class ScraperController(ScraperControllerBase):
 
             search_term = course_name if course_name else sic_code
 
-            # SANITIZACIÓN CRITICA: Eliminar prefijos tipo "101.0 - " o "123 - " que rompen la búsqueda exacta
-            # El usuario tiene cursos como "101.0 - Iron ore mining". Buscamos solo "Iron ore mining".
-            # ACTUALIZADO: El guión es opcional para casos como "101.0 Iron mining"
-            search_term = re.sub(r"^[\d\.]+\s*[-–]?\s*", "", search_term).strip()
+            # SANITIZACIÓN: Solo eliminar prefijos numéricos tipo "101.0 - "
+            # Preservar el contenido útil del nombre del curso.
+            search_term = re.sub(r"^[\d\.]+\s*[-–]\s*", "", search_term).strip()
 
-            # QUITAR TODO texto entre paréntesis incluyendo los paréntesis
-            # Ejemplos: "TECHNOLOGY (3)" -> "TECHNOLOGY", "Course (Advanced)" -> "Course"
-            search_term = re.sub(r"\s*\([^)]*\)\s*", " ", search_term).strip()
+            # Quitar texto entre paréntesis SOLO si hay contenido significativo antes
+            # "TECHNOLOGY (3)" -> "TECHNOLOGY" (OK)
+            # "(Advanced Course)" -> dejarlo igual si no hay nada antes
+            cleaned = re.sub(r"\s*\([^)]*\)\s*", " ", search_term).strip()
+            if cleaned:  # Solo si el resultado no queda vacío
+                search_term = cleaned
 
             # Limpiar múltiples espacios
             search_term = re.sub(r"\s+", " ", search_term).strip()
+
+            # Fallback: si el término queda vacío o con menos de 3 chars, usar nombre completo del curso
+            if len(search_term) < 3:
+                search_term = course_name if course_name else sic_code
+                logger.warning(f"[CORDIS] search_term muy corto tras sanitización; usando nombre completo: '{search_term}'")
 
             logger.info(
                 f"Buscando en Cordis API: '{search_term}' (Original: '{course_name if course_name else sic_code}')"
@@ -1723,11 +1730,16 @@ class ScraperController(ScraperControllerBase):
                 )
 
             if not all_search_results:
-                logger.warning("No se encontraron resultados para procesar")
+                logger.error("❌ CRÍTICO: No se encontraron resultados para procesar (0 resultados de búsqueda)")
+                logger.error(f"   Motor: {search_engine} | Cursos: {total_courses} | Params: from={from_sic} to={to_sic}")
+                self._emit_event(
+                    "ERROR",
+                    f"❌ 0 resultados retornados de la búsqueda. Motor: {search_engine}. Revisa logs/server.log",
+                )
                 # Cleanup empty file if exists (Auto-fix)
                 self.result_manager.cleanup_if_empty()
                 if progress_callback:
-                    progress_callback(100, "No se encontraron resultados para procesar")
+                    progress_callback(100, "0 resultados encontrados. Revisa el log del servidor.")
                 return []
 
             logger.warning(
@@ -1844,10 +1856,12 @@ class ScraperController(ScraperControllerBase):
 
             logger.info(f"Estadísticas finales: {self.stats}")
 
-            # Compare stats with expected values
-            if self.stats["saved_records"] != (line_count - 1 if line_count > 1 else 0):
+            # Compare stats with expected values (use files_saved, NOT saved_records)
+            files_saved_count = self.stats.get("files_saved", 0)
+            csv_lines = line_count - 1 if line_count > 1 else 0
+            if files_saved_count != csv_lines:
                 logger.warning(
-                    f"⚠️  DESAJUSTE: saved_records={self.stats['saved_records']} != líneas en CSV={line_count - 1 if line_count > 1 else 0}"
+                    f"⚠️  DESAJUSTE: files_saved={files_saved_count} != líneas en CSV={csv_lines}"
                 )
 
             if progress_callback:
