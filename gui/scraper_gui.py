@@ -1218,25 +1218,36 @@ class ScraperGUI(ttk.Frame):
         # También usar los conteos del servidor si existen
         server_counts = getattr(self, "_line_counts_map", {})
 
-        # Función helper para encontrar líneas de un curso
+        # --- OPTIMIZACIÓN O(1) de mapeo ---
+        if not hasattr(self, "_file_match_cache"):
+            self._file_match_cache = {}
+            
+        # Preparar lista unificada de archivos para búsqueda inicial
+        current_files = [(fname.lower(), count) for fname, count in server_counts.items()] + \
+                        [(os.path.basename(k).lower(), v) for k, v in (line_counts or {}).items()]
+
+        # Función helper para encontrar líneas de un curso optimizada
         def get_lines_for_course(sic, name):
-            # Buscar primero en conteos del servidor (más actualizados)
-            search_terms = [name.lower().replace(" ", "_"), sic.replace(".", "_")]
+            term_name = name.lower().replace(" ", "_")
+            term_sic = sic.replace(".", "_").lower()
+            cache_key = f"{term_sic}__{term_name}"
 
-            # Buscar en server_counts
+            # Si ya resolvimos este archivo antes
+            if cache_key in self._file_match_cache:
+                fname_match = self._file_match_cache[cache_key]
+                # Buscar su count actual
+                for fname, count in current_files:
+                    if fname == fname_match:
+                        return f"📄{count}"
+
+            # Si no estaba en caché, o desapareció, buscarlo (esto solo toma O(N) la primera vez)
+            search_terms = [term_name, term_sic]
             for term in search_terms:
-                for fname, count in server_counts.items():
+                for fname, count in current_files:
                     if term in fname:
+                        self._file_match_cache[cache_key] = fname
                         return f"📄{count}"
 
-            # Luego buscar en line_counts local
-            if not line_counts:
-                return "--"
-            for file_path, count in line_counts.items():
-                fname = os.path.basename(file_path).lower()
-                for term in search_terms:
-                    if term in fname:
-                        return f"📄{count}"
             return "--"
 
         for c in courses_list:
@@ -1361,6 +1372,10 @@ class ScraperGUI(ttk.Frame):
             self.audit_worker_nodes = {}
 
         needs_reorder = False
+
+        # Limitamos ráfagas de eventos para evitar que Tkinter se congele
+        if len(events) > 500:
+            events = events[-500:]
 
         for ev in events:
             event_id = ev.get("id")
@@ -2169,14 +2184,25 @@ class ScraperGUI(ttk.Frame):
         """Agrega una entrada al log detallado con color según su naturaleza (en AMBAS pestañas)."""
         timestamp = datetime.now().strftime("%H:%M:%S")
         formatted_entry = f"[{timestamp}] {message}\n"
+        
+        def trim_text(txt_widget, limit=1500):
+            try:
+                # Evitar crecimiento infinito para no congelar la UI
+                lines = int(txt_widget.index(tk.END).split('.')[0])
+                if lines > limit:
+                    txt_widget.delete("1.0", f"{lines - limit + 300}.0")
+            except Exception:
+                pass
 
         # Agregar al log de la pestaña Principal
         self.detailed_log_text.insert(tk.END, formatted_entry, level)
+        trim_text(self.detailed_log_text)
         self.detailed_log_text.see(tk.END)
 
         # Agregar al log de la pestaña Expandida
         if hasattr(self, "expanded_log_text"):
             self.expanded_log_text.insert(tk.END, formatted_entry, level)
+            trim_text(self.expanded_log_text)
             self.expanded_log_text.see(tk.END)
 
         # Si es ERROR, también agregar a la lista de errores expandida
