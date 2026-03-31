@@ -616,22 +616,6 @@ class SearchEngine:
     def _set_search_cache(self, query: str, results: List[Dict[str, Any]]):
         self._search_cache[query.lower()] = results
         
-    async def get_search_results(self, search_term: str, search_engine: str, site_domain: Optional[str] = None) -> List[Dict[str, Any]]:
-        """
-        Obtiene los resultados de búsqueda utilizando el motor especificado.
-        """
-        if search_engine == 'Google':
-            return await self.search_google(search_term, site_domain)
-        elif search_engine == 'DuckDuckGo':
-            return await self.search_duckduckgo(search_term, site_domain)
-        elif search_engine == 'Cordis Europa':
-            return await self.search_cordis_europa(search_term)
-        elif search_engine == 'Wayback Machine':
-            return await self.search_wayback(search_term, site_domain)
-        else:
-            logger.warning(f"Motor de búsqueda no soportado: {search_engine}")
-            return []
-        
     def clear_cache(self):
         """
         Limpia la caché de búsqueda.
