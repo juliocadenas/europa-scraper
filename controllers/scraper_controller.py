@@ -324,7 +324,11 @@ class ScraperController(ScraperControllerBase):
                 formatted_word_counts = self.text_processor.format_word_counts(
                     total_words, word_counts
                 )
-                if (
+                # CORDIS FIX: Para resultados de la API de Cordis, el nombre del curso
+                # raramente aparece textualmente en el abstract del proyecto europeo.
+                # El contenido ya fue validado por should_exclude_result (min_words).
+                # Omitir el chequeo de keywords exactos para no descartar resultados válidos.
+                if not is_cordis and (
                     formatted_word_counts.startswith("Total words:")
                     and len(formatted_word_counts.split("|")) == 1
                 ):
@@ -346,6 +350,9 @@ class ScraperController(ScraperControllerBase):
                         {"sic": sic_code, "course": course_name},
                     )
                     return None
+                # Para Cordis sin keyword hits exactos, usar el total de palabras como métrica
+                if is_cordis and len(formatted_word_counts.split("|")) == 1:
+                    formatted_word_counts = f"{formatted_word_counts} | {course_name}: 1"
 
                 description = self.text_processor.clean_description(description)
                 if len(description) < 100 and full_content:
