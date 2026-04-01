@@ -1597,6 +1597,7 @@ class ScraperController(ScraperControllerBase):
             search_engine = params.get("search_engine", "DuckDuckGo")
             site_domain = params.get("site_domain")
             gov_only = params.get("gov_only", False)
+            search_mode = params.get("search_mode", "broad")
 
             if from_course and not to_course:
                 to_course = from_course
