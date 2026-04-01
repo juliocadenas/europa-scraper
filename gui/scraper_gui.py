@@ -470,8 +470,9 @@ class ScraperGUI(ttk.Frame):
 
         ttk.Button(
             self.mon_btn_frame,
-            text="⚠️ Resetear Sistema (Emergencia)",
+            text="⚠️ RESET TOTAL (EMERGENCIA)",
             command=self._force_reset_client_state,
+            width=30
         ).pack(side=tk.RIGHT, padx=5, expand=True, fill=tk.X)
 
         # PanedWindow solo para tener formato si se quiere, o usar un Frame simple
@@ -1086,6 +1087,8 @@ class ScraperGUI(ttk.Frame):
 
     def _update_status_monitor(self, workers, courses):
         """Actualiza el Monitor de Estado en AMBAS pestañas (Principal y Expandida)."""
+        if getattr(self, "is_resetting", False):
+            return
         # Calcular estadísticas
         total_courses = len(courses)
         completed = sum(1 for c in courses if c.get("status") == "Completado")
@@ -1586,6 +1589,9 @@ class ScraperGUI(ttk.Frame):
             messagebox.showerror("Err", str(e))
 
     def _refresh_courses_from_server(self, event=None):
+        """Consulta la lista de cursos desde el servidor."""
+        if getattr(self, "is_resetting", False):
+            return
         try:
             url = f"{self.server_url.get()}/api/get_all_courses"
             self.master.after(0, self.results_frame.add_log, f"Refrescando cursos desde el servidor...")
@@ -2006,82 +2012,104 @@ class ScraperGUI(ttk.Frame):
         )
 
     def _force_reset_client_state(self):
-        """Limpia el frontend INMEDIATAMENTE y luego envía la señal al servidor en segundo plano.
-        El frontend NUNCA se congela esperando al servidor."""
+        """Limpia el frontend INMEDIATAMENTE y luego envía la señal al servidor.
+        Usa borrado seguro por iteración para evitar límites de argumentos en Windows."""
         if not messagebox.askyesno(
             "Confirmar RESET TOTAL",
             "¿Seguro que desea resetear TODO el sistema?\n\n"
-            "Esta acción:\n"
-            "• Detendrá todos los procesos activos en el servidor\n"
-            "• Limpiará el Monitor de Actividad Local\n"
-            "• Limpiará la Auditoría de Procesos\n\n"
+            "Esta acción detendrá procesos y borrará el progreso visible.\n"
             "¿Continuar?",
         ):
             return
 
-        # ─── BLOQUEAR POLLING para que no reponga datos mientras limpiamos ──────
+        # ─── BLOQUEO DE SEGURIDAD ───
         self.is_resetting = True
+        logger.info("Iniciando Reset Atómico del GUI...")
 
-        # ─── PASO 1: LIMPIAR EL FRONTEND AHORA MISMO ─────────────────────────────
-        
-        # Limpiar Monitor de Actividad Local
-        if hasattr(self, 'worker_tree'):
-            self.worker_tree.delete(*self.worker_tree.get_children())
+        # ─── PASO 1: LIMPIAR ESTADÍSTICAS (PRIMERO!) ───
+        try:
+            if hasattr(self, 'stat_completed'):
+                self.stat_completed.config(text="Completados: 0")
+            if hasattr(self, 'stat_pending'):
+                self.stat_pending.config(text="Pendientes: 0")
+            if hasattr(self, 'stat_failed'):
+                self.stat_failed.config(text="Fallidos: 0")
+            if hasattr(self, 'stat_lines'):
+                self.stat_lines.config(text="Resultados: --")
+            if hasattr(self, 'stat_contenidos'):
+                self.stat_contenidos.config(text="Contenidos: 0")
+            
+            # Resetear barras de progreso
+            if hasattr(self, 'main_progress_bar'):
+                self.main_progress_bar["value"] = 0
+            if hasattr(self, 'main_progress_var'):
+                self.main_progress_var.set(0)
+            if hasattr(self, 'main_progress_label'):
+                self.main_progress_label.config(text="0%")
+            
+            # Resetear estados
+            if hasattr(self, 'status_indicator_label'):
+                self.status_indicator_label.config(text="● DETENIDO", foreground="red")
+            if hasattr(self, 'status_msg_label'):
+                self.status_msg_label.config(text="RESET EN CURSO...")
+                
+            if hasattr(self, 'expanded_status_label'):
+                self.expanded_status_label.config(text="● DETENIDO", foreground="red")
+            if hasattr(self, 'expanded_progress_bar'):
+                self.expanded_progress_bar["value"] = 0
+            if hasattr(self, 'expanded_progress_label'):
+                self.expanded_progress_label.config(text="0.0% - Listo")
+        except Exception as e:
+            logger.error(f"Error reseteando etiquetas: {e}")
 
-        # Limpiar Auditoría de Procesos
-        if hasattr(self, 'audit_tree'):
-            self.audit_tree.delete(*self.audit_tree.get_children())
-        if hasattr(self, "audit_details_map"):
-            self.audit_details_map.clear()
-        if hasattr(self, "audit_worker_nodes"):
-            self.audit_worker_nodes.clear()
+        # ─── PASO 2: LIMPIAR TABLAS (BORRADO SEGURO) ───
+        try:
+            if hasattr(self, 'worker_tree'):
+                # Borrado iterativo para evitar errores de límites de argumentos (*args)
+                children = self.worker_tree.get_children()
+                for child in children:
+                    self.worker_tree.delete(child)
+            
+            if hasattr(self, 'audit_tree'):
+                children = self.audit_tree.get_children()
+                for child in children:
+                    self.audit_tree.delete(child)
+                    
+            if hasattr(self, "audit_details_map"):
+                self.audit_details_map.clear()
+            if hasattr(self, "audit_worker_nodes"):
+                self.audit_worker_nodes.clear()
+        except Exception as e:
+            logger.error(f"Error limpiando tablas: {e}")
 
-        # Limpiar Listas de Cursos y Base local
-        if hasattr(self, 'from_sic_listbox'):
-            self.from_sic_listbox.delete(0, tk.END)
-        if hasattr(self, 'to_sic_listbox'):
-            self.to_sic_listbox.delete(0, tk.END)
-        if hasattr(self, 'detailed_sic_codes_with_courses'):
+        # ─── PASO 3: LIMPIAR OTRAS LISTAS ───
+        try:
+            if hasattr(self, 'from_sic_listbox'):
+                self.from_sic_listbox.delete(0, tk.END)
+            if hasattr(self, 'to_sic_listbox'):
+                self.to_sic_listbox.delete(0, tk.END)
             self.detailed_sic_codes_with_courses = []
+        except Exception as e:
+            logger.error(f"Error limpiando listas: {e}")
 
-        # ─── RESETEAR BARRA DE PROGRESO Y ETIQUETAS DE ESTADO ────────────────────
-        if hasattr(self, 'main_progress_bar'):
-            self.main_progress_bar["value"] = 0
-        if hasattr(self, 'main_progress_var'):
-            self.main_progress_var.set(0)
-        if hasattr(self, 'main_progress_label'):
-            self.main_progress_label.config(text="0%")
-        # Etiqueta de estado rojo (top izquierda)
-        if hasattr(self, 'status_indicator_label'):
-            self.status_indicator_label.config(text="● DETENIDO", foreground="red")
-        # Mensaje de estado (al lado del indicador)
-        if hasattr(self, 'status_msg_label'):
-            self.status_msg_label.config(text="Sistema listo para iniciar")
+        # Forzar redibujado
+        self.update_idletasks()
 
-        # Barra de progreso grande (pestaña Monitor de Estado)
-        if hasattr(self, 'expanded_progress_bar'):
-            self.expanded_progress_bar["value"] = 0
-        if hasattr(self, 'expanded_progress_label'):
-            self.expanded_progress_label.config(text="0.0% - Listo")
+        # ─── PASO 4: DISPARAR RESET EN EL SERVIDOR ───
+        def _fire_server_reset():
+            try:
+                url = f"{self.server_url.get()}/api/emergency_reset"
+                requests.post(url, timeout=10)
+                time.sleep(1) # Esperar a que el servidor liquide todo
+                # YA NO PONEMOS is_resetting = False para que el GUI se quede limpio
+                # El usuario deberá cargar cursos nuevos para re-activar el flujo
+                if hasattr(self, 'results_frame'):
+                    self.results_frame.add_log("✅ Reset Completado. El sistema está listo.")
+            except Exception as e:
+                logger.error(f"Error en reset de servidor: {e}")
 
-        # Etiqueta de estado grande (pestaña Monitor de Estado)
-        if hasattr(self, 'expanded_status_label'):
-            self.expanded_status_label.config(text="● DETENIDO", foreground="red")
-        # Contadores numéricos visibles (Completados / Pendientes / Fallidos / Resultados)
-        if hasattr(self, 'stat_completed'):
-            self.stat_completed.config(text="✅ Completados: 0")
-        if hasattr(self, 'stat_pending'):
-            self.stat_pending.config(text="⏳ Pendientes: 0")
-        if hasattr(self, 'stat_failed'):
-            self.stat_failed.config(text="❌ Fallidos: 0")
-        if hasattr(self, 'stat_lines'):
-            self.stat_lines.config(text="📄 Resultados: --")
-        if hasattr(self, 'stat_contenidos'):
-            self.stat_contenidos.config(text="📄 Contenidos: 0")
-        if hasattr(self, 'exp_stat_completed'):
-            self.exp_stat_completed.config(text="✅ Completados: 0")
-        if hasattr(self, 'courses_completed_label'):
-            self.courses_completed_label.config(text="✅ Completados: 0")
+        import threading
+        threading.Thread(target=_fire_server_reset, daemon=True, name="ServerReset").start()
 
         # Timer
         if hasattr(self, 'timer_label'):

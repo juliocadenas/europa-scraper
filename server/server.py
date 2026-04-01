@@ -810,6 +810,7 @@ class ScraperServer:
         self.app.post("/api/start_scraping", status_code=202)(self.start_scraping_job)
         self.app.post("/api/stop_scraping")(self.stop_scraping_job)
         self.app.post("/api/reset")(self.force_reset_state)
+        self.app.post("/api/emergency_reset")(self.emergency_reset)
         self.app.get("/api/detailed_status")(self.get_detailed_status)
         self.app.post("/api/upload_courses")(self.upload_courses)
         self.app.get("/api/get_all_courses")(self.get_all_courses)
