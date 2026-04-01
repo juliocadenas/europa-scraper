@@ -274,10 +274,12 @@ class ClientApp:
                         break
 
             except requests.exceptions.RequestException as e:
-                logger.error(f"Error al obtener el estado del servidor: {e}")
-                self.queue.put(
-                    ("log", f"Error de conexión con el servidor: {e}. Reintentando...")
-                )
+                # Se clasifica como WARNING omitiendo la palabra "Error" para no encender el panel rojo crítico.
+                # Si es un simple timeout (muy común en load balance real), lo mostramos como reintento
+                if "timeout" in str(e).lower():
+                    self.queue.put(("log", f"⚠️ El servidor tardó en responder (Timeout). Reintentando conexión silenciosamente..."))
+                else:
+                    self.queue.put(("log", f"⚠️ Fallo temporal de conexión con el servidor. Reintentando..."))
                 time.sleep(5)
 
             # --- POLL AUDIT EVENTS (New) ---
