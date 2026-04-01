@@ -78,6 +78,11 @@ class CordisApiClient:
             response = requests.get(search_url, headers=self.headers, timeout=30)
 
             if response.status_code != 200:
+                logger.error(
+                    f"[CORDIS] ❌ HTTP {response.status_code} al consultar total hits "
+                    f"para '{query_term}'. URL: {search_url}. "
+                    f"Respuesta: {response.text[:300]}"
+                )
                 return 0
 
             data = response.json()

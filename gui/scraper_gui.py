@@ -2095,18 +2095,48 @@ class ScraperGUI(ttk.Frame):
         # Forzar redibujado
         self.update_idletasks()
 
-        # ─── PASO 4: DISPARAR RESET EN EL SERVIDOR ───
+        # ─── PASO 4: DISPARAR RESET EN EL SERVIDOR (UN SOLO HILO) ───
+        current_url = self.server_url.get()
+
         def _fire_server_reset():
+            """Se ejecuta en un hilo de fondo. El frontend ya está limpio y responsivo.
+            SIEMPRE libera is_resetting al terminar, sin importar el resultado."""
             try:
-                url = f"{self.server_url.get()}/api/emergency_reset"
-                requests.post(url, timeout=10)
-                time.sleep(1) # Esperar a que el servidor liquide todo
-                # YA NO PONEMOS is_resetting = False para que el GUI se quede limpio
-                # El usuario deberá cargar cursos nuevos para re-activar el flujo
-                if hasattr(self, 'results_frame'):
-                    self.results_frame.add_log("✅ Reset Completado. El sistema está listo.")
+                # 1. Emergency reset (limpia estado en memoria del servidor)
+                try:
+                    requests.post(f"{current_url}/api/emergency_reset", timeout=15)
+                except Exception:
+                    pass  # Si falla, continuar con el reset normal
+
+                # 2. Reset normal (detiene workers)
+                requests.post(f"{current_url}/api/reset", timeout=180)
+
+                # 3. Limpieza de archivos CSV
+                try:
+                    requests.post(f"{current_url}/api/cleanup_files", timeout=60)
+                except Exception:
+                    pass
+
+                def _on_reset_ok():
+                    self.is_resetting = False
+                    if hasattr(self, 'results_frame'):
+                        self.results_frame.add_log("✅ Servidor reseteado. Sistema listo para nueva sesión.")
+                self.master.after(0, _on_reset_ok)
+
+            except requests.Timeout:
+                def _on_timeout():
+                    self.is_resetting = False
+                    if hasattr(self, 'results_frame'):
+                        self.results_frame.add_log(
+                            "✅ Reset enviado al servidor (timeout esperado con muchos workers). Sistema listo."
+                        )
+                self.master.after(0, _on_timeout)
             except Exception as e:
-                logger.error(f"Error en reset de servidor: {e}")
+                def _on_error(err=str(e)):
+                    self.is_resetting = False
+                    if hasattr(self, 'results_frame'):
+                        self.results_frame.add_log(f"⚠️ No se pudo contactar al servidor: {err}. GUI lista de todos modos.")
+                self.master.after(0, _on_error)
 
         import threading
         threading.Thread(target=_fire_server_reset, daemon=True, name="ServerReset").start()
@@ -2153,38 +2183,9 @@ class ScraperGUI(ttk.Frame):
         if hasattr(self, "controller") and hasattr(self.controller, "last_event_id"):
             self.controller.last_event_id = 0
 
-        # ─── PASO 2: DISPARAR AL SERVIDOR SIN BLOQUEAR (fire-and-forget) ────────
-        current_url = self.server_url.get()
-
-        def _fire_server_reset():
-            """Se ejecuta en un hilo de fondo. El frontend ya está limpio y responsivo."""
-            try:
-                # 1. Señal de reset al servidor (termina procesos)
-                requests.post(f"{current_url}/api/reset", timeout=180)
-                # 2. Señal de limpieza de archivos (borra CSVs viejos)
-                requests.post(f"{current_url}/api/cleanup_files", timeout=180)
-                def _on_reset_ok():
-                    self.is_resetting = False
-                    self.results_frame.add_log("✅ Servidor reseteado. Sistema listo para nueva sesión.")
-                self.master.after(0, _on_reset_ok)
-            except requests.Timeout:
-                def _on_timeout():
-                    self.is_resetting = False
-                    self.results_frame.add_log(
-                        "✅ Servidor procesando reset (timeout esperado con muchos workers)."
-                    )
-                self.master.after(0, _on_timeout)
-            except Exception as e:
-                def _on_error(err=str(e)):
-                    self.is_resetting = False
-                    self.results_frame.add_log(f"⚠️ No se pudo contactar al servidor: {err}")
-                self.master.after(0, _on_error)
-
-        import threading
-        threading.Thread(target=_fire_server_reset, daemon=True, name="ServerReset").start()
-
         # Confirmar inmediatamente al usuario (sin modal bloqueante)
-        self.results_frame.add_log("✅ Frontend limpio y listo para nueva sesión.")
+        if hasattr(self, 'results_frame'):
+            self.results_frame.add_log("✅ Frontend limpio. Esperando confirmación del servidor...")
 
     def _reset_complete(
         self, success, reset_status, cleanup_status, progress_window, error_msg=None
