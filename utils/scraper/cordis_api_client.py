@@ -230,10 +230,16 @@ class CordisApiClient:
                     logger.error(f"V29 - JSON parse error on page {page}: {e}")
                     break
 
+                # Log top-level keys to diagnose structure issues
+                top_keys = list(data.keys())
+                logger.info(f"[CORDIS PAGE {page}] Top-level keys: {top_keys}")
+
                 # The API sometimes envelops the root keys inside 'payload'
-                if "payload" in data:
+                # IMPORTANT: do NOT unwrap payload if it would lose top-level 'hits'
+                if "payload" in data and "hits" not in data:
                     data = data["payload"]
-                
+                    logger.info(f"[CORDIS PAGE {page}] Unwrapped payload. New keys: {list(data.keys())}")
+
                 result_data = data.get("result", {})
                 if not isinstance(result_data, dict):
                     result_data = {}
@@ -252,26 +258,49 @@ class CordisApiClient:
                         total_hits_callback(total_hits)
 
                     if total_hits == 0:
-                        logger.warning("CORDIS: No se encontraron resultados")
+                        logger.warning(
+                            f"CORDIS: totalHits=0 para esta búsqueda. "
+                            f"Header completo: {header}. "
+                            f"Top-level keys: {list(data.keys())}"
+                        )
                         break
 
+                # --- EXTRAER HITS ---
+                # Estructura real confirmada: data['hits']['hit'] = [lista de resultados]
                 hits = []
 
-                if "hits" in data and isinstance(data["hits"], list):
-                    hits = data["hits"]
-                elif "hits" in data and isinstance(data["hits"], dict):
-                    hits = data["hits"].get("hit", [])
-                elif "result" in data and "hits" in data["result"]:
-                    result_hits = data["result"]["hits"]
-                    if isinstance(result_hits, dict) and "hit" in result_hits:
-                        hits = result_hits["hit"]
-                    elif isinstance(result_hits, list):
-                        hits = result_hits
+                raw_hits = data.get("hits")
+                if raw_hits is not None:
+                    if isinstance(raw_hits, list):
+                        hits = raw_hits
+                        logger.info(f"[CORDIS PAGE {page}] hits es lista directa: {len(hits)} items")
+                    elif isinstance(raw_hits, dict):
+                        hits = raw_hits.get("hit", [])
+                        if not isinstance(hits, list):
+                            hits = [hits] if hits else []
+                        logger.info(f"[CORDIS PAGE {page}] hits['hit']: {len(hits)} items")
+                    else:
+                        logger.warning(f"[CORDIS PAGE {page}] data['hits'] tipo inesperado: {type(raw_hits)}")
+                else:
+                    # Fallback: buscar dentro de result
+                    if "hits" in result_data:
+                        result_hits = result_data["hits"]
+                        if isinstance(result_hits, dict) and "hit" in result_hits:
+                            hits = result_hits["hit"]
+                        elif isinstance(result_hits, list):
+                            hits = result_hits
+                    logger.warning(f"[CORDIS PAGE {page}] data['hits'] es None. Fallback result_data hits: {len(hits)}")
 
                 if isinstance(hits, dict):
                     hits = [hits]
                 elif not isinstance(hits, list):
                     hits = []
+
+                if not hits:
+                    logger.error(
+                        f"[CORDIS PAGE {page}] ❌ HITS VACÍO a pesar de totalHits={total_hits}. "
+                        f"data keys={list(data.keys())}. raw_hits type={type(raw_hits)}"
+                    )
 
                 # LOG cada 10 páginas, pero callback de progreso cada 5 páginas
                 current_results = len(all_results)
