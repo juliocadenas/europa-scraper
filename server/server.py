@@ -1232,6 +1232,15 @@ class ScraperServer:
         # 4. Limpiar los estados de los workers para la GUI
         if self.worker_states is not None:
             self.worker_states.clear()
+        
+        # 5. Limpiar los estados de los cursos y el contador de líneas
+        if getattr(self, "course_states", None) is not None:
+            self.course_states.clear()
+            
+        # 6. Limpiar el log de eventos
+        async with global_event_log._lock:
+            global_event_log._log.clear()
+            global_event_log._counter = 0
 
         await global_event_log.add(
             EventType.SUCCESS,
@@ -2182,8 +2191,16 @@ class ScraperServer:
         # 2. Limpiar estados
         if self.worker_states is not None:
             self.worker_states.clear()
+            
+        if getattr(self, "course_states", None) is not None:
+            self.course_states.clear()
 
         self.is_job_running = False
+
+        # Limpiar eventos
+        async with global_event_log._lock:
+            global_event_log._log.clear()
+            global_event_log._counter = 0
 
         await global_event_log.add(
             EventType.SUCCESS, "Server", "Sistema reseteado correctamente."

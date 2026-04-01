@@ -103,8 +103,9 @@ class ScraperGUI(ttk.Frame):
         # Confirmar que el botón de carga está visible
         print("✅ Botón 'CARGAR CURSOS (CSV/XLS)' agregado a la pestaña Principal")
 
-        # Conectar al servidor y cargar datos iniciales
-        self._connect_and_load_initial_data()
+        # Conectar al servidor y cargar datos iniciales - diferido 1.5s
+        # para que la ventana se pinte ANTES de hacer la petición de red
+        self.master.after(1500, self._connect_and_load_initial_data)
 
         global_log_handler = get_global_log_handler()
         global_log_handler.set_callback(self._log_callback)
@@ -1196,6 +1197,9 @@ class ScraperGUI(ttk.Frame):
 
     def _render_status(self, workers, courses):
         """Renderiza el estado dinámico de los cursos en el Monitor Principal."""
+        if getattr(self, "is_resetting", False):
+            return
+
         # Guardar datos para actualización asíncrona
         self._last_workers_data = workers
         self._last_courses_data = courses
@@ -1392,6 +1396,8 @@ class ScraperGUI(ttk.Frame):
 
     def update_audit_log(self, events):
         """Actualiza el historial de auditoría con estructura jerárquica por Worker."""
+        if getattr(self, "is_resetting", False):
+            return
         if not hasattr(self, "audit_details_map"):
             self.audit_details_map = {}
         if not hasattr(self, "audit_worker_nodes"):
@@ -1582,21 +1588,22 @@ class ScraperGUI(ttk.Frame):
     def _refresh_courses_from_server(self, event=None):
         try:
             url = f"{self.server_url.get()}/api/get_all_courses"
-            self.results_frame.add_log(f"Refrescando cursos desde el servidor...")
+            self.master.after(0, self.results_frame.add_log, f"Refrescando cursos desde el servidor...")
             r = requests.get(url, timeout=10)
             if r.status_code == 200:
                 data = r.json()
-                self.results_frame.add_log(f"✅ Recibidos {len(data)} cursos.")
-                self._update_ui_with_loaded_courses(data)
+                self.master.after(0, self.results_frame.add_log, f"✅ Recibidos {len(data)} cursos.")
+                # MUY IMPORTANTE: Actualizar la interfaz desde el hilo principal de Tkinter
+                self.master.after(0, self._update_ui_with_loaded_courses, data)
             else:
-                self.results_frame.add_log(
-                    f"❌ Error al refrescar cursos: Status {r.status_code}"
-                )
+                self.master.after(0, self.results_frame.add_log, f"❌ Error al refrescar cursos: Status {r.status_code}")
         except Exception as e:
-            self.results_frame.add_log(f"❌ Excepción al refrescar cursos: {str(e)}")
+            self.master.after(0, self.results_frame.add_log, f"❌ Excepción al refrescar cursos: {str(e)}")
             # No mostrar messagebox aquí para no interrumpir el flujo si falla el inicio
 
     def _update_ui_with_loaded_courses(self, data):
+        if getattr(self, "is_resetting", False):
+            return
         try:
             self.detailed_sic_codes_with_courses = []
             for i in data:
@@ -2012,14 +2019,18 @@ class ScraperGUI(ttk.Frame):
         ):
             return
 
-        # ─── PASO 1: LIMPIAR EL FRONTEND AHORA MISMO ─────────────────────────────
-        # Esto ocurre ANTES de tocar el servidor, así la UI responde al instante.
+        # ─── BLOQUEAR POLLING para que no reponga datos mientras limpiamos ──────
+        self.is_resetting = True
 
+        # ─── PASO 1: LIMPIAR EL FRONTEND AHORA MISMO ─────────────────────────────
+        
         # Limpiar Monitor de Actividad Local
-        self.worker_tree.delete(*self.worker_tree.get_children())
+        if hasattr(self, 'worker_tree'):
+            self.worker_tree.delete(*self.worker_tree.get_children())
 
         # Limpiar Auditoría de Procesos
-        self.audit_tree.delete(*self.audit_tree.get_children())
+        if hasattr(self, 'audit_tree'):
+            self.audit_tree.delete(*self.audit_tree.get_children())
         if hasattr(self, "audit_details_map"):
             self.audit_details_map.clear()
         if hasattr(self, "audit_worker_nodes"):
@@ -2033,7 +2044,30 @@ class ScraperGUI(ttk.Frame):
         if hasattr(self, 'detailed_sic_codes_with_courses'):
             self.detailed_sic_codes_with_courses = []
 
-        # Resetear Contadores Visibles
+        # ─── RESETEAR BARRA DE PROGRESO Y ETIQUETAS DE ESTADO ────────────────────
+        if hasattr(self, 'main_progress_bar'):
+            self.main_progress_bar["value"] = 0
+        if hasattr(self, 'main_progress_var'):
+            self.main_progress_var.set(0)
+        if hasattr(self, 'main_progress_label'):
+            self.main_progress_label.config(text="0%")
+        # Etiqueta de estado rojo (top izquierda)
+        if hasattr(self, 'status_indicator_label'):
+            self.status_indicator_label.config(text="● DETENIDO", foreground="red")
+        # Mensaje de estado (al lado del indicador)
+        if hasattr(self, 'status_msg_label'):
+            self.status_msg_label.config(text="Sistema listo para iniciar")
+
+        # Barra de progreso grande (pestaña Monitor de Estado)
+        if hasattr(self, 'expanded_progress_bar'):
+            self.expanded_progress_bar["value"] = 0
+        if hasattr(self, 'expanded_progress_label'):
+            self.expanded_progress_label.config(text="0.0% - Listo")
+
+        # Etiqueta de estado grande (pestaña Monitor de Estado)
+        if hasattr(self, 'expanded_status_label'):
+            self.expanded_status_label.config(text="● DETENIDO", foreground="red")
+        # Contadores numéricos visibles (Completados / Pendientes / Fallidos / Resultados)
         if hasattr(self, 'stat_completed'):
             self.stat_completed.config(text="✅ Completados: 0")
         if hasattr(self, 'stat_pending'):
@@ -2042,31 +2076,54 @@ class ScraperGUI(ttk.Frame):
             self.stat_failed.config(text="❌ Fallidos: 0")
         if hasattr(self, 'stat_lines'):
             self.stat_lines.config(text="📄 Resultados: --")
-            
-        if hasattr(self, 'main_progress_bar'):
-            self.main_progress_bar["value"] = 0
-        if hasattr(self, 'main_progress_label'):
-            self.main_progress_label.config(text="0%")
-        if hasattr(self, 'lbl_sys_status'):
-            self.lbl_sys_status.config(text="● DETENIDO", foreground="red")
-
+        if hasattr(self, 'stat_contenidos'):
+            self.stat_contenidos.config(text="📄 Contenidos: 0")
         if hasattr(self, 'exp_stat_completed'):
             self.exp_stat_completed.config(text="✅ Completados: 0")
         if hasattr(self, 'courses_completed_label'):
             self.courses_completed_label.config(text="✅ Completados: 0")
 
-        # Limpiar panel de detalles
-        self.details_text.config(state=tk.NORMAL)
-        self.details_text.delete(1.0, tk.END)
-        self.details_text.config(state=tk.DISABLED)
+        # Timer
+        if hasattr(self, 'timer_label'):
+            self.timer_label.config(text="00:00:00")
 
-        # Resetear contador de eventos
+        # ─── LIMPIAR TODOS LOS PANELES DE LOG ────────────────────────────────────
+        def _clear_text_widget(widget):
+            try:
+                widget.config(state=tk.NORMAL)
+                widget.delete("1.0", tk.END)
+                widget.config(state=tk.DISABLED)
+            except Exception:
+                pass
+
+        # Panel de detalles del proceso seleccionado
+        if hasattr(self, 'details_text'):
+            _clear_text_widget(self.details_text)
+
+        # Log detallado de la pestaña Principal
+        if hasattr(self, 'detailed_log_text'):
+            _clear_text_widget(self.detailed_log_text)
+
+        # Log de la pestaña Monitor de Estado expandida
+        if hasattr(self, 'expanded_log_text'):
+            _clear_text_widget(self.expanded_log_text)
+
+        # Panel de errores críticos de la pestaña expandida
+        if hasattr(self, 'expanded_errors_text'):
+            _clear_text_widget(self.expanded_errors_text)
+
+        # ResultsFrame (el área de texto/log del panel central)
+        if hasattr(self, 'results_frame') and hasattr(self.results_frame, 'text'):
+            try:
+                self.results_frame.text.config(state=tk.NORMAL)
+                self.results_frame.text.delete("1.0", tk.END)
+                self.results_frame.text.config(state=tk.DISABLED)
+            except Exception:
+                pass
+
+        # ─── RESETEAR ESTADO INTERNO ──────────────────────────────────────────────
         if hasattr(self, "controller") and hasattr(self.controller, "last_event_id"):
             self.controller.last_event_id = 0
-
-        # Registrar en el log de la ui
-        self.results_frame.add_log("🔄 Reset iniciado — limpiando interfaz...")
-        self.results_frame.add_log("⏳ Enviando señal de reset al servidor en segundo plano...")
 
         # ─── PASO 2: DISPARAR AL SERVIDOR SIN BLOQUEAR (fire-and-forget) ────────
         current_url = self.server_url.get()
@@ -2075,32 +2132,25 @@ class ScraperGUI(ttk.Frame):
             """Se ejecuta en un hilo de fondo. El frontend ya está limpio y responsivo."""
             try:
                 # 1. Señal de reset al servidor (termina procesos)
-                self.master.after(0, lambda: self.results_frame.add_log("🛑 Deteniendo procesos en el servidor..."))
                 requests.post(f"{current_url}/api/reset", timeout=180)
-                
                 # 2. Señal de limpieza de archivos (borra CSVs viejos)
-                self.master.after(0, lambda: self.results_frame.add_log("🗑️ Borrando archivos antiguos del servidor..."))
                 requests.post(f"{current_url}/api/cleanup_files", timeout=180)
-                
-                self.master.after(
-                    0,
-                    lambda: self.results_frame.add_log("✅ Servidor reseteado y archivos limpiados correctamente.")
-                )
+                def _on_reset_ok():
+                    self.is_resetting = False
+                    self.results_frame.add_log("✅ Servidor reseteado. Sistema listo para nueva sesión.")
+                self.master.after(0, _on_reset_ok)
             except requests.Timeout:
-                # Timeout es esperado cuando hay 48+ workers terminando — no es error
-                self.master.after(
-                    0,
-                    lambda: self.results_frame.add_log(
-                        "✅ Servidor procesando reset y limpieza (timeout esperado con muchos workers)."
+                def _on_timeout():
+                    self.is_resetting = False
+                    self.results_frame.add_log(
+                        "✅ Servidor procesando reset (timeout esperado con muchos workers)."
                     )
-                )
+                self.master.after(0, _on_timeout)
             except Exception as e:
-                self.master.after(
-                    0,
-                    lambda err=str(e): self.results_frame.add_log(
-                        f"⚠️ No se pudo contactar al servidor para completar el reset: {err}"
-                    )
-                )
+                def _on_error(err=str(e)):
+                    self.is_resetting = False
+                    self.results_frame.add_log(f"⚠️ No se pudo contactar al servidor: {err}")
+                self.master.after(0, _on_error)
 
         import threading
         threading.Thread(target=_fire_server_reset, daemon=True, name="ServerReset").start()
@@ -2286,12 +2336,12 @@ class ScraperGUI(ttk.Frame):
             )
 
     def _connect_and_load_initial_data(self):
-        """Conecta al servidor en un hilo de fondo para no bloquear la GUI."""
+        """Carga cursos del servidor en un hilo de fondo, sin bloquear la GUI."""
         url = self.server_url.get()
         if not url:
             return
         threading.Thread(
-            target=self._connect_to_server, args=(False,), daemon=True
+            target=self._connect_to_server, args=(False,), daemon=True, name="InitialLoad"
         ).start()
 
     def _show_context_menu(self, event):
@@ -2331,6 +2381,9 @@ class ScraperGUI(ttk.Frame):
         """Hace las llamadas HTTP de polling en un hilo de fondo."""
         url = self.server_url.get()
         if not url or self.is_closing:
+            return
+        # Si estamos en medio de un reset, NO reponer la UI con datos viejos
+        if getattr(self, 'is_resetting', False):
             return
         try:
             r = requests.get(f"{url}/api/detailed_status", timeout=3)
