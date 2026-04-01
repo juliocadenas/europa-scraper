@@ -108,9 +108,6 @@ class CordisApiClient:
     ) -> List[Dict[str, Any]]:
         """
         V29 - Smart Multi-language version con soporte para grandes volúmenes.
-
-        Si detecta más de 3,000 resultados, divide la búsqueda por años
-        para obtener más resultados totales.
         """
         # Primera búsqueda para obtener total_hits
         encoded_query = quote_plus(query_term)
@@ -123,32 +120,28 @@ class CordisApiClient:
 
             response = requests.get(search_url, headers=self.headers, timeout=30)
             data = response.json()
+            
+            if "payload" in data:
+                data = data["payload"]
+                
             total_hits_str = (
                 data.get("result", {}).get("header", {}).get("totalHits", "0")
             )
             total_hits = int(total_hits_str) if total_hits_str else 0
 
-            # Si hay más de 3,000 resultados, usar estrategia de años
-            if total_hits > 3000:
-                logger.info(
-                    f"[CORDIS] >>> {total_hits} resultados detectados. ACTIVANDO ESTRATEGIA POR AÑOS (2014-2025) <<<"
-                )
-                return await self._search_by_years(
-                    query_term, search_mode, max_results, progress_callback, languages
-                )
-            else:
-                # Usar búsqueda normal
-                logger.info(
-                    f"[CORDIS] {total_hits} resultados. Usando búsqueda directa (sin años)."
-                )
-                return await self._search_single(
-                    query_term,
-                    search_mode,
-                    max_results,
-                    progress_callback,
-                    languages,
-                    total_hits_callback,
-                )
+            # CORDIS permite paginación profunda, por lo que la estrategia de años era redundante
+            # y además arruinaba los resultados añadiendo literalmente un string ' 2014' a la query
+            logger.info(
+                f"[CORDIS] >>> {total_hits} resultados detectados. Usando búsqueda continua paginada. <<<"
+            )
+            return await self._search_single(
+                query_term,
+                search_mode,
+                max_results,
+                progress_callback,
+                languages,
+                total_hits_callback,
+            )
         except Exception as e:
             logger.error(f"Error en búsqueda inicial: {e}")
             # Fallback a búsqueda normal
@@ -201,15 +194,28 @@ class CordisApiClient:
 
             def _fetch():
                 import requests
-
-                return requests.get(search_url, headers=self.headers, timeout=90)
+                logger.info(f"CORDIS API: Iniciando petición HTTP GET a {search_url}")
+                try:
+                    res = requests.get(search_url, headers=self.headers, timeout=90)
+                    logger.info(f"CORDIS API: Respuesta HTTP {res.status_code} recibida para página {page}")
+                    return res
+                except requests.exceptions.RequestException as req_err:
+                    logger.error(f"CORDIS API: Error de conexión HTTP o timeout en página {page}: {req_err}")
+                    raise
 
             try:
                 response = await loop.run_in_executor(None, _fetch)
 
+                if response.status_code == 429:
+                    logger.warning(
+                        f"V29 - 🔴 RATE LIMITED (429) en página {page}. Esperando 120s antes de reintentar..."
+                    )
+                    await asyncio.sleep(120)
+                    continue  # Reintentar la misma página
+
                 if response.status_code != 200:
                     logger.error(
-                        f"V29 - Error fetching page {page}: Status {response.status_code}"
+                        f"V29 - Error fetching page {page}: Status {response.status_code}. Respuesta: {response.text[:200]}"
                     )
                     break
 
@@ -219,6 +225,10 @@ class CordisApiClient:
                     logger.error(f"V29 - JSON parse error on page {page}: {e}")
                     break
 
+                # The API sometimes envelops the root keys inside 'payload'
+                if "payload" in data:
+                    data = data["payload"]
+                
                 result_data = data.get("result", {})
                 if not isinstance(result_data, dict):
                     result_data = {}
@@ -388,14 +398,14 @@ class CordisApiClient:
 
                 page += 1
 
-                await asyncio.sleep(0.1)
+                await asyncio.sleep(1.0)  # 1 segundo entre páginas para evitar rate-limits
 
             except Exception as e:
                 logger.error(f"CORDIS: Error en página {page}: {e}")
                 page += 1
                 if page > 1000:
                     break
-                await asyncio.sleep(2.0)
+                await asyncio.sleep(5.0)  # 5 segundos en caso de error de red
                 continue
 
         logger.info(
@@ -422,7 +432,7 @@ class CordisApiClient:
         def year_progress_wrapper(page, total_hits, collected):
             """Wrapper que suma el progreso de todos los años"""
             nonlocal cumulative_results
-            cumulative_results += collected
+            cumulative_results = max(cumulative_results, collected)
             if progress_callback:
                 progress_callback(page, total_hits, cumulative_results)
 

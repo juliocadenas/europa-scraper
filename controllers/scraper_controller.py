@@ -977,6 +977,7 @@ class ScraperController(ScraperControllerBase):
         self,
         courses_in_range: List[Tuple[str, str, str, str]],
         search_mode: str = "broad",
+        max_results: int = 150,
         progress_callback: Optional[Callable] = None,
         languages: Optional[List[str]] = None,
     ) -> List[Dict[str, Any]]:
@@ -1104,6 +1105,7 @@ class ScraperController(ScraperControllerBase):
                 results = await self.cordis_api_client.search_projects_and_publications(
                     search_term,
                     search_mode=search_mode,
+                    max_results=max_results,
                     progress_callback=cordis_progress_callback,
                     languages=languages
                     if languages
@@ -1729,9 +1731,13 @@ class ScraperController(ScraperControllerBase):
                     if isinstance(params, dict)
                     else ["en", "es", "de", "fr", "it", "pl"]
                 )
+                # Obtener max_results
+                max_results = params.get("search_max_results", 150)
                 try:
                     all_search_results = await self._process_cordis_api_phase(
                         courses_in_range,
+                        search_mode=search_mode,
+                        max_results=max_results,
                         progress_callback=progress_callback,
                         languages=cordis_languages,
                     )

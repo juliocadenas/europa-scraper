@@ -2025,6 +2025,36 @@ class ScraperGUI(ttk.Frame):
         if hasattr(self, "audit_worker_nodes"):
             self.audit_worker_nodes.clear()
 
+        # Limpiar Listas de Cursos y Base local
+        if hasattr(self, 'from_sic_listbox'):
+            self.from_sic_listbox.delete(0, tk.END)
+        if hasattr(self, 'to_sic_listbox'):
+            self.to_sic_listbox.delete(0, tk.END)
+        if hasattr(self, 'detailed_sic_codes_with_courses'):
+            self.detailed_sic_codes_with_courses = []
+
+        # Resetear Contadores Visibles
+        if hasattr(self, 'stat_completed'):
+            self.stat_completed.config(text="✅ Completados: 0")
+        if hasattr(self, 'stat_pending'):
+            self.stat_pending.config(text="⏳ Pendientes: 0")
+        if hasattr(self, 'stat_failed'):
+            self.stat_failed.config(text="❌ Fallidos: 0")
+        if hasattr(self, 'stat_lines'):
+            self.stat_lines.config(text="📄 Resultados: --")
+            
+        if hasattr(self, 'main_progress_bar'):
+            self.main_progress_bar["value"] = 0
+        if hasattr(self, 'main_progress_label'):
+            self.main_progress_label.config(text="0%")
+        if hasattr(self, 'lbl_sys_status'):
+            self.lbl_sys_status.config(text="● DETENIDO", foreground="red")
+
+        if hasattr(self, 'exp_stat_completed'):
+            self.exp_stat_completed.config(text="✅ Completados: 0")
+        if hasattr(self, 'courses_completed_label'):
+            self.courses_completed_label.config(text="✅ Completados: 0")
+
         # Limpiar panel de detalles
         self.details_text.config(state=tk.NORMAL)
         self.details_text.delete(1.0, tk.END)
