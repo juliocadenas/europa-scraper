@@ -134,7 +134,6 @@ def worker_process(
     course_states: Dict,
     config_path: str,
     event_queue: multiprocessing.Queue,
-    api_semaphore=None,  # Semaphore for global API rate limiting
 ):
     """
     Función principal para cada proceso trabajador del pool.
@@ -373,8 +372,6 @@ def worker_process(
 
                 # Inicializar ScraperController
                 scraper_controller = ScraperController(config_manager, browser_manager)
-                if api_semaphore is not None:
-                    scraper_controller.cordis_api_client.api_semaphore = api_semaphore
                 
                 # INYECTAR PROXY MANAGER AL CLIENTE DE API
                 if proxy_manager is not None:
@@ -590,8 +587,6 @@ class ScraperServer:
         self.cleanup_stop_event = threading.Event()
 
         self.event_queue = self.manager.Queue()
-        # Usar semáforo nativo del SO, no del manager (evita IPC deadlock con 48 workers)
-        self.api_semaphore = multiprocessing.Semaphore(3)  # Límite global anti-ban para CORDIS
         self.event_consumer_stop = threading.Event()
         self.event_consumer_thread = threading.Thread(
             target=self._consume_events, daemon=True
@@ -695,7 +690,6 @@ class ScraperServer:
                     self.course_states,
                     self.config_path,
                     self.event_queue,
-                    self.api_semaphore,  # Pass api_semaphore
                 ),
             )
             for i in range(num_workers)
