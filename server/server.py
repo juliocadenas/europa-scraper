@@ -590,7 +590,8 @@ class ScraperServer:
         self.cleanup_stop_event = threading.Event()
 
         self.event_queue = self.manager.Queue()
-        self.api_semaphore = self.manager.Semaphore(3)  # Límite global anti-ban para CORDIS (Max 3 concurrent requests)
+        # Usar semáforo nativo del SO, no del manager (evita IPC deadlock con 48 workers)
+        self.api_semaphore = multiprocessing.Semaphore(3)  # Límite global anti-ban para CORDIS
         self.event_consumer_stop = threading.Event()
         self.event_consumer_thread = threading.Thread(
             target=self._consume_events, daemon=True
