@@ -207,7 +207,7 @@ class CordisApiClient:
                 if progress_callback:
                     # Reportar que seguimos vivos y por qué estamos esperando
                     # Forzamos un log temporal usando el parámetro de página como 0
-                    progress_callback(0, f"⏳ {reason} ({int(duration - slept)}s restantes)", len(all_results))
+                    progress_callback(0, 0, len(all_results), custom_msg=f"⏳ {reason} ({int(duration - slept)}s restantes)")
 
         # Stagger inicial aleatorio para no golpear CORDIS los 48 a la vez
         await _heartbeat_sleep(random.uniform(1.0, 15.0), "Stagger inicial")

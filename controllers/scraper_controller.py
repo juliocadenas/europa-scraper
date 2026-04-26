@@ -1080,22 +1080,27 @@ class ScraperController(ScraperControllerBase):
             # PROGRESO GLOBAL: Usa course_base_pct y course_share del scope exterior
             last_progress_emit = [0]
 
-            def cordis_progress_callback(page, total_hits, collected):
+            def cordis_progress_callback(page, total_hits, collected, custom_msg=None):
                 logger.info(
-                    f"[CORDIS CALLBACK] 📡 page={page}, total_hits={total_hits}, collected={collected}"
+                    f"[CORDIS CALLBACK] 📡 page={page}, total_hits={total_hits}, collected={collected}, custom_msg={custom_msg}"
                 )
-                should_emit = (collected >= last_progress_emit[0] + 100) or (page % 1 == 0)
+                should_emit = (collected >= last_progress_emit[0] + 100) or (page % 1 == 0) or custom_msg is not None
                 if should_emit:
                     last_progress_emit[0] = collected
                     # Progreso DENTRO de este curso (0-100%)
                     intra_course_pct = (
                         min(100, (collected / total_hits) * 100)
-                        if total_hits > 0
+                        if total_hits and isinstance(total_hits, int) and total_hits > 0
                         else 0
                     )
                     # Progreso GLOBAL: base del curso + porción dentro del curso
                     global_pct = course_base_pct + (intra_course_pct / 100.0) * course_share
-                    msg = f"🔍 Fase 1 [{current_course}/{total_courses}]: {course_name} | Pág {page} | {collected:,}/{total_hits:,}"
+                    
+                    if custom_msg:
+                        msg = f"🔍 Fase 1 [{current_course}/{total_courses}]: {course_name} | {custom_msg}"
+                    else:
+                        msg = f"🔍 Fase 1 [{current_course}/{total_courses}]: {course_name} | Pág {page} | {collected:,}/{total_hits:,}"
+                        
                     logger.info(msg)
                     self._emit_event(
                         "PROGRESS",
