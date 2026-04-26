@@ -215,11 +215,6 @@ class CordisApiClient:
                 req_headers["User-Agent"] = random.choice(self.USER_AGENTS)
                 logger.info(f"CORDIS API: Petición HTTP GET página {page}")
                 
-                has_sem = hasattr(self, 'api_semaphore') and self.api_semaphore is not None
-                if has_sem:
-                    logger.debug(f"CORDIS API: Esperando semáforo global para página {page}...")
-                    self.api_semaphore.acquire()
-                    
                 try:
                     res = requests.get(search_url, headers=req_headers, timeout=20)
                     logger.info(f"CORDIS API: HTTP {res.status_code} página {page}")
@@ -227,22 +222,31 @@ class CordisApiClient:
                 except requests.exceptions.RequestException as req_err:
                     logger.error(f"CORDIS API: Error de conexión página {page}: {req_err}")
                     raise
-                finally:
-                    if has_sem:
-                        self.api_semaphore.release()
 
             try:
                 # Reintentos con backoff exponencial
                 max_retries = 5
                 retry_delay = 5
                 response = None
+                has_sem = hasattr(self, 'api_semaphore') and self.api_semaphore is not None
 
                 for attempt in range(max_retries):
                     try:
-                        response = await asyncio.wait_for(
-                            loop.run_in_executor(None, _fetch),
-                            timeout=30.0  # Timeout total reducido para liberar hilos rápido
-                        )
+                        if has_sem:
+                            logger.debug(f"CORDIS API: Esperando semáforo global para página {page}...")
+                            # Adquirir el semáforo sin bloquear el event loop
+                            await asyncio.to_thread(self.api_semaphore.acquire)
+                            
+                        try:
+                            response = await asyncio.wait_for(
+                                loop.run_in_executor(None, _fetch),
+                                timeout=30.0  # Timeout total reducido para liberar hilos rápido
+                            )
+                        finally:
+                            if has_sem:
+                                # Asegurar que siempre se libera el semáforo
+                                await asyncio.to_thread(self.api_semaphore.release)
+                                
                         break  # Éxito, salir del loop de reintentos
                     except (asyncio.TimeoutError, Exception) as fetch_err:
                         if attempt < max_retries - 1:
