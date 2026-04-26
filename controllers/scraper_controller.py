@@ -105,6 +105,9 @@ class ScraperController(ScraperControllerBase):
         self.current_phase = 1  # 1 = Búsqueda, 2 = Tabulación
         self.current_tabulation_course = 0  # Contador para la fase de tabulación
 
+        # PROGRESO GLOBAL MONOTÓNICO: nunca retrocede
+        self._last_emitted_progress = 0
+
         # Callback para logs
         self.log_callback = None
 
@@ -124,6 +127,14 @@ class ScraperController(ScraperControllerBase):
     def set_event_callback(self, callback):
         """Establece el callback para reportar eventos al log del servidor."""
         self.event_callback = callback
+
+    def _emit_safe_progress(self, progress_callback, raw_pct, message, stats=None):
+        """Emite progreso SOLO si es mayor al último emitido. Nunca retrocede."""
+        clamped = max(0, min(100, int(raw_pct)))
+        if clamped >= self._last_emitted_progress:
+            self._last_emitted_progress = clamped
+            if progress_callback:
+                progress_callback(clamped, message, stats)
 
     def _emit_event(self, type_str, msg, details=None):
         """Emite un evento si el callback está configurado."""
@@ -1013,12 +1024,17 @@ class ScraperController(ScraperControllerBase):
             self.progress_reporter.set_course_counts(current_course, total_courses)
             current_course_info = f"{sic_code} - {course_name}"
 
-            if progress_callback:
-                progress_callback(
-                    0,
-                    f"Buscando curso {current_course} de {total_courses} - {current_course_info}",
-                    self.stats,
-                )
+            # PROGRESO GLOBAL: Fase 1 ocupa 0%-50%
+            # Cada curso tiene una porción igual del 50%
+            course_base_pct = ((current_course - 1) / total_courses) * 50
+            course_share = 50.0 / total_courses
+
+            self._emit_safe_progress(
+                progress_callback,
+                course_base_pct,
+                f"🔍 Fase 1: Buscando curso {current_course}/{total_courses} - {current_course_info}",
+                self.stats,
+            )
 
             search_term = course_name if course_name else sic_code
 
@@ -1061,28 +1077,25 @@ class ScraperController(ScraperControllerBase):
                 )
 
             # Callback de progreso detallado para CORDIS
-            last_progress_emit = [0]  # Use list to allow mutation in nested function
+            # PROGRESO GLOBAL: Usa course_base_pct y course_share del scope exterior
+            last_progress_emit = [0]
 
             def cordis_progress_callback(page, total_hits, collected):
-                print(
-                    f"[CORDIS CALLBACK] 📡 page={page}, total={total_hits}, collected={collected}"
-                )
                 logger.info(
                     f"[CORDIS CALLBACK] 📡 page={page}, total_hits={total_hits}, collected={collected}"
                 )
-                # HEARTBEAT MEJORADO: Emitir progreso cada página y cada 100 resultados
-                # para que el frontend SIEMPRE vea actividad y nunca parezca congelado
-                should_emit = (collected >= last_progress_emit[0] + 100) or (
-                    page % 1 == 0  # Cada página = cada vez
-                )
+                should_emit = (collected >= last_progress_emit[0] + 100) or (page % 1 == 0)
                 if should_emit:
                     last_progress_emit[0] = collected
-                    progress_pct = (
-                        min(100, int((collected / total_hits) * 100))
+                    # Progreso DENTRO de este curso (0-100%)
+                    intra_course_pct = (
+                        min(100, (collected / total_hits) * 100)
                         if total_hits > 0
                         else 0
                     )
-                    msg = f"⏳ CORDIS: {course_name} | Página {page} | {collected:,}/{total_hits:,} resultados ({progress_pct}%)"
+                    # Progreso GLOBAL: base del curso + porción dentro del curso
+                    global_pct = course_base_pct + (intra_course_pct / 100.0) * course_share
+                    msg = f"🔍 Fase 1 [{current_course}/{total_courses}]: {course_name} | Pág {page} | {collected:,}/{total_hits:,}"
                     logger.info(msg)
                     self._emit_event(
                         "PROGRESS",
@@ -1094,13 +1107,13 @@ class ScraperController(ScraperControllerBase):
                             "course": course_name,
                         },
                     )
-                    # Actualizar barra de progreso general y monitor de actividad
-                    if progress_callback:
-                        progress_callback(
-                            progress_pct,
-                            f"CORDIS: {course_name} - {collected:,}/{total_hits:,} ({progress_pct}%)",
-                            self.stats,
-                        )
+                    # Emitir progreso global monotónico
+                    self._emit_safe_progress(
+                        progress_callback,
+                        global_pct,
+                        msg,
+                        self.stats,
+                    )
 
             try:
                 results = await self.cordis_api_client.search_projects_and_publications(
@@ -1142,13 +1155,14 @@ class ScraperController(ScraperControllerBase):
                     },
                 )
 
-                # Actualizar progreso a 100% al completar
-                if progress_callback:
-                    progress_callback(
-                        100,
-                        f"✅ {course_name}: {len(results)} resultados de CORDIS",
-                        self.stats,
-                    )
+                # Actualizar progreso global al completar este curso
+                course_end_pct = course_base_pct + course_share
+                self._emit_safe_progress(
+                    progress_callback,
+                    course_end_pct,
+                    f"✅ Fase 1 [{current_course}/{total_courses}]: {course_name} - {len(results)} resultados",
+                    self.stats,
+                )
 
             except Exception as e:
                 logger.error(f"Error en búsqueda Cordis API para '{search_term}': {e}")
@@ -1211,13 +1225,12 @@ class ScraperController(ScraperControllerBase):
             f"🔄 Iniciando tabulación: {self.total_results_to_process} resultados de {len(results_by_course)} cursos",
         )
 
-        if progress_callback:
-            progress_callback(
-                0,
-                f"🔄 Tabulación: {self.total_results_to_process} resultados",
-            )
-
-        logger.info(f"📋 Cursos con resultados: {len(results_by_course)}")
+        # PROGRESO GLOBAL: Fase 2 ocupa 50%-100%
+        self._emit_safe_progress(
+            progress_callback,
+            50,
+            f"📋 Fase 2: Tabulando {self.total_results_to_process} resultados de {len(results_by_course)} cursos",
+        )
 
         logger.info(f"═══════════════════════════════════════════════════════")
         logger.info(f"🔄 FASE 2: TABULACIÓN DE RESULTADOS")
@@ -1227,14 +1240,8 @@ class ScraperController(ScraperControllerBase):
 
         self._emit_event(
             "INFO",
-            f"🔄 Tabulación: {self.total_results_to_process} resultados de {len(results_by_course)} cursos",
+            f"📋 Fase 2: Tabulando {self.total_results_to_process} resultados de {len(results_by_course)} cursos",
         )
-
-        if progress_callback:
-            progress_callback(
-                0,
-                f"🔄 Tabulación: {self.total_results_to_process} resultados de {len(results_by_course)} cursos",
-            )
 
         if self.stop_requested:
             logger.info(
@@ -1279,18 +1286,18 @@ class ScraperController(ScraperControllerBase):
                 },
             )
 
-            if progress_callback:
-                progress_percentage = (
-                    self.processed_results_count / self.total_results_to_process
-                ) * 100
-                tabulation_message = self.progress_reporter.report_tabulation_progress(
-                    self.processed_results_count,
-                    self.total_results_to_process,
-                    sic_code,
-                    course_name,
-                    total_results=self.total_results_to_process,
-                )
-                progress_callback(progress_percentage, tabulation_message, self.stats)
+            # PROGRESO GLOBAL: Fase 2 = 50% + (procesados/total * 50%)
+            tab_pct = (
+                self.processed_results_count / self.total_results_to_process
+            ) * 50 if self.total_results_to_process > 0 else 0
+            global_tab_pct = 50 + tab_pct
+            tabulation_message = f"📋 Fase 2 [{i+1}/{len(results_by_course)}]: {course_name} | {self.processed_results_count:,}/{self.total_results_to_process:,}"
+            self._emit_safe_progress(
+                progress_callback,
+                global_tab_pct,
+                tabulation_message,
+                self.stats,
+            )
 
             for j in range(0, len(course_results), self._batch_size):
                 if self.stop_requested:
@@ -1375,22 +1382,18 @@ class ScraperController(ScraperControllerBase):
                     self.processed_results_count, self.total_results_to_process
                 )
 
-                if progress_callback:
-                    progress_percentage = (
-                        self.processed_results_count / self.total_results_to_process
-                    ) * 100
-                    tabulation_message = (
-                        self.progress_reporter.report_tabulation_progress(
-                            self.processed_results_count,
-                            self.total_results_to_process,
-                            sic_code,
-                            course_name,
-                            total_results=self.total_results_to_process,
-                        )
-                    )
-                    progress_callback(
-                        progress_percentage, tabulation_message, self.stats
-                    )
+                # PROGRESO GLOBAL: actualizar después de cada batch
+                tab_pct = (
+                    self.processed_results_count / self.total_results_to_process
+                ) * 50 if self.total_results_to_process > 0 else 0
+                global_tab_pct = 50 + tab_pct
+                batch_msg = f"📋 Fase 2 [{i+1}/{len(results_by_course)}]: {course_name} | {self.processed_results_count:,}/{self.total_results_to_process:,}"
+                self._emit_safe_progress(
+                    progress_callback,
+                    global_tab_pct,
+                    batch_msg,
+                    self.stats,
+                )
 
                 if j % (self._batch_size * 5) == 0:
                     self._clean_memory()
@@ -1520,6 +1523,7 @@ class ScraperController(ScraperControllerBase):
         """
         try:
             self.stop_requested = False
+            self._last_emitted_progress = 0  # Reset progreso global para este job
 
             # Extract search_engine early to decide whether browser is needed
             search_engine = (
