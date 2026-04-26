@@ -133,7 +133,8 @@ def worker_process(
     status_dict: Dict,
     course_states: Dict,
     config_path: str,
-    event_queue: multiprocessing.Queue,  # Corregido: era event_log y faltaba tipo
+    event_queue: multiprocessing.Queue,
+    api_semaphore=None,  # Semaphore for global API rate limiting
 ):
     """
     Función principal para cada proceso trabajador del pool.
@@ -372,6 +373,8 @@ def worker_process(
 
                 # Inicializar ScraperController
                 scraper_controller = ScraperController(config_manager, browser_manager)
+                if api_semaphore is not None:
+                    scraper_controller.cordis_api_client.api_semaphore = api_semaphore
 
                 # INYECTAR CALLBACK DE EVENTOS AL CONTROLADOR
                 def controller_event_callback(type_str, msg, details=None):
@@ -582,8 +585,8 @@ class ScraperServer:
         self.course_states = self.manager.dict()
         self.cleanup_stop_event = threading.Event()
 
-        # --- NUEVO: COLA DE EVENTOS Y HILO CONSUMIDOR ---
         self.event_queue = self.manager.Queue()
+        self.api_semaphore = self.manager.Semaphore(3)  # Límite global anti-ban para CORDIS (Max 3 concurrent requests)
         self.event_consumer_stop = threading.Event()
         self.event_consumer_thread = threading.Thread(
             target=self._consume_events, daemon=True
@@ -687,7 +690,8 @@ class ScraperServer:
                     self.course_states,
                     self.config_path,
                     self.event_queue,
-                ),  # Pass event_queue
+                    self.api_semaphore,  # Pass api_semaphore
+                ),
             )
             for i in range(num_workers)
         ]

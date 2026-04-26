@@ -214,6 +214,12 @@ class CordisApiClient:
                 req_headers = self.headers.copy()
                 req_headers["User-Agent"] = random.choice(self.USER_AGENTS)
                 logger.info(f"CORDIS API: Petición HTTP GET página {page}")
+                
+                has_sem = hasattr(self, 'api_semaphore') and self.api_semaphore is not None
+                if has_sem:
+                    logger.debug(f"CORDIS API: Esperando semáforo global para página {page}...")
+                    self.api_semaphore.acquire()
+                    
                 try:
                     res = requests.get(search_url, headers=req_headers, timeout=20)
                     logger.info(f"CORDIS API: HTTP {res.status_code} página {page}")
@@ -221,6 +227,9 @@ class CordisApiClient:
                 except requests.exceptions.RequestException as req_err:
                     logger.error(f"CORDIS API: Error de conexión página {page}: {req_err}")
                     raise
+                finally:
+                    if has_sem:
+                        self.api_semaphore.release()
 
             try:
                 # Reintentos con backoff exponencial
