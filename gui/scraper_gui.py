@@ -2348,6 +2348,14 @@ class ScraperGUI(ttk.Frame):
             self.expanded_errors_text.config(state=tk.DISABLED)
             self.expanded_errors_text.see(tk.END)
 
+    def _update_timer_display(self, time_str):
+        """Callback del TimerManager para actualizar el label del timer.
+        Se ejecuta desde un hilo de fondo, por lo que usa master.after para seguridad."""
+        try:
+            self.master.after(0, lambda t=time_str: self.timer_label.config(text=t))
+        except Exception:
+            pass  # Widget puede haber sido destruido
+
     def handle_scraping_finished(self):
         """Maneja el evento de finalización del scraping."""
         self.results_frame.add_log("✅ Proceso de scraping finalizado.")
@@ -2407,7 +2415,9 @@ class ScraperGUI(ttk.Frame):
         threading.Thread(target=self._do_status_poll, daemon=True).start()
 
     def _do_status_poll(self):
-        """Hace las llamadas HTTP de polling en un hilo de fondo."""
+        """Hace las llamadas HTTP de polling en un hilo de fondo.
+        MEJORADO: Sincroniza timer con servidor, detecta workers estancados/muertos.
+        """
         url = self.server_url.get()
         if not url or self.is_closing:
             return
@@ -2426,10 +2436,23 @@ class ScraperGUI(ttk.Frame):
                 else:
                     courses = courses_raw
 
-                # Configurar timer desde el servidor
+                # === TIMER SINCRONIZADO CON EL SERVIDOR (persiste entre reinicios del cliente) ===
                 start_time_iso = data.get("start_time")
                 acc_time = data.get("accumulated_time", 0)
-                
+                is_running = data.get("is_running", False)
+
+                # Sincronizar el TimerManager con los datos del servidor
+                if hasattr(self, 'timer_manager'):
+                    if is_running and acc_time > 0:
+                        self.timer_manager.sync_from_server(acc_time, start_time_iso)
+                        # Auto-arrancar el timer local si no está corriendo
+                        if not self.timer_manager.timer_running:
+                            self.timer_manager.start()
+                    elif not is_running and self.timer_manager.timer_running:
+                        # Job terminó — detener timer pero mantener el último valor
+                        self.timer_manager.stop()
+
+                # Fallback directo al label por si el TimerManager no está activo
                 if start_time_iso:
                     try:
                         dt = datetime.fromisoformat(start_time_iso)
@@ -2441,7 +2464,7 @@ class ScraperGUI(ttk.Frame):
 
                 hours, remainder = divmod(int(acc_time), 3600)
                 minutes, seconds = divmod(remainder, 60)
-                timer_str = f"Tiempo: {hours:02}:{minutes:02}:{seconds:02} | {start_str}"
+                timer_str = f"⏱ {hours:02}:{minutes:02}:{seconds:02} | {start_str}"
                 
                 # Actualizar el timer en el hilo de UI
                 self.master.after(0, lambda t=timer_str: self.timer_label.config(text=t))
@@ -2452,6 +2475,49 @@ class ScraperGUI(ttk.Frame):
                 self.master.after(0, lambda s=contenidos_str: self.stat_lines.config(text=s))
                 if hasattr(self, "exp_stat_lines"):
                     self.master.after(0, lambda s=contenidos_str: self.exp_stat_lines.config(text=s))
+
+                # === DETECCIÓN DE WORKERS ESTANCADOS ===
+                stalled = data.get("stalled_workers", [])
+                dead = data.get("dead_workers", [])
+
+                if stalled or dead:
+                    # Construir mensaje de alerta
+                    alert_parts = []
+                    for sw in stalled:
+                        secs = sw.get("seconds_since_heartbeat", 0)
+                        wid = sw.get("worker_id", "?")
+                        task = sw.get("last_task", "?")
+                        mins = secs // 60
+                        alert_parts.append(
+                            f"⚠️ Worker {wid} sin respuesta hace {mins}min ({task})"
+                        )
+                    for dw in dead:
+                        alert_parts.append(
+                            f"💀 Proceso PID {dw.get('pid')} muerto (código: {dw.get('exitcode')})"
+                        )
+
+                    # Mostrar en el log y en el indicador de estado
+                    for msg in alert_parts:
+                        self.master.after(
+                            0,
+                            lambda m=msg: self._add_to_detailed_log(m, "WARNING")
+                        )
+
+                    # Cambiar indicador de estado a amarillo de alerta
+                    if dead:
+                        self.master.after(
+                            0,
+                            lambda: self.status_indicator_label.config(
+                                text="● WORKER MUERTO", foreground="#ff4444"
+                            )
+                        )
+                    elif stalled:
+                        self.master.after(
+                            0,
+                            lambda: self.status_indicator_label.config(
+                                text="● POSIBLE BLOQUEO", foreground="#ffaa00"
+                            )
+                        )
 
                 if courses or workers:
                     self.master.after(

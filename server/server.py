@@ -164,6 +164,7 @@ def worker_process(
         "status": "Idle",
         "progress": 0,
         "current_task": "Esperando tarea",
+        "last_heartbeat": time.time(),
     }
 
     logger.info(f"Worker {worker_id} iniciado.")
@@ -218,6 +219,7 @@ def worker_process(
                     "status": "Initializing",
                     "progress": 0,
                     "current_task": "Iniciando navegador...",
+                    "last_heartbeat": time.time(),
                 }
                 logger.info(
                     f"Worker {worker_id}: Inicializando componentes para la primera tarea."
@@ -356,6 +358,7 @@ def worker_process(
                         "status": "Error",
                         "progress": 0,
                         "current_task": f"Error Init: {str(e)[:50]}",
+                        "last_heartbeat": time.time(),
                     }
                     if "work_queue" in locals():
                         work_queue.task_done()
@@ -402,12 +405,17 @@ def worker_process(
                 "status": "working",
                 "progress": 0,
                 "current_task": f"Procesando: {course_name_display}",
+                "last_heartbeat": time.time(),
             }
 
             # Definir callback de progreso para este trabajador
             def progress_callback(percentage, message, stats=None):
                 current_status = status_dict[worker_id]
-                current_status.update({"progress": percentage, "current_task": message})
+                current_status.update({
+                    "progress": percentage,
+                    "current_task": message,
+                    "last_heartbeat": time.time(),  # HEARTBEAT: marca de vida
+                })
                 if stats:
                     current_status.update(
                         {
@@ -486,6 +494,7 @@ def worker_process(
                     "files_saved": cumulative_stats["files_saved"],
                     "omitted_count": cumulative_stats["files_not_saved"],
                     "error_count": cumulative_stats["total_errors"],
+                    "last_heartbeat": time.time(),
                 }
                 log_event_sync(
                     EventType.SUCCESS, "Tarea finalizada.", {"stats": cumulative_stats}
@@ -511,6 +520,7 @@ def worker_process(
                 "status": "Error",
                 "progress": 0,
                 "current_task": f"CRASHED: {str(e)[:40]}...",
+                "last_heartbeat": time.time(),
             }
             # Marcar la tarea como hecha para no bloquear la cola si hay un error
             if "work_queue" in locals() and isinstance(
@@ -1148,29 +1158,41 @@ class ScraperServer:
 
     def _cleanup_finished_workers(self):
         """
-        En un hilo separado, revisa periódicamente los workers y resetea aquellos
-        que han estado en estado 'finished' por un tiempo.
-        NEUTRALIZADO: Esta función ha sido desactivada para que el estado final
-        de los workers (100% y mensaje de estadísticas) persista en la GUI.
+        En un hilo separado, revisa periódicamente los workers y detecta procesos
+        muertos para actualizar el estado y evitar que el frontend se quede congelado.
+        REACTIVADO: Ahora detecta procesos muertos y actualiza is_job_running.
         """
         while not self.cleanup_stop_event.is_set():
             try:
-                # La lógica de limpieza ha sido desactivada a petición del usuario.
-                pass
+                if self.is_job_running and self.worker_pool:
+                    all_dead = all(not p.is_alive() for p in self.worker_pool)
+                    if all_dead:
+                        self.logger.warning(
+                            "⚠️ TODOS los workers han muerto. Marcando job como terminado."
+                        )
+                        asyncio.run(
+                            global_event_log.add(
+                                EventType.ERROR,
+                                "Server",
+                                "⚠️ Todos los procesos worker han terminado inesperadamente. "
+                                "El job se ha marcado como finalizado.",
+                            )
+                        )
+                        self.is_job_running = False
+                        self.start_time = None
+                    else:
+                        # Reportar workers muertos individuales
+                        for p in self.worker_pool:
+                            if not p.is_alive() and p.exitcode != 0 and p.exitcode is not None:
+                                self.logger.warning(
+                                    f"Worker PID {p.pid} terminó con código {p.exitcode}"
+                                )
             except Exception as e:
                 self.logger.error(
                     f"Error en el hilo de limpieza de workers: {e}", exc_info=True
                 )
-                asyncio.run(
-                    global_event_log.add(
-                        EventType.ERROR,
-                        "Server",
-                        f"Error en el hilo de limpieza de workers: {e}",
-                        {"traceback": traceback.format_exc()},
-                    )
-                )
 
-            time.sleep(3600)  # Dormir por una hora para que no consuma recursos.
+            time.sleep(15)  # Revisar cada 15 segundos
 
     async def stop_scraping_job(self):
         if not self.is_job_running:
@@ -1270,6 +1292,32 @@ class ScraperServer:
             except Exception:
                 pass
 
+        # --- DETECCIÓN DE WORKERS ESTANCADOS ---
+        now = time.time()
+        stalled_workers = []
+        for wid, wstate in workers_dict.items():
+            hb = wstate.get("last_heartbeat", 0)
+            status = wstate.get("status", "")
+            if status in ("working", "Initializing") and hb > 0:
+                seconds_since = now - hb
+                if seconds_since > 60:
+                    stalled_workers.append({
+                        "worker_id": wid,
+                        "seconds_since_heartbeat": int(seconds_since),
+                        "last_task": wstate.get("current_task", "?")[:60],
+                    })
+
+        # --- DETECCIÓN DE WORKERS MUERTOS (proceso OS terminado) ---
+        # Solo reportar workers muertos si hay un job activo (si no, es normal que estén muertos)
+        dead_workers = []
+        if self.is_job_running and self.worker_pool:
+            for p in self.worker_pool:
+                if not p.is_alive():
+                    dead_workers.append({
+                        "pid": p.pid,
+                        "exitcode": p.exitcode,
+                    })
+
         # Contar total de lineas de datos en todos los CSVs de results (CONTENIDOS)
         csv_total = 0
         try:
@@ -1294,7 +1342,10 @@ class ScraperServer:
             "is_running": self.is_job_running,
             "start_time": getattr(self, "start_time", None),
             "accumulated_time": accumulated_time,
-            "csv_total": csv_total
+            "csv_total": csv_total,
+            "stalled_workers": stalled_workers,
+            "dead_workers": dead_workers,
+            "server_time": now,
         }
 
     async def get_all_courses(self):

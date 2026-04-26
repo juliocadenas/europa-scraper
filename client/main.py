@@ -48,21 +48,17 @@ class ClientApp:
         self.gui = ScraperGUI(self.root, self)
         self.gui.pack(fill="both", expand=True)
 
-        # Cargar configuración del servidor
-        self.server_base_url = self._load_server_config()
+        # Cargar configuración del servidor (una sola vez)
         self.server_base_url = self._load_server_config()
         self.is_scraping = False
-        self.scraping_start_time = (
-            None  # Inicializar variable para evitar AttributeError
-        )
-        self.stop_polling = threading.Event()
-        self.status_poll_thread = threading.Thread(
-            target=self._poll_status, daemon=True
-        )
-        self.status_poll_thread.start()
-        self.stop_polling = threading.Event()
+        self.scraping_start_time = None
 
-        # New: Track last received event ID for delta updates
+        # El polling NO arranca al inicio - solo cuando hay un job activo
+        self.stop_polling = threading.Event()
+        self.stop_polling.set()  # Empieza en estado "parado"
+        self.status_poll_thread = None
+
+        # Track last received event ID for delta updates
         self.last_event_id = 0
         # Throttle: only push one CORDIS log per second to avoid GUI freeze
         self._last_cordis_log_time = 0.0
@@ -202,10 +198,10 @@ class ClientApp:
             self.queue.put(("log", f"✅ {message}"))
             self.queue.put(("log", f"🆔 Tarea iniciada. ID: {task_id}"))
 
-            # Iniciar el sondeo de estado
+            # Arrancar el polling SOLO ahora que hay un job activo
             self.stop_polling.clear()
             self.status_poll_thread = threading.Thread(
-                target=self._poll_status, daemon=True
+                target=self._poll_status, daemon=True, name="PollStatus"
             )
             self.status_poll_thread.start()
 
@@ -236,6 +232,7 @@ class ClientApp:
 
     def _poll_status(self):
         last_logged_tasks = {}  # Track what we've already logged
+        last_stall_alert_time = 0  # Throttle stall alerts to once per 30s
         while not self.stop_polling.is_set():
             try:
                 response = requests.get(
@@ -251,15 +248,24 @@ class ClientApp:
                 # Enviar el estado completo a la GUI para que lo procese
                 self.queue.put(("update_status", data))
 
-                # Deshabilitado el registro en panel Resultados (Botín):
-                # El usuario requirió que el panel Botín (Resultados) *solo muestre éxito*
-                # y no muestre la basura técnica de los workers "Buscando...", "Iniciando...", etc.
+                # === ALERTAS DE WORKERS ESTANCADOS/MUERTOS ===
+                now = time.time()
+                stalled = data.get("stalled_workers", [])
+                dead = data.get("dead_workers", [])
+
+                if (stalled or dead) and (now - last_stall_alert_time > 30):
+                    last_stall_alert_time = now
+                    for sw in stalled:
+                        secs = sw.get("seconds_since_heartbeat", 0)
+                        wid = sw.get("worker_id", "?")
+                        mins = secs // 60
+                        self.queue.put(("log", f"⚠️ Worker {wid} sin respuesta hace {mins} min"))
+                    for dw in dead:
+                        self.queue.put(("log", f"💀 Worker PID {dw.get('pid')} ha muerto (código: {dw.get('exitcode')})"))
 
                 # Comprobar si todas las tareas han terminado vía bandera del servidor
                 is_job_running = data.get("is_running", False)
 
-                # Grace period: Don't stop polling in the first 10 seconds even if workers are idle
-                # This allows time for workers to pick up tasks
                 # Grace period: Don't stop polling in the first 10 seconds even if workers are idle
                 # This allows time for workers to pick up tasks
                 if self.is_scraping and self.scraping_start_time:

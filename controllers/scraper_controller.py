@@ -977,7 +977,7 @@ class ScraperController(ScraperControllerBase):
         self,
         courses_in_range: List[Tuple[str, str, str, str]],
         search_mode: str = "broad",
-        max_results: int = 150,
+        max_results: int = 1000000,
         progress_callback: Optional[Callable] = None,
         languages: Optional[List[str]] = None,
     ) -> List[Dict[str, Any]]:
@@ -1070,9 +1070,10 @@ class ScraperController(ScraperControllerBase):
                 logger.info(
                     f"[CORDIS CALLBACK] 📡 page={page}, total_hits={total_hits}, collected={collected}"
                 )
-                # Emitir progreso cada 500 resultados o cada 5 páginas
-                should_emit = (collected >= last_progress_emit[0] + 500) or (
-                    page % 5 == 0
+                # HEARTBEAT MEJORADO: Emitir progreso cada página y cada 100 resultados
+                # para que el frontend SIEMPRE vea actividad y nunca parezca congelado
+                should_emit = (collected >= last_progress_emit[0] + 100) or (
+                    page % 1 == 0  # Cada página = cada vez
                 )
                 if should_emit:
                     last_progress_emit[0] = collected
@@ -1732,8 +1733,9 @@ class ScraperController(ScraperControllerBase):
                     if isinstance(params, dict)
                     else ["en", "es", "de", "fr", "it", "pl"]
                 )
-                # Obtener max_results
-                max_results = params.get("search_max_results", 150)
+                # Obtener max_results - SIN LÍMITE por defecto para CORDIS
+                # (Antes era 150 y causaba que solo se descargaran 150 de 77,000+ resultados)
+                max_results = params.get("search_max_results", 1000000)
                 try:
                     all_search_results = await self._process_cordis_api_phase(
                         courses_in_range,
