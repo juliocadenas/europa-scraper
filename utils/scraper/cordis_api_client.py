@@ -213,10 +213,19 @@ class CordisApiClient:
                 # Rotar User-Agent en cada petición
                 req_headers = self.headers.copy()
                 req_headers["User-Agent"] = random.choice(self.USER_AGENTS)
+                
+                # Configurar proxy si está disponible
+                proxies = None
+                if hasattr(self, 'proxy_manager') and self.proxy_manager:
+                    proxy_url = self.proxy_manager.get_proxy()
+                    if proxy_url:
+                        proxies = {"http": proxy_url, "https": proxy_url}
+                        logger.info(f"CORDIS API: Usando proxy {proxy_url} para página {page}")
+
                 logger.info(f"CORDIS API: Petición HTTP GET página {page}")
                 
                 try:
-                    res = requests.get(search_url, headers=req_headers, timeout=20)
+                    res = requests.get(search_url, headers=req_headers, timeout=20, proxies=proxies)
                     logger.info(f"CORDIS API: HTTP {res.status_code} página {page}")
                     return res
                 except requests.exceptions.RequestException as req_err:

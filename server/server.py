@@ -375,6 +375,10 @@ def worker_process(
                 scraper_controller = ScraperController(config_manager, browser_manager)
                 if api_semaphore is not None:
                     scraper_controller.cordis_api_client.api_semaphore = api_semaphore
+                
+                # INYECTAR PROXY MANAGER AL CLIENTE DE API
+                if proxy_manager is not None:
+                    scraper_controller.cordis_api_client.proxy_manager = proxy_manager
 
                 # INYECTAR CALLBACK DE EVENTOS AL CONTROLADOR
                 def controller_event_callback(type_str, msg, details=None):
