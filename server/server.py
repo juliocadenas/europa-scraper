@@ -185,6 +185,12 @@ def worker_process(
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
+    # NUEVO: Aumentar el límite de hilos para evitar bloqueos con muchos workers
+    from concurrent.futures import ThreadPoolExecutor
+    executor = ThreadPoolExecutor(max_workers=1024)
+    loop.set_default_executor(executor)
+    logger.info(f"Worker {worker_id}: ThreadPoolExecutor configurado con 1024 hilos.")
+
     while True:
         try:
             # Obtener un lote de trabajo de la cola

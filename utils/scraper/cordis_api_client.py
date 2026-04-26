@@ -215,7 +215,7 @@ class CordisApiClient:
                 req_headers["User-Agent"] = random.choice(self.USER_AGENTS)
                 logger.info(f"CORDIS API: Petición HTTP GET página {page}")
                 try:
-                    res = requests.get(search_url, headers=req_headers, timeout=30)
+                    res = requests.get(search_url, headers=req_headers, timeout=20)
                     logger.info(f"CORDIS API: HTTP {res.status_code} página {page}")
                     return res
                 except requests.exceptions.RequestException as req_err:
@@ -232,7 +232,7 @@ class CordisApiClient:
                     try:
                         response = await asyncio.wait_for(
                             loop.run_in_executor(None, _fetch),
-                            timeout=45.0  # Timeout total incluyendo DNS y conexión
+                            timeout=30.0  # Timeout total reducido para liberar hilos rápido
                         )
                         break  # Éxito, salir del loop de reintentos
                     except (asyncio.TimeoutError, Exception) as fetch_err:
