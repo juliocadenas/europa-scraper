@@ -243,8 +243,21 @@ class CordisApiClient:
                     try:
                         if has_sem:
                             logger.debug(f"CORDIS API: Esperando semáforo global para página {page}...")
-                            # Adquirir el semáforo sin bloquear el event loop
-                            await asyncio.to_thread(self.api_semaphore.acquire)
+                            # Adquirir el semáforo con polling para poder enviar heartbeats al servidor
+                            acquired = False
+                            wait_time = 0
+                            while not acquired:
+                                # block=True, timeout=2.0
+                                acquired = await asyncio.to_thread(self.api_semaphore.acquire, True, 2.0)
+                                if not acquired:
+                                    wait_time += 2
+                                    if progress_callback:
+                                        # Notificar a la GUI que el worker sigue vivo pero esperando turno
+                                        progress_callback(
+                                            page if page > 1 else 0,
+                                            total_hits if total_hits else 0,
+                                            len(all_results),
+                                        )
                             
                         try:
                             response = await asyncio.wait_for(
