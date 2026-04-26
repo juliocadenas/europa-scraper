@@ -255,11 +255,10 @@ class CordisApiClient:
 
                 for attempt in range(max_retries):
                     try:
-                        try:
-                            response = await asyncio.wait_for(
-                                loop.run_in_executor(None, _fetch),
-                                timeout=30.0
-                            )
+                        response = await asyncio.wait_for(
+                            loop.run_in_executor(None, _fetch),
+                            timeout=30.0
+                        )
                         break  # Éxito, salir del loop de reintentos
                     except (asyncio.TimeoutError, Exception) as fetch_err:
                         if attempt < max_retries - 1:
