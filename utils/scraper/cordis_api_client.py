@@ -1,5 +1,6 @@
 import logging
 import asyncio
+import random
 from typing import List, Dict, Any, Optional
 from urllib.parse import quote_plus
 
@@ -28,11 +29,21 @@ class CordisApiClient:
     DET_API_URL = "https://cordis.europa.eu/dataextractions/api"
     DET_API_KEY = "f1bd9899469be604b0b85dc2eea3438abfd580c7"  # API key para DET
 
+    # Pool de User-Agents para rotación (anti-fingerprinting)
+    USER_AGENTS = [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0",
+    ]
+
     def __init__(self, api_key: str = None):
         self.api_key = api_key
         self.headers = {
             "Accept": "application/json",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "User-Agent": random.choice(self.USER_AGENTS),
             "Accept-Language": "en-US,en;q=0.9",
         }
 
@@ -199,28 +210,68 @@ class CordisApiClient:
 
             def _fetch():
                 import requests
-                logger.info(f"CORDIS API: Iniciando petición HTTP GET a {search_url}")
+                # Rotar User-Agent en cada petición
+                req_headers = self.headers.copy()
+                req_headers["User-Agent"] = random.choice(self.USER_AGENTS)
+                logger.info(f"CORDIS API: Petición HTTP GET página {page}")
                 try:
-                    res = requests.get(search_url, headers=self.headers, timeout=90)
-                    logger.info(f"CORDIS API: Respuesta HTTP {res.status_code} recibida para página {page}")
+                    res = requests.get(search_url, headers=req_headers, timeout=30)
+                    logger.info(f"CORDIS API: HTTP {res.status_code} página {page}")
                     return res
                 except requests.exceptions.RequestException as req_err:
-                    logger.error(f"CORDIS API: Error de conexión HTTP o timeout en página {page}: {req_err}")
+                    logger.error(f"CORDIS API: Error de conexión página {page}: {req_err}")
                     raise
 
             try:
-                response = await loop.run_in_executor(None, _fetch)
+                # Reintentos con backoff exponencial
+                max_retries = 5
+                retry_delay = 5
+                response = None
+
+                for attempt in range(max_retries):
+                    try:
+                        response = await asyncio.wait_for(
+                            loop.run_in_executor(None, _fetch),
+                            timeout=45.0  # Timeout total incluyendo DNS y conexión
+                        )
+                        break  # Éxito, salir del loop de reintentos
+                    except (asyncio.TimeoutError, Exception) as fetch_err:
+                        if attempt < max_retries - 1:
+                            logger.warning(
+                                f"CORDIS: ⚠️ Intento {attempt+1}/{max_retries} falló en página {page}: {fetch_err}. "
+                                f"Esperando {retry_delay}s antes de reintentar..."
+                            )
+                            await asyncio.sleep(retry_delay)
+                            retry_delay = min(retry_delay * 2, 60)  # Backoff exponencial, máx 60s
+                        else:
+                            logger.error(
+                                f"CORDIS: ❌ Página {page} falló tras {max_retries} intentos. Saltando."
+                            )
+                            response = None
+
+                if response is None:
+                    page += 1
+                    if page > (total_hits // results_per_page) + 2 if total_hits else 1000:
+                        break
+                    continue
 
                 if response.status_code == 429:
                     logger.warning(
-                        f"V29 - 🔴 RATE LIMITED (429) en página {page}. Esperando 120s antes de reintentar..."
+                        f"CORDIS: 🔴 RATE LIMITED (429) en página {page}. Esperando 120s..."
                     )
                     await asyncio.sleep(120)
-                    continue  # Reintentar la misma página
+                    continue
+
+                if response.status_code == 403:
+                    logger.error(
+                        f"CORDIS: 🚫 BLOQUEADO (403) en página {page}. IP probablemente baneada. Esperando 300s..."
+                    )
+                    await asyncio.sleep(300)
+                    continue
 
                 if response.status_code != 200:
                     logger.error(
-                        f"V29 - Error fetching page {page}: Status {response.status_code}. Respuesta: {response.text[:200]}"
+                        f"CORDIS: Error HTTP {response.status_code} en página {page}. Respuesta: {response.text[:200]}"
                     )
                     break
 
@@ -432,14 +483,17 @@ class CordisApiClient:
 
                 page += 1
 
-                await asyncio.sleep(1.0)  # 1 segundo entre páginas para evitar rate-limits
+                # DELAY HUMANO ALEATORIO entre páginas (1.5s - 4s)
+                # Esto es crítico para evitar bans de IP por CORDIS
+                delay = random.uniform(1.5, 4.0)
+                await asyncio.sleep(delay)
 
             except Exception as e:
                 logger.error(f"CORDIS: Error en página {page}: {e}")
                 page += 1
                 if page > 1000:
                     break
-                await asyncio.sleep(5.0)  # 5 segundos en caso de error de red
+                await asyncio.sleep(10.0)  # 10 segundos en caso de error inesperado
                 continue
 
         logger.info(
