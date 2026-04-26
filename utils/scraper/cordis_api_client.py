@@ -198,6 +198,20 @@ class CordisApiClient:
         results_per_page = 100
         total_hits = None
 
+        async def _heartbeat_sleep(duration: float, reason: str):
+            """Duerme en incrementos pequeños para poder enviar heartbeats a la GUI."""
+            slept = 0.0
+            while slept < duration:
+                await asyncio.sleep(min(2.0, duration - slept))
+                slept += 2.0
+                if progress_callback:
+                    # Reportar que seguimos vivos y por qué estamos esperando
+                    # Forzamos un log temporal usando el parámetro de página como 0
+                    progress_callback(0, f"⏳ {reason} ({int(duration - slept)}s restantes)", len(all_results))
+
+        # Stagger inicial aleatorio para no golpear CORDIS los 48 a la vez
+        await _heartbeat_sleep(random.uniform(1.0, 15.0), "Stagger inicial")
+
         while True:
             logger.info(
                 f"V29 - Página {page}, total_hits={total_hits}, results={len(all_results)}"
@@ -241,34 +255,11 @@ class CordisApiClient:
 
                 for attempt in range(max_retries):
                     try:
-                        if has_sem:
-                            logger.debug(f"CORDIS API: Esperando semáforo global para página {page}...")
-                            # Adquirir el semáforo con polling para poder enviar heartbeats al servidor
-                            acquired = False
-                            wait_time = 0
-                            while not acquired:
-                                # block=True, timeout=2.0
-                                acquired = await asyncio.to_thread(self.api_semaphore.acquire, True, 2.0)
-                                if not acquired:
-                                    wait_time += 2
-                                    if progress_callback:
-                                        # Notificar a la GUI que el worker sigue vivo pero esperando turno
-                                        progress_callback(
-                                            page if page > 1 else 0,
-                                            total_hits if total_hits else 0,
-                                            len(all_results),
-                                        )
-                            
                         try:
                             response = await asyncio.wait_for(
                                 loop.run_in_executor(None, _fetch),
-                                timeout=30.0  # Timeout total reducido para liberar hilos rápido
+                                timeout=30.0
                             )
-                        finally:
-                            if has_sem:
-                                # Asegurar que siempre se libera el semáforo
-                                await asyncio.to_thread(self.api_semaphore.release)
-                                
                         break  # Éxito, salir del loop de reintentos
                     except (asyncio.TimeoutError, Exception) as fetch_err:
                         if attempt < max_retries - 1:
@@ -276,7 +267,7 @@ class CordisApiClient:
                                 f"CORDIS: ⚠️ Intento {attempt+1}/{max_retries} falló en página {page}: {fetch_err}. "
                                 f"Esperando {retry_delay}s antes de reintentar..."
                             )
-                            await asyncio.sleep(retry_delay)
+                            await _heartbeat_sleep(retry_delay, f"Reintentando pág {page}")
                             retry_delay = min(retry_delay * 2, 60)  # Backoff exponencial, máx 60s
                         else:
                             logger.error(
@@ -294,14 +285,14 @@ class CordisApiClient:
                     logger.warning(
                         f"CORDIS: 🔴 RATE LIMITED (429) en página {page}. Esperando 120s..."
                     )
-                    await asyncio.sleep(120)
+                    await _heartbeat_sleep(120.0, "RATE LIMIT 429")
                     continue
 
                 if response.status_code == 403:
                     logger.error(
                         f"CORDIS: 🚫 BLOQUEADO (403) en página {page}. IP probablemente baneada. Esperando 300s..."
                     )
-                    await asyncio.sleep(300)
+                    await _heartbeat_sleep(300.0, "BAN 403")
                     continue
 
                 if response.status_code != 200:
@@ -518,17 +509,17 @@ class CordisApiClient:
 
                 page += 1
 
-                # DELAY HUMANO ALEATORIO entre páginas (1.5s - 4s)
-                # Esto es crítico para evitar bans de IP por CORDIS
-                delay = random.uniform(1.5, 4.0)
-                await asyncio.sleep(delay)
+                # DELAY HUMANO ALEATORIO entre páginas (5s - 8s)
+                # Aumentado para soportar múltiples workers sin proxies
+                delay = random.uniform(5.0, 8.0)
+                await _heartbeat_sleep(delay, "Pausa humana")
 
             except Exception as e:
                 logger.error(f"CORDIS: Error en página {page}: {e}")
                 page += 1
                 if page > 1000:
                     break
-                await asyncio.sleep(10.0)  # 10 segundos en caso de error inesperado
+                await _heartbeat_sleep(10.0, "Recuperación de error")
                 continue
 
         logger.info(
