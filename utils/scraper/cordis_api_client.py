@@ -236,15 +236,22 @@ class CordisApiClient:
                         proxies = {"http": proxy_url, "https": proxy_url}
                         logger.info(f"CORDIS API: Usando proxy {proxy_url} para página {page}")
 
-                logger.info(f"CORDIS API: Petición HTTP GET página {page}")
+                # Semáforo global: máximo 3 peticiones simultáneas a CORDIS
+                has_sem = hasattr(self, 'api_semaphore') and self.api_semaphore is not None
+                if has_sem:
+                    self.api_semaphore.acquire()
                 
                 try:
+                    logger.info(f"CORDIS API: Petición HTTP GET página {page}")
                     res = requests.get(search_url, headers=req_headers, timeout=20, proxies=proxies)
                     logger.info(f"CORDIS API: HTTP {res.status_code} página {page}")
                     return res
                 except requests.exceptions.RequestException as req_err:
                     logger.error(f"CORDIS API: Error de conexión página {page}: {req_err}")
                     raise
+                finally:
+                    if has_sem:
+                        self.api_semaphore.release()
 
             try:
                 # Reintentos con backoff exponencial
