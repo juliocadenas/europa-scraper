@@ -1112,13 +1112,24 @@ class ScraperController(ScraperControllerBase):
                             "course": course_name,
                         },
                     )
-                    # Emitir progreso global monotónico
-                    self._emit_safe_progress(
-                        progress_callback,
-                        global_pct,
-                        msg,
-                        self.stats,
-                    )
+                    if custom_msg:
+                        # HEARTBEAT: Llamar directamente al callback del servidor
+                        # para actualizar last_heartbeat SIN pasar por _emit_safe_progress
+                        # que lo bloquearía si el porcentaje no subió.
+                        if progress_callback:
+                            progress_callback(
+                                max(0, min(100, int(global_pct))),
+                                msg,
+                                self.stats,
+                            )
+                    else:
+                        # Progreso real: usar _emit_safe_progress (monotónico)
+                        self._emit_safe_progress(
+                            progress_callback,
+                            global_pct,
+                            msg,
+                            self.stats,
+                        )
 
             try:
                 results = await self.cordis_api_client.search_projects_and_publications(
