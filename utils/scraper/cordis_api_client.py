@@ -228,13 +228,15 @@ class CordisApiClient:
                 req_headers = self.headers.copy()
                 req_headers["User-Agent"] = random.choice(self.USER_AGENTS)
                 
-                # Configurar proxy si está disponible
+                # Configurar proxy si está disponible Y habilitado
                 proxies = None
-                if hasattr(self, 'proxy_manager') and self.proxy_manager:
-                    proxy_url = self.proxy_manager.get_proxy()
-                    if proxy_url:
-                        proxies = {"http": proxy_url, "https": proxy_url}
-                        logger.info(f"CORDIS API: Usando proxy {proxy_url} para página {page}")
+                if hasattr(self, 'proxy_manager') and self.proxy_manager and self.proxy_manager.is_enabled():
+                    proxy_info = self.proxy_manager.get_next_proxy()
+                    if proxy_info:
+                        proxy_dict = self.proxy_manager.get_proxy_for_requests(proxy_info)
+                        if proxy_dict:
+                            proxies = proxy_dict
+                            logger.info(f"CORDIS API: Usando proxy {proxy_info.get('host')}:{proxy_info.get('port')} para página {page}")
 
                 # Semáforo global: máximo 3 peticiones simultáneas a CORDIS
                 # Tolerante a fallos: si el semáforo no funciona, continúa sin él
