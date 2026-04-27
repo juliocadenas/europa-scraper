@@ -1112,18 +1112,17 @@ class ScraperController(ScraperControllerBase):
                             "course": course_name,
                         },
                     )
-                    if custom_msg:
-                        # HEARTBEAT: Llamar directamente al callback del servidor
-                        # para actualizar last_heartbeat SIN pasar por _emit_safe_progress
-                        # que lo bloquearía si el porcentaje no subió.
-                        if progress_callback:
-                            progress_callback(
-                                max(0, min(100, int(global_pct))),
-                                msg,
-                                self.stats,
-                            )
-                    else:
-                        # Progreso real: usar _emit_safe_progress (monotónico)
+                    # SIEMPRE actualizar last_heartbeat llamando directamente
+                    # al callback del servidor (tanto heartbeats como progreso real)
+                    if progress_callback:
+                        progress_callback(
+                            max(0, min(100, int(global_pct))),
+                            msg,
+                            self.stats,
+                        )
+                    # Para progreso real (no heartbeat), también actualizar
+                    # la barra de progreso monotónica
+                    if not custom_msg:
                         self._emit_safe_progress(
                             progress_callback,
                             global_pct,
