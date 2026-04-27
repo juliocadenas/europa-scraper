@@ -237,12 +237,17 @@ class CordisApiClient:
                         logger.info(f"CORDIS API: Usando proxy {proxy_url} para página {page}")
 
                 # Semáforo global: máximo 3 peticiones simultáneas a CORDIS
-                has_sem = hasattr(self, 'api_semaphore') and self.api_semaphore is not None
-                if has_sem:
-                    self.api_semaphore.acquire()
+                # Tolerante a fallos: si el semáforo no funciona, continúa sin él
+                sem_acquired = False
+                if hasattr(self, 'api_semaphore') and self.api_semaphore is not None:
+                    try:
+                        self.api_semaphore.acquire()
+                        sem_acquired = True
+                    except Exception as sem_err:
+                        logger.error(f"CORDIS API: Semáforo falló ({type(sem_err).__name__}: {sem_err}), continuando sin rate limit")
                 
                 try:
-                    logger.info(f"CORDIS API: Petición HTTP GET página {page}")
+                    logger.info(f"CORDIS API: Petición HTTP GET página {page} (sem={'ON' if sem_acquired else 'OFF'})")
                     res = requests.get(search_url, headers=req_headers, timeout=20, proxies=proxies)
                     logger.info(f"CORDIS API: HTTP {res.status_code} página {page}")
                     return res
@@ -250,31 +255,34 @@ class CordisApiClient:
                     logger.error(f"CORDIS API: Error de conexión página {page}: {req_err}")
                     raise
                 finally:
-                    if has_sem:
-                        self.api_semaphore.release()
+                    if sem_acquired:
+                        try:
+                            self.api_semaphore.release()
+                        except Exception:
+                            pass
 
             try:
                 # Reintentos con backoff exponencial
                 max_retries = 5
                 retry_delay = 5
                 response = None
-                has_sem = hasattr(self, 'api_semaphore') and self.api_semaphore is not None
 
                 for attempt in range(max_retries):
                     try:
                         response = await loop.run_in_executor(None, _fetch)
                         break  # Éxito, salir del loop de reintentos
                     except Exception as fetch_err:
+                        err_type = type(fetch_err).__name__
                         if attempt < max_retries - 1:
                             logger.warning(
-                                f"CORDIS: ⚠️ Intento {attempt+1}/{max_retries} falló en página {page}: {fetch_err}. "
+                                f"CORDIS: ⚠️ Intento {attempt+1}/{max_retries} falló en página {page}: {err_type}: {fetch_err}. "
                                 f"Esperando {retry_delay}s antes de reintentar..."
                             )
-                            await _heartbeat_sleep(retry_delay, f"Reintentando pág {page}")
+                            await _heartbeat_sleep(retry_delay, f"Reintentando pág {page} ({err_type})")
                             retry_delay = min(retry_delay * 2, 60)  # Backoff exponencial, máx 60s
                         else:
                             logger.error(
-                                f"CORDIS: ❌ Página {page} falló tras {max_retries} intentos. Saltando."
+                                f"CORDIS: ❌ Página {page} falló tras {max_retries} intentos: {err_type}: {fetch_err}"
                             )
                             response = None
 
