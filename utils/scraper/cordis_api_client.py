@@ -262,12 +262,9 @@ class CordisApiClient:
 
                 for attempt in range(max_retries):
                     try:
-                        response = await asyncio.wait_for(
-                            loop.run_in_executor(None, _fetch),
-                            timeout=30.0
-                        )
+                        response = await loop.run_in_executor(None, _fetch)
                         break  # Éxito, salir del loop de reintentos
-                    except (asyncio.TimeoutError, Exception) as fetch_err:
+                    except Exception as fetch_err:
                         if attempt < max_retries - 1:
                             logger.warning(
                                 f"CORDIS: ⚠️ Intento {attempt+1}/{max_retries} falló en página {page}: {fetch_err}. "
