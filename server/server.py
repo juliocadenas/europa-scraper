@@ -842,6 +842,19 @@ class ScraperServer:
         # Endpoint de Control de Calidad (QC Diagnose)
         self.app.get("/api/qc-diagnose")(self.qc_diagnose_endpoint)
 
+        # --- ALIAS SIN /api/ para compatibilidad con el cliente existente ---
+        self.app.get("/detailed_status")(self.get_detailed_status)
+        self.app.post("/start_scraping", status_code=202)(self.start_scraping_job)
+        self.app.post("/stop_scraping")(self.stop_scraping_job)
+        self.app.post("/reset")(self.force_reset_state)
+        self.app.post("/upload_courses")(self.upload_courses)
+        self.app.get("/get_all_courses")(self.get_all_courses)
+        self.app.get("/download_results")(self.download_results)
+        self.app.get("/ping")(self.ping_endpoint)
+        self.app.get("/events")(self.get_events_endpoint)
+        self.app.get("/failed_courses")(self.get_failed_courses_summary)
+        self.app.get("/list_results")(self.list_results_files)
+
         # Agregar logging para verificar que las rutas se registraron
         self.logger.info("Rutas registradas:")
         for route in self.app.routes:
@@ -1260,23 +1273,49 @@ class ScraperServer:
             except Exception:
                 pass
 
-        # Contar total de lineas de datos en todos los CSVs de results (CONTENIDOS)
+        # RESTAURACIÓN OPTIMIZADA Y EXACTA: Conteo de líneas real cacheado por mtime
         csv_total = 0
         try:
-            results_dir = os.path.join(project_root, "results")
-            if os.path.isdir(results_dir):
-                for fname in os.listdir(results_dir):
-                    if fname.lower().endswith(".csv"):
-                        fpath = os.path.join(results_dir, fname)
-                        try:
-                            with open(fpath, "r", encoding="utf-8", errors="ignore") as _f:
-                                # Restamos 1 por la cabecera
-                                lines = sum(1 for ln in _f if ln.strip())
-                                csv_total += max(0, lines - 1)
-                        except Exception:
-                            pass
+            # Buscar archivos en ambas posibles ubicaciones para ser infalible
+            results_dirs = [
+                os.path.join(project_root, "results"),
+                os.path.join(project_root, "server", "results")
+            ]
+            
+            if not hasattr(self, "_file_line_cache"):
+                self._file_line_cache = {} # {filepath: (mtime, line_count)}
+                
+            for res_dir in results_dirs:
+                if os.path.isdir(res_dir):
+                    for fname in os.listdir(res_dir):
+                        if fname.lower().endswith(".csv"):
+                            fpath = os.path.join(res_dir, fname)
+                            try:
+                                mtime = os.path.getmtime(fpath)
+                                cached_mtime, cached_count = self._file_line_cache.get(fpath, (0, 0))
+                                
+                                if mtime == cached_mtime:
+                                    csv_total += cached_count
+                                else:
+                                    # Archivo modificado o nuevo, contamos líneas reales (super rápido en chunks)
+                                    count = 0
+                                    with open(fpath, "rb") as f:
+                                        buf_size = 1024 * 1024
+                                        buf = f.read(buf_size)
+                                        while buf:
+                                            count += buf.count(b"\n")
+                                            buf = f.read(buf_size)
+                                    if count > 0:
+                                        count -= 1 # Restar cabecera
+                                        
+                                    self._file_line_cache[fpath] = (mtime, count)
+                                    csv_total += count
+                            except Exception:
+                                pass
         except Exception:
             pass
+
+
                 
         return {
             "workers": workers_dict,
