@@ -120,7 +120,7 @@ class ScraperGUI(ttk.Frame):
         self._setup_ui()
 
         # Confirmar que el botón de carga está visible
-        print("✅ Botón 'CARGAR CURSOS (CSV/XLS)' agregado a la pestaña Principal")
+        print("[OK] Botón 'CARGAR CURSOS (CSV/XLS)' agregado a la pestaña Principal")
 
         # Conectar al servidor y cargar datos iniciales - diferido 1.5s
         # para que la ventana se pinte ANTES de hacer la petición de red
@@ -475,7 +475,7 @@ class ScraperGUI(ttk.Frame):
 
         # BOTON DE CURSOS FALLIDOS - BOTON ROJO GRANDE Y VISIBLE
         print("=" * 60)
-        print("✅✅✅ BOTON 'VER CURSOS FALLIDOS' AGREGADO - VERSION CON DEBUG")
+        print("[OK] BOTON 'VER CURSOS FALLIDOS' AGREGADO - VERSION CON DEBUG")
         print("=" * 60)
 
         # Crear un estilo especial para el botón de cursos fallidos
@@ -1128,7 +1128,7 @@ class ScraperGUI(ttk.Frame):
         active_workers = 0
         if isinstance(workers, dict):
             active_workers = sum(
-                1 for w in workers.values() if w.get("status") not in ["Idle", "Error"]
+                1 for w in workers.values() if isinstance(w, dict) and w.get("status") not in ["Idle", "Error"]
             )
 
         if active_workers > 0 or in_progress > 0:
@@ -1219,6 +1219,22 @@ class ScraperGUI(ttk.Frame):
         if hasattr(self, "status_monitor_tab") and self.status_monitor_tab:
             self.status_monitor_tab.update_status(status, message, avg_progress)
             self.status_monitor_tab.update_stats(completed, pending, failed)
+
+    def _render_worker_status(self, data):
+        """
+        Método de compatibilidad para el controlador ClientApp.
+        Recibe los estados de los workers y actualiza la UI.
+        """
+        if not data:
+            return
+            
+        # Si la data viene directamente como el dict de workers
+        # (que es lo que parece enviar main.py)
+        workers = data if isinstance(data, dict) else {}
+        courses = getattr(self, "_last_courses_data", [])
+        
+        # Llamar al renderizado real
+        self._render_status(workers, courses)
 
     def _render_status(self, workers, courses):
         """Renderiza el estado dinámico de los cursos en el Monitor Principal."""
@@ -1334,6 +1350,8 @@ class ScraperGUI(ttk.Frame):
 
         if isinstance(workers, dict):
             for wid, state in workers.items():
+                if not isinstance(state, dict):
+                    continue
                 if (
                     state.get("status") in ["Idle", "Error"]
                     or state.get("progress", 0) == 0
@@ -1372,7 +1390,7 @@ class ScraperGUI(ttk.Frame):
             active_workers = [
                 w
                 for w in (workers.values() if isinstance(workers, dict) else workers)
-                if w.get("status") != "Idle"
+                if isinstance(w, dict) and w.get("status") != "Idle"
             ]
             if active_workers:
                 self.progress_frame.update_progress(0, "Iniciando...")
@@ -1833,6 +1851,9 @@ class ScraperGUI(ttk.Frame):
                             )
 
                     threading.Thread(target=_launch, daemon=True).start()
+                    # BLOQUEAR BOTONES y registrar estado interno
+                    self.control_frame.set_scraping_started()
+                    self.was_running = True
 
                 except Exception as e:
                     self._log_debug(f"ERROR preparando solicitud: {e}")
@@ -2504,6 +2525,13 @@ class ScraperGUI(ttk.Frame):
                 start_time_iso = data.get("start_time")
                 acc_time = data.get("accumulated_time", 0)
                 is_running = data.get("is_running", False)
+
+                # Detectar la transición de corriendo a detenido
+                was_running = getattr(self, 'was_running', False)
+                if was_running and not is_running:
+                    self.was_running = False
+                    self.master.after(0, self.control_frame.set_scraping_stopped)
+                    self.master.after(0, self.handle_scraping_finished)
 
                 # Sincronizar el TimerManager con los datos del servidor
                 if hasattr(self, 'timer_manager'):

@@ -956,7 +956,13 @@ class ScraperController(ScraperControllerBase):
               logger.warning("No se encontraron códigos SIC detallados con cursos en los datos CSV")
               return []
       
-          courses_in_range = self._get_courses_in_range_by_position(all_sic_codes_with_courses, from_sic, to_sic)
+          # Use provided batch if available, otherwise calculate range
+          course_batch = params.get('course_batch')
+          if course_batch:
+              courses_in_range = course_batch
+              logger.info(f"Usando lote de cursos provisto por el servidor (tamaño: {len(course_batch)})")
+          else:
+              courses_in_range = self._get_courses_in_range_by_position(all_sic_codes_with_courses, from_sic, to_sic)
       
           logger.info(f"CURSOS EN RANGO CALCULADOS: {len(courses_in_range)} códigos SIC desde '{from_sic}' hasta '{to_sic}'")
 

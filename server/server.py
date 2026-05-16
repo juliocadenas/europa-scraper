@@ -447,12 +447,14 @@ def worker_process(
                         pass
 
             # run_scraping es una corutina, la ejecutamos en el bucle de eventos del worker.
+            worker_params = dict(job_params)
+            worker_params['course_batch'] = batch
+            
             loop.run_until_complete(
                 scraper_controller.run_scraping(
-                    job_params,
+                    worker_params,
                     progress_callback=progress_callback,
                     worker_id=worker_id,
-                    batch=batch,
                 )
             )
 
@@ -880,18 +882,32 @@ class ScraperServer:
             "Solicitud para iniciar scraping recibida.",
             {"request_data": request_data},
         )
-        if self.is_job_running:
-            self.logger.warning(
-                "Intento de iniciar un trabajo mientras otro ya está en progreso."
-            )
-            await global_event_log.add(
-                EventType.WARNING,
-                "Server",
-                "Intento de iniciar un trabajo mientras otro ya está en progreso.",
-            )
-            raise HTTPException(
-                status_code=409, detail="Ya hay un trabajo de scraping en progreso."
-            )
+        if getattr(self, 'is_job_running', False):
+            # Comprobar si realmente hay workers vivos
+            workers_alive = hasattr(self, 'worker_pool') and self.worker_pool and any(p.is_alive() for p in self.worker_pool)
+            
+            if not workers_alive:
+                self.logger.warning("is_job_running era True, pero no hay workers vivos. Forzando reset del estado.")
+                await global_event_log.add(
+                    EventType.WARNING,
+                    "Server",
+                    "Reseteando estado fantasma: se detectó is_job_running=True pero ningún worker estaba vivo.",
+                )
+                self.is_job_running = False
+                if hasattr(self, 'worker_pool'):
+                    self.worker_pool = []
+            else:
+                self.logger.warning(
+                    "Intento de iniciar un trabajo mientras otro ya está en progreso."
+                )
+                await global_event_log.add(
+                    EventType.WARNING,
+                    "Server",
+                    "Intento de iniciar un trabajo mientras otro ya está en progreso.",
+                )
+                raise HTTPException(
+                    status_code=409, detail="Ya hay un trabajo de scraping en progreso."
+                )
 
         self.logger.info(f"Recibido nuevo trabajo de scraping: {request_data}")
         self.is_job_running = True

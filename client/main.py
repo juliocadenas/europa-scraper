@@ -40,20 +40,21 @@ logger = logging.getLogger(__name__)
 class ClientApp:
     def __init__(self):
         self.root = tk.Tk()
-        # El título ahora se establece en la propia clase ScraperGUI
         self.queue = queue.Queue()
+        
+        # Cargar configuración del servidor PRIMERO
+        self.server_base_url = self._load_server_config()
+        
         self.gui = ScraperGUI(self.root, self)
         self.gui.pack(fill="both", expand=True)
         
-        # Cargar configuración del servidor
-        self.server_base_url = self._load_server_config()
-        self.server_base_url = self._load_server_config()
         self.is_scraping = False
-        self.scraping_start_time = None # Inicializar variable para evitar AttributeError
+        self.scraping_start_time = None
         self.stop_polling = threading.Event()
+        
+        # Iniciar hilo de monitoreo de estado
         self.status_poll_thread = threading.Thread(target=self._poll_status, daemon=True)
         self.status_poll_thread.start()
-        self.stop_polling = threading.Event()
 
         self.root.protocol("WM_DELETE_WINDOW", self._on_closing)
 
@@ -77,13 +78,12 @@ class ClientApp:
                     scheme = "https" if port == 443 else "http"
                     url = f"{scheme}://{host}:{port}"
                     
-                    print(f"🔧 Configuración del servidor cargada: {url}")
+                    logger.info(f"Configuracion del servidor cargada: {url}")
                     return url
             else:
-                print("⚠️  No se encontró server_config.json, usando localhost:8001")
                 return "http://localhost:8001"
         except Exception as e:
-            print(f"❌ Error cargando configuración del servidor: {e}")
+            logger.error(f"Error cargando configuracion del servidor: {e}")
             return "http://localhost:8001"
 
     def run(self):
@@ -111,7 +111,8 @@ class ClientApp:
                     self.gui.refresh_servers_button.config(state=tk.NORMAL)
                     self.gui.discovery_status_label.config(text="Búsqueda finalizada.")
                 elif message_type == 'update_worker_status':
-                    self.gui._render_worker_status(data)
+                    if hasattr(self.gui, '_render_worker_status'):
+                        self.gui._render_worker_status(data)
 
         except queue.Empty:
             pass
@@ -168,10 +169,9 @@ class ClientApp:
             self.queue.put(('log', f"✅ {message}"))
             self.queue.put(('log', f"🆔 Tarea iniciada. ID: {task_id}"))
             
-            # Iniciar el sondeo de estado
+            # Ya no iniciamos el sondeo redundante aquí. La GUI (scraper_gui.py) 
+            # tiene su propio mecanismo superior de polling de estado.
             self.stop_polling.clear()
-            self.status_poll_thread = threading.Thread(target=self._poll_status, daemon=True)
-            self.status_poll_thread.start()
 
         except requests.exceptions.RequestException as e:
             error_message = f"❌ Error al iniciar el scraping: {e}"
@@ -195,64 +195,12 @@ class ClientApp:
             self.stop_polling.set() # Detener el sondeo
 
     def _poll_status(self):
-        last_logged_tasks = {}  # Track what we've already logged
-        while not self.stop_polling.is_set():
-            try:
-                response = requests.get(f"{self.server_base_url}/detailed_status", timeout=10)
-                response.raise_for_status()
-                worker_states = response.json()
-
-                if not worker_states:
-                    time.sleep(2)
-                    continue
-
-                # Enviar el estado completo a la GUI para que lo procese
-                self.queue.put(('update_worker_status', worker_states))
-                
-                # Log worker activities to results panel (only new activities)
-                for worker_id, state in worker_states.items():
-                    current_task = state.get('current_task', '')
-                    status = state.get('status', '')
-                    
-                    # Only log if task changed for this worker
-                    if last_logged_tasks.get(worker_id) != current_task and current_task:
-                        last_logged_tasks[worker_id] = current_task
-                        # Format log message
-                        if 'Completado' in current_task or 'guardados' in current_task:
-                            log_msg = f"✅ Worker {worker_id}: {current_task}"
-                        elif 'Buscando' in current_task:
-                            log_msg = f"🔍 Worker {worker_id}: {current_task}"
-                        elif 'Error' in current_task:
-                            log_msg = f"❌ Worker {worker_id}: {current_task}"
-                        else:
-                            log_msg = f"⚙️ Worker {worker_id}: {current_task}"
-                        self.queue.put(('log', log_msg))
-
-                # Comprobar si todas las tareas han terminado
-                is_job_running = any(
-                    data.get('status') in ['working', 'Initializing']
-                    for data in worker_states.values()
-                )
-
-                # Grace period: Don't stop polling in the first 10 seconds even if workers are idle
-                # This allows time for workers to pick up tasks
-                # Grace period: Don't stop polling in the first 10 seconds even if workers are idle
-                # This allows time for workers to pick up tasks
-                if self.is_scraping and self.scraping_start_time:
-                    elapsed_time = time.time() - self.scraping_start_time
-                    if not is_job_running and elapsed_time > 10:
-                        self.is_scraping = False
-                        self.queue.put(('scraping_done', None))
-                        self.stop_polling.set()
-                        logger.info("Todos los workers han finalizado. Deteniendo sondeo.")
-                        break
-
-            except requests.exceptions.RequestException as e:
-                logger.error(f"Error al obtener el estado del servidor: {e}")
-                self.queue.put(('log', f"Error de conexión con el servidor: {e}. Reintentando..."))
-                time.sleep(5)
-            
-            time.sleep(2)
+        """
+        OBSOLETO: El polling redundante ha sido eliminado.
+        La GUI (scraper_gui.py) ahora se encarga de realizar un único polling a /detailed_status
+        para sincronizar temporizadores, interfaz y estado final.
+        """
+        pass
 
     def _send_captcha_response(self, captcha_id, solution):
         try:
