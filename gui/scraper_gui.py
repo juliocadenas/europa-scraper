@@ -23,6 +23,25 @@ import time
 from pathlib import Path
 import webbrowser
 import socket
+from curl_cffi import requests as cffi_requests
+
+# ── BYPASS CLOUDFLARE (curl_cffi imita Chrome TLS) ─────────────────────────
+_BYPASS_HEADERS = {
+    "X-Scraper-Token": "docuplay-scraper-2024",
+    "X-Requested-With": "EuropaScraper",
+    "Accept": "application/json",
+}
+
+# Sesión persistente global con impersonación de Chrome
+_SCRAPER_SESSION = None
+
+def _get_scraper():
+    """Retorna una sesión curl_cffi persistente que imita Chrome para bypass de Cloudflare."""
+    global _SCRAPER_SESSION
+    if _SCRAPER_SESSION is None:
+        _SCRAPER_SESSION = cffi_requests.Session(impersonate="chrome120")
+        _SCRAPER_SESSION.headers.update(_BYPASS_HEADERS)
+    return _SCRAPER_SESSION
 import requests
 import json
 
@@ -103,8 +122,9 @@ class ScraperGUI(ttk.Frame):
         # Confirmar que el botón de carga está visible
         print("✅ Botón 'CARGAR CURSOS (CSV/XLS)' agregado a la pestaña Principal")
 
-        # Conectar al servidor y cargar datos iniciales
-        self._connect_and_load_initial_data()
+        # Conectar al servidor y cargar datos iniciales - diferido 1.5s
+        # para que la ventana se pinte ANTES de hacer la petición de red
+        self.master.after(1500, self._connect_and_load_initial_data)
 
         global_log_handler = get_global_log_handler()
         global_log_handler.set_callback(self._log_callback)
@@ -163,6 +183,9 @@ class ScraperGUI(ttk.Frame):
 
         # Inicializar la pestaña de Monitor Expandido
         self._setup_expanded_monitor_tab()
+
+        # ── Siempre arrancar en la pestaña Principal (índice 0) ──
+        self.notebook.select(0)
 
         # === ESTILO VERDE BRILLANTE PARA BARRA DE PROGRESO ===
         style.configure(
@@ -469,8 +492,9 @@ class ScraperGUI(ttk.Frame):
 
         ttk.Button(
             self.mon_btn_frame,
-            text="⚠️ Resetear Sistema (Emergencia)",
+            text="⚠️ RESET TOTAL (EMERGENCIA)",
             command=self._force_reset_client_state,
+            width=30
         ).pack(side=tk.RIGHT, padx=5, expand=True, fill=tk.X)
 
         # PanedWindow solo para tener formato si se quiere, o usar un Frame simple
@@ -930,7 +954,7 @@ class ScraperGUI(ttk.Frame):
 
                 # Llamar al servidor para contar líneas
                 url = self.server_url.get()
-                response = requests.get(f"{url}/api/results_line_count", timeout=120)
+                response = _get_scraper().get(f"{url}/api/results_line_count", timeout=120)
 
                 if response.status_code == 200:
                     data = response.json()
@@ -1085,6 +1109,8 @@ class ScraperGUI(ttk.Frame):
 
     def _update_status_monitor(self, workers, courses):
         """Actualiza el Monitor de Estado en AMBAS pestañas (Principal y Expandida)."""
+        if getattr(self, "is_resetting", False):
+            return
         # Calcular estadísticas
         total_courses = len(courses)
         completed = sum(1 for c in courses if c.get("status") == "Completado")
@@ -1196,6 +1222,9 @@ class ScraperGUI(ttk.Frame):
 
     def _render_status(self, workers, courses):
         """Renderiza el estado dinámico de los cursos en el Monitor Principal."""
+        if getattr(self, "is_resetting", False):
+            return
+
         # Guardar datos para actualización asíncrona
         self._last_workers_data = workers
         self._last_courses_data = courses
@@ -1218,28 +1247,59 @@ class ScraperGUI(ttk.Frame):
         # También usar los conteos del servidor si existen
         server_counts = getattr(self, "_line_counts_map", {})
 
-        # Función helper para encontrar líneas de un curso
+        # --- OPTIMIZACIÓN O(1) de mapeo ---
+        if not hasattr(self, "_file_match_cache"):
+            self._file_match_cache = {}
+            
+        # Preparar lista unificada de archivos para búsqueda inicial
+        current_files = [(fname.lower(), count) for fname, count in server_counts.items()] + \
+                        [(os.path.basename(k).lower(), v) for k, v in (line_counts or {}).items()]
+
+        # Función helper para encontrar líneas de un curso optimizada
         def get_lines_for_course(sic, name):
-            # Buscar primero en conteos del servidor (más actualizados)
-            search_terms = [name.lower().replace(" ", "_"), sic.replace(".", "_")]
+            term_name = name.lower().replace(" ", "_")
+            term_sic = sic.replace(".", "_").lower()
+            cache_key = f"{term_sic}__{term_name}"
 
-            # Buscar en server_counts
+            # Si ya resolvimos este archivo antes
+            if cache_key in self._file_match_cache:
+                fname_match = self._file_match_cache[cache_key]
+                # Buscar su count actual
+                for fname, count in current_files:
+                    if fname == fname_match:
+                        return f"📄{count}"
+
+            # Si no estaba en caché, o desapareció, buscarlo (esto solo toma O(N) la primera vez)
+            search_terms = [term_name, term_sic]
             for term in search_terms:
-                for fname, count in server_counts.items():
+                for fname, count in current_files:
                     if term in fname:
+                        self._file_match_cache[cache_key] = fname
                         return f"📄{count}"
 
-            # Luego buscar en line_counts local
-            if not line_counts:
-                return "--"
-            for file_path, count in line_counts.items():
-                fname = os.path.basename(file_path).lower()
-                for term in search_terms:
-                    if term in fname:
-                        return f"📄{count}"
             return "--"
 
+        # --- OPTIMIZACIÓN FRONTEND ---
+        # No podemos renderizar 12000 filas cada 2 segundos, colapsa Tkinter.
+        active_courses = []
+        pending_courses = []
+        completed_courses = []
+        
         for c in courses_list:
+            st = c.get("status", "Pendiente")
+            if st == "Pendiente":
+                pending_courses.append(c)
+            elif "Completado" in st or "Terminado" in st or "Error" in st:
+                completed_courses.append(c)
+            else:
+                active_courses.append(c)
+                
+        # Mostrar solo una ventana de resultados para no congelar la UI
+        # Todos los activos, últimos 150 completados, primeros 150 pendientes
+        render_list = active_courses + completed_courses[-150:] + pending_courses[:150]
+        expected_course_ids = set()
+
+        for c in render_list:
             sic = c.get("sic", "N/A")
             name = c.get("name", "N/A")
             status = c.get("status", "Pendiente")
@@ -1249,6 +1309,7 @@ class ScraperGUI(ttk.Frame):
             result_lines = get_lines_for_course(sic, name)
 
             row_id = f"course_{sic.replace('.', '_')}"
+            expected_course_ids.add(row_id)
             vals = (sic, status.capitalize(), name, f"{progress}%", result_lines)
 
             self.row_details_map[row_id] = (
@@ -1259,6 +1320,11 @@ class ScraperGUI(ttk.Frame):
                 self.worker_tree.item(row_id, values=vals)
             else:
                 self.worker_tree.insert("", "end", iid=row_id, values=vals)
+                
+        # Limpiar filas antiguas para evitar llenar la memoria
+        for item in self.worker_tree.get_children():
+            if item.startswith("course_") and item not in expected_course_ids:
+                self.worker_tree.delete(item)
 
         # 2. Agregar mensajes de los workers si están atascados o iniciando (opcional, solo para feedback transitorio)
         # Limpiamos los transitorios primero
@@ -1355,12 +1421,18 @@ class ScraperGUI(ttk.Frame):
 
     def update_audit_log(self, events):
         """Actualiza el historial de auditoría con estructura jerárquica por Worker."""
+        if getattr(self, "is_resetting", False):
+            return
         if not hasattr(self, "audit_details_map"):
             self.audit_details_map = {}
         if not hasattr(self, "audit_worker_nodes"):
             self.audit_worker_nodes = {}
 
         needs_reorder = False
+
+        # Limitamos ráfagas de eventos para evitar que Tkinter se congele
+        if len(events) > 500:
+            events = events[-500:]
 
         for ev in events:
             event_id = ev.get("id")
@@ -1517,16 +1589,20 @@ class ScraperGUI(ttk.Frame):
         if not filepath:
             return
         try:
-            # Mostrar solo el nombre del archivo en el log
             import os
+            import requests as _std_requests
 
             fname = os.path.basename(filepath)
             self.results_frame.add_log(f"Subiendo {fname}...")
+            url = f"{self.server_url.get()}/api/upload_courses"
             with open(filepath, "rb") as f:
-                r = requests.post(
-                    f"{self.server_url.get()}/api/upload_courses",
-                    files={"file": f},
+                # curl_cffi no soporta files= → usar requests estándar para upload
+                r = _std_requests.post(
+                    url,
+                    files={"file": (fname, f, "application/octet-stream")},
+                    headers=_BYPASS_HEADERS,
                     timeout=30,
+                    verify=False,
                 )
             if r.status_code == 200:
                 self._refresh_courses_from_server()
@@ -1538,24 +1614,29 @@ class ScraperGUI(ttk.Frame):
             self.results_frame.add_log(f"❌ Error en subida: {str(e)}")
             messagebox.showerror("Err", str(e))
 
+
     def _refresh_courses_from_server(self, event=None):
+        """Consulta la lista de cursos desde el servidor."""
+        if getattr(self, "is_resetting", False):
+            return
         try:
             url = f"{self.server_url.get()}/api/get_all_courses"
-            self.results_frame.add_log(f"Refrescando cursos desde el servidor...")
-            r = requests.get(url, timeout=10)
+            self.master.after(0, self.results_frame.add_log, f"Refrescando cursos desde el servidor...")
+            r = _get_scraper().get(url, timeout=10)
             if r.status_code == 200:
                 data = r.json()
-                self.results_frame.add_log(f"✅ Recibidos {len(data)} cursos.")
-                self._update_ui_with_loaded_courses(data)
+                self.master.after(0, self.results_frame.add_log, f"✅ Recibidos {len(data)} cursos.")
+                # MUY IMPORTANTE: Actualizar la interfaz desde el hilo principal de Tkinter
+                self.master.after(0, self._update_ui_with_loaded_courses, data)
             else:
-                self.results_frame.add_log(
-                    f"❌ Error al refrescar cursos: Status {r.status_code}"
-                )
+                self.master.after(0, self.results_frame.add_log, f"❌ Error al refrescar cursos: Status {r.status_code}")
         except Exception as e:
-            self.results_frame.add_log(f"❌ Excepción al refrescar cursos: {str(e)}")
+            self.master.after(0, self.results_frame.add_log, f"❌ Excepción al refrescar cursos: {str(e)}")
             # No mostrar messagebox aquí para no interrumpir el flujo si falla el inicio
 
     def _update_ui_with_loaded_courses(self, data):
+        if getattr(self, "is_resetting", False):
+            return
         try:
             self.detailed_sic_codes_with_courses = []
             for i in data:
@@ -1585,9 +1666,28 @@ class ScraperGUI(ttk.Frame):
         """Conecta al servidor. SIEMPRE llamar desde un hilo de fondo."""
         url = self.server_url.get()
         try:
-            r = requests.get(f"{url}/api/version", timeout=5)
+            # Intento 1: cloudscraper con bypass headers
+            r = None
+            last_error = None
+            try:
+                scraper = _get_scraper()
+                r = scraper.get(f"{url}/api/version", timeout=30)
+            except Exception as e1:
+                last_error = e1
+                # Intento 2: requests estándar con bypass headers
+                try:
+                    import requests as _req
+                    r = _req.get(
+                        f"{url}/api/version",
+                        headers=_BYPASS_HEADERS,
+                        timeout=30,
+                        verify=False,
+                    )
+                except Exception as e2:
+                    raise Exception(f"cloudscraper: {e1} | requests: {e2}")
+
             version = "???"
-            if r.status_code == 200:
+            if r and r.status_code == 200:
                 try:
                     version = r.json().get("version", "V3.1")
                 except:
@@ -1615,21 +1715,27 @@ class ScraperGUI(ttk.Frame):
                         ),
                     )
             else:
+                code = r.status_code if r else "N/A"
                 self.master.after(
                     0,
-                    lambda c=r.status_code: self.connection_status_label.config(
+                    lambda c=code: self.connection_status_label.config(
                         text=f"ERROR ({c})", foreground="red"
                     ),
                 )
         except Exception as e:
             self.master.after(
                 0,
-                lambda: self.connection_status_label.config(
-                    text="DESCONECTADO", foreground="red"
+                lambda err=str(e)[:60]: self.connection_status_label.config(
+                    text=f"DESCONECTADO: {err}", foreground="red"
                 ),
             )
             if show_popups:
                 logger.error(f"Error de conexión: {e}")
+                self.master.after(0, lambda err=str(e): messagebox.showerror(
+                    "Error de Conexión",
+                    f"No se pudo conectar al servidor:\n{err}"
+                ))
+
 
     def _connect_to_server_threaded(self):
         """Botón 'Conectar': lanza la conexión en un hilo de fondo."""
@@ -1753,7 +1859,7 @@ class ScraperGUI(ttk.Frame):
         if hasattr(self, "controller") and self.controller:
             self.controller.stop_scraping()
         else:
-            requests.post(f"{self.server_url.get()}/api/stop_scraping")
+            _get_scraper().post(f"{self.server_url.get()}/api/stop_scraping")
 
     def _show_worker_details(self):
         self._on_tree_select(None)
@@ -1763,7 +1869,7 @@ class ScraperGUI(ttk.Frame):
         try:
             # Obtener datos del servidor
             url = self.server_url.get()
-            r = requests.get(f"{url}/api/failed_courses", timeout=10)
+            r = _get_scraper().get(f"{url}/api/failed_courses", timeout=10)
 
             if r.status_code != 200:
                 messagebox.showerror(
@@ -1958,84 +2064,191 @@ class ScraperGUI(ttk.Frame):
         )
 
     def _force_reset_client_state(self):
-        """Limpia el frontend INMEDIATAMENTE y luego envía la señal al servidor en segundo plano.
-        El frontend NUNCA se congela esperando al servidor."""
+        """Limpia el frontend INMEDIATAMENTE y luego envía la señal al servidor.
+        Usa borrado seguro por iteración para evitar límites de argumentos en Windows."""
         if not messagebox.askyesno(
             "Confirmar RESET TOTAL",
             "¿Seguro que desea resetear TODO el sistema?\n\n"
-            "Esta acción:\n"
-            "• Detendrá todos los procesos activos en el servidor\n"
-            "• Limpiará el Monitor de Actividad Local\n"
-            "• Limpiará la Auditoría de Procesos\n\n"
+            "Esta acción detendrá procesos y borrará el progreso visible.\n"
             "¿Continuar?",
         ):
             return
 
-        # ─── PASO 1: LIMPIAR EL FRONTEND AHORA MISMO ─────────────────────────────
-        # Esto ocurre ANTES de tocar el servidor, así la UI responde al instante.
+        # ─── BLOQUEO DE SEGURIDAD ───
+        self.is_resetting = True
+        logger.info("Iniciando Reset Atómico del GUI...")
 
-        # Limpiar Monitor de Actividad Local
-        self.worker_tree.delete(*self.worker_tree.get_children())
+        # ─── CRÍTICO: Resetear el flag is_scraping del controlador ───
+        # Sin esto, el botón "Iniciar Scraping" queda bloqueado silenciosamente
+        if hasattr(self, 'controller') and self.controller:
+            try:
+                self.controller.is_scraping = False
+                self.controller.stop_polling.set()   # Detener polling viejo
+                self.controller.stop_polling.clear() # Listo para nuevo ciclo
+                logger.info("Flag is_scraping del controlador reseteado OK")
+            except Exception as e:
+                logger.warning(f"No se pudo resetear controlador: {e}")
 
-        # Limpiar Auditoría de Procesos
-        self.audit_tree.delete(*self.audit_tree.get_children())
-        if hasattr(self, "audit_details_map"):
-            self.audit_details_map.clear()
-        if hasattr(self, "audit_worker_nodes"):
-            self.audit_worker_nodes.clear()
+        # ─── PASO 1: LIMPIAR ESTADÍSTICAS (PRIMERO!) ───
+        try:
+            if hasattr(self, 'stat_completed'):
+                self.stat_completed.config(text="Completados: 0")
+            if hasattr(self, 'stat_pending'):
+                self.stat_pending.config(text="Pendientes: 0")
+            if hasattr(self, 'stat_failed'):
+                self.stat_failed.config(text="Fallidos: 0")
+            if hasattr(self, 'stat_lines'):
+                self.stat_lines.config(text="Resultados: --")
+            if hasattr(self, 'stat_contenidos'):
+                self.stat_contenidos.config(text="Contenidos: 0")
+            
+            # Resetear barras de progreso
+            if hasattr(self, 'main_progress_bar'):
+                self.main_progress_bar["value"] = 0
+            if hasattr(self, 'main_progress_var'):
+                self.main_progress_var.set(0)
+            if hasattr(self, 'main_progress_label'):
+                self.main_progress_label.config(text="0%")
+            
+            # Resetear estados
+            if hasattr(self, 'status_indicator_label'):
+                self.status_indicator_label.config(text="● DETENIDO", foreground="red")
+            if hasattr(self, 'status_msg_label'):
+                self.status_msg_label.config(text="RESET EN CURSO...")
+                
+            if hasattr(self, 'expanded_status_label'):
+                self.expanded_status_label.config(text="● DETENIDO", foreground="red")
+            if hasattr(self, 'expanded_progress_bar'):
+                self.expanded_progress_bar["value"] = 0
+            if hasattr(self, 'expanded_progress_label'):
+                self.expanded_progress_label.config(text="0.0% - Listo")
+        except Exception as e:
+            logger.error(f"Error reseteando etiquetas: {e}")
 
-        # Limpiar panel de detalles
-        self.details_text.config(state=tk.NORMAL)
-        self.details_text.delete(1.0, tk.END)
-        self.details_text.config(state=tk.DISABLED)
+        # ─── PASO 2: LIMPIAR TABLAS (BORRADO SEGURO) ───
+        try:
+            if hasattr(self, 'worker_tree'):
+                # Borrado iterativo para evitar errores de límites de argumentos (*args)
+                children = self.worker_tree.get_children()
+                for child in children:
+                    self.worker_tree.delete(child)
+            
+            if hasattr(self, 'audit_tree'):
+                children = self.audit_tree.get_children()
+                for child in children:
+                    self.audit_tree.delete(child)
+                    
+            if hasattr(self, "audit_details_map"):
+                self.audit_details_map.clear()
+            if hasattr(self, "audit_worker_nodes"):
+                self.audit_worker_nodes.clear()
+        except Exception as e:
+            logger.error(f"Error limpiando tablas: {e}")
 
-        # Resetear contador de eventos
-        if hasattr(self, "controller") and hasattr(self.controller, "last_event_id"):
-            self.controller.last_event_id = 0
+        # ─── PASO 3: LIMPIAR OTRAS LISTAS ───
+        try:
+            if hasattr(self, 'from_sic_listbox'):
+                self.from_sic_listbox.delete(0, tk.END)
+            if hasattr(self, 'to_sic_listbox'):
+                self.to_sic_listbox.delete(0, tk.END)
+            self.detailed_sic_codes_with_courses = []
+        except Exception as e:
+            logger.error(f"Error limpiando listas: {e}")
 
-        # Registrar en el log de la ui
-        self.results_frame.add_log("🔄 Reset iniciado — limpiando interfaz...")
-        self.results_frame.add_log("⏳ Enviando señal de reset al servidor en segundo plano...")
+        # Forzar redibujado
+        self.update_idletasks()
 
-        # ─── PASO 2: DISPARAR AL SERVIDOR SIN BLOQUEAR (fire-and-forget) ────────
+        # ─── PASO 4: DISPARAR RESET EN EL SERVIDOR (UN SOLO HILO) ───
         current_url = self.server_url.get()
 
         def _fire_server_reset():
-            """Se ejecuta en un hilo de fondo. El frontend ya está limpio y responsivo."""
+            """Se ejecuta en un hilo de fondo. El frontend ya está limpio y responsivo.
+            SIEMPRE libera is_resetting al terminar, sin importar el resultado."""
             try:
-                # 1. Señal de reset al servidor (termina procesos)
-                self.master.after(0, lambda: self.results_frame.add_log("🛑 Deteniendo procesos en el servidor..."))
-                requests.post(f"{current_url}/api/reset", timeout=180)
-                
-                # 2. Señal de limpieza de archivos (borra CSVs viejos)
-                self.master.after(0, lambda: self.results_frame.add_log("🗑️ Borrando archivos antiguos del servidor..."))
-                requests.post(f"{current_url}/api/cleanup_files", timeout=180)
-                
-                self.master.after(
-                    0,
-                    lambda: self.results_frame.add_log("✅ Servidor reseteado y archivos limpiados correctamente.")
-                )
+                # 1. Emergency reset (limpia estado en memoria del servidor)
+                try:
+                    _get_scraper().post(f"{current_url}/api/emergency_reset", timeout=15)
+                except Exception:
+                    pass  # Si falla, continuar con el reset normal
+
+                # 2. Reset normal (detiene workers)
+                _get_scraper().post(f"{current_url}/api/reset", timeout=180)
+
+                # 3. Limpieza de archivos CSV
+                try:
+                    _get_scraper().post(f"{current_url}/api/cleanup_files", timeout=60)
+                except Exception:
+                    pass
+
+                def _on_reset_ok():
+                    self.is_resetting = False
+                    if hasattr(self, 'results_frame'):
+                        self.results_frame.add_log("✅ Servidor reseteado. Sistema listo para nueva sesión.")
+                self.master.after(0, _on_reset_ok)
+
             except requests.Timeout:
-                # Timeout es esperado cuando hay 48+ workers terminando — no es error
-                self.master.after(
-                    0,
-                    lambda: self.results_frame.add_log(
-                        "✅ Servidor procesando reset y limpieza (timeout esperado con muchos workers)."
-                    )
-                )
+                def _on_timeout():
+                    self.is_resetting = False
+                    if hasattr(self, 'results_frame'):
+                        self.results_frame.add_log(
+                            "✅ Reset enviado al servidor (timeout esperado con muchos workers). Sistema listo."
+                        )
+                self.master.after(0, _on_timeout)
             except Exception as e:
-                self.master.after(
-                    0,
-                    lambda err=str(e): self.results_frame.add_log(
-                        f"⚠️ No se pudo contactar al servidor para completar el reset: {err}"
-                    )
-                )
+                def _on_error(err=str(e)):
+                    self.is_resetting = False
+                    if hasattr(self, 'results_frame'):
+                        self.results_frame.add_log(f"⚠️ No se pudo contactar al servidor: {err}. GUI lista de todos modos.")
+                self.master.after(0, _on_error)
 
         import threading
         threading.Thread(target=_fire_server_reset, daemon=True, name="ServerReset").start()
 
+        # Timer
+        if hasattr(self, 'timer_label'):
+            self.timer_label.config(text="00:00:00")
+
+        # ─── LIMPIAR TODOS LOS PANELES DE LOG ────────────────────────────────────
+        def _clear_text_widget(widget):
+            try:
+                widget.config(state=tk.NORMAL)
+                widget.delete("1.0", tk.END)
+                widget.config(state=tk.DISABLED)
+            except Exception:
+                pass
+
+        # Panel de detalles del proceso seleccionado
+        if hasattr(self, 'details_text'):
+            _clear_text_widget(self.details_text)
+
+        # Log detallado de la pestaña Principal
+        if hasattr(self, 'detailed_log_text'):
+            _clear_text_widget(self.detailed_log_text)
+
+        # Log de la pestaña Monitor de Estado expandida
+        if hasattr(self, 'expanded_log_text'):
+            _clear_text_widget(self.expanded_log_text)
+
+        # Panel de errores críticos de la pestaña expandida
+        if hasattr(self, 'expanded_errors_text'):
+            _clear_text_widget(self.expanded_errors_text)
+
+        # ResultsFrame (el área de texto/log del panel central)
+        if hasattr(self, 'results_frame') and hasattr(self.results_frame, 'text'):
+            try:
+                self.results_frame.text.config(state=tk.NORMAL)
+                self.results_frame.text.delete("1.0", tk.END)
+                self.results_frame.text.config(state=tk.DISABLED)
+            except Exception:
+                pass
+
+        # ─── RESETEAR ESTADO INTERNO ──────────────────────────────────────────────
+        if hasattr(self, "controller") and hasattr(self.controller, "last_event_id"):
+            self.controller.last_event_id = 0
+
         # Confirmar inmediatamente al usuario (sin modal bloqueante)
-        self.results_frame.add_log("✅ Frontend limpio y listo para nueva sesión.")
+        if hasattr(self, 'results_frame'):
+            self.results_frame.add_log("✅ Frontend limpio. Esperando confirmación del servidor...")
 
     def _reset_complete(
         self, success, reset_status, cleanup_status, progress_window, error_msg=None
@@ -2051,7 +2264,7 @@ class ScraperGUI(ttk.Frame):
         path = filedialog.asksaveasfilename(defaultextension=".zip")
         if not path:
             return
-        r = requests.get(f"{self.server_url.get()}/api/download_results")
+        r = _get_scraper().get(f"{self.server_url.get()}/api/download_results")
         with open(path, "wb") as f:
             f.write(r.content)
 
@@ -2072,7 +2285,7 @@ class ScraperGUI(ttk.Frame):
 
         def do_fetch():
             try:
-                response = requests.get(f"{current_url}/api/results_line_count", timeout=120)
+                response = _get_scraper().get(f"{current_url}/api/results_line_count", timeout=120)
 
                 if response.status_code == 200:
                     data = response.json()
@@ -2169,14 +2382,25 @@ class ScraperGUI(ttk.Frame):
         """Agrega una entrada al log detallado con color según su naturaleza (en AMBAS pestañas)."""
         timestamp = datetime.now().strftime("%H:%M:%S")
         formatted_entry = f"[{timestamp}] {message}\n"
+        
+        def trim_text(txt_widget, limit=1500):
+            try:
+                # Evitar crecimiento infinito para no congelar la UI
+                lines = int(txt_widget.index(tk.END).split('.')[0])
+                if lines > limit:
+                    txt_widget.delete("1.0", f"{lines - limit + 300}.0")
+            except Exception:
+                pass
 
         # Agregar al log de la pestaña Principal
         self.detailed_log_text.insert(tk.END, formatted_entry, level)
+        trim_text(self.detailed_log_text)
         self.detailed_log_text.see(tk.END)
 
         # Agregar al log de la pestaña Expandida
         if hasattr(self, "expanded_log_text"):
             self.expanded_log_text.insert(tk.END, formatted_entry, level)
+            trim_text(self.expanded_log_text)
             self.expanded_log_text.see(tk.END)
 
         # Si es ERROR, también agregar a la lista de errores expandida
@@ -2186,6 +2410,14 @@ class ScraperGUI(ttk.Frame):
             self.expanded_errors_text.insert(tk.END, formatted_entry)
             self.expanded_errors_text.config(state=tk.DISABLED)
             self.expanded_errors_text.see(tk.END)
+
+    def _update_timer_display(self, time_str):
+        """Callback del TimerManager para actualizar el label del timer.
+        Se ejecuta desde un hilo de fondo, por lo que usa master.after para seguridad."""
+        try:
+            self.master.after(0, lambda t=time_str: self.timer_label.config(text=t))
+        except Exception:
+            pass  # Widget puede haber sido destruido
 
     def handle_scraping_finished(self):
         """Maneja el evento de finalización del scraping."""
@@ -2204,12 +2436,12 @@ class ScraperGUI(ttk.Frame):
             )
 
     def _connect_and_load_initial_data(self):
-        """Conecta al servidor en un hilo de fondo para no bloquear la GUI."""
+        """Carga cursos del servidor en un hilo de fondo, sin bloquear la GUI."""
         url = self.server_url.get()
         if not url:
             return
         threading.Thread(
-            target=self._connect_to_server, args=(False,), daemon=True
+            target=self._connect_to_server, args=(False,), daemon=True, name="InitialLoad"
         ).start()
 
     def _show_context_menu(self, event):
@@ -2246,12 +2478,18 @@ class ScraperGUI(ttk.Frame):
         threading.Thread(target=self._do_status_poll, daemon=True).start()
 
     def _do_status_poll(self):
-        """Hace las llamadas HTTP de polling en un hilo de fondo."""
+        """Hace las llamadas HTTP de polling en un hilo de fondo.
+        MEJORADO: Sincroniza timer con servidor, detecta workers estancados/muertos.
+        """
         url = self.server_url.get()
         if not url or self.is_closing:
             return
+        # Si estamos en medio de un reset, NO reponer la UI con datos viejos
+        if getattr(self, 'is_resetting', False):
+            return
         try:
-            r = requests.get(f"{url}/api/detailed_status", timeout=3)
+            scraper = _get_scraper()
+            r = scraper.get(f"{url}/api/detailed_status", timeout=10)
             if r.status_code == 200:
                 data = r.json()
                 workers = data.get("workers", {})
@@ -2262,10 +2500,23 @@ class ScraperGUI(ttk.Frame):
                 else:
                     courses = courses_raw
 
-                # Configurar timer desde el servidor
+                # === TIMER SINCRONIZADO CON EL SERVIDOR (persiste entre reinicios del cliente) ===
                 start_time_iso = data.get("start_time")
                 acc_time = data.get("accumulated_time", 0)
-                
+                is_running = data.get("is_running", False)
+
+                # Sincronizar el TimerManager con los datos del servidor
+                if hasattr(self, 'timer_manager'):
+                    if is_running and acc_time > 0:
+                        self.timer_manager.sync_from_server(acc_time, start_time_iso)
+                        # Auto-arrancar el timer local si no está corriendo
+                        if not self.timer_manager.timer_running:
+                            self.timer_manager.start()
+                    elif not is_running and self.timer_manager.timer_running:
+                        # Job terminó — detener timer pero mantener el último valor
+                        self.timer_manager.stop()
+
+                # Fallback directo al label por si el TimerManager no está activo
                 if start_time_iso:
                     try:
                         dt = datetime.fromisoformat(start_time_iso)
@@ -2277,7 +2528,7 @@ class ScraperGUI(ttk.Frame):
 
                 hours, remainder = divmod(int(acc_time), 3600)
                 minutes, seconds = divmod(remainder, 60)
-                timer_str = f"Tiempo: {hours:02}:{minutes:02}:{seconds:02} | {start_str}"
+                timer_str = f"⏱ {hours:02}:{minutes:02}:{seconds:02} | {start_str}"
                 
                 # Actualizar el timer en el hilo de UI
                 self.master.after(0, lambda t=timer_str: self.timer_label.config(text=t))
@@ -2289,12 +2540,55 @@ class ScraperGUI(ttk.Frame):
                 if hasattr(self, "exp_stat_lines"):
                     self.master.after(0, lambda s=contenidos_str: self.exp_stat_lines.config(text=s))
 
+                # === DETECCIÓN DE WORKERS ESTANCADOS ===
+                stalled = data.get("stalled_workers", [])
+                dead = data.get("dead_workers", [])
+
+                if stalled or dead:
+                    # Construir mensaje de alerta
+                    alert_parts = []
+                    for sw in stalled:
+                        secs = sw.get("seconds_since_heartbeat", 0)
+                        wid = sw.get("worker_id", "?")
+                        task = sw.get("last_task", "?")
+                        mins = secs // 60
+                        alert_parts.append(
+                            f"⚠️ Worker {wid} sin respuesta hace {mins}min ({task})"
+                        )
+                    for dw in dead:
+                        alert_parts.append(
+                            f"💀 Proceso PID {dw.get('pid')} muerto (código: {dw.get('exitcode')})"
+                        )
+
+                    # Mostrar en el log y en el indicador de estado
+                    for msg in alert_parts:
+                        self.master.after(
+                            0,
+                            lambda m=msg: self._add_to_detailed_log(m, "WARNING")
+                        )
+
+                    # Cambiar indicador de estado a amarillo de alerta
+                    if dead:
+                        self.master.after(
+                            0,
+                            lambda: self.status_indicator_label.config(
+                                text="● WORKER MUERTO", foreground="#ff4444"
+                            )
+                        )
+                    elif stalled:
+                        self.master.after(
+                            0,
+                            lambda: self.status_indicator_label.config(
+                                text="● POSIBLE BLOQUEO", foreground="#ffaa00"
+                            )
+                        )
+
                 if courses or workers:
                     self.master.after(
                         0, lambda w=workers, c=courses: self._render_status(w, c)
                     )
 
-            r_logs = requests.get(
+            r_logs = _get_scraper().get(
                 f"{url}/api/events?min_id={getattr(self, 'last_event_id', 0)}",
                 timeout=3,
             )
@@ -2365,11 +2659,18 @@ class ServerFilesWindow(tk.Toplevel):
 
         columns = ("name", "category", "size", "lines", "date")
         tree = ttk.Treeview(tree_frame, columns=columns, show="headings")
-        tree.heading("name", text="Archivo")
-        tree.heading("category", text="Cat")
-        tree.heading("size", text="Tamaño")
-        tree.heading("lines", text="Filas")
-        tree.heading("date", text="Fecha Modificación")
+        
+        # Configurar encabezados con comando de ordenamiento
+        headers = {
+            "name": "Archivo",
+            "category": "Cat",
+            "size": "Tamaño",
+            "lines": "Filas",
+            "date": "Fecha Modificación"
+        }
+        
+        for col, text in headers.items():
+            tree.heading(col, text=text, command=lambda _tree=tree, _col=col: self._treeview_sort_column(_tree, _col, False))
 
         tree.column("name", width=280)
         tree.column("category", width=60, anchor=tk.CENTER)
@@ -2410,7 +2711,7 @@ class ServerFilesWindow(tk.Toplevel):
 
         def fetch_thread():
             try:
-                r = requests.get(f"{self.url}/api/list_results", timeout=180)
+                r = _get_scraper().get(f"{self.url}/api/list_results", timeout=180)
                 self.after(
                     0,
                     self._refresh_done,
@@ -2456,6 +2757,38 @@ class ServerFilesWindow(tk.Toplevel):
                 text=f"Error: {error_text[:50]}...", foreground="red"
             )
 
+    def _treeview_sort_column(self, tv, col, reverse):
+        """Ordena el treeview por una columna específica"""
+        l = [(tv.set(k, col), k) for k in tv.get_children('')]
+        
+        if col == "size":
+            # Convertir tamaño legible a bytes para ordenar numéricamente
+            def parse_size(s):
+                try:
+                    units = {"B": 1, "KB": 1024, "MB": 1024**2, "GB": 1024**3, "TB": 1024**4}
+                    parts = s.split()
+                    if len(parts) < 2: return float(parts[0])
+                    number, unit = parts[0], parts[1].upper()
+                    return float(number) * units.get(unit, 1)
+                except: return 0
+            l.sort(key=lambda t: parse_size(t[0]), reverse=reverse)
+        elif col == "lines":
+            # Quitar comas y convertir a entero
+            def parse_lines(s):
+                try: return int(s.replace(',', ''))
+                except: return 0
+            l.sort(key=lambda t: parse_lines(t[0]), reverse=reverse)
+        else:
+            # Ordenamiento por texto (funciona para fechas YYYY-MM-DD HH:MM:SS)
+            l.sort(reverse=reverse)
+
+        # Reordenar los items
+        for index, (val, k) in enumerate(l):
+            tv.move(k, '', index)
+
+        # Alternar el orden para la próxima vez
+        tv.heading(col, command=lambda: self._treeview_sort_column(tv, col, not reverse))
+
     def _download_selected(self, tree):
         sel = tree.selection()
         if not sel:
@@ -2466,7 +2799,7 @@ class ServerFilesWindow(tk.Toplevel):
             return
 
         try:
-            r = requests.get(
+            r = _get_scraper().get(
                 f"{self.url}/api/download_file",
                 params={"filename": filename},
                 stream=True,
@@ -2523,7 +2856,7 @@ class ServerFilesWindow(tk.Toplevel):
 
             def cleanup_thread():
                 try:
-                    r = requests.post(f"{self.url}/api/cleanup_files", timeout=180)
+                    r = _get_scraper().post(f"{self.url}/api/cleanup_files", timeout=180)
 
                     # Volver al hilo principal para actualizar GUI
                     self.after(0, self._cleanup_done, r.status_code, r.text)

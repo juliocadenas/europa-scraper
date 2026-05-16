@@ -1,0 +1,7750 @@
+sic_code,course_name
+500,NATURAL SCIENCE (6)
+501,NATURAL SCIENCE PHILOSOPHY (1)
+501(0001),Philosophy of science
+502,NATURAL SCIENCE
+502(0001),Fixation
+502(0002),Microscopy
+502(0003),Electron microscopy
+502(0004),Microscopes
+502(0005),Electron microscopes
+502(0006),Microtomy
+502(0007),Slide preparation
+502(0008),Staining
+502(0009),Ultramicroscopes
+503,NATURAL SCIENCE DICTIONARIES
+504,NATURAL SCIENCE ESSAYS
+505,NATURAL SCIENCE PERIODICALS
+506,NATURAL SCIENCE SOCIETIES
+507,NATURAL SCIENCE EDUCATION. MUSEUMS (2)
+507(0001),Science projects in schools
+507(0002),Science fair projects
+508,NATURAL SCIENCE POLYGRAPHY (16)
+508(0001),Fall
+508(0002),Discoveries in natural history
+508(0003),Scientific surveys
+508(0004),Surveys of natural phenomena
+508(0005),Seasons
+508(0006),Explorations
+508(0007),Natural phenomena
+508(0008),Natural history
+508(0009),Winter
+508(0010),Nature
+508(0011),Autumn
+508(0012),Spring
+508(0013),Summer
+508(0014),Travel
+508(0015),Scientific travels
+509,NATURAL SCIENCE HISTORY (2)
+509(0001),Scientists
+509(0002),Discoveries in science
+510,MATHEMATICS (7)
+510(0001),Pocket calculators
+510(0002),Programmable calculators
+510(0003),Calculators
+510(0004),Finite mathematics
+510(0005),Mathematicians
+510(0006),Metamathematics
+510(0007),Slide rules
+511,ARITHMETIC(85)
+511(0001),Curve fitting
+511(0002),Boolean algebra
+511(0003),Algebra of sets
+511(0004),Algorithms
+511(0005),Combinatorial analysis
+511(0006),Error analysis
+511(0007),Interval analysis
+511(0008),Approximation
+511(0009),Trees
+511(0010),Mappings
+511(0011),Automata
+511(0012),Axioms
+511(0013),Predicate calculus
+511(0014),Lambda calculus
+511(0015),Propositional calculus
+511(0016),Numerical calculations
+511(0017),Categories
+511(0018),Convolutions
+511(0019),Combinations
+511(0020),Sets
+511(0021),Point sets
+511(0022),Fuzzy sets
+511(0023),Partially ordered sets
+511(0024),Correspondence
+511(0025),Latin squares
+511(0026),Magic squares
+511(0027),Decidability
+511(0028),Equations
+511(0029),Choice
+511(0030),Enumeration - combinatorial
+511(0031),Structures
+511(0032),Expansions
+511(0033),Functions
+511(0034),Automorphic functions
+511(0035),Continuous functions
+511(0036),Recursive functions
+511(0037),Foundations of mathematics
+511(0038),Mathematical foundations
+511(0039),Graphs
+511(0040),Formal grammars
+511(0041),Hypotheses
+511(0042),Continuum hypothesis
+511(0043),Interpolation
+511(0044),Inversions
+511(0045),Isometry
+511(0046),Formal languages
+511(0047),Algebraic logic
+511(0048),Combinatory logic
+511(0049),Mathematical logic
+511(0050),Symbolic logic
+511(0051),Maps
+511(0052),Turing machines
+511(0053),Intuitive mathematics
+511(0054),Deductive mathematics
+511(0055),Inductive mathematics
+511(0056),Maxima
+511(0057),Iterative methods
+511(0058),Minima
+511(0059),Least squares
+511(0060),Mathematical models
+511(0061),Nets
+511(0062),Nomography
+511(0063),Transfinite numbers
+511(0064),Operations
+511(0065),Logic operators
+511(0066),Permutation
+511(0067),Postulates
+511(0068),Lattices
+511(0069),Relations
+511(0070),Simulation
+511(0071),Mathematical systems
+511(0072),Ordered systems
+511(0073),Splines
+511(0074),Completeness theorem
+511(0075),Axiomatic set theory
+511(0076),Machine theory
+511(0077),Proof theory
+511(0078),Recursion theory
+511(0079),Set theory
+511(0080),Graph theory
+511(0081),Quadratic transformations
+511(0082),Transformations
+511(0083),Integral transforms
+512,ALGEBRA(185)
+512(0001),Addition
+512(0002),Algebra
+512(0003),Multidimensional algebra
+512(0004),Commutative algebra
+512(0005),Clifford algebra
+512(0006),Homological algebra
+512(0007),Matrix algebra
+512(0008),Modern algebra
+512(0009),Multilinear algebra
+512(0010),Numerical algebra
+512(0011),Tensor algebra
+512(0012),Universal algebra
+512(0013),Associative algebras
+512(0014),Banach algebras
+512(0015),Division algebras
+512(0016),Hopf algebras
+512(0017),Jordan algebras
+512(0018),Lie algebras
+512(0019),Operator algebras
+512(0020),Von Neumann algebras
+512(0021),Differential algebras
+512(0022),Spinor algebras
+512(0023),Exterior algebras
+512(0024),Factor algebras
+512(0025),Flexible algebras
+512(0026),Frechet algebras
+512(0027),Free algebras
+512(0028),Linear algebras
+512(0029),Nonassociative algebras
+512(0030),Reductive algebras
+512(0031),Steenrod algebras
+512(0032),Stein algebras
+512(0033),Topological algebras
+512(0034),Uniform algebras
+512(0035),Diophantine analysis
+512(0036),Rings
+512(0037),Approximation
+512(0038),Diophantine approximations
+512(0039),Ausdehnungslehre
+512(0040),Automorphisms
+512(0041),C* algebras
+512(0042),Fields
+512(0043),Abelian categories
+512(0044),Categories
+512(0045),Cosets
+512(0046),Combinations
+512(0047),Congruences
+512(0048),Sieves
+512(0049),Cyclotomy - number theory-
+512(0050),Inequalities
+512(0051),Determinants
+512(0052),Difference algebras
+512(0053),Discriminants
+512(0054),Distributions
+512(0055),Divisibility
+512(0056),Division
+512(0057),Binomial equations
+512(0058),Quadratic equations
+512(0059),Cubic equations
+512(0060),Quartic equations
+512(0061),Diophantine equations
+512(0062),Mixed equations
+512(0063),Polynomial equations
+512(0064),Equations
+512(0065),Eigenvectors
+512(0066),Integers
+512(0067),Vector spaces
+512(0068),Evolution
+512(0069),Exponents
+512(0070),Field extensions
+512(0071),Root extraction
+512(0072),Factoring
+512(0073),Factorization
+512(0074),Bilinear forms
+512(0075),Quadratic forms
+512(0076),Modular forms
+512(0077),Forms
+512(0078),Continued fractions
+512(0079),Automorphic functions
+512(0080),Rational functions
+512(0081),Functions
+512(0082),Geometry of numbers
+512(0083),Groupoids
+512(0084),Groups
+512(0085),Abelian groups
+512(0086),Algebraic groups
+512(0087),Brauer groups
+512(0088),Cyclic groups
+512(0089),Compact groups
+512(0090),Commutative groups
+512(0091),Banach groups
+512(0092),Class groups
+512(0093),Lie groups
+512(0094),Permutation groups
+512(0095),Rotation groups
+512(0096),Formal groups
+512(0097),Locally compact groups
+512(0098),Riemannian hypothesis
+512(0099),Ideals
+512(0100),Invariants
+512(0101),Involution
+512(0102),Algebraic K-theory
+512(0103),K-theory
+512(0104),Logarithms
+512(0105),Matrices
+512(0106),Modules
+512(0107),Morphisms
+512(0108),Multiplication
+512(0109),Class numbers
+512(0110),Fibonacci numbers
+512(0111),Natural numbers
+512(0112),P-adic numbers
+512(0113),Prime numbers
+512(0114),Real numbers
+512(0115),Transcendental numbers
+512(0116),Algebraic operations
+512(0117),Operations
+512(0118),Partitions
+512(0119),Permutations
+512(0120),Permutationsand mathematics
+512(0121),Powers
+512(0122),Progressions
+512(0123),Algebraic progressions
+512(0124),Geometric progressions
+512(0125),Additive properties
+512(0126),Multiplicative properties
+512(0127),Ratio
+512(0128),Proportion
+512(0129),Quaternions
+512(0130),Roots
+512(0131),Reciprocity
+512(0132),Representations
+512(0133),Residues
+512(0134),Quadratic residues
+512(0135),Power residues
+512(0136),Subtraction
+512(0137),Abstract algebra
+512(0138),Sequences of integers
+512(0139),Semigroups
+512(0140),Subrings
+512(0141),Subgroups
+512(0142),Analytic number theory
+512(0143),Distribution theory of prime numbers
+512(0144),Radical theory
+512(0145),Field theory
+512(0146),Extension theory
+512(0147),Algebraic function theory
+512(0148),Galois theory
+512(0149),Invariant theory
+512(0150),Algebraic number theory
+512(0151),Elementary number theory
+512(0152),Probabilistic number theory
+512(0153),Geometric number theory
+512(0154),Unit theory
+512(0155),Transformations
+512(0156),Fermat's last theorem
+512(0157),Eigenvalues
+512(0158),Vector algebra
+512(0159),Lattices
+513,GEOMETRY. CONIC SECTIONS(45)
+513(0001),Abacus
+513(0002),Approximation
+"513(0003),""Arithmetic, Numeracy""",
+513(0004),Modular arithmetic
+513(0005),Mental arithmetic
+513(0006),Rapid calculations
+513(0007),Combinations
+513(0008),Counting
+513(0009),Distributions
+513(0010),Division
+513(0011),Exponents
+513(0012),Root extraction
+513(0013),Factoring
+513(0014),Fractions
+513(0015),Logarithms
+513(0016),Multiplication
+513(0017),Numbers
+513(0018),Binary numbers
+513(0019),Decimal numbers
+513(0020),Natural numbers
+513(0021),Permutations
+513(0022),Percentage
+513(0023),Arithmetic progressions
+513(0024),Geometric progressions
+513(0025),Progressions
+513(0026),Proportion
+513(0027),Square root
+513(0028),Cube root
+513(0029),Ratio
+513(0030),Ready reckoners
+513(0031),Subtraction
+513(0032),Binary system
+513(0033),Decimal system
+513(0034),Duodecimal system
+513(0035),Hexadecimal system
+513(0036),Octal system
+513(0037),Quinary system
+513(0038),Sexadecimal system
+513(0039),Ternary system
+513(0040),Vicenary system
+513(0041),Vigesimal system
+513(0042),Numeration systems
+513(0043),Number systems
+513(0044),Addition
+514,TRIGONOMETRY(45)
+514(0001),Global analysis
+514(0002),Analysis situs
+514(0003),Mappings
+514(0004),Catastrophes
+514(0005),Manifolds
+514(0006),Complexes
+514(0007),Point set topology
+514(0008),Links
+514(0009),Compact spaces
+514(0010),Fiber spaces
+514(0011),Derived spaces
+514(0012),Homogeneous spaces
+514(0013),Ordered topological spaces
+514(0014),Uniform spaces
+514(0015),Spaces
+514(0016),Structures
+514(0017),Foliations
+514(0018),Fiber bundles
+514(0019),Homeomorphisms
+514(0020),K-theory
+514(0021),Knots
+514(0022),Sheaves
+514(0023),Map-coloring problem
+514(0024),Nets
+514(0025),Hamiltonian systems
+514(0026),Index theorems
+514(0027),Cohomology theory
+514(0028),Homology theory
+514(0029),Homotopy theory
+514(0030),Topology
+514(0031),Algebraic topology
+514(0032),Analytic topology
+514(0033),Combinatorial topology
+514(0034),Proximity topology
+514(0035),Differential topology
+514(0036),General topology
+514(0037),Low-dimensional topology
+514(0038),Metric topology
+514(0039),Manifold topology
+514(0040),Topological transformation
+514(0041),Braids
+514(0042),Topological manifolds
+515,DESCRIPTIVE GEOMETRY(197)
+515(0001),Analysis
+515(0002),Harmonic analysis
+515(0003),Fourier analysis
+515(0004),Functional analysis
+515(0005),Nonlinear functional analysis
+515(0006),Global analysis
+515(0007),Mathematical analysis
+515(0008),Numerical analysis
+515(0009),Tensor analysis
+515(0010),Vector analysis
+515(0011),Differentiable mappings
+515(0012),Spherical harmonics
+515(0013),Calculus
+515(0014),Calculus of finite differences
+515(0015),Calculus of variations
+515(0016),Tensor calculus
+515(0017),Differential calculus
+515(0018),Infinitesimal calculus
+515(0019),Integral calculus
+515(0020),Operational calculus
+515(0021),Vector calculus
+515(0022),Chebyshev polynomials
+515(0023),Convergence
+515(0024),Quadrature
+515(0025),Cubature
+515(0026),Directional derivatives
+515(0027),Differential inequalities
+515(0028),Integral inequalities
+515(0029),Inequalities
+515(0030),Numerical differentiation
+515(0031),Ordinary differentiation
+515(0032),Partial differentiation
+515(0033),Total differentiation
+515(0034),Differentials
+515(0035),Finite differences
+515(0036),Duality
+515(0037),Binomial equations
+515(0038),Conditional equations
+515(0039),Quadratic equations
+515(0040),Cubic equations
+515(0041),Quartic equations
+515(0042),Volterra equations
+515(0043),Differential equations
+515(0044),Differential—difference equations
+515(0045),Linear differential equations
+515(0046),Nonlinear differential equations
+515(0047),Ordinary differential equations
+515(0048),Partial differential equations
+515(0049),Elliptic equations
+515(0050),Difference equations
+515(0051),Fredholm equations
+515(0052),Hyperbolic equations
+515(0053),Homogeneous equations
+515(0054),Indeterminate equations
+515(0055),Integral equations
+515(0056),Integro—differential equations
+515(0057),Linear equations
+515(0058),Nonlinear equations
+515(0059),Parabolic equations
+515(0060),Polynomial equations
+515(0061),Reciprocal equations
+515(0062),Equations
+515(0063),Analytic spaces
+515(0064),Banach spaces
+515(0065),Hilbert spaces
+515(0066),Orlicz spaces
+515(0067),Inner product spaces
+515(0068),Sobolev spaces
+515(0069),Hermitian spaces
+515(0070),Normed linear spaces
+515(0071),Lp spaces
+515(0072),Riesz spaces
+515(0073),Linear topological spaces
+515(0074),Unitary spaces
+515(0075),Topological vector spaces
+515(0076),Differential forms
+515(0077),Continued fractions
+515(0078),Bessel function
+515(0079),Legendre function
+515(0080),Neumann function
+515(0081),Theta function
+515(0082),Zeta function
+515(0083),Functionals
+515(0084),Analytic functions
+515(0085),Harmonic functions
+515(0086),Automorphic functions
+515(0087),Beta functions
+515(0088),Complex-valued functions
+515(0089),Hankel functions
+515(0090),Laplace functions
+515(0091),Mathieu functions
+515(0092),Functions of complex variables
+515(0093),Functions of real variables
+515(0094),Real variable functions
+515(0095),Elliptic functions
+515(0096),Entire functions
+515(0097),Special functions
+515(0098),Gamma functions
+515(0099),Generating functions
+515(0100),Generalized functions
+515(0101),Meromorphic functions
+515(0102),Modular functions
+515(0103),Multiform functions
+515(0104),Nondifferentiable functions
+515(0105),Parabolic functions
+515(0106),Pseudoanalytic functions
+515(0107),Symmetric functions
+515(0108),Transcendental functions
+515(0109),Uniform functions
+515(0110),Vector-valued functions
+515(0111),Functions
+515(0112),Continuous functions
+515(0113),Haar integral
+515(0114),Hyperfunctions
+515(0115),Integration
+515(0116),Numerical integration
+515(0117),Lebesgue integral
+515(0118),Riemann integral
+515(0119),Stokes' integral
+515(0120),Integrals
+515(0121),Proper integrals
+515(0122),Eulerian integrals
+515(0123),Line integrals
+515(0124),Surface integrals
+515(0125),Definite integrals
+515(0126),Denjoy integrals
+515(0127),Improper integrals
+515(0128),Differential invariants
+515(0129),Arc length
+515(0130),Conformal mapping
+515(0131),Measure theory
+515(0132),Operators
+515(0133),Differential operators
+515(0134),Partial differential operators
+515(0135),Elliptic operators
+515(0136),Integral operators
+515(0137),Linear operators
+515(0138),Nonlinear operators
+515(0139),Poisson integral
+515(0140),Poisson-Stieltjes integral
+515(0141),Hermite polynomials
+515(0142),Jacobi polynomials
+515(0143),Lagrange polynomials
+515(0144),Laguerre polynomials
+515(0145),Legendre polynomials
+515(0146),Hypergeometric polynomials
+515(0147),Orthogonal polynomials
+515(0148),Cauchy problem
+515(0149),Dirichlet problem
+515(0150),Initial—value problems
+515(0151),Boundary-value problems
+515(0152),Infinite processes
+515(0153),Sequences
+515(0154),Spectral sequences
+515(0155),Series
+515(0156),Factorial series
+515(0157),Orthogonal series
+515(0158),Dirichlet series
+515(0159),Power series
+515(0160),Infinite series
+515(0161),Dynamical systems
+515(0162),Summation
+515(0163),Summability
+515(0164),Riemann surfaces
+515(0165),Mean value theorems
+515(0166),Bifurcation theory
+515(0167),Distribution theory
+515(0168),Stability theory
+515(0169),Integration theory
+515(0170),Perturbation theory
+515(0171),Representation theory
+515(0172),Functor theory
+515(0173),Valuation theory
+515(0174),Scalar field theory
+515(0175),Operator theory
+515(0176),Potential theory
+515(0177),Ergodic theory
+515(0178),Spectral theory
+515(0179),Total derivatives
+515(0180),Fourier transform
+515(0181),Hilbert transform
+515(0182),Laplace transform
+515(0183),Legendre transform
+515(0184),Transforms
+515(0185),Variations
+515(0186),Green integral
+515(0187),Z transform
+516,ANALYTIC GEOMETRY. QUATERNION(142)
+516(0001),Angles
+516(0002),Arcs
+516(0003),Automorphisms
+516(0004),Planes
+516(0005),Cylinders
+516(0006),Circle
+516(0007),Circles
+516(0008),Manifolds
+516(0009),Connections
+516(0010),Congruences
+516(0011),Convex sets
+516(0012),Cones
+516(0013),Squaring the circle
+516(0014),Quadrilaterals
+516(0015),Cube-doubling
+516(0016),Cubes
+516(0017),Curves
+516(0018),Analytic curves
+516(0019),Asymptotic curves
+516(0020),Minimal curves
+516(0021),Curvature
+516(0022),Directional derivatives
+516(0023),Inequalities
+516(0024),Doubling the cube
+516(0025),Spheres
+516(0026),Spaces
+516(0027),Abstract spaces
+516(0028),Fiber spaces
+516(0029),Uniform spaces
+516(0030),Spirals
+516(0031),Structures
+516(0032),Evolutes
+516(0033),Bilinear forms
+516(0034),Geometric shapes
+516(0035),Multilinear forms
+516(0036),Sesquilinear forms
+516(0037),Geodesies
+516(0038),Geometry
+516(0039),Gauss geometry
+516(0040),Affine geometry
+516(0041),Algebraic geometry
+516(0042),Analytic geometry
+516(0043),Bolyai geometry
+516(0044),Combinatorial geometry
+516(0045),Constructive geometry
+516(0046),Cartan geometry
+516(0047),Coordinate systems geometry
+516(0048),Finsler geometry
+516(0049),Incidence geometry
+516(0050),Lobachevski geometry
+516(0051),Minkowski geometry
+516(0052),Riemannian geometry
+516(0053),Circle geometry
+516(0054),Solid geometry
+516(0055),Descriptive geometry
+516(0056),Differential geometry
+516(0057),Global differential geometry
+516(0058),Intrinsic differential geometry
+516(0059),Local differential geometry
+516(0060),Einstein geometry
+516(0061),Enumerative geometry
+516(0062),Euclidean geometry
+516(0063),Hyperbolic geometry
+516(0064),Infinitesimal geometry
+516(0065),Integral geometry
+516(0066),Line geometry
+516(0067),Metric geometry
+516(0068),Modular geometry
+516(0069),Non-Euclidean geometry
+516(0070),Plane geometry
+516(0071),Projective geometry
+516(0072),Lattice point geometry
+516(0073),Sasakian geometry
+516(0074),Vector geometry
+516(0075),Metric differential geometries
+516(0076),Dual geometries
+516(0077),Geometries over algebras
+516(0078),Geometries over groups
+516(0079),Geometries over rings
+516(0080),Fiber bundles
+516(0081),Hyperbola
+516(0082),Hyperboloids
+516(0083),Homogeneous coordinate system
+516(0084),Intersections
+516(0085),Inversive geometry
+516(0086),Involutes
+516(0087),Lines
+516(0088),Arc length
+516(0089),Conformal mapping
+516(0090),Mensuration
+516(0091),Complex multiplication
+516(0092),Parabola
+516(0093),Patterns
+516(0094),Pyramids
+516(0095),Polyhedra
+516(0096),Polygons
+516(0097),Polytopes
+516(0098),Prisms
+516(0099),Famous problems in geometry
+516(0100),Ellipses
+516(0101),Conic sections
+516(0102),Similarity
+516(0103),Cartesian coordinate system
+516(0104),Curvilinear coordinate system
+516(0105),Solids
+516(0106),Squares
+516(0107),Submanifolds
+516(0108),Analytic surfaces
+516(0109),Convex surfaces
+516(0110),Developable surfaces
+516(0111),Minimal surfaces
+516(0112),Ruled surfaces
+516(0113),Surfaces
+"516(0114),""Surfaces , geometry""",
+516(0115),Torsion
+516(0116),Birational transformations
+516(0117),Conformal transformations
+516(0118),Transformations
+516(0119),Triangles
+516(0120),Trigonometry
+516(0121),Analytic trigonometry
+516(0122),Spherical trigonometry
+516(0123),Plane trigonometry
+516(0124),Angle trisection
+516(0125),Trisecting an angle
+516(0126),Differentiable manifolds
+517,MATHEMATICAL CALCULUS
+518,ALGORITHMS
+519,MATHEMATICAL PROBABILITIES(95)
+519(0001),Storage
+519(0002),Analysis of variance
+519(0003),Principal components analysis
+519(0004),Cluster analysis
+519(0005),Correlation analysis
+519(0006),Analysis of covariance
+519(0007),Regression analysis
+519(0008),Time-series analysis
+519(0009),Discriminant analysis
+519(0010),Factor analysis
+519(0011),Multivariate analysis
+519(0012),Applied numerical analysis
+519(0013),Numerical analysis
+519(0014),Sequential analysis
+519(0015),Association analysis
+519(0016),Chance
+519(0017),Markov chains
+519(0018),Probability calculus
+519(0019),Numerical calculations
+519(0020),Random walks
+519(0021),Random fields
+519(0022),Reliability-theory
+519(0023),Congestion
+519(0024),Quality control
+519(0025),Bayesian statistical decision
+519(0026),Deviation
+519(0027),Standard deviation
+519(0028),Probability distribution
+519(0029),Gaussian distribution
+519(0030),Frequency distributions
+519(0031),Epidemics
+519(0032),Descriptive statistics
+519(0033),Order statistics
+519(0034),Success runs
+519(0035),Expectation
+519(0036),Fluctuations
+519(0037),Inference
+519(0038),Statistical inference
+519(0039),Stochastic integrals
+519(0040),Inventory
+519(0041),Gambling
+519(0042),Games of chance
+519(0043),Martingales
+519(0044),Statistical mathematics
+519(0045),Applied mathematics
+519(0046),Median
+519(0047),Decomposition method
+519(0048),Monte Carlo method
+519(0049),Parametric statistical methods
+519(0050),Mode
+519(0051),Nonparametric statistical
+519(0052),Optimization
+519(0053),Mathematical optimization
+519(0054),Prediction
+519(0055),Geometric probability
+519(0056),Probabilities
+519(0057),Combinatorial probabilities
+519(0058),Random processes
+519(0059),Diffusion processes
+519(0060),Markov processes
+519(0061),Branching processes
+519(0062),Stationary processes
+519(0063),Stochastic processes
+519(0064),Gaussian processes
+519(0065),Point processes
+519(0066),Programming
+519(0067),Convex programming
+519(0068),Quadratic programming
+519(0069),Single-stage programming
+519(0070),Dynamic programming
+519(0071),Integer programming
+519(0072),Linear programming
+519(0073),Mathematical programming
+519(0074),Multistage programming
+519(0075),Nonlinear programming
+519(0076),Averaging
+519(0077),Hypothesis testing
+519(0078),Chi-square test
+519(0079),Markov risk
+519(0080),Time series
+519(0081),Mean
+519(0082),Decision theory
+519(0083),Estimation theory
+519(0084),Queuing theory
+519(0085),Control theory
+519(0086),Game theory
+519(0087),Sampling theory
+519(0088),Renewal theory
+520,ASTRONOMY (3)
+520(0001),Astrology
+520(0002),Astronomers
+520(0003),Planetariums
+521,THEORETIC ASTRONOMY (15)
+521(0001),Apogee
+521(0002),Rotation
+521(0003),Equilibrium
+521(0004),Kepler's laws
+521(0005),Celestial mechanics
+521(0006),Gravity
+521(0007),Precession
+521(0008),Many-bodies problem
+521(0009),Orbits
+521(0010),Nursing orders
+521(0011),Motion
+521(0012),Perigee
+521(0013),Perturbations
+521(0014),Problem of three bodies
+521(0015),Problem of n bodies
+522,PRACTICAL
+522(0001),Aberration
+522(0002),Astrophotography
+522(0003),Astrolabes
+522(0004),Radar astronomy
+522(0005),Gamma-ray astronomy
+522(0006),X-ray astronomy
+522(0007),Spherical astronomy
+522(0008),Infrared astronomy
+522(0009),Nutation astronomy
+522(0010),Practical astronomy
+522(0011),Celestial coordinates
+522(0012),Parallax corrections
+522(0013),Corrections
+522(0014),Chronographs
+522(0015),Quadrants
+522(0016),Celestial sphere
+522(0017),Spectroscopy
+522(0018),Photography
+522(0019),Photoelectric photometry
+522(0020),Photographic photometry
+522(0021),Astronomical instruments
+522(0022),Meridional instruments
+522(0023),Meridians
+522(0024),Micrometers
+522(0025),Astronomical observatories
+522(0026),Observatories
+522(0027),Polarimetry
+"522(0028),""Precession , celestial mechanics""",
+522(0029),Radio astronomy
+522(0030),Radio telescopes
+"522(0031),""Reformed refinery gas , astronomy""",
+522(0032),Sidereal clocks
+522(0033),Sextants
+522(0034),Telescopes
+522(0035),Radar telescopes
+522(0036),Equatorial telescopes
+522(0037),Space telescopes
+522(0038),Zenith telescopes
+522(0039),Uranography
+522(0040),Compass variations
+523,DESCRIPTIVE ASTRONOMY (119)
+523(0001),Black holes
+523(0002),Expanding universe theories
+523(0003),Planetary rings
+523(0004),Rings
+523(0005),Asteroids
+523(0006),Astrophysics
+523(0007),Eclipsing binaries
+523(0008),Spectroscopic binaries
+523(0009),Astrometric binaries - stars-
+523(0010),Visual binaries
+523(0011),Brightness
+523(0012),Heat
+523(0013),Cepheids
+523(0014),Halley's comet
+523(0015),Comets
+523(0016),Corona of sun
+523(0017),Coronagraphs
+523(0018),Cosmogony
+523(0019),Cosmology
+523(0020),Cosmochemistry
+523(0021),Counterglow
+523(0022),Continuous creation
+523(0023),Creation
+523(0024),Chromosphere of sun
+523(0025),Quasars
+523(0026),Celestial bodies
+523(0027),Globular clusters
+523(0028),Destruction of universe
+523(0029),Eclipses
+523(0030),Electricity
+523(0031),White dwarfs
+523(0032),Outer space
+523(0033),Stars
+523(0034),Binary stars
+523(0035),Neutron stars
+523(0036),Flare stars
+523(0037),Variable stars
+523(0038),Long-period variable stars
+523(0039),Semiregular variable stars
+523(0040),Evolution of stars
+523(0041),Stellar evolution
+523(0042),Faculae
+523(0043),Phases
+523(0044),Electromagnetic phenomena
+523(0045),End of universe
+523(0046),Star formation
+523(0047),Photosphere
+523(0048),Quasi-stellar sources
+523(0049),Galaxies
+523(0050),Heliographs
+523(0051),Heliostats
+523(0052),Jupiter
+523(0053),Solar flares
+523(0054),Meteor showers
+523(0055),Moon
+523(0056),Moons
+523(0057),Light
+523(0058),Magnetism
+523(0059),Magnitudes
+523(0060),Sunspots
+523(0061),Mars
+523(0062),Interstellar matter
+523(0063),Intergalactic matter
+523(0064),Interplanetary matter
+523(0065),Mercury
+523(0066),Sidereal month
+523(0067),Meteorites
+523(0068),Meteoroids
+523(0069),Meteors
+523(0070),Motion
+523(0071),Diffuse nebulas
+523(0072),Planetary nebulas
+523(0073),Neptune
+523(0074),Novas
+523(0075),Occultations
+523(0076),Orbits
+523(0077),Trans-uranian planets
+523(0078),Planets
+523(0079),Planetoids
+523(0080),Pluto
+523(0081),Cosmic dust
+523(0082),Solar prominences
+523(0083),Pulsating radio stars
+523(0084),Pulsating variables
+523(0085),Pulsars
+523(0086),Radiant points
+523(0087),Clusters of stars
+523(0088),Solar radiation
+523(0089),Rotation
+523(0090),Satellites
+523(0091),Saturn - planet-
+523(0092),Solar system
+523(0093),Soybeans
+523(0094),Sun
+523(0095),Supernovas
+523(0096),Big bang theory
+523(0097),Spectral types
+523(0098),Planetary transits
+523(0099),Transits
+523(0100),Universe
+523(0101),Uranus
+523(0102),Cluster-type variables
+523(0103),Eruptive variables
+523(0104),Extrinsic variables
+523(0105),Intrinsic variables
+523(0106),Multiple stars
+523(0107),Venus
+523(0108),Milky Way
+523(0109),Solar wind
+523(0110),500 NATURAL SCIENCE
+524,ASTRONOMY MAPS
+525,EARTH(15)
+525(0001),Dawn
+525(0002),Astronomical dawn
+525(0003),Twilight
+525(0004),Astronomical twilight
+525(0005),Torres Strait
+525(0006),Astronomical geography
+525(0007),Orbits
+525(0008),Foucault's pendulum
+525(0009),Rotation
+525(0010),Sun tables
+525(0011),Temperance
+525(0012),Seasons
+525(0013),Earth
+525(0014),Zones of latitude
+525(0015),Frigid Zones
+526,GEODESY(53)
+526(0001),Surveyors
+526(0002),Contour surveying
+526(0003),Nets
+526(0004),Space surveying
+526(0005),Geodetic astronomy
+526(0006),Positional astronomy
+526(0007),Azimuth
+526(0008),Cartographers
+526(0009),Geodetic coordinates
+526(0010),Map making
+526(0011),Traversing
+526(0012),Gravity determinations
+526(0013),Map drawing
+526(0014),Spirit leveling
+526(0015),Photogrammetry
+526(0016),Ground photogrammetry
+526(0017),Geodesy
+526(0018),Physical geodesy
+526(0019),Geodesists
+526(0020),Mathematical geography
+526(0021),Latitude
+526(0022),Photographic surveying
+526(0023),Ground surveying
+526(0024),Geodetic surveying
+526(0025),Hydrographic surveying
+526(0026),Topographic surveying
+526(0027),Base lines
+526(0028),Longitude
+526(0029),Maps
+526(0030),Barometric leveling
+526(0031),Trigonometric leveling
+526(0032),Leveling
+526(0033),Plane surveying
+526(0034),Geographic position
+526(0035),Position
+526(0036),Map projections
+526(0037),Conformal projections
+526(0038),Equal—area projections
+526(0039),Equivalent projections
+526(0040),Orthomorphic projections
+526(0041),Projections
+526(0042),Bench marks
+526(0043),Geodetic refraction
+526(0044),Land subdivision
+526(0045),Surveying
+526(0046),Aerial surveying
+526(0047),Boundary surveying
+526(0048),Topography
+526(0049),Triangulation
+526(0050),Trilateration
+527,NAVIGATION ASTRONOMY (11)
+527(0001),Astronavigation
+527(0002),Coordinates
+527(0003),Fixes
+527(0004),Direction finding
+527(0005),Latitude
+527(0006),Longitude
+527(0007),Line-of-position method
+527(0008),Sumner's method
+527(0009),Celestial navigation
+527(0010),Rhumb line course
+527(0011),Great circle course
+528,ASTRONOMY EPHEMEREDES(4)
+528(0001),Almanacs
+528(0002),Astronomical almanacs
+528(0003),Nautical almanacs
+528(0004),Ephemerides
+529,ASTRONOMY CHRONOLOGY(32)
+529(0001),Church year
+529(0002),Years
+529(0003),Aztec language
+529(0004),Buddhist calendar
+529(0005),Chinese calendar
+529(0006),Church calendar
+529(0007),Gregorian calendar
+529(0008),Hindu calendar
+529(0009),Islamic calendar
+529(0010),Japanese calendar
+529(0011),Judaic calendar
+529(0012),Julian calendar
+529(0013),Mayan calendar
+529(0014),Calendars
+529(0015),Christian calendars
+529(0016),Western calendars
+529(0017),Chronology
+529(0018),Chronologists
+529(0019),Quarters
+529(0020),Inequality of days
+529(0021),Solar day
+529(0022),Sidereal day
+529(0023),Days
+529(0024),Equation of time
+529(0025),Horology
+529(0026),Months
+529(0027),Timber resources
+529(0028),Calendar reform
+529(0029),Weeks
+529(0030),Apparent time
+529(0031),Mean time
+530,PHYSICS (181)
+530(0001),Absorption
+530(0002),Dimensional analysis
+530(0003),Antimatter
+530(0004),Bombardment
+530(0005),Bubbles
+530(0006),Phase changes
+530(0007),Gauge fields
+530(0008),Gage fields
+530(0009),Electromagnetic fields
+530(0010),Capillarity
+530(0011),Sputtering
+530(0012),Collisions
+530(0013),Electron arrangement
+530(0014),Physical constants
+530(0015),Liquid crystals
+530(0016),Fourth dimension
+530(0017),Radiation damage
+530(0018),Liquid wastes
+530(0019),Diffusion
+530(0020),Dimensions
+"530(0021),""Dimensions , standards""",
+530(0022),Lattice dynamics
+530(0023),Scattering
+530(0024),Recording devices
+530(0025),Maxwell's equations
+530(0026),Jahn-Teller effect
+530(0027),Josephson effect
+530(0028),Field effects
+530(0029),Energy
+530(0030),Phase equilibria
+530(0031),Mass-energy equivalence
+530(0032),Space
+530(0033),Phase stability
+530(0034),Quantum statistics
+530(0035),Bose-Einstein statistics
+530(0036),Fermi-Dirac statistics
+530(0037),Boltzmann statistics
+530(0038),States of matter
+530(0039),Excited states
+530(0040),Excitation
+530(0041),Exitons
+530(0042),Fluid phases
+530(0043),Liquid phases
+530(0044),Critical phenomena
+530(0045),Transport phenomena
+530(0046),Energy phenomena
+530(0047),Physics
+530(0048),Classical physics
+530(0049),Solid-state physics
+530(0050),Surface physics
+530(0051),Fluid-state physics
+530(0052),Gaseous-state physics
+530(0053),Liquid-state physics
+530(0054),Plasma physics
+530(0055),Mathematical physics
+530(0056),Physicists
+530(0057),Phonons
+530(0058),Internal friction
+530(0059),Mechanical forces
+530(0060),Ionized gases
+530(0061),Drops
+530(0062),Ion implantation
+530(0063),Instrumentation
+530(0064),Measuring instruments
+530(0065),Liquid-gas interface
+530(0066),Solid-gas interface
+530(0067),Solid-liquid interface
+530(0068),Ionization of gases
+530(0069),Grand unified theory
+530(0070),Matter
+530(0071),Condensed matter
+530(0072),Mechanics
+530(0073),Quantum mechanics
+530(0074),Statistical mechanics
+530(0075),Classical statistical mechanics
+530(0076),Quantum statistical mechanics
+530(0077),Matrix mechanics
+530(0078),Wave mechanics
+530(0079),Schrodinger wave mechanics
+530(0080),Mensuration
+530(0081),United States customary measurements
+530(0082),Measures
+530(0083),Brownian motion
+530(0084),Nonmetals
+530(0085),Waves - property of matter-
+530(0086),Oscillations
+530(0087),Osmosis
+530(0088),Solid particles
+530(0089),Thin films
+530(0090),Weights
+530(0091),Liquid polymers
+530(0092),Polymers
+530(0093),Problem of n bodies
+530(0094),Problem of three bodies
+530(0095),Many-bodies problem
+530(0096),Problem of few bodies
+530(0097),Few-bodies problem
+530(0098),Critical points
+530(0099),Triple points
+530(0100),Fluidized nuclear reactors
+530(0101),Relaxation
+530(0102),Heisenberg representation
+530(0103),Metric system
+530(0104),British system
+530(0105),English system
+530(0106),Imperial system
+530(0107),Systeme internationale (SI)
+530(0108),International System of Units (SI )
+530(0109),Measurement systems
+530(0110),Soybeans
+530(0111),Solidification
+530(0112),Amorphous solids
+530(0113),Crystalline solids
+530(0114),Metallic solids
+530(0115),Noncrystalline solids
+530(0116),Ordered solids
+530(0117),Organic solids
+530(0118),Porous solids
+530(0119),Superstrings
+530(0120),Superfluidity
+530(0121),Supergravity
+530(0122),Conversion tables
+530(0123),Surface tension
+530(0124),Quantum field theory
+530(0125),Measurement theory
+530(0126),Electromagnetic wave theory of
+530(0127),Quantum theory
+530(0128),Relativity theory
+530(0129),Field theory
+530(0130),Transport theory - statistical mechanics-
+530(0131),Electromagnetic theory
+530(0132),Unified field theory
+530(0133),Kinetic theories
+530(0134),Wave theories
+530(0135),Mass transfer
+530(0136),Phase transformations
+530(0137),Phase transitions
+530(0138),Mass transport
+530(0139),Tunneling
+530(0140),Physical units
+530(0141),Vibrations
+531,MECHANICS(116)
+531(0001),Acarnania
+531(0002),Ballistics
+531(0003),Moving targets
+531(0004),Search for moving target
+531(0005),Falling bodies
+531(0006),Strains
+531(0007),Kinematics
+531(0008),Kinetics
+531(0009),Poisson's ratio
+531(0010),Coefficient of restitution
+531(0011),Conservation of energy
+531(0012),Mass-energy conservation
+531(0013),Elastic constants
+531(0014),Rigid bodies
+531(0015),Deformation
+531(0016),Solid deformation
+531(0017),Elastic deformation
+531(0018),Permanent deformation
+531(0019),Plastic deformation
+531(0020),Temporary deformation
+531(0021),Density
+531(0022),Dynamics
+531(0023),Solid dynamics
+531(0024),Elasticity
+531(0025),Kinetic energy
+531(0026),Potential energy
+531(0027),Energy
+531(0028),Shearing stress
+531(0029),Bending stress
+531(0030),Torque
+531(0031),Tensile stress
+531(0032),Statics
+531(0033),Graphic statics
+531(0034),Stresses
+531(0035),Torsional stress
+531(0036),Flow
+531(0037),Friction
+531(0038),Centrifugal force
+531(0039),Centripetal force
+531(0040),Gyrodynamics
+531(0041),Gravity
+531(0042),Terrestrial gravity
+531(0043),Gravitation
+531(0044),Momentum
+531(0045),Inertia
+531(0046),Hooke's law
+531(0047),Law of falling bodies
+531(0048),Elastic limit
+531(0049),Vector quantities
+531(0050),Mass
+531(0051),Analytical mechanics
+531(0052),Classical mechanics
+531(0053),Mechanics of points
+531(0054),Continuum mechanics
+531(0055),Mechanics of particles
+531(0056),Particle mechanics
+531(0057),Rotation
+531(0058),Solid mechanics
+531(0059),Mechanics
+531(0060),Young's modulus
+531(0061),Shear modulus
+531(0062),Modulus of rigidity
+531(0063),Bulk modulus
+531(0064),Motion
+531(0065),Shock waves
+531(0066),Waves
+531(0067),Oscillations
+531(0068),Particles
+531(0069),Pendulum motion
+531(0070),Pendulums
+531(0071),Plasticity
+531(0072),Projectiles
+531(0073),Pressing textiles
+531(0074),Yield point
+531(0075),Reactions
+531(0076),Rheology
+531(0077),Spinning
+531(0078),Compressive stress
+531(0079),Work
+531(0080),Transformation of energy
+531(0081),Trajectories
+531(0082),Velocity
+531(0083),Vibrations
+531(0084),Viscosity
+532,LIQUIDS. HYDRAULICS(80)
+532(0001),Streamline flow
+532(0002),Boundary layers
+532(0003),Cavitation
+532(0004),Kinematics
+532(0005),Kinetics
+532(0006),Compressibility
+532(0007),Density
+532(0008),Liquid dynamics
+532(0009),Dynamics
+532(0010),Elasticity
+532(0011),Statics
+532(0012),Buoyancy
+532(0013),Compressible flow
+532(0014),Steady flow
+532(0015),Rotational flow
+532(0016),Transitional flow
+532(0017),Elastic flow
+532(0018),Laminar flow
+532(0019),Multiphase flow
+532(0020),Turbulent flow
+532(0021),Uniform flow
+532(0022),Viscous flow
+532(0023),Flow
+532(0024),Friction
+532(0025),Centrifugal force
+532(0026),Centripetal force
+532(0027),Hydraulics
+532(0028),Hydrodynamics
+532(0029),Hydromechanics
+532(0030),Hydrostatics
+532(0031),Inertia
+532(0032),Mass
+532(0033),Fluid mechanics
+532(0034),Liquid mechanics
+532(0035),Vortex motions
+532(0036),Shock waves
+532(0037),Waves
+532(0038),Transmission of pressure
+532(0039),Fluid transmission
+532(0040),Velocity of flow
+532(0041),Vibrations
+532(0042),Viscosity
+533,GASES. PNEUMATICS (56)
+533(0001),Aerodynamics
+533(0002),Aeromechanics
+533(0003),Aerostatics
+533(0004),Vacuums
+533(0005),Cavitation
+533(0006),Kinematics
+533(0007),Compressibility
+533(0008),Density
+533(0009),Dynamics
+533(0010),Elasticity
+533(0011),Statics
+533(0012),Buoyancy
+533(0013),Compressible flow
+533(0014),Steady flow
+533(0015),Transitional flow
+533(0016),Elastic flow
+533(0017),Streamline flow
+533(0018),Hypersonic flow
+533(0019),Laminar flow
+533(0020),Rotational flow
+533(0021),Subsonic flow
+533(0022),Supersonic flow
+533(0023),Transonic flow
+533(0024),Turbulent flow
+533(0025),Uniform flow
+533(0026),Viscous flow
+533(0027),Flow
+533(0028),Friction
+533(0029),Inertia
+533(0030),Kinetics
+533(0031),Mass
+533(0032),Air mechanics
+533(0033),Gas mechanics
+533(0034),Vortex motions
+533(0035),Pneumatics
+533(0036),Waves
+533(0037),Atmospheric pressure
+533(0038),Kinetic theory of gases
+533(0039),Transmission of pressure
+533(0040),Fluid transmission
+533(0041),Velocity of flow
+533(0042),Viscosity
+534,SOUND. ACOUSTICS(23)
+534(0001),Absorption of sound
+534(0002),Acoustics
+534(0003),Damping of sound
+534(0004),Amplitude of sound
+534(0005),Pitch
+534(0006),Echoes
+534(0007),Doppler effect
+"534(0008),""Gaseous-state physics , sound transmission""",
+534(0009),Subsonic flow
+534(0010),Frequency
+534(0011),Generation of sound
+534(0012),Intensity of sound
+534(0013),Pitch - sound-
+534(0014),Propagation of sound
+534(0015),Reflection of sound
+"534(0016),""Liquid wastes , sound transmission""",
+"534(0017),""Solidification , sound transmission""",
+534(0018),Sound
+534(0019),Timbre
+534(0020),Transmission of sound
+534(0021),Ultramicroscopes
+534(0022),Velocity of sound
+535,LIGHT. OPTICS(61)
+535(0001),Spectrum analysis
+535(0002),Color
+535(0003),Diffraction of light
+535(0004),Raman effect
+535(0005),Emission of light
+535(0006),Spectrometry
+535(0007),Chromatic spectroscopy
+535(0008),Visible light spectroscopy
+535(0009),Light spectroscopy
+535(0010),Infrared spectroscopy
+535(0011),Optical spectroscopy
+535(0012),Paraphotic spectroscopy
+535(0013),Raman spectroscopy
+535(0014),Vacuum ultraviolet spectroscopy
+535(0015),Ultraviolet spectroscopy
+535(0016),Spectroscopy
+535(0017),Paraphotic phenomena
+535(0018),Fluorescence
+535(0019),Phosphorescence
+535(0020),Photometry
+535(0021),Holography
+535(0022),Intensity of light
+535(0023),Interference of light
+535(0024),Luminescence
+535(0025),Light
+535(0026),Visible light
+535(0027),Optics
+535(0028),Coherent optics
+535(0029),Physical optics
+535(0030),Geometrical optics
+535(0031),Nonlinear optics
+535(0032),Polarization of light
+535(0033),Prisms
+535(0034),Rectilinear propagation of light
+535(0035),Infrared radiation
+535(0036),Ultraviolet radiation
+535(0037),Beams
+535(0038),Refraction of light
+535(0039),Spectral regions
+535(0040),Emission theory of light
+535(0041),Corpuscular theory of light
+535(0042),Quantum theory of light
+535(0043),Electromagnetic theory of light
+535(0044),Wave theory of light
+535(0045),Transmission of light
+535(0046),Velocity of light
+536,HEAT (76)
+536(0001),Absorption of heat
+536(0002),High temperatures
+536(0003),Low temperatures
+536(0004),Heat
+536(0005),Heat of fusion
+536(0006),Heat of vaporization
+536(0007),Latent heat of fusion
+536(0008),Calorimetry
+536(0009),Heat capacity
+536(0010),Thermal capacity
+536(0011),Carnot cycle
+536(0012),Coefficient of expansion
+536(0013),Condensation
+536(0014),Conduction of heat in fluids
+536(0015),Conduction of heat
+536(0016),Conductivity of heat material property
+536(0017),Heat conductivity
+536(0018),Freezing
+536(0019),Contractions
+536(0020),Convection of heat
+536(0021),Cryogenics
+536(0022),Cryometry
+536(0023),Liquid wastes
+536(0024),Diffusivity of heat
+536(0025),Entropy
+536(0026),Expansion
+536(0027),Gaseous-state physics
+536(0028),Cold
+536(0029),Extreme cold
+536(0030),Melting
+536(0031),Fusion
+536(0032),Gases
+536(0033),Incandescence
+536(0034),Joule's law
+536(0035),Liquefaction of gases
+536(0036),Liquids
+536(0037),Matter at high temperatures
+536(0038),Matter at low temperatures
+536(0039),Pyrometry
+536(0040),Pyrometers
+536(0041),Pressure-volume-temperature
+536(0042),Boiling points
+536(0043),Dew points
+536(0044),Radiation of heat
+536(0045),Fluidized nuclear reactors
+536(0046),Refraction of heat
+536(0047),Solidification
+536(0048),Solids
+536(0049),Sublimation
+536(0050),Temperature
+536(0051),Absolute temperature
+536(0052),Plasma temperatures
+536(0053),Temperature-volume-pressure
+536(0054),Thermodynamics
+536(0055),Maxwell's thermodynamic
+536(0056),Thermometry
+536(0057),Electrical resistance thermometry
+536(0058),Thermocouples
+536(0059),Heat transfer
+536(0060),Vaporization
+536(0061),Volume-temperature
+537,ELECTRICITY(71)
+537(0001),Adsorption
+537(0002),Electric arcs
+537(0003),Electron ballistics
+537(0004),Electromagnetic fields
+537(0005),Electric charge
+537(0006),Conduction of electricity
+537(0007),Conductivity
+537(0008),Coronas
+537(0009),Direct currents
+537(0010),Electric currents
+537(0011),Disruptive discharges
+537(0012),Dielectrics
+537(0013),Hall effects in semiconductors
+537(0014),Thermal effects of electricity
+537(0015),Electrets
+537(0016),Electricity
+537(0017),Electrocapillarity
+537(0018),Electrodynamics
+537(0019),Quantum electrodynamics
+537(0020),Electromagnetism
+537(0021),Quantum electronics
+537(0022),Ultrahigh frequency electronics
+537(0023),Rarefied-gas electronics
+537(0024),Microwave electronics
+537(0025),Shortwave electronics
+537(0026),Long-wave electronics
+537(0027),Gamma-ray electronics
+537(0028),X-ray electronics
+537(0029),Vacuum electronics
+537(0030),Electronics
+537(0031),Electrostatics
+537(0032),Electrostriction
+537(0033),Thermionic emission
+537(0034),Microwave spectroscopy
+537(0035),Radio-frequency spectroscopy
+537(0036),Gamma-ray spectroscopy
+537(0037),X-ray spectroscopy
+537(0038),Mossbauer spectroscopy
+537(0039),Exploding wire phenomena
+537(0040),Transport phenomena
+537(0041),Ferroelectricity
+537(0042),Photoemissivity
+537(0043),Photoconductivity
+537(0044),Photoelectricity
+537(0045),Photovoltaism
+537(0046),Instabilities in semiconductors
+537(0047),Ionization of gases
+537(0048),Microwave theory of electricity
+537(0049),Dipole moments
+537(0050),Radio waves
+537(0051),Ion optics
+537(0052),Electron optics
+537(0053),Piezoelectricity
+537(0054),Pyroelectricity
+537(0055),Electric potential
+537(0056),Resistance to electricity
+537(0057),Resistivity to electricity
+537(0058),Resistivity in semiconductors
+537(0059),Semiconductivity
+537(0060),Semiconductors
+537(0061),Superconductivity
+537(0062),Superconductors
+537(0063),Ternary superconductors
+537(0064),Corpuscular theory of electricity
+537(0065),Wave-guide theory of electricity
+537(0066),Thermoelectricity
+537(0067),Triboelectricity
+537(0068),Tunneling
+538,MAGNETISM(65)
+538(0001),Auroras
+538(0002),Permanent magnetic fields
+538(0003),Magnetic fields
+538(0004),Appleton layers
+538(0005),E layers
+538(0006),Kennelly-Heaviside layers
+538(0007),Van Allen radiation belts
+538(0008),Earth currents
+538(0009),Magnetic currents
+538(0010),Diamagnetism
+538(0011),Electron—nuclear double
+538(0012),Magnetic surveys
+538(0013),F layers
+538(0014),Magnetic phenomena
+538(0015),Ferrimagnetism
+538(0016),Ferromagnetism
+538(0017),Geomagnetism
+538(0018),Hysteresis
+538(0019),Magnets
+538(0020),Atmospheric ionization
+538(0021),Ionization of the atmosphere
+538(0022),Ionosphere
+538(0023),Magnetism
+538(0024),Transient magnetism
+538(0025),Magnetization
+538(0026),Magnetohydrodynamics
+538(0027),Magnetosphere
+538(0028),Magnetostriction
+538(0029),Sunspots
+538(0030),Magnetic observations - earth
+538(0031),Paleomagnetism
+538(0032),Paramagnetism
+538(0033),Permeability y magnetism
+538(0034),Piezomagnetism
+538(0035),Pyromagnetism
+538(0036),Magnetic properties
+538(0037),Pulsations
+538(0038),Evolutionary Power Reactor (EPR)
+538(0039),D región
+538(0040),E region
+538(0041),F region
+538(0042),Antiferromagnetic resonance
+538(0043),Nuclear quadrupole resonance (NQR)
+538(0044),Nuclear quadrupole resonance
+538(0045),Electron spin resonance
+538(0046),Diamagnetic resonance
+538(0047),Electron nuclear double resonance (ENDOR)
+538(0048),Ferrimagnetic resonance
+538(0049),Ferromagnetic resonance
+538(0050),Magnetic resonance
+538(0051),Electron magnetic resonance
+538(0052),Nuclear magnetic resonance
+538(0053),Nuclear magnetic resonance (NMR)
+538(0054),Paramagnetic resonance
+538(0055),Electron paramagnetic resonance
+538(0056),Diamagnetic substances
+538(0057),Ferrimagnetic substances
+538(0058),Ferromagnetic substances
+538(0059),Magnetic substances
+538(0060),Paramagnetic substances
+538(0061),Magnetic storms
+538(0062),Diurnal variations
+538(0063),Periodic variations
+539,MOLECULAR PHYSICS(165)
+539(0001),Electron acceleration
+539(0002),Acceleration of particles
+539(0003),Particle acceleration
+539(0004),High—voltage accelerators
+539(0005),Induction accelerators
+539(0006),Resonance accelerators
+539(0007),Linear accelerators
+539(0008),Synchronous accelerators
+539(0009),Coupling of nuclear particles
+539(0010),Annihilation
+539(0011),Antineutrinos
+539(0012),Antineutrons
+539(0013),Antiparticles
+539(0014),Antiprotons
+539(0015),Atoms
+539(0016),Baryons
+539(0017),Betatrons
+539(0018),Betatron-synchrotrons
+539(0019),Bombardment
+539(0020),Bosons
+539(0021),Ionization chambers
+539(0022),Capture
+539(0023),Particle characteristics
+539(0024),Charge of particles
+539(0025),Cyclotrons
+539(0026),Particle colliders
+539(0027),Collisions
+539(0028),Crystal conduction counters
+539(0029),Scintillation counters
+539(0030),Geiger-Müller counters
+539(0031),Proportional counters
+539(0032),Creation
+539(0033),Quantum chromodynamics
+539(0034),Weak interaction
+539(0035),Beta decay
+539(0036),Gamma decay
+539(0037),Bremsstrahlung
+539(0038),Alpha decay
+539(0039),Nucleus disintegration
+539(0040),Detection of radioactivity
+539(0041),Detection of particles
+539(0042),Dosage determination
+539(0043),Deuterons
+539(0044),Scattering
+539(0045),Electrons
+539(0046),Element disintegration
+539(0047),Atomic energy
+539(0048),Radiant energy
+539(0049),Nuclear energy
+539(0050),Electromagnetic spectrum
+539(0051),Mass spectrometry
+539(0052),Molecular spectra
+539(0053),Vibrational spectra
+"539(0054),""Spectroscopy , interpretation of nuclear""",
+539(0055),Decay schemes
+539(0056),Atomic structure
+539(0057),Isotope structure
+539(0058),Molecular structure
+539(0059),Nuclear structure
+539(0060),Nuclide structure
+539(0061),Strangeness
+539(0062),Fermions
+539(0063),Atomic physics
+539(0064),Quantum physics
+539(0065),High—energy physics
+539(0066),Particle physics
+539(0067),Modem physics
+539(0068),Molecular physics
+539(0069),Nuclear physics
+539(0070),Chemical physics
+539(0071),Nuclear physicists
+539(0072),Fission - nuclear-
+539(0073),Nuclear fission
+539(0074),Photography
+539(0075),Photons
+539(0076),Strong interaction
+539(0077),Fusion - thermonuclear-
+539(0078),Nuclear fusion
+539(0079),Van de Graaff electrostatic generators
+539(0080),Particle beams
+539(0081),Hadrons
+539(0082),Hyperons
+539(0083),Angular momentum
+539(0084),Electromagnetic interaction
+539(0085),Gravitational interaction
+539(0086),Fundamental interactions
+539(0087),Nuclear interactions
+539(0088),Heavy ions
+539(0089),Kaons
+539(0090),Leptons
+539(0091),Radioactive fallout
+539(0092),Mass of particles
+539(0093),Matter
+539(0094),Mesons
+539(0095),K-mesons
+539(0096),Liquid-drop model
+539(0097),Shell model
+539(0098),Nuclear models
+539(0099),Molecules
+539(0100),Motion of particles
+539(0101),Voltage multipliers
+539(0102),Muons
+539(0103),Neutrinos
+539(0104),Neutrons
+539(0105),Energy levels
+539(0106),Nucleons
+539(0107),Nuclei as particles
+539(0108),Electromagnetic waves
+539(0109),Orbits of particles
+539(0110),Alpha particles
+539(0111),Beta particles
+539(0112),Strange particles
+539(0113),Fundamental particles
+539(0114),Gamma particles
+539(0115),Relativistic particles
+539(0116),Subatomic particles
+539(0117),Particles
+539(0118),Half—life periods
+539(0119),Pi-mesons
+539(0120),Pions
+539(0121),Regge poles
+539(0122),Positrons
+539(0123),Protons
+539(0124),Quarks
+539(0125),Radiation
+539(0126),Particle radiation
+539(0127),Wave radiations
+539(0128),Electromagnetic radiations
+539(0129),Ionizing radiations
+539(0130),Artificial radioactivity
+539(0131),Natural radioactivity
+539(0132),Radioactivity
+539(0133),Induced radioactivity
+539(0134),Radioelements
+539(0135),Radioisotopes
+539(0136),Radionuclides
+539(0137),Cosmic rays
+539(0138),Gamma rays
+539(0139),X rays
+539(0140),Secondary X rays
+539(0141),Rays
+539(0142),Thermonuclear reaction
+539(0143),Chain reactions
+539(0144),Photonuclear reactions
+539(0145),Nuclear reactions
+539(0146),Quantum flavor
+539(0147),Reaction cross sections
+539(0148),Symmetry of particles
+539(0149),Synchro-cyclotrons
+539(0150),Synchrotrons
+539(0151),Super colliders
+539(0152),Superconducting super colliders
+539(0153),Supersymmetry of particles
+539(0154),Size of particles
+539(0155),Velocity of particles
+539(0156),Spin of particles
+539(0157),Wilson cloud chambers
+540,CHEMISTRY (6)
+540(0001),Alchemy
+540(0002),Philosopher's stone
+540(0003),Chemicals
+540(0004),Chemistry
+540(0005),Chemists
+540(0006),Phlogiston theory
+541,THEORETIC CHEMISTRY (159)
+541(0002),Absorption
+541(0003),Adhesion
+541(0004),Adsorption
+541(0005),Aerosols
+541(0006),High temperatures
+541(0007),Liesegang rings
+541(0008),Atoms
+541(0009),Low temperatures
+541(0010),Heteropolar bonds
+541(0011),Bonds
+541(0012),Bubbles
+541(0013),Latent heats
+541(0014),Catalysis
+541(0015),Reaction kinetics
+541(0016),Kinetics
+541(0017),Cohesion
+541(0018),Combustion
+541(0019),Molecular complexes
+541(0020),Hydrogen—ion concentration
+541(0021),Condensation
+541(0022),Electrolyte conductivity
+541(0023),Diffusion
+541(0024),Electrolytic dissociation
+541(0025),Thermal dissociation
+541(0026),Electrodialysis
+541(0027),Electrodes
+541(0028),Electrophoresis
+541(0029),Electrochemistry
+541(0030),Emulsions
+541(0031),Ignition
+541(0032),Atomic bonds
+541(0033),Homopolar bonds
+541(0034),Molecular bonds
+541(0035),Equilibrium
+541(0036),Ionic equilibriums
+541(0037),Spectroscopy
+"541(0038),""Foams, froths, lathers""",
+541(0039),Lathers
+541(0040),Solid foams
+541(0041),Froths
+541(0042),Foams
+541(0043),States of matter
+541(0044),Stoichiometry
+541(0045),Stereochemistry
+541(0046),Atomic structure
+541(0047),Molecular structure
+541(0048),Explosion
+541(0049),Physical chemistry
+541(0050),Photochemistry
+541(0051),Interatomic forces
+541(0052),Intermolecular forces
+541(0053),Gases
+541(0054),Gels
+541(0055),Hydrogenation
+541(0056),Hydrolysis
+541(0057),Hydrosols
+541(0058),Smoke
+541(0059),Ion exchange
+541(0060),Ions
+541(0061),Ionization
+541(0062),Isomers
+541(0063),Isotopes
+541(0064),Mass action law
+541(0065),Periodic law
+541(0066),Ligands
+541(0067),Liquids
+541(0068),Flame
+541(0069),Light
+541(0070),Magnetochemistry
+541(0071),Molecules
+541(0072),Mutarotation
+"541(0073),""Fogs, mists""",
+541(0074),Fogs
+541(0075),Mists
+541(0076),Atomic number
+541(0077),Orbitals
+541(0078),Oxidation
+541(0079),Periodicity
+541(0080),Molecular weights
+541(0081),PH
+541(0082),Pyrometry
+541(0083),Plasma
+541(0084),Polarimetry
+541(0085),Polymerization
+541(0086),Polymers
+541(0087),Precipitates
+541(0088),Osmotic pressure
+541(0089),Le Chatelier's principle
+541(0090),Colligative properties
+541(0091),Chelates
+541(0092),Quantum chemistry
+541(0093),Colloid chemistry
+541(0094),Coordination chemistry
+541(0095),Radiation chemistry
+541(0096),Surface chemistry
+541(0097),Structural chemistry
+541(0098),Nuclear chemistry
+541(0099),Theoretical chemistry
+541(0100),Chemiluminescence
+541(0101),Chemisorption
+541(0102),Racemization
+541(0103),Infrared radiation
+541(0104),Ultraviolet radiation
+541(0105),Radicals
+541(0106),Radioisotopes
+541(0107),Radiolysis
+541(0108),Radiochemistry
+541(0109),Chain reactions
+541(0110),Endothermic reactions
+541(0111),Exothermic reactions
+541(0112),Heterogeneous reactions
+541(0113),Irreversible reactions
+541(0114),Reversible reactions
+541(0115),Reactions
+541(0116),Reduction
+541(0117),Phase rule
+541(0118),Gibb's phase rule
+541(0119),Optical rotation
+541(0120),Semiconductors
+541(0121),Synthesis
+541(0122),Solids
+541(0123),Solubility
+541(0124),Solution chemistry
+541(0125),Aqueous solutions
+541(0126),Electrolytic solutions
+541(0127),Solutes
+541(0128),Solvents
+541(0129),Addition
+541(0130),Suspensions
+541(0131),Substitution
+541(0132),Tautomerism
+541(0133),Interfacial tension
+541(0134),Surface tension
+541(0135),Thermodynamics
+541(0136),Thermochemistry
+541(0137),Phase transformations
+541(0138),500 NATURAL SCIENCE
+542,PRACTICAL
+542(0001),Gas apparatus
+542(0002),Crucibles
+542(0003),Electronic equipment
+542(0004),Electrical equipment
+542(0005),Chemical instruments
+542(0006),Chemical laboratories
+542(0007),Bunsen burners - chemical apparatus-
+542(0008),Blowpipes
+542(0009),Test tubes
+543,CHEMICAL ANALYSIS(76)
+543(0001),Colorimetric analysis
+543(0002),Blowpipe analysis
+543(0003),Coulometric analysis
+543(0004),Chromatographic analysis
+543(0005),Molecular sieve chromatographic analysis
+543(0006),Combustion analysis
+543(0007),Conductometric analysis
+543(0008),Electrodeposition analysis
+543(0009),Spectroscopy
+543(0010),Gas analysis
+543(0011),Radioactivation analysis
+543(0012),Electrical analysis
+543(0013),Electromagnetic analysis
+543(0014),Fluorophotometric analysis
+543(0015),Photometric analysis
+543(0016),Gravimetric analysis
+543(0017),Interferometric analysis
+543(0018),Microchemical analysis
+543(0019),Microscopical analysis
+543(0020),Nephelometric analysis
+543(0021),Optical analysis
+543(0022),Polarimetric analysis
+543(0023),Polariscopic analysis
+543(0024),Polarographic analysis
+543(0025),Activation analysis
+543(0026),Potentiometric analysis
+543(0027),Chemical analysis
+543(0028),Magnetic chemical analysis
+543(0029),Thermal chemical analysis
+543(0030),Radiochemical analysis
+543(0031),Refractometric analysis
+543(0032),Specirochemical analysis
+543(0033),Turbidimetric analysis
+543(0034),Gas chromatography
+543(0035),Ion exchange chromatography
+543(0036),Thin-layer chromatography
+543(0037),Column chromatography
+543(0038),Paper chromatography
+543(0039),Liquid chromatography
+543(0040),Adsorption chromatographic
+543(0041),Partition chromatographic
+543(0042),Light spectroscopy
+543(0043),Visible light spectroscopy
+543(0044),Mass spectroscopy
+543(0045),Microwave spectroscopy
+543(0046),Raman spectroscopy
+543(0047),Gamma-ray spectroscopy
+543(0048),X-ray spectroscopy
+543(0049),Infrared spectroscopy
+543(0050),Mossbauer spectroscopy
+543(0051),Paraphotic spectroscopy
+543(0052),Ultraviolet spectroscopy
+543(0053),Instrumentation
+543(0054),Microanalysis
+543(0055),Pyrolysis
+543(0056),Sample preparation
+543(0057),Spot tests
+543(0058),Analytical chemistry
+543(0059),Reagents
+543(0060),Nuclear magnetic resonance
+543(0061),Semimicroanalysis
+543(0062),Tracer techniques
+544,QUALITATIVE CHEMISTRY (8)
+544(0001),Qualitative analysis
+544(0002),Biochemical qualitative analysis
+544(0003),Decomposition analysis
+544(0004),Diffusion analysis
+544(0005),Anion separation analysis
+544(0006),Cation separation analysis
+544(0007),Ultrafiltration analysis
+544(0008),Dialysis qualitative chemistry
+545,QUANTITATIVE CHEMISTRY (9)
+545(0001),Acidimetric analysis
+545(0002),Alkalimetric analysis
+545(0003),Quantitative analysis
+545(0004),Thermogravimetric analysis
+545(0005),Volatilization analysis
+545(0006),Volumetric analysis
+545(0007),Iodometric analysis
+545(0008),Oxidation-reduction methods
+545(0009),Neutralization
+546,INORGANIC CHEMISTRY (181)
+546(0001),Acids
+546(0002),Actinide series
+546(0003),Actinium
+546(0004),Heavy water
+546(0005),Water
+546(0006),Alkalis
+546(0007),Potassium alkalis
+546(0008),Alloys
+546(0009),Aluminum
+546(0010),Americium
+546(0011),Ammonia
+546(0012),Antimony
+546(0013),Apatite
+546(0014),Argon
+546(0015),Arsenic
+546(0016),Astatine
+546(0017),Sulfur
+546(0018),Barium
+546(0019),Bases
+546(0020),Beryllium
+546(0021),Berkelium
+546(0022),Sodium bicarbonate
+546(0023),Baking soda
+546(0024),Potassium bicarbonate
+546(0025),Bismuth
+546(0026),Boron
+546(0027),Bromine
+546(0028),Cadmium
+546(0029),Calcium
+546(0030),Californium
+546(0031),Potassium carbonate
+546(0032),Sodium carbonate
+546(0033),Carbon
+546(0034),Soda ash
+546(0035),Cerium
+546(0036),Caesium
+546(0037),Cesium
+546(0038),Zirconium
+546(0039),Chlorine
+546(0040),Cobalt
+546(0041),Copper
+546(0042),Columbium
+546(0043),Compounds of chemicals products
+546(0044),Chemical compounds
+546(0045),Compounds
+546(0046),Chromium
+546(0047),Curium
+546(0048),Deuterium
+546(0049),Carbon dioxide
+546(0050),Dysprosium
+546(0051),Einsteinium
+546(0052),Elements of chemicals products
+546(0053),Transuranium elements
+546(0054),Elements
+546(0055),Erbium
+546(0056),Scandium
+546(0057),Tin
+546(0058),Strontium
+546(0059),Europium
+546(0060),Fermium
+546(0061),Fluorine
+546(0062),Calcium phosphate
+546(0063),Phosphorus
+546(0064),Francium
+546(0065),Gadolinium
+546(0066),Gallium
+546(0067),Inert gases
+546(0068),Noble gases
+546(0069),Germanium
+546(0070),Chromium group
+546(0071),Manganese group
+546(0072),Titanium group
+546(0073),Vanadium group
+546(0074),Hafnium
+546(0075),Hahnium
+546(0076),Halogens
+546(0077),Helium
+546(0078),Hydrogen
+546(0079),Ammonium hydroxide
+546(0080),Potassium hydroxide
+546(0081),Sodium hydroxide
+546(0082),Iron
+546(0083),Holmium
+546(0084),Indium
+546(0085),Iridium
+546(0086),Ytterbium
+546(0087),Yttrium
+546(0088),Krypton
+546(0089),Lanthanum
+546(0090),Lawrencium
+546(0091),Lye
+546(0092),Lithium
+546(0093),Lutetium
+546(0094),Magnesium
+546(0095),Mendelevium
+546(0096),Mercury
+546(0097),Alkali metals
+546(0098),Alkaline-earth metals
+546(0099),Transition metals
+546(0100),Cerium-group metals
+546(0101),Platinum-group metals
+546(0102),Metals
+546(0103),Molybdenum
+546(0104),Neodymium
+546(0105),Neon
+546(0106),Neptunium
+546(0107),Niobium
+546(0108),Nickel
+546(0109),Soda niter
+546(0110),Sodium nitrate
+546(0111),Nitrogen
+546(0112),Nonmetals
+546(0113),Nobelium
+546(0114),Gold
+546(0115),Osmium
+546(0116),Deuterium oxide
+546(0117),Oxygen
+546(0118),Palladium
+546(0119),Silver
+546(0120),Platinum
+546(0121),Lead
+546(0122),Plutonium
+546(0123),Polonium
+546(0124),Potash
+546(0125),Caustic potash
+546(0126),Potassium
+546(0127),Praseodymium
+546(0128),Promethium
+546(0129),Protactinium
+546(0130),Inorganic chemistry
+546(0131),Radium
+546(0132),Radon
+546(0133),Rhenium
+546(0134),Rhodium
+546(0135),Rubidium
+546(0136),Ruthenium
+546(0137),Rutherfordium
+546(0138),Salt
+546(0139),Salts
+546(0140),Acidulous salts
+546(0141),Alkaline salts
+546(0142),Amphoteric salts
+546(0143),Binary salts
+546(0144),Complex salts
+546(0145),Ammonium salts
+546(0146),Potash salts
+546(0147),Double salts
+546(0148),Chile saltpeter
+546(0149),Samarium
+546(0150),Selenium
+546(0151),Lanthanide series
+546(0152),Silicon
+546(0153),Sodas
+546(0154),Sodium
+546(0155),Caustic soda
+546(0156),Sulfates
+546(0157),Sulfites
+546(0158),Sulfides
+546(0159),Periodic table
+546(0160),Thallium
+546(0161),Tantalum
+546(0162),Technetium
+546(0163),Tellurium
+546(0164),Terbium
+546(0165),Rare earths
+546(0166),Titanium
+546(0167),Thorium
+546(0168),Tritium
+546(0169),Thulium
+546(0170),Tungsten
+546(0171),Uranium
+546(0172),Vanadium
+546(0173),Xenon
+546(0174),Iodine
+546(0175),Zinc
+547,ORGANIC CHEMISTRY (254)
+547(0001),Essential oils
+547(0002),Acetylene
+547(0003),Bile acids
+547(0004),Carboxylic acids
+547(0005),Cholic acids
+547(0006),Phosphinic acids
+547(0007),Phosphonic acids
+547(0008),Fatty acids
+547(0009),Nucleic acids
+547(0010),Sulfinic acids
+547(0011),Sulfonic acids
+547(0012),Acids
+547(0013),Acylation
+547(0014),Adrenalin
+547(0015),Albumins
+547(0016),Alkaloids
+547(0017),Camphors
+547(0018),Alkanes
+547(0019),Alcohols
+547(0020),Aldehydes
+547(0021),Starches
+547(0022),Alkenes
+547(0023),Alkylation
+547(0024),Alkynes
+547(0025),Coal tar
+547(0026),High polymers
+547(0027),Amides
+547(0028),Amination
+547(0029),Amines
+547(0030),Amino acids
+547(0031),Qualitative analysis
+547(0032),Quantitative analysis
+547(0033),Antibiotics
+547(0034),Anthracenes
+547(0035),Dihydroxy aromatics
+547(0036),Polyhydroxy aromatics
+547(0037),Trihydroxy aromatics
+547(0038),Aromatization
+547(0039),Arsenic
+547(0040),Auxins
+547(0041),Sugar
+547(0042),Sugars
+547(0043),Sulfur
+547(0044),Benzene
+547(0045),Conjugated carbohydrates biochemistry
+547(0046),Boron
+547(0047),Bromine
+547(0048),Calcium
+547(0049),Carbon
+547(0050),Catechols
+547(0051),Rubber
+547(0052),Cellulose
+547(0053),Waxes
+547(0054),Ketones
+547(0055),Cycloacetylenes
+547(0056),Cycloolefins
+547(0057),Cycloparaffins
+547(0058),Chlorine
+547(0059),Chlorophylls
+547(0060),Cobalt
+547(0061),Copper
+547(0062),Coenzymes
+547(0063),Collagen
+547(0064),Cholesterol
+547(0065),Dyes
+547(0066),Fossil fuels
+547(0067),Alicyclic compounds
+547(0068),Aliphatic compounds
+547(0069),Aromatic compounds
+547(0070),Fused aromatic compounds
+547(0071),Azo compounds
+547(0072),Cyclic compounds
+547(0073),Phosphonium compounds
+547(0074),Hetero sulfur compounds
+547(0075),Hetero nitrogen compounds
+547(0076),Halogenated compounds
+547(0077),Heterocyclic compounds
+547(0078),Fused heterocyclic compounds
+547(0079),Hetero oxygen compounds
+547(0080),Hydroxy compounds
+547(0081),Macromolecular compounds
+547(0082),Nitro compounds
+547(0083),Nitroso compounds
+547(0084),Organic compounds
+547(0085),Organometallic compounds
+547(0086),Oxy compounds
+547(0087),Condensation
+547(0088),Copolymerization
+547(0089),Cortin
+547(0090),Chromium
+547(0091),Chromoproteins
+547(0092),Dehydrogenation
+547(0093),Dextrans
+547(0094),Dextrose
+547(0095),Diazines
+547(0096),Diazotization
+547(0097),Elastomers
+547(0098),Enzymes
+547(0099),Ergosterol
+547(0100),Scleroproteins
+547(0101),Esters
+547(0102),Esterification
+547(0103),Steroids
+547(0104),Sterols
+547(0105),Ethers
+547(0106),Phenols
+547(0107),Fermentation
+547(0108),Fluorine
+547(0109),Phosphenes
+547(0110),Phosphoacids
+547(0111),Phosphoalcohols
+547(0112),Phosphoaldehydes
+547(0113),Phosphoketones
+547(0114),Phosphoproteins
+547(0115),Phosphorus
+547(0116),Fructose
+547(0117),Furans
+547(0118),Gibberellins
+547(0119),Globulins
+547(0120),Glycogen
+547(0121),Glucose
+547(0122),Glycosides
+547(0123),Gums
+547(0124),Halocarbons
+547(0125),Halogenation
+547(0126),Halogens
+547(0127),Hemoglobin
+547(0128),Carbohydrates
+547(0129),Hydrocarbons
+547(0130),Diphenyl hydrocarbons
+547(0131),Polyphenyl hydrocarbons
+547(0132),Hydrogenation
+547(0133),Hydrogen
+547(0134),Hydrolysis
+547(0135),Hydroquinones
+547(0136),Hydrosulfites
+547(0137),Iron
+547(0138),Histones
+547(0139),Sex hormones
+547(0140),Hormones
+547(0141),Imidazoles
+547(0142),Insulin
+547(0143),Isonitriles
+547(0144),Lactose
+547(0145),Latexes
+547(0146),Lipids
+547(0147),Lipoproteins
+547(0148),Magnesium
+547(0149),Maltose
+547(0150),Manganese
+547(0151),Mercury
+547(0152),Metals
+547(0153),Molybdenum
+547(0154),Monosaccharides
+547(0155),Naphthalenes
+547(0156),Nitration
+547(0157),Nitriles
+547(0158),Nitrogen
+547(0159),Nitrosation
+547(0160),Nucleoproteins
+547(0161),Olefins
+547(0162),Oligosaccharides
+547(0163),Oxazines
+547(0164),Oxazoles
+547(0165),Oxdiazines
+547(0166),Oxdiazoles
+547(0167),Oxidation
+547(0168),Oxygen
+547(0169),Oxytocin
+547(0170),Paraffins - compounds-
+547(0171),Pectins
+547(0172),Peptides
+547(0173),Peptones
+547(0174),Peroxidation
+547(0175),Petroleum
+547(0176),Pigments
+547(0177),Pyrans
+547(0178),Pyrazoles
+547(0179),Pyridines
+547(0180),Pyrroles
+547(0181),Lead
+547(0182),Polymerization
+547(0183),Polymers
+547(0184),Flexible polymers
+547(0185),Polysaccharides
+547(0186),Porphyrins
+547(0187),Potassium
+547(0188),Conjugated proteins
+547(0189),Proteins
+547(0190),Purines
+547(0191),Keratin
+547(0192),Analytical chemistry
+547(0193),Organic chemistry
+547(0194),Quinolines
+547(0195),Quinonization
+547(0196),Chitin
+547(0197),Friedel-Crafts reaction
+547(0198),Wurtz-Fittig reaction
+547(0199),Chain reactions
+547(0200),Heterogeneous reactions
+547(0201),Irreversible reactions
+547(0202),Reversible reactions
+547(0203),Reduction
+547(0204),Resins
+547(0205),Resorcinols
+547(0206),Ribose
+547(0207),Saccharides
+547(0208),Sucrose
+547(0209),Saponification
+547(0210),Saponins
+547(0211),Selenium
+547(0212),Silicon
+547(0213),Synthesis
+547(0214),Sodium
+547(0215),Sulfites
+547(0216),Sulfonation
+547(0217),Sulfones
+547(0218),Sulfoxides
+547(0219),Addition
+547(0220),Substitution
+547(0221),Tannins
+547(0222),Terpenes
+547(0223),Thiazoles
+547(0224),Thioacids
+547(0225),Thioalcohols
+547(0226),Thioaldehydes
+547(0227),Thioketones
+547(0228),Thioethers
+547(0229),Thiophenes
+547(0230),Thyroxine
+547(0231),Vanadium
+547(0232),Vasopressin
+547(0233),Vitamins
+547(0234),Iodine
+547(0235),Zinc
+548,CRYSTALLOGRAPHY(30)
+548(0001),Cohesion
+548(0002),Electron arrangement
+548(0003),Crystal growth
+548(0004),Crystals
+548(0005),Crystallization
+548(0006),Crystallography
+548(0007),Diffraction crystallography
+548(0008),Structural crystallography
+548(0009),Physical crystallography
+548(0010),Geometrical crystallography
+548(0011),Mathematical crystallography
+548(0012),Optical crystallography
+548(0013),Chemical crystallography
+548(0014),Crystallographers
+548(0015),Crystal lograms
+548(0016),Deformation
+548(0017),Stresses
+548(0018),Dimorphism
+548(0019),Hardness
+548(0020),Elasticity
+548(0021),Cleavage
+548(0022),Fracture
+548(0023),Strength
+548(0024),Fusibility
+548(0025),Isomorphism
+548(0026),Plasticity
+548(0027),Polymorphism
+548(0028),Crystal lattices
+548(0029),Lattices
+548(0030),Pseudomorphism
+549,MINERALOGY(205)
+549(0001),Alunite
+549(0002),Andalusite
+549(0003),Amphiboles
+549(0004),Anglesite
+549(0005),Anhydrite
+549(0006),Antimonides
+549(0007),Antlerite
+549(0008),Apatite
+549(0009),Apophyllite
+549(0010),Aragonite
+549(0011),Clay
+549(0012),Argentite
+549(0013),Arsenates
+549(0014),Arsenides
+549(0015),Atacamite
+549(0016),Axinite
+549(0017),Barite
+549(0018),Bauxite
+549(0019),Beryl
+549(0020),Bismuthinite
+549(0021),Boracite
+549(0022),Borates
+549(0023),Borax
+549(0024),Boumonite
+549(0025),Brucite
+549(0026),Calaverite
+549(0027),Chalcanthite
+549(0028),Calcite
+549(0029),Chalcocite
+549(0030),Kaolinite
+549(0031),Carbonates
+549(0032),Carnallite
+549(0033),Cassiterite
+549(0034),Celestite
+549(0035),Cerargyrite
+549(0036),Cerussite
+549(0037),Chile saltpeter
+549(0038),Kyanite
+549(0039),Cinnabar
+549(0040),Zircon
+549(0041),Chlorite
+549(0042),Colemanite
+549(0043),Columbite
+549(0044),Chondrodite
+549(0045),Cordierite
+549(0046),Corundum
+549(0047),Cryolite
+549(0048),Chrysoberyl
+549(0049),Chrysocolla
+549(0050),Crocoite
+549(0051),Chromates
+549(0052),Chromite
+549(0053),Quartz
+549(0054),Cuprite
+549(0055),Cyclosilicates
+549(0056),Placer deposits
+549(0057),Diaspore
+549(0058),Pegmatite dikes
+549(0059),Dolomite
+549(0060),Dumortierite
+549(0061),Hardness
+549(0062),Native elements
+549(0063),Elements
+549(0064),Enargite
+549(0065),Epidote
+549(0066),Epsomite
+549(0067),Erythrite
+549(0068),Scapolite
+549(0069),Cleavage
+549(0070),Scorodite
+549(0071),Sphalerite
+549(0072),Sphene
+549(0073),Smaltite
+549(0074),Spinel
+549(0075),Spodumene
+549(0076),Stannite
+549(0077),Staurolite
+549(0078),Stephanite
+549(0079),Stibnite
+549(0080),Strontianite
+549(0081),Feldspar
+549(0082),Phenacite
+549(0083),Phyllosilicates
+549(0084),Fluorite
+549(0085),Fluorspar
+549(0086),Phosphates
+549(0087),Fracture
+549(0088),Franklinite
+549(0089),Gahnite
+549(0090),Galena
+549(0091),Garnierite
+549(0092),Glauberite
+549(0093),Glauconite
+549(0094),Goethite
+549(0095),Garnets
+549(0096),Greenockite
+549(0097),Halite
+549(0098),Halides
+549(0099),Hematite
+549(0100),Hemimorphite
+549(0101),Hydroxides
+549(0102),Ice
+549(0103),Idocrase
+549(0104),Ilmenite
+549(0105),Inosilicates
+549(0106),Jamesonite
+549(0107),Kernite
+549(0108),Lawsonite
+549(0109),Lazulite
+549(0110),Lazurite
+549(0111),Leucite
+549(0112),Limonite
+549(0113),Lodes
+549(0114),Magnesite
+549(0115),Magnetite
+549(0116),Malachite
+549(0117),Manganite
+549(0118),Native metals
+549(0119),Metals
+549(0120),Meteorites
+549(0121),Mica
+549(0122),Mineralogy
+549(0123),Crystallographic mineralogy
+549(0124),Determinative mineralogy
+549(0125),Physical mineralogy
+549(0126),Chemical mineralogy
+549(0127),Turquoise mineralogy
+549(0128),Mineralogists
+549(0129),Molybdates
+549(0130),Molybdenite
+549(0131),Monazite
+549(0132),Nesosilicates
+549(0133),Niccolite
+549(0134),Niter
+549(0135),Nitrates
+549(0136),Soda niter
+549(0137),Nonmetals
+549(0138),Olivine
+549(0139),Opals
+549(0140),Oxides
+549(0141),Pitchblende
+549(0142),Pectolite
+549(0143),Pyrargyrite
+549(0144),Pyrite
+549(0145),Pyrophyllite
+549(0146),Pyrolusite
+549(0147),Pyroxenes
+549(0148),Polybasite
+549(0149),Polyhalite
+549(0150),Prehnite
+549(0151),Proustite
+549(0152),Psilomelane
+549(0153),Rocks
+549(0154),Rhodochrosite
+549(0155),Rhodonite
+549(0156),Rutile
+549(0157),Salt
+549(0158),Saltpeter
+549(0159),Scheelite
+549(0160),Selenides
+549(0161),Semimetals
+549(0162),Sepiolite
+549(0163),Serpentine
+549(0164),Siderite
+549(0165),Silicates
+549(0166),Sillimanite
+549(0167),Sylvite
+549(0168),Skutterudite
+549(0169),Smithsonite
+549(0170),Sorosilicates
+549(0171),Anhydrous sulfates
+549(0172),Basic sulfates
+549(0173),Hydrous sulfates
+549(0174),Sulfates
+549(0175),Sulfosalts
+549(0176),Double sulfides
+549(0177),Sulfides
+549(0178),Talc
+549(0179),Tectosilicates
+549(0180),Tellurides
+549(0181),Tetrahedrite
+549(0182),Topaz
+549(0183),Triphylite
+549(0184),Tourmaline
+549(0185),Ulexite
+549(0186),Uraninite
+549(0187),Vanadates
+549(0188),Vanadinite
+549(0189),Veins
+549(0190),Streak
+549(0191),Vivianite
+549(0192),Willemite
+549(0193),Witherite
+549(0194),Tungstates
+549(0195),Wolframite
+549(0196),Wollastonite
+549(0197),Wulfenite
+549(0198),Gypsum
+549(0199),Zeolite
+549(0200),Zincite
+550,GEOLOGY (2)
+,
+,
+COD ,500 NATURAL SCIENCE
+551,PHYSICAL
+551(0001),Chasms
+551(0002),Absorption of light
+551(0003),Wave action
+551(0004),Glacial action
+551(0005),Aquifers
+551(0006),Aerodynamics
+551(0007),Aerosols
+551(0008),Outcrops
+551(0009),Seawater
+551(0010),Frozen seawater
+551(0011),Water-atmosphere interactions
+551(0012),Water
+551(0013),Inland waters
+551(0014),Antarctic waters
+551(0015),Alaskan Pacific seawaters
+551(0016),Ocean waters
+551(0017),American Arctic seawaters
+551(0018),United States Pacific seawaters
+551(0019),Asian Arctic seawaters
+551(0020),Canadian Pacific seawaters
+551(0021),European Arctic seawaters
+551(0022),British western seawaters
+551(0023),Marine waters
+551(0024),Groundwater
+551(0025),Surface waters
+551(0026),Hot springs
+551(0027),Thermal waters
+551(0028),Albemarle Sound
+551(0029),Alluvium
+551(0030),Elevations
+551(0031),Atmosphere
+551(0032),Anticyclones
+551(0033),Antisynclines
+551(0034),Malay Archipelago
+551(0035),Rainbows
+551(0036),Reefs
+551(0037),Streams
+551(0038),Jet streams
+551(0039),Joints
+551(0040),Atlantic Ocean
+551(0041),Upper atmosphere
+551(0042),Atolls
+551(0043),Avalanches
+551(0044),Bab el Mandeb
+551(0045),Baguios - hurricanes-
+551(0046),Bay of Bengal
+551(0047),Bristol Bay - alaska-
+551(0048),Cape Cod Bay - mass-
+551(0049),Delaware Bay - del
+551(0050),Bay of Fundy
+551(0051),Hudson Bay
+551(0052),New York Bay
+551(0053),San Francisco Bay
+551(0054),Bahia Grande
+551(0055),Water balance
+551(0056),Ravines
+"551(0057),""Bengal, Bay of""",
+551(0058),Watercress
+"551(0059),""Biscay, Bay of""",
+551(0060),Ball lightning
+551(0061),Bosporus
+551(0062),Buzzards Bay -
+551(0063),Kettles - geologic land forms-
+"551(0064),""California, Gulf of -""",
+551(0065),Temperature changes
+551(0066),Mozambique Channel
+551(0067),Saint George's Channel
+551(0068),North Channel
+551(0069),English Channel
+551(0070),Canyons
+551(0071),Snow cover
+551(0072),Water table
+551(0073),Scintillation
+551(0074),Hydrological cycle
+551(0075),Cyclones - meteorology-
+551(0076),Night skies
+551(0077),Marine science
+551(0078),Weather belts
+551(0079),Cirques
+551(0080),Circulation
+551(0081),Cities
+551(0082),Climate
+551(0083),Arctic climate
+551(0084),Climate control
+551(0085),Climatology
+551(0086),Climatologists
+"551(0087),""Clyde, Firth of""",
+551(0088),Hills
+551(0089),Cloud colors
+551(0090),Composition of atmosphere
+551(0091),Composition of ocean floor
+551(0092),Condensation of moisture
+551(0093),Continents
+551(0094),Weather control
+551(0095),Cook Inlet
+551(0096),Korea Strait
+551(0097),Cornices - snow formations-
+551(0098),Humboldt Current
+551(0099),Labrador Current
+551(0100),Gulf Stream
+551(0101),Air currents
+551(0102),Tidal currents
+551(0103),Ocean currents
+551(0104),Nappes aned geology-
+551(0105),Crust of earth
+"551(0106),""Coasts, shorelines""",
+551(0107),Craters - depressions-
+551(0108),Meteorite craters
+551(0109),Craters
+551(0110),Twilight
+"551(0111),""Crete, Sea of""",
+551(0112),Frazil ice
+551(0113),Quaternary period
+551(0114),Necks
+551(0115),Central Pacific Basin
+551(0116),Water bodies
+551(0117),Caves
+551(0118),Dardanelles
+551(0119),Deformation
+551(0120),Deltas
+551(0121),Deposition
+551(0122),Depressions
+551(0123),Continental drift
+551(0124),Glacial drift
+551(0125),Desertification
+551(0126),Deserts
+551(0127),Landslides
+551(0128),Sea-floor spreading
+551(0129),Rockfalls
+551(0130),Snow drifts
+551(0131),Devonian period
+551(0132),Diastrophism
+551(0133),Dynamics
+551(0134),Dikes - geology-
+551(0135),Gutenberg discontinuity
+551(0136),Mohorovicic discontinuity
+551(0137),Scattering of light
+"551(0138),""Dover, Strait of""",
+551(0139),Dunes
+551(0140),Earth's age
+551(0141),Ice age
+551(0142),Subsurface water
+551(0143),Sky color
+551(0144),Sea ice
+551(0145),Atmospheric electricity
+551(0146),Electricity
+551(0147),Elements - meteorology-
+551(0148),Elevations - physiography-
+551(0149),Deep—sea surveys
+551(0150),Snow surveys
+551(0151),Dixon Entrance
+551(0152),Eocene epoch
+551(0153),Cryptozoic eon
+551(0154),Phanerozoic eon
+551(0155),Epeirogeny
+551(0156),Archean era
+551(0157),Postglacial epoch
+551(0158),Recent epoch
+551(0159),Precambrian eras
+551(0160),Algonkian era
+551(0161),Archeozoic era
+551(0162),Cenozoic era
+551(0163),Mesozoic era
+551(0164),Paleozoic era
+551(0165),Proterozoic era
+551(0166),Erosion
+551(0167),Beach erosion
+551(0168),Wind erosion
+"551(0169),""Hoarfrost, rime""",
+"551(0170),""Cleavage, rifts""",
+551(0171),Runoff
+551(0172),Mirages
+551(0173),Ponds
+551(0174),Steppes
+551(0175),Stratifications
+551(0176),Stratigraphy
+551(0177),Bass Strait
+551(0178),Bering Strait
+551(0179),Cook Strait
+551(0180),Davis Strait
+551(0181),Denmark Strait
+551(0182),Strait of Dover
+551(0183),Formosa Strait
+551(0184),Strait of Georgia
+551(0185),Strait of Gibraltar
+551(0186),Hecate Strait
+551(0187),Strait of Juan de Fuca
+551(0188),Straits of Florida
+551(0189),Luzon Strait
+551(0190),Strait of Magellan
+551(0191),Strait of Malacca
+551(0192),Strait of Messina
+551(0193),Strait of Hormuz
+551(0194),Strait of Otranto
+551(0195),La Perouse Strait
+551(0196),Strait of Sicily
+551(0197),Singapore Strait
+551(0198),Queen Charlotte Strait
+551(0199),Bahia Blanca Estuary
+551(0200),Firth of Clyde
+551(0201),Firth of Forth
+551(0202),La Plata Estuary
+551(0203),Estuaries
+551(0204),Evaporation
+551(0205),Evapotranspiration
+551(0206),Explorations
+551(0207),Slope failure
+551(0208),Faults
+551(0209),Mud flows
+551(0210),Ocean bottom
+551(0211),Cloud particle formation
+551(0212),Soil formation
+551(0213),Atmospheric formations
+551(0214),Land forms
+551(0215),Photochemistry
+551(0216),Rock fragmentation
+551(0217),Cold fronts
+551(0218),Fronts
+551(0219),Saint Elmo's fire
+551(0220),Fumaroles
+551(0221),Gorges
+551(0222),Gases in atmosphere
+551(0223),Geysers
+551(0224),Geology
+551(0225),Structural geology
+551(0226),Physical geology
+551(0227),Historical geology
+551(0228),Marine geology
+551(0229),Oceanographic geology
+551(0230),Submarine geology
+551(0231),Geologists
+551(0232),Geomorphology
+551(0233),Submarine geomorphology
+551(0234),Geomorphologists
+551(0235),Geochemistry
+551(0236),Geosynclines
+551(0237),Geotectonics
+551(0238),Glaciers
+551(0239),Glaciology
+551(0240),Gulf of Aden
+551(0241),Gulf of Alaska
+551(0242),Gulf of Aqaba
+551(0243),Gulf of Cadiz
+551(0244),Gulf of California
+551(0245),Gulf of Carpentaria
+551(0246),Gulf of Corinth
+551(0247),Gulf of Darien
+551(0248),Gulf of Finland
+551(0249),Gulf of Guayaquil
+551(0250),Gulf of Guinea
+551(0251),Gulf of Honduras
+551(0252),Gulf of Lions
+551(0253),Gulf of Mannar
+551(0254),Gulf of Maracaibo
+551(0255),Gulf of Martaban
+551(0256),Gulf of Mexico
+551(0257),Gulf of Oman
+551(0258),Gulf of Panama
+551(0259),Gulf of Papua
+551(0260),Gulf of Paria
+551(0261),Gulf of Riga
+551(0262),Gulf of Saint-Malo
+551(0263),Gulf of San Jorge
+551(0264),Gulf of Saint Lawrence
+551(0265),Gulf of San Matías
+551(0266),Gulf of Siam
+551(0267),Gulf of Suez
+551(0268),Gulf of Thailand
+551(0269),Gulf of Taranto
+551(0270),Gulf of Tehuantepec
+551(0271),Gulf of Tonkin
+551(0272),Gulf of Urabá
+551(0273),Gulf of Venice
+551(0274),Gulf of Venezuela
+551(0275),Bay of Biscay
+551(0276),Persian Gulf
+551(0277),Gulf pf Bothnia
+551(0278),Great Australian Bight
+551(0279),Great Belt
+551(0280),Hail
+551(0281),Hailstones
+551(0282),Gravity
+551(0283),Grottoes
+551(0284),Halos
+551(0285),Till - geological land forms-
+551(0286),Till
+551(0287),Frost
+551(0288),Frost - crystals-
+551(0289),Frost - temperatures-
+551(0290),Hydrography
+551(0291),Freshwater hydrology
+551(0292),Hydrology
+551(0293),Hydrometeorology
+551(0294),Hydrosphere
+551(0295),Ice
+551(0296),Anchor ice
+551(0297),Strikes - geology-
+551(0298),Humidity
+551(0299),Moisture
+551(0300),Subsidence
+551(0301),Hurricanes-
+551(0302),Hurricanes
+551(0303),Icebergs
+551(0304),Growlers - ice formations-
+551(0305),Dips - geology-
+551(0306),Instrumentation
+551(0307),Interior of earth
+551(0308),Intrusions
+551(0309),Floods
+551(0310),Ionization
+551(0311),Islands
+551(0312),Barrier islands
+551(0313),Urban heat islands
+551(0314),Japan Current
+551(0315),Jurassic period
+551(0316),Kames
+551(0317),Karsts
+551(0318),Kattegat
+551(0319),Sea breezes
+551(0320),Salinity
+551(0321),Laccoliths
+551(0322),Lake ice
+551(0323),Lakes
+551(0324),Salt lakes
+551(0325),Lagoons
+551(0326),Freshwater lagoons
+551(0327),Saltwater lagoons
+551(0328),Storm surges
+551(0329),Horse latitudes
+551(0330),River beds
+"551(0331),""Lions, Gulf of""",
+551(0332),Limnology
+551(0333),Lithosphere
+551(0334),Plains
+551(0335),Rain
+551(0336),Acid rain
+551(0337),Sea-level changes
+551(0338),Glaze
+551(0339),Magma
+551(0340),Magnetosphere
+"551(0341),""Manche, Channel of the""",
+551(0342),Mantle of earth
+551(0343),Laccadive Sea
+551(0344),Adriatic Sea
+551(0345),Yellow Sea
+551(0346),Balearic Sea
+551(0347),Baltic Sea
+551(0348),Caribbean Sea
+551(0349),Chuckchee Sea
+551(0350),Amundsen Sea
+551(0351),Andaman Sea
+551(0352),Arafura Sea
+551(0353),Sea of Azov - ukraine
+551(0354),Bali Sea
+551(0355),Banda Sea
+551(0356),Barents Sea
+551(0357),Beaufort Sea
+551(0358),Bellingshausen Sea
+551(0359),Bering Sea
+551(0360),Bismarck Sea
+551(0361),Celebes Sea
+551(0362),Ceram Sea
+551(0363),South China Sea
+551(0364),Chukchi Sea
+551(0365),Sea of
+551(0366),Scotia Sea
+551(0367),Philippine Sea
+551(0368),Greenland Sea
+551(0369),Irish Sea
+551(0370),Sea of Japan
+551(0371),Java Sea
+551(0372),Kara Sea
+551(0373),Laptev Sea
+551(0374),Ligurian Sea
+551(0375),Lincoln Sea
+551(0376),Sargasso Sea
+551(0377),Sea of Marmara
+551(0378),Norwegian Sea
+551(0379),Sea of Okhotsk
+551(0380),Arabian Sea
+551(0381),Ross Sea
+551(0382),Solomon Sea
+551(0383),Savu Sea
+551(0384),East Siberian Sea
+551(0385),Sulu Sea
+551(0386),Tasman Sea
+551(0387),Timor Sea
+551(0388),Weddell Sea
+551(0389),Coral Sea
+551(0390),Labrador Sea
+551(0391),North Sea
+551(0392),North Polar Sea
+551(0393),Aegean Sea
+551(0394),Fiji Sea
+551(0395),Flores Sea
+551(0396),Ionian Sea
+551(0397),Mediterranean Sea
+551(0398),Western Mediterranean Sea
+551(0399),Black Sea
+551(0400),East China Sea
+551(0401),Red Sea
+551(0402),Tyrrhenian Sea
+"551(0403),""Maracaibo, Gulf of""",
+551(0404),Tides
+551(0405),Tidal waves
+551(0406),Sunda Islands seas
+551(0407),Inland seas
+551(0408),Seas
+551(0409),Air masses
+551(0410),Mechanics
+551(0411),Geologic age measurements
+551(0412),Eastern Mediterranean Sea
+551(0413),Plateaus
+551(0414),Mesosphere
+"551(0415),""Messina, Strait of - italy-""",
+551(0416),Weathering
+551(0417),Meteorology
+551(0418),Meteorologists
+551(0419),Microclimatology
+551(0420),Micrometeorology
+551(0421),Miocene epoch
+551(0422),Artificial modification of weather
+551(0423),Snow
+551(0424),Weather modification
+551(0425),Molucca Sea
+551(0426),Mountains
+551(0427),Monsoons
+551(0428),Moraines
+551(0429),Mass movement
+551(0430),Nantucket Sound
+551(0431),Snowfall
+551(0432),Nivation
+551(0433),Mist
+551(0434),Fogs
+551(0435),Norton Sound
+551(0436),Clouds
+551(0437),Nucleation - atmospheric moisture-
+551(0438),Core of earth
+551(0439),Arctic Ocean
+551(0440),North Atlantic Ocean
+551(0441),South Atlantic Ocean
+551(0442),Indian Ocean
+551(0443),Pacific Ocean
+551(0444),North Pacific Ocean
+551(0445),Southwest Pacific Ocean
+551(0446),South Pacific Ocean
+551(0447),Southeast Pacific Ocean
+551(0448),Ocean floor topography
+551(0449),Oceanography
+551(0450),Physical oceanography
+551(0451),Oceanographers
+551(0452),Oceans
+551(0453),Wind waves
+551(0454),Seismic sea waves
+551(0455),Oligocene epoch
+551(0456),Seismic waves
+551(0457),Waves
+551(0458),Atmospheric optics
+551(0459),Optics
+551(0460),Oresund -
+551(0461),Orogeny
+551(0462),Paleocene epoch
+551(0463),Paleoclimatology
+551(0464),Paleogeography
+551(0465),Paleovolcanism
+551(0466),Pamlico Sound
+551(0467),Pampas
+551(0468),Particulates
+551(0469),Drake Passage
+551(0470),Slopes
+551(0471),Neocene period
+551(0472),Cambrian period
+551(0473),Cretaceous period
+551(0474),Pennsylvanian period
+551(0475),Mississippian period
+551(0476),Ordovician period
+551(0477),Paleogene period
+551(0478),Permian period
+551(0479),Silurian period
+551(0480),Triassic period
+551(0481),Carboniferous periods
+551(0482),Permafrost
+551(0483),Pérouse Strait
+551(0484),Atmospheric disturbances
+551(0485),Peru Current
+551(0486),Coastal pools
+551(0487),Shelf ice
+551(0488),Continental shelves
+551(0489),Beaches
+551(0490),Pleistocene epoch
+551(0491),Folds
+551(0492),Pliocene epoch
+551(0493),Polar easterlies
+551(0494),Dust
+551(0495),Artesian wells
+551(0496),Wells
+551(0497),Prairies
+551(0498),Precipitation
+551(0499),Atmospheric pressure
+551(0500),Barometric pressure
+551(0501),Springs - water-
+551(0502),Surface processes
+551(0503),Exogenous processes - geology-
+551(0504),Periglacial processes
+551(0505),Weather forecasting
+551(0506),Short-range weather forecasting
+551(0507),Long-range weather forecasting
+551(0508),Gulches
+551(0509),Radar
+551(0510),Atmospheric radiation
+551(0511),Corpuscular radiation
+551(0512),Solar radiation
+551(0513),Terrestrial radiation
+551(0514),Radiation
+551(0515),Radiosondes
+551(0516),Raleigh Bay
+551(0517),Cosmic rays
+551(0518),Coastal regions
+551(0519),Lightning
+551(0520),Mass wasting
+551(0521),Rhode Island Sound
+551(0522),River ice
+551(0523),York River
+551(0524),Rivers
+551(0525),Dew
+551(0526),Artificial satellites
+551(0527),Weather satellites
+551(0528),Sedimentation
+551(0529),Sedimentoiogy
+551(0530),Sediments
+551(0531),Sediments water borne
+551(0532),Sediments wind borne
+"551(0533),""Sediments , ocean floor""",
+551(0534),Droughts
+551(0535),Cloud seeding
+551(0536),Seeding clouds
+551(0537),Sills
+551(0538),Synclines
+551(0539),Seismography
+551(0540),Seismology
+551(0541),Wind systems
+551(0542),Continental wind systems
+551(0543),Planetary wind systems
+551(0544),Local wind systems
+551(0545),Solway Firth
+"551(0546),""Sound, The""",
+551(0547),Swells
+551(0548),Sink holes
+551(0549),Tectonics
+551(0550),Plate tectonics
+551(0551),Earth temperature
+551(0552),Temperature
+"551(0553),""Temperature , seawater""",
+551(0554),Water temperatures
+551(0555),Air temperatures
+551(0556),Ocean temperatures
+551(0557),Lake temperatures
+551(0558),Tertiary period
+551(0559),Thermodynamics
+551(0560),Earthquakes
+551(0561),Weather
+551(0562),Geologic time
+551(0563),Earth
+551(0564),Earth—atmosphere interactions
+551(0565),Arid land
+551(0566),Shorelands
+551(0567),Typhoons
+551(0568),Climate types
+551(0569),Topography
+"551(0570),""Rainfall, storms, thunderstorms""",
+551(0571),Thermal convective storms
+551(0572),Ice storms
+551(0573),Snowstorms
+551(0574),Dust storms
+551(0575),Storms
+551(0576),Twisters - tornadoes-
+551(0577),Tornadoes
+551(0578),Sediment transport
+551(0579),Sediment transport by water
+551(0580),Sediment transport by wind
+551(0581),Waterspouts
+551(0582),Troposphere
+551(0583),Tsunami
+551(0584),Tundras
+551(0585),Valleys
+551(0586),Rift valleys
+551(0587),Diurnal variations
+551(0588),Annual variations
+551(0589),Vegetation
+551(0590),Veins
+551(0591),Blizzards
+551(0592),Wind
+551(0593),Trade winds
+551(0594),Coast winds
+551(0595),Mountain winds
+551(0596),Visibility
+551(0597),Volcanoes
+551(0598),Volcanism
+551(0599),500 NATURAL SCIENCES
+552,LITHOLOGY. PETROGRAPHY(48)
+552(0001),Clay
+552(0002),Sand
+552(0003),Sandstone
+552(0004),Basalts
+552(0005),Quartzites
+552(0006),Diagenesis
+552(0007),Diorites
+552(0008),Dolerites
+552(0009),Dolomite
+552(0010),Schists
+552(0011),Gabbros
+552(0012),Gneisses
+552(0013),Granite
+552(0014),Greensands
+552(0015),Lava
+552(0016),Silt
+552(0017),Lithology
+552(0018),Shales
+552(0019),Marble
+552(0020),Norites
+552(0021),Oolites
+552(0022),Peridotites
+552(0023),Petrogenesis
+552(0024),Petrography
+552(0025),Petrology
+552(0026),Microscopic petrology
+552(0027),Petrologists
+552(0028),Limestone
+552(0029),Pumice
+552(0030),Slate
+552(0031),Porphyries
+552(0032),Rocks
+552(0033),Carbonate rocks
+552(0034),Igneous rocks
+552(0035),Metamorphic rocks
+552(0036),Pyroclastic rocks
+552(0037),Plutonic rocks
+552(0038),Sedimentary rocks
+552(0039),Volcanic rocks
+552(0040),Serpentine
+552(0041),Serpentinites
+552(0042),Syenites
+552(0043),Soils
+552(0044),Diatomaceous earth
+552(0045),Chalk
+552(0046),Tufa
+552(0047),Gypsum
+553,ECONOMIC GEOLOGY (323)
+553(0001),Water supply
+553(0002),Aquifers
+553(0003),Aggregates - materials-
+553(0004),Water
+553(0005),Subsurface water
+"553(0006),""Subsurface, underground water""",
+553(0007),Mineral waters
+553(0008),Saline waters
+553(0009),Surface waters
+553(0010),Alabaster
+553(0011),Alumina
+553(0012),Aluminum
+553(0013),Amethysts
+553(0014),Amber
+553(0015),Asbestos
+553(0016),Amphiboles
+553(0017),Antimony
+553(0018),Apatites
+553(0019),Clay
+553(0020),Fireclays
+553(0021),Sand
+553(0022),Bituminous
+553(0023),Tar sands
+553(0024),Glass sands
+553(0025),Sandstone
+553(0026),Argon
+553(0027),Aggregates
+553(0028),Arsenic
+553(0029),Asphaltite
+553(0030),Asphalt
+553(0031),Sulfur
+553(0032),Barite
+553(0033),Bauxite
+553(0034),Bentonite
+553(0035),Beryllium
+553(0036),Bitumens
+553(0037),Bismuth
+553(0038),Bluestone
+553(0039),Borates
+553(0040),Borax
+553(0041),Boron
+553(0042),Brines
+553(0043),Bromine
+553(0044),Black lead
+553(0045),Calcite
+553(0046),Limestone
+553(0047),Kaolin
+553(0048),Coal
+553(0049),Bituminous coal
+553(0050),Cannel coal
+553(0051),Anthracite coal
+553(0052),Graphitic anthracite coal
+553(0053),Semibituminous coal
+553(0054),Carbonado
+553(0055),Carnallite
+553(0056),Cement
+553(0057),Ceramics
+553(0058),Zirconium
+553(0059),Chlorine
+553(0060),Cobalt
+553(0061),Copper
+553(0062),Fossil fuels
+553(0063),Corundum
+553(0064),Krypton
+553(0065),Chromium
+553(0066),Placer deposits
+553(0067),Mineral deposits
+553(0068),Diamonds
+553(0069),Industrial diamonds
+553(0070),Diaspore clay
+553(0071),Pegmatite dikes
+553(0072),Dolomite
+553(0073),Fossil gums
+553(0074),Scandium
+553(0075),Emeralds
+553(0076),Emery
+553(0077),Heavy spar
+553(0078),Bituminous shale
+553(0079),Black shale
+553(0080),Tin
+553(0081),Soapstone
+553(0082),Stratifications
+553(0083),Petroleum
+553(0084),Mineral fertilizers
+553(0085),Fluorine
+553(0086),Formation of economic minerals
+553(0087),Phosphates
+553(0088),Natural gas
+553(0089),Inert gases
+553(0090),Noble gases
+553(0091),Rare gases
+553(0092),Gases
+553(0093),Gems
+553(0094),Applied geology
+553(0095),Petroleum geology
+553(0096),Economic geology
+553(0097),Organic geochemistry
+553(0098),Gums
+553(0099),Graphite
+553(0100),Garnets
+553(0101),Granite
+553(0102),Gravel
+553(0103),Helium
+553(0104),Hydrogen
+553(0105),Ice
+553(0106),Iron
+553(0107),Jade
+553(0108),Jet
+"553(0109),""Brown coal, lignite""",
+553(0110),Lime
+553(0111),Lodes
+553(0112),Flagstones
+553(0113),Magnesium
+553(0114),Manganese
+553(0115),Marls
+553(0116),Marble
+553(0117),Verd antique marble
+553(0118),Onyx marble
+553(0119),Abrasive materials
+553(0120),Bituminous materials
+553(0121),Carbonaceous materials
+553(0122),Ceramic materials
+553(0123),Pigment materials
+553(0124),Fissionable materials
+553(0125),Refractory materials
+553(0126),Earthy materials
+553(0127),Mercury
+553(0128),Cerium-group metals
+553(0129),Platinum-group metals
+553(0130),Yttrium-group metals
+553(0131),Light metals
+553(0132),Nonferrous metals
+553(0133),Precious metals
+553(0134),Metals
+553(0135),Mica
+553(0136),Ores
+553(0137),Industrial minerals
+553(0138),Earthy minerals
+553(0139),Molybdenum
+553(0140),Neon
+553(0141),Nickel
+553(0142),Sodium nitrate
+553(0143),Nitrates
+553(0144),Nitrogen
+553(0145),Umber
+553(0146),Ochers
+553(0147),Onyx
+553(0148),Opals
+553(0149),Gold
+553(0150),Oxygen
+553(0151),Ozokerite
+553(0152),Flint
+"553(0153),""Petroleum, oil""",
+553(0154),Stone
+553(0155),Sculptural stone
+553(0156),Structural stone
+553(0157),Natural stone
+553(0158),Pumice
+553(0159),Precious stones
+553(0160),Semiprecious stones
+553(0161),Earth pigments
+553(0162),Pitch
+553(0163),Slate
+553(0164),Oil shale
+553(0165),Silver
+553(0166),Platinum
+553(0167),Lead
+553(0168),Plumbago - mineral-
+553(0169),Radium
+553(0170),Radon
+553(0171),Energy resources
+553(0172),Fossil resins
+553(0173),Resins
+553(0174),Rubies
+553(0175),Rutile
+553(0176),Salt
+553(0177),Rock salt
+553(0178),Potash salts
+"553(0179),""Niter, saltpeter""",
+553(0180),Chile saltpeter
+553(0181),Soda niter
+553(0182),Serpentine
+553(0183),Syenites
+553(0184),Silicon
+553(0185),Sulphur
+553(0186),Talc
+"553(0187),""Talc , refractory materials""",
+553(0188),Tantalum
+553(0189),Tanzanite
+553(0190),Fuller's earth
+553(0191),Diatomaceous earth
+553(0192),Sienna
+553(0193),Rare earths
+553(0194),Titanium
+553(0195),Chalk
+553(0196),Thorium
+553(0197),Travertines
+553(0198),Peat
+553(0199),Uranium
+553(0200),Vanadium
+553(0201),Veins
+553(0202),Vermiculite
+553(0203),Xenon
+553(0204),Gypsum
+553(0205),Iodine
+553(0206),Sapphires
+553(0207),Zinc
+553(0208),Zirconia
+554,EUROPE GEOLOGY
+555,ASIA GEOLOGY
+556,AFRICA. GEOLOGY
+557,NORTH AMERICA GEOLOGY
+558,SOUTH AMERICA GEOLOGY
+559,OCEANIA. POLAR REGIONS GEOLOGY
+560,PALEONTOLOGY (43)
+560(0001),Extinct animals
+560(0002),Quaternary period
+560(0003),Devonian period
+560(0004),Ice age
+560(0005),Eocene epoch
+560(0006),Cryptozoic eon
+560(0007),Phanerozoic eon
+560(0008),Postglacial epoch
+560(0009),Recent epoch
+560(0010),Precambrian eras
+560(0011),Archeozoic era
+560(0012),Cenozoic era
+560(0013),Mesozoic era
+560(0014),Paleozoic era
+560(0015),Proterozoic era
+560(0016),Fossils
+560(0017),Jurassic period
+560(0018),Miocene epoch
+560(0019),Oligocene epoch
+560(0020),Paleocene epoch
+560(0021),Paleoecology
+560(0022),Stratigraphic paleontology
+560(0023),Paleontologists
+560(0024),Paleozoology
+560(0025),Taxonomic paleozoology
+560(0026),Cambrian period
+560(0027),Cretaceous period
+560(0028),Neocene period
+560(0029),Neogene period
+560(0030),Ordovician period
+560(0031),Paleogene period
+560(0032),Permian period
+560(0033),Silurian period
+560(0034),Carboniferous periods
+560(0035),Pleistocene epoch
+560(0036),Pliocene epoch
+560(0037),Tertiary period
+560(0038),Triassic period
+561,PLANTS PALEONTOLOGY (95)
+561(0001),Alethopteris
+561(0002),Algae
+561(0003),Alliopteris
+561(0004),Angiospermae
+561(0005),Araucariaceae
+561(0006),Trees
+561(0007),Arecaceae
+561(0008),Archaeopteris
+561(0009),Bennettitales
+561(0010),Bryophyta
+561(0011),Calamitales
+561(0012),Calamopityaceae
+561(0013),Callipteris
+561(0014),Callixylon
+561(0015),Cephalotaxaceae
+561(0016),Coenopteridales
+561(0017),Coniferales
+561(0018),Conifers
+561(0019),Cordaitales
+561(0020),Cordaiteae
+561(0021),Cryptogamia
+561(0022),Cupressaceae
+561(0023),Cycadales
+561(0024),Cycadeoidaceae
+561(0025),Cycadeoidales
+561(0026),Cyclopteris
+561(0027),Dicotyledons
+561(0028),Equisetales
+561(0029),Spores
+561(0030),Filicales
+561(0031),Filicineae
+561(0032),Fruit
+561(0033),Gymnosperms
+561(0034),Ginkgoales
+561(0035),Glossopteris
+561(0036),Gnetacae
+561(0037),Graminales
+561(0038),Eusporangiated ferns
+561(0039),Seed ferns
+561(0040),Fungi
+561(0041),Hyeniales
+561(0042),Isoetales
+561(0043),Lepidodendrales
+561(0044),Linopteris
+561(0045),Lycopodiales
+561(0046),Lycopsida
+561(0047),Lyginopteridaceae
+561(0048),Petrified wood
+561(0049),Marattiales
+561(0050),Mariopteris
+561(0051),Medullosaceae
+561(0052),Megalopteris
+561(0053),Monocotyledons
+561(0054),Club moss
+561(0055),Mosses
+561(0056),Neuropteris
+561(0057),Odontopteris
+561(0058),Ophioglossales
+561(0059),Paleobotanists
+561(0060),Paleobotany
+561(0061),Paleoecology
+561(0062),Paleopalynology
+561(0063),Palmales
+561(0064),Palms
+561(0065),Grasses
+561(0066),Pecopteris
+561(0067),Pinaceae
+561(0068),Pityeae
+561(0069),Extinct plants
+561(0070),Pleuromeiales
+561(0071),Podocarpaceae
+561(0072),Pollack
+561(0073),Polypodiorsida
+561(0074),Poroxyleae
+561(0075),Protolepidodendrales
+561(0076),Pseudoborniales
+561(0077),Psilophytales
+561(0078),Psilopsida
+561(0079),Psilotales
+561(0080),Pteridophyta
+561(0081),Pteridospermae
+561(0082),Rhacopteris
+561(0083),Selaginellales
+561(0084),Seeds
+561(0085),Spermatophyta
+561(0086),Sphenophyllales
+561(0087),Sphenopsida
+561(0088),Sphenopteris
+561(0089),Taeniopteris
+561(0090),Taxales
+561(0091),Taxodiaceae
+561(0092),Thallophyta
+561(0093),Williamsoniaceae
+561(0094),Yew
+562,INVERTEBRATES PALEONTOLOGY (4)
+562(0001),Conodonts
+562(0002),Invertebrates
+562(0003),Neuston
+562(0004),Zooplankton
+563,PROTOZOA. RADIATES PALEONTOLOGY (56)
+563(0001),Adunata
+563(0002),Anthozoa
+563(0003),Archaeocyatha
+563(0004),Arthrochirotida
+563(0005),Articulata
+563(0006),Asteroidea
+563(0007),Blastoidea
+563(0008),Calcarea
+563(0009),Calcispongiae
+563(0010),Camerata
+563(0011),Ciliata
+563(0012),Ciliophora
+563(0013),Cnidaria
+563(0014),Coelenterata
+563(0015),Conulariida
+563(0016),Corals
+563(0017),Crinoidea
+563(0018),Ctenophora
+563(0019),Cystoidea
+563(0020),Demospongiae
+563(0021),Echinodermata
+563(0022),Enteropneusta
+563(0023),Echinoidea
+563(0024),Sponges
+563(0025),Starfish
+563(0026),Euechinoidea
+563(0027),Graptolitoidea
+563(0028),Hemichordata
+563(0029),Hexactinellida
+563(0030),Holothurioidea
+563(0031),Hyalospongiae
+563(0032),Hydroida
+563(0033),Hydrozoa
+563(0034),Inadunata
+563(0035),Linguatula
+563(0036),Mastigophora
+563(0037),Milleporina
+563(0038),Ophiurida
+563(0039),Ophiuroidea
+563(0040),Parazoa
+563(0041),Pentastomida
+563(0042),Perischoechinoidea
+563(0043),Phanerozonida
+563(0044),Phrynophiurida
+563(0045),Planctosphaeroidea
+563(0046),Plasmodroma
+563(0047),Porifera
+563(0048),Protomedusae
+563(0049),Protozoa
+563(0050),Radiolaria
+563(0051),Scyphozoa
+563(0052),Siphonophora
+563(0053),Spinulosida
+563(0054),Stenurida
+563(0055),Stromatoporoidea
+563(0056),Stylasterina
+564,MOLLUSKS PALEONTOLOGY (38)
+564(0001),Acoelea
+564(0002),Ammonitoidea
+564(0003),Amphineura
+564(0004),Anapsidea
+564(0005),Apolacophora
+564(0006),Archeogastropoda
+564(0007),Basommatophora
+564(0008),Bivalvia
+564(0009),Brachiopoda
+564(0010),Bryozoa
+564(0011),Cephalopoda
+564(0012),Lamp shells
+564(0013),Decapoda
+564(0014),Gastropoda
+564(0015),Lamellibranchia
+564(0016),Mesogastropoda
+564(0017),Molluscoidea
+564(0018),Mollusca
+564(0019),Mollusks
+564(0020),Mytiloida
+564(0021),Nautiloidea
+564(0022),Neogastropoda
+564(0023),Notaspidea
+564(0024),Nudibranchia
+564(0025),Octopoda
+564(0026),Pelecypoda
+564(0027),Polyplacophora
+564(0028),Prosobranchia
+564(0029),Pteropoda
+564(0030),Pulmonata
+564(0031),Sacoglossa
+564(0032),Scaphopoda
+564(0033),Streptoneura
+564(0034),Stylommatophora
+564(0035),Systellommatophora
+564(0036),Tectibranchia
+564(0037),Unionidae
+564(0038),Vampyromorpha
+565,ARTICULATES PALEONTOLOGY (135)
+565(0001),Acanthocephala
+565(0002),Acari
+565(0003),Acrothoracica
+565(0004),Amphipoda
+565(0005),Annelida
+565(0006),Anoplura
+565(0007),Anostraca
+565(0008),Apterygota
+565(0009),Arachnida
+565(0010),Araneae
+565(0011),Araneida
+565(0012),Archaeostraca
+565(0013),Architarbi
+565(0014),Arguloida
+565(0015),Arthropods
+565(0016),Aschelminthes
+565(0017),Ascothoracica
+565(0018),Blattaria
+565(0019),Branchiura
+565(0020),Branchiopoda
+565(0021),Calanoida
+565(0022),Caligoida
+565(0023),Horseshoe crab
+565(0024),Cephalocarida
+565(0025),Chaetognatha
+565(0026),Chelicerata
+565(0027),Chilopoda
+565(0028),Centipedes
+565(0029),Cirripedia
+565(0030),Cladocera
+565(0031),Cladocopa
+565(0032),Collembola
+565(0033),Coleoptera
+565(0034),Conchostraca
+565(0035),Copepoda
+565(0036),Corrodentia
+565(0037),Crustaceans
+565(0038),Cockroaches
+565(0039),Cumacea
+565(0040),Cyclopoida
+565(0041),Decapoda
+565(0042),Dermaptera
+565(0043),Diplopoda
+565(0044),Diplura
+565(0045),Diptera
+565(0046),Ephemeroptera
+565(0047),Embioptera
+565(0048),Entoprocta
+565(0049),Entotrophi
+565(0050),Beetles
+565(0051),Eumalacostraca
+565(0052),Euphausiacea
+565(0053),Eurypterida
+565(0054),Gastrotricha
+565(0055),Gephyrea
+565(0056),Worms
+565(0057),Harpacticoida
+565(0058),Hemiptera
+565(0059),Heteroptera
+565(0060),Hexapoda
+565(0061),Hymenoptera
+565(0062),Homoptera
+565(0063),Hoplocarida
+565(0064),Hymenostraca
+565(0065),Apterous insects
+565(0066),Insects
+565(0067),Isopoda
+565(0068),Isoptera
+565(0069),Lemaeopodoida
+565(0070),Lepidoptera
+565(0071),Leptostraca
+565(0072),Lipostraca
+565(0073),Malacostraca
+565(0074),Mallophaga
+565(0075),Mantodea
+565(0076),Mecoptera
+565(0077),Millipedes
+565(0078),Myriapoda
+565(0079),Monstrilloida
+565(0080),Myodocopa
+565(0081),Mysidacea
+565(0082),Mystacocarida
+565(0083),Nemertea
+565(0084),Neuroptera
+565(0085),Notodelphyoida
+565(0086),Notostraca
+565(0087),Odonata
+565(0088),Oncopods
+565(0089),Onychophora
+565(0090),Opilionea
+565(0091),Opisthogoneata
+565(0092),Orthoptera
+565(0093),Ostracoda
+565(0094),Palpigradi
+565(0095),Pancarida
+565(0096),Pararthropoda
+565(0097),Pauropoda
+565(0098),Pedipalpi
+565(0099),Peracarida
+565(0100),Barnacles
+565(0101),Phalangida
+565(0102),Phasmatodea
+565(0103),Phoronidea
+565(0104),Phyllocarida
+565(0105),Platycopa
+565(0106),Platyhelminthes
+565(0107),Plecoptera
+565(0108),Podocopa
+565(0109),Polyphaga
+565(0110),Progoneata
+565(0111),Protura
+565(0112),Pseudoscorpiones
+565(0113),Psocoptera
+565(0114),Pterygota
+565(0115),Pycnogonida
+565(0116),Rhizocephala
+565(0117),Rhynchocoela
+565(0118),Ricinulei
+565(0119),Scorpions
+565(0120),Siphonaptera
+565(0121),Solifugae
+565(0122),Stomatopoda
+565(0123),Strepsiptera
+565(0124),Symphyla
+565(0125),Syncarida
+565(0126),Synxiphosura
+565(0127),Tanaidacea
+565(0128),Tardigrada
+565(0129),Thermosbaenacea
+565(0130),Thoracica
+565(0131),Thysanoptera
+565(0132),Thysanura
+565(0133),Trichoptera
+565(0134),Trilobita
+565(0135),500 NATURAL SCIENCES
+566,VERTEBRATES PALEONTOLOGY (7)
+566(0001),Cephalochordata
+566(0002),Chordata
+566(0003),Craniata
+566(0004),Tunicata
+566(0005),Urochordata
+566(0006),Vertebrata
+566(0007),Vertebrates
+567,FISHES. BATRACHIANS PALEONTOLOGY (92)
+567(0001),Acanthodii
+567(0002),Acanthopterygii
+567(0003),Acipenseriformes
+567(0004),Actinopterygii
+567(0005),Agnatha
+567(0006),Amiiformes
+567(0007),Anapsida
+567(0008),Amphibians
+567(0009),Anura
+567(0010),Apoda
+567(0011),Araeoscelidia
+567(0012),Archosauria
+567(0013),Batoidea
+567(0014),Bradyodonti
+567(0015),Bufonoidea
+567(0016),Caudata
+567(0017),Caecilians
+567(0018),Chelonia
+567(0019),Chondrichthyes
+567(0020),Chondrostei
+567(0021),Cladoselachii
+567(0022),Clupeomorpha
+567(0023),Cotylosauria
+567(0024),Crocodilia
+567(0025),Crossopterygii
+567(0026),Cyclostomata
+567(0027),Diapsida
+567(0028),Dinosaurs
+567(0029),Dipnoi
+567(0030),Discoglossidea
+567(0031),Elopomorpha
+567(0032),Eosuchia
+567(0033),Euryapsida
+567(0034),Ganoidei
+567(0035),Gymnophiona
+567(0036),Holocephali
+567(0037),Holostei
+567(0038),Ichthyosauria
+567(0039),Labyrinthodontia
+567(0040),Leiopelmatidae
+567(0041),Lepidosauria
+567(0042),Lepospondyli
+567(0043),Leptolepidimorpha
+567(0044),Mesosauria
+567(0045),Ornithischia
+567(0046),Ostariophysi
+567(0047),Osteichthyes
+567(0048),Osteoglossiformes
+567(0049),Palaeonisciformes
+567(0050),Paracanthopterygii
+567(0051),Pelobatoidea
+567(0052),Pelycosauria
+567(0053),Pholidophoriformes
+567(0054),Pipoidea
+567(0055),Pisces
+567(0056),Placodermi
+567(0057),Placodontia
+567(0058),Pleuracanthodii
+567(0059),Polypteriformes
+567(0060),Proanura
+567(0061),Protacanthopterygii
+567(0062),Pterodactyls
+567(0063),Pterosauria
+567(0064),Pycnodontiformes
+567(0065),Rajiformes
+567(0066),Ranoidea
+567(0067),Reptiles
+567(0068),Rhynchocephalia
+567(0069),Salientia
+567(0070),Sarcopterygii
+567(0071),Sauria
+567(0072),Saurischia
+567(0073),Sauropterygia
+567(0074),Scopelomorpha
+567(0075),Semionotiformes
+567(0076),Serpents
+567(0077),Squaliformes
+567(0078),Squamata
+567(0079),Synapsida
+567(0080),Teleostei
+567(0081),Testudines
+567(0082),Thalattosauria
+567(0083),Thecodontia
+567(0084),Therapsidia
+567(0085),Theromorpha
+567(0086),Sharks
+567(0087),Urodela
+567(0088),Cold-blooded vertebrates
+568,REPTILES. BIRDS PALEONTOLOGY (40)
+568(0001),Aepyornithiformes
+568(0002),Anseriformes
+568(0003),Apodiformes
+568(0004),Apterygiformes
+568(0005),Archaeornithes
+568(0006),Ratites
+568(0007),Birds
+568(0008),Caenagnathiformes
+568(0009),Caprimulgiformes
+568(0010),Casuariiformes
+568(0011),Charadriiformes
+568(0012),Ciconiiformes
+568(0013),Coliiformes
+568(0014),Columbiformes
+568(0015),Colymbiformes
+568(0016),Coraciiformes
+568(0017),Cuculiformes
+568(0018),Diatrymiformes
+568(0019),Dinornithiformes
+568(0020),Falconiformes
+568(0021),Galliformes
+568(0022),Gaviiformes
+568(0023),Gruiformes
+568(0024),Hesperomithiformes
+568(0025),Ichthyornithiformes
+568(0026),Neomithes
+568(0027),Extinct birds
+568(0028),Palaeognathae
+568(0029),Passeriformes
+568(0030),Pelecaniformes
+568(0031),Piciformes
+568(0032),Podicipediformes
+568(0033),Procellariiformes
+568(0034),Psittaciformes
+568(0035),Rheiformes
+568(0036),Sphenisciformes
+568(0037),Strigiformes
+568(0038),Struthioniformes
+568(0039),Tinamiformes
+568(0040),Trogoniformes
+569,MAMMALS PALEONTOLOGY (70)
+569(0001),Allotheria
+569(0002),Warm-blooded animals
+569(0003),Anthropoidea
+569(0004),Archaeoceti
+569(0005),Artiodactyla
+569(0006),Astrapotheria
+569(0007),Australopithicus
+569(0008),Whales
+569(0009),Camivora
+569(0010),Ceratomorpha
+569(0011),Cetacea
+569(0012),Condylarthra
+569(0013),Creodonta
+569(0014),Dermoptera
+569(0015),Desmostyliformes
+569(0016),Dinocerata
+569(0017),Edentata
+569(0018),Embrithopoda
+569(0019),Ferungulata
+569(0020),Fissipeda
+569(0021),Glires
+569(0022),Hippomorpha
+569(0023),Hominidae
+569(0024),Humankind
+569(0025),Hyracoidea
+569(0026),Insectivora
+569(0027),Lagomorpha
+569(0028),Litopterna
+569(0029),Extinct mammals
+569(0030),Marine mammals
+569(0031),Mammals
+569(0032),Marsupials
+569(0033),Marsupialia
+569(0034),Megachiroptera
+569(0035),Microchiroptera
+569(0036),Monotremata
+569(0037),Multituberculata
+569(0038),Bats
+569(0039),Mysticeti
+569(0040),Notoungulata
+569(0041),Odontoceti
+569(0042),Paenungulata
+569(0043),Palaeanodonta
+569(0044),Pantodonta
+569(0045),Pantotheria
+569(0046),Perissodactyla
+569(0047),Pholidota
+569(0048),Pinnipedia
+569(0049),Primates
+569(0050),Proboscidea
+569(0051),Prosimii
+569(0052),Prototheria
+569(0053),Protungulata
+569(0054),Pyrotheria
+569(0055),Chiroptera
+569(0056),Ramapithicus
+569(0057),Rodents
+569(0058),Ruminants
+569(0059),Sirenia
+569(0060),Suiformes
+569(0061),Symmetrodonta
+569(0062),Taeniodontia
+569(0063),Tillodontia
+569(0064),Trichechiformes
+569(0065),Triconodonta
+569(0066),Tubulidentata
+569(0067),Tylopoda
+569(0068),Unguiculata
+569(0069),Zinjanthropus
+570,BIOLOGY(2)
+570(0001),Biological sciences
+570(0002),Life sciences
+571,PREHISTORIC ARCHEOLOGY
+572,ETHNOLOGY. ANTHROPOLOGY(10)
+572(0001),Racial characteristics
+572(0002),Ethnogeography
+572(0003),Physical ethnology
+572(0004),Ethnology
+572(0005),Physical ethnologists
+572(0006),Environmental factors
+572(0007),Genetic factors
+572(0008),Origin of races
+572(0009),Human races
+572(0010),Races
+573,NATURAL HISTORY OF MAN(34)
+573(0001),Abnormalities
+573(0002),Anthropogenesis
+573(0003),Physical anthropology
+573(0004),Anthropology
+573(0005),Physical anthropologists
+573(0006),Anthropometry
+573(0007),Craniology
+573(0008),Cro-Magnon man
+573(0009),Teeth
+573(0010),Ecology
+573(0011),Dwarfs
+573(0012),Giant slalom skiing
+573(0013),Human evolution
+573(0014),Evolution
+573(0015),Human genetics
+573(0016),Genetics
+573(0017),Heidelberg man
+573(0018),Java man
+573(0019),Neanderthal man
+573(0020),Peking man
+573(0021),Piltdown man
+573(0022),Rhodesian man
+573(0023),Homo
+573(0024),Bones
+573(0025),Prehistoric humankind
+573(0026),Body measurements
+573(0027),Midgets
+573(0028),Skin
+573(0029),Human pigmentation
+573(0030),Pigmentation
+573(0031),Pithecanthropus erectus
+573(0032),Humans
+573(0033),Human variation
+573(0034),Variation
+574,HOMOLOGIES(512)
+574(0001),Absorption
+574(0002),Acceleration
+574(0003),Deoxyribonucleic acid
+574(0004),Ribonucleic acid
+574(0005),Ribonucleic acid (RNA)
+574(0006),Fatty acids
+574(0007),Nucleic acids
+574(0008),Acclimatization
+574(0009),Adaptation
+574(0010),Protective adaptations
+574(0011),Seasonal adaptations
+574(0012),Nutritive adaptations
+574(0013),Reproductive adaptations
+574(0014),DNA
+574(0015),Aerobiology
+574(0016),Agglutination
+574(0017),Saltwater ecology
+574(0018),Water
+574(0019),Albumins
+574(0020),Alkaloids
+574(0021),Food storage
+574(0022),Starches
+574(0023),Alternation of generations
+574(0024),Alkaline environments
+574(0025),Amylases
+574(0026),Amino acids
+574(0027),Amitosis
+574(0028),Anabolism
+574(0029),Anatomy
+574(0030),Embryological anatomy
+574(0031),Golgi apparatus
+574(0032),Reef ecology
+574(0033),Assimilation - physiology-
+574(0034),Assimilation
+574(0035),Astrobiology
+574(0036),Autoimmunity
+574(0037),Sugar
+574(0038),Sugars
+574(0039),Basal body
+574(0040),Motor bicycles
+574(0041),Bioastronautics
+574(0042),Bioclimatology
+574(0043),Bioelectricity
+574(0044),Bioenergetics
+574(0045),Biostatistics
+574(0046),Biophysics
+574(0047),Extraterrestrial biophysics
+574(0048),Biogeography
+574(0049),Biogeochemistry
+574(0050),Biology
+574(0051),Aquatic biology
+574(0052),Coral reef biology
+574(0053),Cell biology
+574(0054),Freshwater biology
+574(0055),High—temperature biology
+574(0056),Low-temperature biology
+574(0057),Reef biology
+574(0058),Shore biology
+574(0059),Developmental biology
+574(0060),Soil biology
+574(0061),Economic biology
+574(0062),Space biology
+574(0063),Experimental biology
+574(0064),Island biology
+574(0065),Limnetic biology
+574(0066),Marine biology
+574(0067),Molecular biology
+574(0068),Population biology
+574(0069),Tissue biology
+574(0070),Biologists
+574(0071),Bioluminescence
+574(0072),Biomes
+574(0073),Biomechanics
+574(0074),Biometrics
+574(0075),Biochemistry
+574(0076),Analytical biochemistry
+574(0077),Physical biochemistry
+574(0078),Inorganic biochemistry
+574(0079),Theoretical biochemistry
+574(0080),Biochemicals
+574(0081),Macromolecular biochemicals
+574(0082),Biosynthesis
+574(0083),Biosociology
+574(0084),Blepharoplasts
+574(0085),Food chains
+574(0086),Catabolism
+574(0087),Catalases
+574(0088),Heat
+574(0089),Carbohydrases
+574(0090),Conjugated carbohydrates biochemistry
+574(0091),Cells
+574(0092),Diploid cells
+574(0093),Germ cells
+574(0094),Haploid cells
+574(0095),Sex cells
+574(0096),Cellulases
+574(0097),Centromeres
+574(0098),Centrosomes
+574(0099),Waxes
+574(0100),Life cycle
+574(0101),Zygotes
+574(0102),Cilia
+574(0103),Kinetochores
+574(0104),Cytokinesis
+574(0105),Cytoskeleton
+574(0106),Cytogenetics
+574(0107),Cytology
+574(0108),Comparative cytology
+574(0109),Cytopathology
+574(0110),Cytoplasm
+574(0111),Cytochemistry
+574(0112),Climate
+574(0113),Coenzymes
+574(0114),Cofactors
+574(0115),Cholesterol
+574(0116),Colonies
+574(0117),Commensalism
+574(0118),Competition
+574(0119),Behavior
+574(0120),Macromolecular compounds
+574(0121),Organic compounds
+574(0122),Communities
+574(0123),Conjugation - sexual-
+574(0124),Consortium
+574(0125),Pollution
+574(0126),Biological control
+574(0127),Stream ecology
+574(0128),Seashore ecology
+574(0129),Growth
+574(0130),Cryobiology
+574(0131),Cryogenics
+574(0132),Chromatids
+574(0133),Chromatin
+574(0134),Chromoproteins
+574(0135),Chromosomes
+574(0136),Chronobiology
+574(0137),Organ culture
+574(0138),Tissue culture
+574(0139),Deformities
+574(0140),Degeneration
+574(0141),Predation
+574(0142),Deceleration
+574(0143),Development - biology-
+574(0144),Dehydrogenases
+574(0145),Desert ecology
+574(0146),Dextrans
+574(0147),Dextrose
+574(0148),Sex differentiation
+574(0149),Differentiation
+574(0150),Digestion
+574(0151),Movable dams
+574(0152),Cell division
+574(0153),Ecology
+574(0154),Aquatic ecology
+574(0155),Agricultural ecology - biology-
+574(0156),Woodlands ecology
+574(0157),Chaparral ecology
+574(0158),Jungle ecology
+574(0159),Freshwater ecology
+574(0160),Pond ecology
+574(0161),Dune ecology
+574(0162),Estuarine ecology
+574(0163),Lake ecology
+574(0164),Salt-lake ecology
+574(0165),Mountain ecology
+574(0166),Population ecology
+574(0167),Rock ecology
+574(0168),Savanna ecology
+574(0169),Taiga ecology
+574(0170),Land ecology
+574(0171),Tundra ecology
+574(0172),Arctic ecology
+574(0173),Heath ecology
+574(0174),Soil ecology
+574(0175),Forest ecology
+574(0176),Glacial ecology
+574(0177),Marine ecology
+574(0178),Meadow ecology
+574(0179),Prairie ecology
+574(0180),Terrestrial ecology
+574(0181),Tropical ecology
+574(0182),Urban ecology - biology-
+574(0183),Salt-flat ecology
+574(0184),Ecosystems
+574(0185),Circular buildings
+574(0186),Electricity
+574(0187),Electrophysiology
+574(0188),Electromagnetism
+574(0189),Trace elements
+574(0190),Embryology
+574(0191),Emulsins
+574(0192),Environmental diseases - biology-
+574(0193),Bacterial diseases
+574(0194),Fungal diseases
+574(0195),Fungus diseases
+574(0196),Plant-parasite diseases
+574(0197),Parasitic diseases
+574(0198),Viral diseases
+574(0199),Aging
+574(0200),Enzymes
+574(0201),Lipolytic enzymes
+574(0202),Oxidizing enzymes
+574(0203),Proteolytic enzymes
+574(0204),Saccharolytic enzymes
+574(0205),Epidermis
+574(0206),Physiological balance
+574(0207),Scleroproteins
+574(0208),Vanishing species
+574(0209),Endangered species
+574(0210),Rare species
+574(0211),Esterases
+574(0212),Steroids
+574(0213),Sterols
+574(0214),Excretion
+574(0215),Physiology
+574(0216),Embryological physiology
+574(0217),Regional physiology
+574(0218),Flagella
+574(0219),Circulatory fluids
+574(0220),Fluids
+574(0221),Phosphatases
+574(0222),Phospholipids
+574(0223),Phosphoproteins
+574(0224),Cold
+574(0225),Fructose
+574(0226),Fire
+574(0227),Mechanical forces
+574(0228),Gametogenesis
+574(0229),Gametes
+574(0230),Genes
+574(0231),Biochemical genetics
+574(0232),Physiological genetics
+574(0233),Molecular genetics
+574(0234),Globulins
+574(0235),Glycogen
+574(0236),Glucose
+574(0237),Glycosides
+574(0238),Aleurone grains
+574(0239),Gravity
+574(0240),Groups
+574(0241),Hermaphroditism
+574(0242),Carbohydrates
+574(0243),Hydrolases
+574(0244),Histophysiology
+574(0245),Histogenesis
+574(0246),Histology
+574(0247),Histones
+574(0248),Histopathology
+574(0249),Histochemistry
+574(0250),Homeostasis
+574(0251),Hormones
+574(0252),Sex hormones
+574(0253),Wetlands ecology
+574(0254),Wetlands
+574(0255),Ingestion
+574(0256),Immunity
+574(0257),Cell-mediated immunity
+574(0258),Immunogenetics
+574(0259),Immunoglobulins
+574(0260),Immunology
+574(0261),Complement fixation immunology
+574(0262),Integument
+574(0263),Island ecology
+574(0264),Lagoons
+574(0265),Radiation injury
+574(0266),High—temperature injury
+574(0267),Limnology
+574(0268),Lipases
+574(0269),Lipids
+574(0270),Lipoproteins
+574(0271),Lysosomes
+574(0272),Locomotion
+574(0273),Longevity
+574(0274),Visible light
+574(0275),Maturation
+574(0276),Magnetism
+574(0277),Maltases
+574(0278),Maltose
+574(0279),Marsh ecology
+574(0280),Control mechanisms
+574(0281),Meiosis
+574(0282),Plasma membranes
+574(0283),Membranes
+574(0284),Metabolism
+574(0285),Metagenesis
+574(0286),Mycoses
+574(0287),Micronutrient elements
+574(0288),Microfilaments
+574(0289),Microwaves
+574(0290),Microtrabeculae
+574(0291),Microtubules
+574(0292),Migration - biology-
+574(0293),Minerals
+574(0294),Mitochondria
+574(0295),Mitosis
+574(0296),Monosaccharides
+574(0297),Moor ecology
+574(0298),Morphogenesis
+574(0299),Morphology
+574(0300),Death
+574(0301),Mutualism
+574(0302),Neuston
+574(0303),Neutralization
+574(0304),Ecological niches
+574(0305),Nucleases
+574(0306),Nucleus
+574(0307),Nucleoproteins
+574(0308),Nucleosomes
+574(0309),Nutrition
+574(0310),Biological oceanography
+574(0311),Oligosaccharides
+574(0312),Radio waves
+574(0313),Beneficial organisms
+574(0314),Deleterious organisms
+574(0315),Secretory organs
+574(0316),Digestive organs
+574(0317),Excretory organs
+574(0318),Metabolic organs
+574(0319),Motor organs
+574(0320),Nutritive organs
+574(0321),Reproductive organs
+574(0322),Respiratory organs
+574(0323),Circulatory organs
+574(0324),Organelles
+574(0325),Oxidases
+574(0326),Oxidoreductases
+574(0327),Bog ecology
+574(0328),Swamp ecology
+574(0329),Parasitism
+574(0330),Animal parasites
+574(0331),Parthenogenesis
+574(0332),Grassland ecology
+574(0333),Pathogenicity
+574(0334),Pathology
+574(0335),Pectins
+574(0336),Peptides
+574(0337),Peroxisomes
+574(0338),Pigments
+574(0339),Plankton
+574(0340),Plastids
+574(0341),Polymers
+574(0342),Polysaccharides
+574(0343),Precipitation
+574(0344),Pressure
+574(0345),Proteases
+574(0346),Proteins
+574(0347),Conjugated proteins
+574(0348),Protoplasm
+574(0349),Chitin
+574(0350),Beta radiation
+574(0351),Neutron radiation
+574(0352),Particle radiation
+574(0353),Gamma radiation
+574(0354),Infrared radiation
+574(0355),Ultraviolet radiation
+574(0356),Radiation
+574(0357),Radiobiology
+574(0358),Cosmic rays
+574(0359),X rays
+574(0360),Immune reactions
+574(0361),Linin network
+574(0362),Reducing enzymes
+574(0363),Regeneration
+574(0364),Semiarid regions
+574(0365),Rejuvenation
+574(0366),Biological clocks
+574(0367),Reproduction
+574(0368),Asexual reproduction
+574(0369),Sexual reproduction
+574(0370),Vegetative reproduction
+574(0371),Respiration
+574(0372),Aerobic respiration
+574(0373),Anaerobic respiration
+574(0374),Intercellular respiration
+574(0375),Endoplasmic reticulum
+574(0376),Ribose
+574(0377),Ribosomes
+574(0378),Rickettsial diseases
+574(0379),River ecology
+574(0380),Biological rhythms
+574(0381),Circadian rhythms
+574(0382),Saccharides
+574(0383),Sucrose
+574(0384),Secretion
+574(0385),Symbiosis
+574(0386),Synecology
+574(0387),Sociobiology
+574(0388),Sound
+574(0389),Ecological succession
+574(0390),Inorganic substances
+574(0391),Temperature
+574(0392),Seasons
+574(0393),Teratology
+574(0394),Thermobiophysics
+574(0395),Thermobiology
+574(0396),Arid land
+574(0397),Genetic translation
+574(0398),Translation
+574(0399),Genetic transcription
+574(0400),Transcription
+574(0401),Transferases
+574(0402),Biological transport
+574(0403),Ultrastructure
+574(0404),Vacuoles
+574(0405),Vesicles
+574(0406),Subsonic vibrations
+574(0407),Ultrasonic vibrations
+574(0408),Vibrations
+574(0409),Life on other planets
+574(0410),Vitamins
+574(0411),Zymases
+574(0412),Climate zones
+575,EVOLUTION. SPECIES(52)
+575(0001),Recombinant DNA
+575(0002),Alleles
+575(0003),Aneuploidy
+575(0004),Atavism
+575(0005),Gene pools
+575(0006),Evolutionary cycles
+575(0007),Cloning
+575(0008),Crossing over - genetics-
+575(0009),Darwinism
+575(0010),Gene splicing
+575(0011),Inbreeding
+575(0012),Evolution
+575(0013),Organic evolution
+575(0014),Outbreeding
+575(0015),Extinction - biology-
+575(0016),Phenotypes
+575(0017),Genetics
+575(0018),Population genetics
+575(0019),Geneticists
+575(0020),Genotypes
+575(0021),Heredity
+575(0022),Inheritance of acquired characteristics
+575(0023),Hybrids
+575(0024),Genetic engineering
+575(0025),Species interfertility
+575(0026),Inversions - genetics-
+575(0027),Lamarckism
+575(0028),Mendel's laws
+575(0029),Mutations
+575(0030),Chemical mutagens
+575(0031),Mutagens
+575(0032),Nondisjunction - genetics-
+575(0033),Orthogenesis
+575(0034),Polyploidy
+575(0035),Radiation
+575(0036),Radiogenetics
+575(0037),Recombination
+575(0038),Jumping genes
+575(0039),Natural selection
+575(0040),Sexual selection - evolution-
+575(0041),Sexes
+575(0042),Transduction
+575(0043),Transformations - genetics-
+575(0044),Translocations - genetics-
+575(0045),Transposons
+575(0046),Variation - genetics-
+575(0047),Abrupt variations
+576,ORIGIN
+576(0001),Adenoviruses
+576(0002),Anatomy
+576(0003),Bacteriophages
+576(0004),Biogeography
+576(0005),Developmental biology
+576(0006),Bunyaviruses
+576(0007),Coronaviruses
+576(0008),Ecology
+576(0009),Evolution
+576(0010),Phages
+576(0011),Physiology
+576(0012),Genetics
+576(0013),Metabolism
+576(0014),Microbiology
+576(0015),Food microbiology
+576(0016),Economic microbiology
+576(0017),Microbiologists
+576(0018),Microbes
+576(0019),Microorganisms
+576(0020),Beneficial microorganisms
+576(0021),Deleterious microorganisms
+576(0022),Pathogenic microorganisms
+576(0023),Toxic microorganisms
+576(0024),Myxoviruses
+576(0025),Morphology
+576(0026),Orthomyxoviruses
+576(0027),Papovaviruses
+576(0028),Paramyxoviruses
+576(0029),Picornaviruses
+576(0030),Poxviruses
+576(0031),Rhabdoviruses
+576(0032),Respiration
+576(0033),Retroviruses
+576(0034),Rickettsiae
+576(0035),Togaviruses
+576(0036),Ultramicrobes
+576(0037),Viroids
+576(0038),Virology
+576(0039),Virologists
+576(0040),Variola - virus-
+576(0041),Viruses
+576(0042),Animal viruses
+576(0043),Bacterial viruses
+576(0044),Herpesviruses
+576(0045),Vaccinia
+576(0046),Plant viruses
+576(0047),Tobacco mosaic virus
+577,PROPERTIES OF LIVING MATTER(7)
+577(0001),Abiogenesis
+577(0002),Biogenesis
+577(0003),Spontaneous generation
+577(0004),Origin of life
+577(0005),Extraterrestrial life
+577(0006),Life
+578,MICROSCOPY(9)
+"578(0001),""Fixation , microscopy""",
+578(0002),Photomicrography
+578(0003),Electron microscopy
+578(0004),Microscopy
+578(0005),Microtomy
+578(0006),Slide preparation
+"578(0007),""Staining , microscopy""",
+579,COLLECTORS MANUALS IN BIOLOGY (9)
+579(0001),Specimen collections
+579(0002),Pickling biological specimens
+579(0003),Embalming
+579(0004),Skeletons
+579(0005),Biological specimens
+579(0006),Specimen preservation
+579(0007),Preservation
+579(0008),Collecting
+579(0009),Taxidermy
+580,BOTANY (1)
+580(0001),Botanical sciences
+580(0002),500 NATURAL SCIENCES
+581,PHYSIOLOGIC
+581(0001),Abscission
+581(0002),Essential oils
+581(0003),Acclimatization
+581(0004),Adaptation
+581(0005),Nutritive adaptations
+581(0006),Seasonal adaptations
+581(0007),Protective adaptations
+581(0008),Reproductive adaptations
+581(0009),Galls
+581(0010),Food storage
+"581(0011),""Starches , biochemistry""",
+581(0012),Topographical anatomy
+581(0013),Anatomy
+581(0014),Regional anatomy
+581(0015),Atavism
+581(0016),Autecology
+581(0017),Auxins
+581(0018),Bioclimatology
+581(0019),Biogeography
+581(0020),Biogeochemistry
+581(0021),Population biology
+581(0022),Tissue biology
+581(0023),Molecular biology
+581(0024),Developmental biology
+581(0025),Biomechanics
+581(0026),Biochemistry
+581(0027),Botany
+581(0028),Economic botany
+581(0029),Experimental botany
+581(0030),Industrial botany
+581(0031),Botanists
+581(0032),Cambium
+581(0033),Guard cells
+581(0034),Cells
+581(0035),Cellulose
+581(0036),Circumnutation
+581(0037),Behavior
+581(0038),Communities
+581(0039),Conjugation
+581(0040),Growth
+581(0041),Organ culture
+581(0042),Tissue culture
+581(0043),Plant defenses
+581(0044),Degeneration
+581(0045),Dehiscence
+581(0046),Sexual development
+581(0047),Sexual differentiation
+581(0048),Digestion
+581(0049),Movable dams
+581(0050),Ecology
+581(0051),Population ecology
+581(0052),Circular buildings
+581(0053),Macronutrient elements
+581(0054),Embryology
+581(0055),Plant diseases
+581(0056),Environmental diseases
+581(0057),Aging
+"581(0058),""Enzymes , biochemistry""",
+581(0059),Epidermis
+581(0060),Physiological balance
+581(0061),Ergosterol
+581(0062),Thorns
+581(0063),Stomata
+581(0064),Evolution
+581(0065),Excretion
+581(0066),Environmental factors
+581(0067),Physiology
+581(0068),Regional physiology
+581(0069),Phytogeography
+581(0070),Phloem
+581(0071),Circulatory fluids
+581(0072),Photosynthesis
+581(0073),Fronds
+581(0074),Gametogenesis
+581(0075),Vegetative generation
+581(0076),Genes
+581(0077),Genetics
+581(0078),Population genetics
+581(0079),Germination
+581(0080),Gibberellins
+581(0081),Heredity
+581(0082),Hermaphroditism
+581(0083),Twining
+581(0084),Hybrids
+581(0085),Herbs
+581(0086),Histogenesis
+581(0087),Leaves
+581(0088),Immunology
+581(0089),Lenticels
+581(0090),Plant injuries
+581(0091),Longevity
+581(0092),Maturation
+581(0093),Weeds
+581(0094),Control mechanisms
+581(0095),Metabolism
+581(0096),Metagenesis
+581(0097),Microphysiology
+581(0098),Migration
+581(0099),Mineralogy
+581(0100),Morphology
+581(0101),Turgor movements
+581(0102),Growth movements
+581(0103),Nastic movements
+581(0104),Death
+581(0105),Mutations
+581(0106),Nutrition
+581(0107),Trace elements
+581(0108),Nursing orders
+581(0109),Circulatory organs
+581(0110),Secretory organs
+581(0111),Excretory organs
+581(0112),Metabolic organs
+581(0113),Nutritive organs
+581(0114),Reproductive organs
+581(0115),Respiratory organs
+581(0116),Parasitism
+581(0117),Parthenogenesis
+581(0118),Pathogenicity
+581(0119),Pathology
+581(0120),Plants
+581(0121),Aquatic plants
+581(0122),Alkaloidal plants
+581(0123),Allergenic plants
+581(0124),Alpine plants
+581(0125),Beneficial plants
+581(0126),Edible plants
+581(0127),Arctic plants
+581(0128),Vanishing plants
+581(0129),Endangered plants
+581(0130),Extinct plants
+581(0131),Medicinal plants
+581(0132),Parasitic plants
+581(0133),Deleterious plants
+581(0134),Rare plants
+581(0135),Poisonous plants
+581(0136),Plant propagation
+581(0137),Chemosynthesis
+581(0138),Radiogenetics
+581(0139),Roots
+581(0140),Immune reactions
+581(0141),Regeneration
+581(0142),Sexual reproduction
+581(0143),Reproduction
+581(0144),Anaerobic respiration
+581(0145),Respiration
+581(0146),Aerobic respiration
+581(0147),Intercellular respiration
+581(0148),Biological rhythms
+581(0149),Circadian rhythms
+581(0150),Saponins
+581(0151),Sap
+581(0152),Secretion
+"581(0153),""Sexes , biological evolution""",
+581(0154),Symbiosis
+581(0155),Synecology
+581(0156),Food synthesis
+581(0157),Lipid synthesis
+581(0158),Protein synthesis
+581(0159),Vascular system
+581(0160),Stems
+581(0161),Tannins
+581(0162),Integument
+581(0163),Tentacles
+581(0164),Teratology
+581(0165),Terpenes
+581(0166),Transpiration
+581(0167),Tropisms
+581(0168),Variation
+581(0169),Abrupt variations
+581(0170),Xylem
+582,PHANEROGAMIA(53)
+582(0001),Angiosperms
+582(0002),Anthers
+582(0003),Trees
+582(0004),Shrubs
+582(0005),Herbaceous shrubs
+582(0006),Woody shrubs
+582(0007),Berries
+582(0008),Calyxes
+582(0009),Carpels
+582(0010),Dendrology
+582(0011),Dendrologists
+582(0012),Herbaceous vines
+582(0013),Woody vines
+582(0014),Spermatophyta
+582(0015),Stamens
+582(0016),Flowers
+582(0017),Wild flowers
+582(0018),Fruit
+"582(0019),""Fruit , anatomy""",
+582(0020),Bark
+582(0021),Nuts
+"582(0022),""Reproductive organs , plant anatomy""",
+582(0023),Ovaries
+582(0024),Pistils
+582(0025),Flowering plants
+582(0026),Herbaceous flowering plants
+582(0027),Seed-bearing plants
+582(0028),Herbaceous plants
+582(0029),Woody plants
+582(0030),Climbing plants
+582(0031),Seedlings
+582(0032),Pollen
+582(0033),Pollenation
+582(0034),Resins
+582(0035),Seeds
+"582(0036),""Seeds , anatomy""",
+582(0037),Sepals
+582(0038),Vines
+583,DICOTYLEDONOUS(1024)
+583(0001),Birch
+583(0002),Acacia
+583(0003),Acanthaceae
+583(0004),Acanthuses
+583(0005),Holly
+583(0006),Sheep sorrel
+583(0007),Olives
+583(0008),Swiss chard
+583(0009),Aceraceae
+583(0010),Achariaceae
+583(0011),Achatocarpaceae
+583(0012),Chicory
+583(0013),Cornflower
+583(0014),Aconite
+583(0015),Monkshood
+583(0016),Actinidiaceae
+583(0017),Oleander
+583(0018),Adoxaceae
+583(0019),Aegicerataceae
+583(0020),Aextoxicaceae
+583(0021),Agdestidaceae
+583(0022),Alligator pear
+583(0023),Avocado
+583(0024),Columbine
+583(0025),Ailanthuses
+583(0026),Aizoaceae
+583(0027),Wormwood
+583(0028),Akaniaceae
+583(0029),Poplar
+583(0030),Yellow poplar
+583(0031),Cottonwood
+583(0032),Aspen
+583(0033),Alangiaceae
+583(0034),Silver bell - flower-
+583(0035),Sorrel - polygonaceae-
+583(0036),Wood sorrel
+583(0037),Apricots
+583(0038),Chinese artichoke
+583(0039),Artichokes
+583(0040),Camphors
+583(0041),Caraway
+583(0042),Alfalfa
+583(0043),Buckwheat
+583(0044),Carob
+583(0045),Cotton
+583(0046),Milkweed
+583(0047),Privet
+583(0048),Sand food - plant-
+583(0049),Alder
+583(0050),White alder
+583(0051),Allegheny spurge
+583(0052),Almonds
+583(0053),Sweet alyssum
+583(0054),Poppies
+583(0055),Amaranthaceae
+583(0056),Amaranth
+583(0057),Ambari hemp
+583(0058),Ragweed
+583(0059),Anacardiaceae
+583(0060),Ancistrocladaceae
+583(0061),Anemone
+583(0062),Anise
+583(0063),Annonales
+583(0064),Old World pitcher plant
+583(0065),Antoniaceae
+583(0066),Indigo
+583(0067),Apetalae
+583(0068),Apiaceae
+583(0069),Celeriac
+583(0070),Knob celery
+583(0071),Root celery
+583(0072),Celery
+583(0073),Apocynales
+583(0074),Aptandraceae
+583(0075),Aquifoliaceae
+583(0076),Aquilariaceae
+583(0077),Araliales
+583(0078),Blueberries
+583(0079),Cranberries
+583(0080),Huckleberries
+583(0081),Bay tree
+583(0082),Buttercup tree
+583(0083),Calabash tree
+583(0084),Fever tree
+583(0085),India—rubber tree
+583(0086),Lacquer tree
+583(0087),Silk tree
+583(0088),Gum tree
+583(0089),Rubber tree
+583(0090),Smoke tree
+583(0091),Incense tree
+583(0092),Katsura tree
+583(0093),Macadamia tree
+583(0094),Tallow tree
+583(0095),Tulip tree
+583(0096),Tung tree
+583(0097),Breadfruit
+583(0098),Hop tree
+583(0099),Umbrella tree
+583(0100),Cucumber tree
+583(0101),Staff tree
+583(0102),Upas tree
+583(0103),Varnish tree
+583(0104),Strawberry shrub
+583(0105),Maple
+583(0106),Sugar maple
+583(0107),Aristolochiales
+583(0108),Sagebrush
+583(0109),Vetch
+583(0110),Asclepiadaceae
+583(0111),Aster
+583(0112),Asterales
+583(0113),Austrobaileyaceae
+583(0114),Filberts
+583(0115),Hazel
+583(0116),Averrhoaceae
+583(0117),Azalea
+583(0118),Balanitaceae
+583(0119),Balanophoraceae
+583(0120),Balanopsidales
+583(0121),Balsa
+583(0122),Balsaminaceae
+583(0123),Balsam fig
+583(0124),Bee balm
+583(0125),Balms
+583(0126),Balsams
+583(0127),Banyan
+583(0128),Baobab
+583(0129),Barbeuiaceae
+583(0130),Barbeyaceae
+583(0131),Basellaceae
+583(0132),Basil
+583(0133),Batidaceae
+583(0134),Baueraceae
+583(0135),Buffalo berries
+583(0136),Rubus berries
+583(0137),Elderberries
+583(0138),Bayberry
+583(0139),Baby blue-eyes - flower-
+583(0140),Beefwood
+583(0141),Beggar's-lice
+583(0142),Begonia
+583(0143),Begoniaceae
+583(0144),Henbane
+583(0145),Belladonna
+583(0146),Meadow beauty
+583(0147),Berberidales
+583(0148),Barberries
+583(0149),Aubergine - plant-
+583(0150),Eggplant
+583(0151),Watercress
+583(0152),Indian cress
+583(0153),Cresses
+583(0154),Berseem
+583(0155),Collards
+583(0156),Betulaceae
+583(0157),Bignoniales
+583(0158),Annatto tree
+583(0159),Bixales
+583(0160),Bladdemut
+583(0161),Bladderwort
+583(0162),Bleeding heart
+583(0163),Bluebell
+583(0164),Bluebonnet
+583(0165),Bok choy
+583(0166),Snowball - flower-
+583(0167),Shepherd's purse
+583(0168),Bombacaceae
+583(0169),Bonnetiaceae
+583(0170),Boraginales
+583(0171),Borage
+583(0172),Boston ivy
+583(0173),Buttercup
+583(0174),Bougainvillea
+583(0175),Brassicaceae
+583(0176),Heath
+583(0177),Heather
+583(0178),Broccoli
+583(0179),Brunelliaceae
+583(0180),Bruniaceae
+583(0181),Brunoniaceae
+583(0182),Buddleiaceae
+583(0183),Burseraceae
+583(0184),Bush clover
+583(0185),Buttonball
+583(0186),Buttonbush
+583(0187),Buxaceae
+583(0188),Byblidaceae
+583(0189),Cabombaceae
+583(0190),Peanuts
+583(0191),Cacao
+583(0192),Cactales
+583(0193),Cactus
+583(0194),Caesalpiniaceae
+583(0195),Coffee
+583(0196),Pumpkin
+583(0197),Gourds
+583(0198),Squashes
+583(0199),Marigold
+583(0200),Callitrichaceae
+583(0201),Calycanthaceae
+583(0202),Calyceraceae
+583(0203),Dutchman's breeches - plants-
+583(0204),Crowberry
+583(0205),Camellia
+583(0206),Campanales
+583(0207),Bellflower
+583(0208),Harebell
+583(0209),Campion
+583(0210),Canaigre
+583(0211),Candytuft
+583(0212),Cinnamon
+583(0213),Wild cinnamon
+583(0214),Canellaceae
+583(0215),Cannabiaceae
+583(0216),Cantaloupe
+583(0217),Hemp
+583(0218),American hemp - malvalceae-
+583(0219),Indian hemp - apocynaceae-
+583(0220),Mahogany
+583(0221),Caper - plant-
+583(0222),Capparidales
+583(0223),Caprifoliaceae
+583(0224),Nasturtium
+583(0225),Capusiaceae
+583(0226),Persimmon
+583(0227),Teasel
+583(0228),Cardiopteridaceae
+583(0229),Thistle
+583(0230),Caricaceae
+583(0231),Hornbeam
+583(0232),Safflower
+583(0233),Caryocaraceae
+583(0234),Caryophyllales
+583(0235),Mint
+583(0236),Cassia
+583(0237),Water chestnut
+583(0238),Brazil nut
+583(0239),Chestnut tree
+"583(0240),""Buckeye, horse chestnut""",
+583(0241),Castor-oil plant
+583(0242),Casuarinales
+583(0243),Catalpa
+583(0244),Catnip
+583(0245),Cowpeas
+583(0246),Silk-cotton tree
+583(0247),Celastrales
+583(0248),Celandine
+583(0249),Cephalotaceae
+583(0250),Wax myrtle
+583(0251),Ceratophyllaceae
+583(0252),Cercidiphyllaceae
+583(0253),Chailletiaceae
+583(0254),Chard
+583(0255),Chenopodiales
+583(0256),Chicle
+583(0257),Chili
+583(0258),China jute
+583(0259),Chinaberry
+583(0260),Chinquapin
+583(0261),Cherimoya
+583(0262),Custard apple
+583(0263),Chlaenaceae
+583(0264),Chloanthaceae
+583(0265),Chloranthaceae
+583(0266),Chokeberry
+583(0267),Cholla
+583(0268),Cyclamen
+583(0269),Poison hemlock
+583(0270),Coriander
+583(0271),Cinquefoil
+583(0272),Circaeasteraceae
+583(0273),Spanish plum
+583(0274),Plum
+583(0275),Cistaceae
+583(0276),Citrus fruits
+583(0277),Citrons
+583(0278),Clarkia
+583(0279),Carnations
+583(0280),Clove
+583(0281),Clematis
+583(0282),Clethraceae
+583(0283),Clusiaceae
+583(0284),Cneoraceae
+583(0285),Cobaeaceae
+583(0286),Coca
+583(0287),Cochlospermaceae
+583(0288),Cabbage
+583(0289),Cola
+583(0290),Lizard's tail - plant-
+583(0291),Mare's tail - plant-
+583(0292),Brussels sprouts
+583(0293),Cauliflower
+583(0294),Kohlrabi
+583(0295),Columelliaceae
+583(0296),Combretaceae
+583(0297),Cumin
+583(0298),Compositae
+583(0299),Connaraceae
+583(0300),Comfrey
+583(0301),Convolvulaceae
+583(0302),Copperleaf
+583(0303),Coralbells
+583(0304),Corchorus
+583(0305),Queen Anne's lace
+583(0306),Coriariales
+583(0307),Corkwood
+583(0308),Cornaceae
+583(0309),Crown of thorn - plant-
+583(0310),Winter's bark
+583(0311),Corylaceae
+583(0312),Corynocarpaceae
+583(0313),Cosmos
+583(0314),Crassulaceae
+583(0315),Cockscomb - plant-
+583(0316),Chrysanthemums
+583(0317),Crossosomataceae
+583(0318),Croton
+583(0319),Cruciales
+583(0320),Cruciferae
+583(0321),Crypteroniaceae
+583(0322),Ctenophonaceae
+583(0323),Lamb's quarters
+583(0324),Four-o'clock - plant-
+583(0325),Cucurbitales
+583(0326),Cudweed
+583(0327),Cunoniales
+583(0328),Cuscutaceae
+583(0329),Cynocrambaceae
+583(0330),Cynomorium
+583(0331),Cyrillaceae
+583(0332),Cytinaceae
+583(0333),Daphne
+583(0334),Dahlias
+583(0335),Damson plum
+583(0336),Daphniphyllaceae
+583(0337),Datiscaceae
+583(0338),Foxglove
+583(0339),Dialypetalanthaceae
+583(0340),Diapensiaceae
+583(0341),Dichapetalaceae
+583(0342),Diclidantheraceae
+583(0343),Dicotyledons
+583(0344),Didiereaceae
+583(0345),Dandelions
+583(0346),Dilleniales
+583(0347),Dillenias
+583(0348),Dipentodontaceae
+583(0349),Dipsacaceae
+583(0350),Dipterocarpaceae
+583(0351),Dirachmaceae
+583(0352),Dock - plant-
+583(0353),Dodder
+583(0354),Dogwood
+583(0355),Donatiaceae
+583(0356),Droseraceae
+583(0357),Sweet shrub
+583(0358),Sweet bay
+583(0359),Dusty miller - plant-
+583(0360),Ebony
+583(0361),Ebenales
+583(0362),Edelweiss
+583(0363),Ehretiaceae
+583(0364),String beans
+583(0365),Elaeagnaceae
+583(0366),Elatinaceae
+583(0367),Empetraceae
+583(0368),Endive
+583(0369),Dill
+583(0370),Morning glory
+583(0371),Virginia creeper
+583(0372),Epacridaceae
+583(0373),Eremosynaceae
+583(0374),Ericales
+583(0375),Erythropalaceae
+583(0376),Erythroxylaceae
+583(0377),Jacob's ladder - plant-
+583(0378),Escalloniaceae
+583(0379),Scotch broom
+583(0380),Christ's thorn
+583(0381),Spinach
+583(0382),Hawthorn
+583(0383),Buckthorn
+583(0384),Larkspur
+583(0385),Storax
+583(0386),Jimsonweed
+583(0387),Eucalyptus
+583(0388),Eucommiaceae
+583(0389),Eucryphiaceae
+583(0390),Euphorbiales
+583(0391),Eupomatiaceae
+583(0392),Everlasting - flower-
+583(0393),Fabaceae
+583(0394),Fagales
+583(0395),False hemp
+583(0396),False mermaid
+583(0397),Fumitory family
+583(0398),Dogbane
+583(0399),Feverbush
+583(0400),Ficoidaceae
+583(0401),Ficus
+583(0402),Fireweed
+583(0403),Flacourtiaceae
+583(0404),Fleabane
+583(0405),Cigar flower
+583(0406),Apple blossom - escalloniaceae-
+583(0407),Flowering moss
+583(0408),Phlox
+583(0409),Flytraps - plants-
+583(0410),Fouquieriaceae
+583(0411),Raspberries
+583(0412),Francoaceae
+583(0413),Frangipani
+583(0414),Frankeniaceae
+583(0415),Strawberries
+583(0416),Ash tree
+583(0417),Prickly ash
+583(0418),Navy beans
+583(0419),Buck beans
+583(0420),Pea beans
+583(0421),Beans
+583(0422),Kidney beans
+583(0423),Wax beans
+583(0424),Annonaceous fruit
+583(0425),Pomaceous fruit
+583(0426),Drupaceous fruit
+583(0427),Cane fruit
+583(0428),Fuchsia
+583(0429),Fumariaceae
+583(0430),Galax
+583(0431),Chick-peas
+583(0432),Garcinia
+583(0433),Gardenia
+583(0434),Garryales
+583(0435),Geissolomataceae
+583(0436),Gentian
+583(0437),Gentianales
+583(0438),Geraniales
+583(0439),Geraniums
+583(0440),Gesneriaceae
+583(0441),Ginseng
+583(0442),Sunflower
+583(0443),Glasswort
+583(0444),Globe daisy
+583(0445),Globulariaceae
+583(0446),Gloxinia
+583(0447),Sweet gum
+583(0448),Gomortegaceae
+583(0449),Gonystylaceae
+583(0450),Goodeniales
+583(0451),Gooseberries
+583(0452),Goosefoot
+583(0453),Goupiaceae
+583(0454),Pomegranate
+583(0455),Passion fruit
+583(0456),Cocoa bean
+583(0457),Greyiaceae
+583(0458),Grossulariaceae
+583(0459),Grubbiaceae
+583(0460),Guava
+583(0461),Sweet William
+583(0462),Bridal wreath - plant-
+583(0463),Austrian winter peas
+583(0464),Field peas
+583(0465),Black-eyed peas
+583(0466),Sweet peas
+583(0467),English peas
+583(0468),Garden peas
+583(0469),Peas
+583(0470),Gunnera
+583(0471),Gutta-percha
+583(0472),Guttiferales
+583(0473),Broad beans
+583(0474),Lima beans
+583(0475),Snap beans
+583(0476),Hackberry
+583(0477),Haloragidaceae
+583(0478),Hamamelidales
+583(0479),Witch hazel - plant-
+583(0480),Beech
+583(0481),Heliotrope - plant-
+583(0482),Helleboraceae
+583(0483),Henna - plant-
+583(0484),Hernandiaceae
+583(0485),Heteropyxidaceae
+583(0486),Hevea
+583(0487),Hibiscus
+583(0488),Ivy
+583(0489),English ivy
+583(0490),Ground ivy
+583(0491),Poison ivy
+583(0492),Nightshade
+583(0493),Figs
+583(0494),Himantandraceae
+583(0495),Fennel
+583(0496),Hippocastanaceae
+583(0497),Hippocrateaceae
+583(0498),Hyssop
+583(0499),Bay leaf
+583(0500),Honeyflower
+583(0501),Honeywort
+583(0502),Hoplestigmataceae
+583(0503),Hornworts - ceratophyllaceae-
+583(0504),Hydrangea
+583(0505),Hoya
+583(0506),Huaceae
+583(0507),Humiriaceae
+583(0508),Hydnoraceae
+583(0509),Hydrangeaceae
+583(0510),Hydrocaryaceae
+583(0511),Hydrophyllaceae
+583(0512),Hydrostachyaceae
+583(0513),Hypericaceae
+583(0514),Icacinaceae
+583(0515),Illecebraceae
+583(0516),Illiciaceae
+583(0517),Impatiens
+583(0518),Frankincense
+583(0519),Ironwood
+583(0520),Irvingiaceae
+583(0521),Ixonanthaceae
+583(0522),Creosote bush
+583(0523),Jasmine
+583(0524),Red jasmine
+583(0525),Jewelweed
+583(0526),Broomrape
+583(0527),Juglandales
+583(0528),Jujube
+583(0529),Julianaceae
+583(0530),Juneberries
+583(0531),Kale
+583(0532),Kat
+583(0533),Khat
+583(0534),Koeberliniaceae
+583(0535),Krameriaceae
+583(0536),Kudzu
+583(0537),Kumquat
+583(0538),Labiatae
+583(0539),Lacistemataceae
+583(0540),Lactoridaceae
+583(0541),Ladybell
+583(0542),Lamiales
+583(0543),Australian pitcher-plant
+583(0544),Lardizabalaceae
+583(0545),Latexes
+583(0546),Laurales
+583(0547),Laurel
+583(0548),Laurel - ericaceae-
+583(0549),Hedge laurel
+583(0550),Mountain laurel
+583(0551),Lavender - plant-
+583(0552),Leadwort
+583(0553),Lettuce
+583(0554),Lecythidaceae
+583(0555),Ledocarpaceae
+583(0556),Legumes - fabaceae-
+583(0557),Leguminales
+583(0558),Leitneriales
+583(0559),Lennoaceae
+583(0560),Lentils
+583(0561),Lentibulariaceae
+583(0562),Lepidobotryaceae
+583(0563),Lespedeza
+583(0564),Lilacs
+583(0565),Limes
+583(0566),Limnanthaceae
+583(0567),Lemons
+583(0568),Statice
+583(0569),Linaceae
+583(0570),Flax
+583(0571),Water lilies
+583(0572),Lissocarpaceae
+583(0573),Loasales
+583(0574),Lobelia
+583(0575),Lobeliaceae
+583(0576),Locoweed
+583(0577),Locust - plant-
+583(0578),Loganiales
+583(0579),Loosestrife
+583(0580),Lopseed
+583(0581),Loranthaceae
+583(0582),Lucerne - plant-
+583(0583),Luffa
+583(0584),Lupine
+583(0585),Hops
+583(0586),Lythrales
+583(0587),Sourwood
+583(0588),Boxwood
+583(0589),Candlewood
+583(0590),Honeysuckle
+583(0591),Magnoliales
+583(0592),Magnolias
+583(0593),Malesherbiaceae
+583(0594),Malpighiales
+583(0595),Mallow
+583(0596),Hollyhock
+583(0597),Malvales
+583(0598),Marshmallow
+583(0599),Manchineel
+583(0600),Mandrake
+583(0601),Mangroves
+583(0602),Black mangrove
+583(0603),Wild mango
+583(0604),Mango
+583(0605),Mangosteen
+583(0606),Manihot
+583(0607),Love apples
+583(0608),Crab apples
+583(0609),Star apples
+583(0610),Mammee apples
+583(0611),Apples
+583(0612),Chamomile
+583(0613),Cashew
+583(0614),Marcgraviaceae
+583(0615),Daisy
+583(0616),Marijuana
+583(0617),Marlberry
+583(0618),Horehound
+583(0619),Martyniaceae
+583(0620),Maté
+583(0621),Mayapple
+583(0622),Mayflower
+583(0623),Maypop
+583(0624),Medusagynaceae
+583(0625),Medusandraceae
+583(0626),Marjoram
+583(0627),Melastomataceae
+583(0628),Meliales
+583(0629),Melianthaceae
+583(0630),Melilot
+583(0631),Peaches
+583(0632),Casaba melon
+583(0633),Honeydew melon
+583(0634),Muskmelon
+583(0635),Melons
+583(0636),Menispermaceae
+583(0637),Peppermint
+583(0638),Spearmint
+583(0639),Menyanthaceae
+583(0640),Mercury - plant-
+583(0641),Mesquite
+583(0642),Mezereon
+583(0643),Honey bush
+583(0644),Honey locust
+583(0645),Mignonettes
+583(0646),Milkwort
+583(0647),Mimosa
+583(0648),Mimosaceae
+583(0649),Myrrh
+583(0650),Crape myrtle
+583(0651),California myrtle
+583(0652),Running myrtle - periwinkle-
+583(0653),Molluginaceae
+583(0654),Monimiaceae
+583(0655),Monotropaceae
+583(0656),Moraceae
+583(0657),Dewberries
+583(0658),Boysenberries
+583(0659),Loganberries
+583(0660),Mulberry
+583(0661),Moringaceae
+583(0662),Venus 's-fly trap
+583(0663),Mustard
+583(0664),Birth wort
+583(0665),Saint-John's-wort
+583(0666),Mistletoe
+583(0667),Myoporaceae
+583(0668),Forget-me-not
+583(0669),Myricales
+583(0670),Myristicaceae
+583(0671),Myrobalan
+583(0672),Myrothamnaceae
+583(0673),Myrsinales
+583(0674),Myrtales
+583(0675),Myrtle - lauraceae-
+583(0676),Myzondendraceae
+583(0677),Turnips
+583(0678),Nandinaceae
+583(0679),Orange jessamine
+583(0680),Osage oranges
+583(0681),Mock oranges
+583(0682),Oranges
+583(0683),Nectarine
+583(0684),Box elder
+583(0685),Nepenthaceae
+583(0686),Snow-on-the-mountain - plant-
+583(0687),Loquat
+583(0688),Japanese medlar
+583(0689),Medlar
+583(0690),Butternut
+583(0691),Walnut trees
+583(0692),Nolanaceae
+583(0693),Kola nuts
+583(0694),Walnuts
+583(0695),New World pitcher plant
+583(0696),Hickory
+583(0697),Nutmeg
+583(0698),Nyctaginaceae
+583(0699),Nymphaeaceae
+583(0700),Nyssaceae
+583(0701),Yams
+583(0702),Ochnales
+583(0703),Ocotillo
+583(0704),Octoknemaceae
+583(0705),Okra
+583(0706),Olacales
+583(0707),Oleaceae
+583(0708),Oliniaceae
+583(0709),Oleaster
+583(0710),Elm
+583(0711),Evening primrose
+583(0712),Onagraceae
+583(0713),Opiliaceae
+583(0714),Orobanchaceae
+583(0715),Nettles
+583(0716),Dead nettles
+583(0717),Oxalidaceae
+583(0718),Paeoniaceae
+583(0719),Red ironwood
+583(0720),Lignum vitae
+583(0721),Chickweed
+583(0722),Saint-John's-bread
+583(0723),Pandaceae
+583(0724),Bog myrtle
+583(0725),Papaveraceae
+583(0726),Papaw
+583(0727),Papaya
+583(0728),Papilionaceae
+583(0729),Paprika
+583(0730),Parnassiaceae
+583(0731),Partridgeberry
+583(0732),Currants
+583(0733),Passionflower
+583(0734),Passiflorales
+583(0735),Parsnips
+583(0736),Hound's—tongue
+583(0737),Sweet potatoes
+583(0738),Potatoes
+583(0739),Pecan
+583(0740),Pedaliaceae
+583(0741),Pedalium
+583(0742),Pellicieraceae
+583(0743),Penaeaceae
+583(0744),Pansies
+583(0745),Pentadiplandraceae
+583(0746),Pentaphylacaceae
+583(0747),Peonies
+583(0748),Peperomia
+583(0749),Gherkins
+583(0750),Cucumbers
+583(0751),Peppers - piperaceae-
+583(0752),Peppers - solanaceae-
+583(0753),Pears
+583(0754),Parsley
+583(0755),Peridiscaceae
+583(0756),Periplocaceae
+583(0757),Periwinkle - plant-
+583(0758),Personales
+583(0759),Petiveriaceae
+583(0760),Petunias
+583(0761),Peyote
+583(0762),Philadelphaceae
+583(0763),Phrymacea
+583(0764),Phytolaccaceae
+583(0765),Picrodendraceae
+583(0766),Pigweed
+583(0767),Pimentos
+583(0768),Allspice
+583(0769),Black pepper
+583(0770),White peppers
+583(0771),Cayenne peppers
+583(0772),Sweet peppers
+583(0773),Red peppers
+583(0774),Pinks - flowers-
+583(0775),Beets
+583(0776),Briar pipe
+583(0777),Indian pipe - plant-
+583(0778),Piperales
+583(0779),Pistachio
+583(0780),Pittosporales
+583(0781),Artillery plant
+583(0782),Rubber plant - moraceae-
+583(0783),Jade plant
+583(0784),Pitcher plant
+583(0785),Umbrella plant - saxifragales-
+583(0786),Pickaback plant
+583(0787),Unicorn plant
+583(0788),Plantaginales
+583(0789),Discifloral plants
+583(0790),Insectivorous plants
+583(0791),Sensitive plants
+583(0792),Platanaceae
+583(0793),Platanus
+583(0794),Plantain - weed-
+583(0795),Plane tree
+583(0796),Plocospermaceae
+583(0797),Plumbaginaceae
+583(0798),Podoaceae
+583(0799),Podophyllaceae
+583(0800),Podostemales
+583(0801),Poinsettia
+583(0802),Pokeweed
+583(0803),Polemoniales
+583(0804),Polygalales
+583(0805),Polygonales
+583(0806),Portulacaceae
+583(0807),Potaliaceae
+583(0808),Primrose
+583(0809),Cowslip
+583(0810),Primulales
+583(0811),Proteales
+583(0812),Pterostemonaceae
+583(0813),Punicaceae
+583(0814),Pyrola
+583(0815),Pyrolaceae
+583(0816),Quiinaceae
+583(0817),Quince
+583(0818),Quinine
+583(0819),Horseradish
+583(0820),Radishes
+583(0821),Ramie
+583(0822),Ranales
+583(0823),Rangoon creeper
+583(0824),Ranunculaceae
+583(0825),Rauwolfia
+583(0826),Redbud
+583(0827),Sugar beets
+583(0828),Dog cabbage
+583(0829),Resedales
+583(0830),Baby's breath - flower-
+583(0831),Rhamnales
+583(0832),Rhizophoraceae
+583(0833),Rhoeadales
+583(0834),Rhoipteleaceae
+583(0835),Ribes
+583(0836),Riverweed
+583(0837),Oak
+583(0838),Poison oak
+583(0839),Sundew
+583(0840),Rhododendron
+583(0841),Christmas rose
+583(0842),Rose of Sharon
+583(0843),Rosaceae
+583(0844),Rosales
+583(0845),Carnation pinks
+583(0846),Rose apples
+583(0847),Rosemarie
+583(0848),Roses
+583(0849),Madder
+583(0850),Rubiales
+583(0851),Rue - plant-
+583(0852),Rhubarb
+583(0853),Rutabaga
+583(0854),Rutales
+583(0855),Sabiaceae
+583(0856),Salicales
+583(0857),Salvadoraceae
+583(0858),Sage
+583(0859),Samydaceae
+583(0860),San Jose
+583(0861),Sandalwood
+583(0862),Watermelons
+583(0863),Bloodroot
+583(0864),Santalales
+583(0865),Sapindales
+583(0866),Sapotaceae
+583(0867),Sarcolaenaceae
+583(0868),Sarcospermataceae
+583(0869),Sargentodoxaceae
+583(0870),Sarraceniales
+583(0871),Sassafras
+583(0872),Willow
+583(0873),Saurauiaceae
+583(0874),Saururaceae
+583(0875),Saxifrage
+583(0876),Saxifragales
+583(0877),Schisandraceae
+583(0878),Scrophulariaceae
+583(0879),Scyphostegiaceae
+583(0880),Scytopetalaceae
+583(0881),Selaginaceae
+583(0882),Senna
+583(0883),Serviceberry
+583(0884),Sesame
+583(0885),Akee
+583(0886),Shadbush
+583(0887),Sycamore
+583(0888),Simaroubaceae
+583(0889),Smartweed
+583(0890),Snapdragons
+583(0891),Soapberry
+583(0892),Soybeans
+583(0893),Solanales
+583(0894),Sonneratiaceae
+583(0895),Sphaerosepalaceae
+583(0896),Spicebush
+583(0897),Spiderflower
+583(0898),Spigeliaceae
+583(0899),Spurge - euphorbiaceae-
+583(0900),Spurge laurel
+583(0901),Stachyuraceae
+583(0902),Stackhousiaceae
+583(0903),Staphyleaceae
+583(0904),Stegnospermaceae
+583(0905),Stephanotis
+583(0906),Sterculiaceae
+583(0907),Stewartia
+583(0908),Stilbeaceae
+583(0909),Stocks - herbs-
+583(0910),Strasburgeriaceae
+583(0911),Strychnaceae
+583(0912),Stylidiaceae
+583(0913),Styracales
+583(0914),Black-eyed Susan
+583(0915),Sweetleaf
+583(0916),Symplocaceae
+583(0917),Tobacco
+583(0918),Indian tobacco
+583(0919),Ironweed
+583(0920),Tamaricales
+583(0921),Tamarind
+583(0922),Tamarisk
+583(0923),Tapioca
+583(0924),Tea
+583(0925),Teak
+583(0926),Tetracentraceae
+583(0927),Tetrameristaceae
+583(0928),Theales
+583(0929),Theophrastaceae
+583(0930),Thymelaeales
+583(0931),Tiliales
+"583(0932),""Basswood, linden""",
+583(0933),Tomatoes
+583(0934),Thyme
+583(0935),Jerusalem artichoke
+583(0936),Torchwood
+583(0937),Grapefruit
+583(0938),Touch-me-not
+583(0939),Tovariaceae
+583(0940),Trapaceae
+583(0941),Clover
+583(0942),White clover
+583(0943),Crimson clover
+583(0944),Sweet clover
+583(0945),Alsike clover
+583(0946),Red clover
+583(0947),Shamrocks
+583(0948),Tremandraceae
+583(0949),Trifolium clover
+583(0950),Trigoniaceae
+583(0951),Trimeniaceae
+583(0952),Trochodendraceae
+583(0953),Trumpet creeper
+583(0954),Tropaeolaceae
+583(0955),Tumbleweed
+583(0956),Tupelo
+583(0957),Turneraceae
+583(0958),Ulmaceae
+583(0959),Umbellales
+583(0960),Urticales
+583(0961),Grapes
+583(0962),Vacciniaceae
+583(0963),Vahliaceae
+583(0964),Valerian
+583(0965),Valerianales
+583(0966),Goldenrod
+583(0967),Verbena
+583(0968),Verbenales
+583(0969),Vervains
+583(0970),Purslane
+583(0971),Coral vine
+583(0972),Elder - plant-
+583(0973),Rape - plant-
+583(0974),Violales
+583(0975),Violets
+583(0976),African violets
+583(0977),Flame violets
+583(0978),Vitaceae
+583(0979),Vivianiaceae
+583(0980),Vochysiaceae
+583(0981),Wallflower - flower-
+583(0982),Waterleaf
+583(0983),Waterwort
+583(0984),Winteraceae
+583(0985),Wintergreen
+583(0986),Wisteria
+583(0987),Wolfsbane
+583(0988),Cassava
+583(0989),Jute
+583(0990),Carrots
+583(0991),Sapodilla
+583(0992),Blackberry
+583(0993),Indian sarsaparilla
+583(0994),Wild sarsaparilla
+583(0995),Zinnia
+583(0996),Sumac
+583(0997),500 NATURAL SCIENCES
+584,MONOCOTYLEDONOUS(282)
+584(0001),Abaca
+584(0002),Agavales
+584(0003),Agave
+584(0004),Agrosteae
+584(0005),Garlic
+584(0006),Alliaceous plants
+584(0007),Alismatales
+584(0008),Aloe
+584(0009),Aloe - furcraea-
+584(0010),Canary grass
+584(0011),Alstroemeriales
+584(0012),Water poppy
+584(0013),Amaryllis
+584(0014),Amaryllidales
+584(0015),Anomochloeae
+584(0016),Aponogetonales
+584(0017),Apostasiaceae
+584(0018),Arales
+584(0019),Tree lily
+584(0020),Betel nut
+584(0021),Arecaceae
+584(0022),Arum
+584(0023),Arrowhead - plant-
+584(0024),Paddy rice
+584(0025),Upland rice
+584(0026),Rice
+584(0027),Arrowroot
+584(0028),Arundineae
+584(0029),Arundinelleae
+584(0030),Atamasco lily
+584(0031),Oats
+584(0032),Aveneae
+584(0033),Crocus
+584(0034),Saffron
+584(0035),Bamboo
+584(0036),Bambuseae
+584(0037),Boat lily
+584(0038),Bent grass
+584(0039),Bloodwort
+584(0040),Bluebell - liliaceae-
+584(0041),Bluegrass
+584(0042),Cat brier
+584(0043),Bromeliales
+584(0044),Broomcom millet
+584(0045),Broomcom sorghum
+584(0046),Bulbs - plants-
+584(0047),Bulbs
+584(0048),Bur reed
+584(0049),Burmanniales
+584(0050),Butomales
+584(0051),Caladium
+584(0052),Calla lily
+584(0053),Canna
+584(0054),Cannaceae
+584(0055),Sugar cane
+584(0056),Dumb cane
+584(0057),Manila hemp
+584(0058),Reeds
+584(0059),Cardamom
+584(0060),Cartonemataceae
+584(0061),Chinese water chestnut
+584(0062),Cattails
+584(0063),Cattleya
+584(0064),Barley
+584(0065),Bromegrass
+584(0066),Onions
+584(0067),Chives
+584(0068),Rye
+584(0069),Centrolepidaceae
+584(0070),Shallots
+584(0071),Chlorideae
+584(0072),Citronella grass
+584(0073),Club rush
+584(0074),Coconut
+584(0075),Coir
+584(0076),Commelinales
+584(0077),Snowflake - plant-
+584(0078),Corsiaceae
+584(0079),Lent lily
+584(0080),Thatching grass
+584(0081),Turmeric
+584(0082),Cyclanthales
+584(0083),Cymbidium
+584(0084),Cyperales
+584(0085),Cocksfoot - grass-
+584(0086),Dadra
+584(0087),Dendrobiums
+584(0088),Dieffenbachia
+584(0089),Dioscoreales
+584(0090),Dracaena
+584(0091),Durra
+584(0092),Eelgrass
+584(0093),Eragrosteae
+584(0094),Eriocaulales
+584(0095),Sword lily
+584(0096),Bulrush - cyperaceae-
+584(0097),Bulrush - typhaceae-
+584(0098),Asparagus
+584(0099),Esparto
+584(0100),Chinese evergreen
+584(0101),Dates
+584(0102),Festuceae
+584(0103),Philodendron
+584(0104),Fiorin
+584(0105),Flagellariaceae
+584(0106),Arrow grass
+584(0107),Carrion flower
+584(0108),Fodder grass
+584(0109),Freesia
+584(0110),Frogbit
+584(0111),Gama grass
+584(0112),Crabgrass
+584(0113),Gladiolus
+584(0114),Graminales
+584(0115),Grasses
+584(0116),Cereal grains
+584(0117),Greenbrier
+584(0118),Guernsey lily
+584(0119),Haemodorales
+584(0120),Hala
+584(0121),Cotton grass
+584(0122),Yellow-eyed grass
+584(0123),Turtle grass
+584(0124),Lawn grass
+584(0125),Cereal grasses
+584(0126),Pampas grass
+584(0127),Hordeeae
+584(0128),Hydrocharitaceae
+584(0129),Hypoxidaceae
+584(0130),Iridales
+584(0131),Iris - plant-
+584(0132),Hyacinth
+584(0133),Jack-in-the-pulpit
+584(0134),Ginger
+584(0135),Jerusalem corn
+584(0136),Jipijapa
+584(0137),Jonquils
+584(0138),Juncaginales
+584(0139),Juncales
+584(0140),Sedges
+584(0141),Rushes
+584(0142),Kafir corn
+584(0143),Lemnaceae
+584(0144),Duckweed
+584(0145),Leptureae
+584(0146),Lilaeaceae
+584(0147),Liliaceae
+584(0148),Liliales
+584(0149),Spider lily
+584(0150),Blackberry lily
+584(0151),Ginger lily
+584(0152),Peruvian lily
+584(0153),Lilies
+584(0154),Day lilies
+584(0155),Lilies of the valley
+584(0156),Water plantain
+584(0157),Lowiaceae
+584(0158),Lygeeae
+584(0159),Sweet corn
+584(0160),Corn
+584(0161),Marantaceae
+584(0162),Mayacaceae
+584(0163),Maydeae
+584(0164),Millet
+584(0165),Milo
+584(0166),Monocotyledons
+584(0167),Monstera
+584(0168),Musaceae
+584(0169),Spanish moss
+584(0170),Najadales
+584(0171),Narcissus
+584(0172),Nardeae
+584(0173),Naiad
+584(0174),Yams
+584(0175),Olyreae
+584(0176),Orchard grass
+584(0177),Orchidales
+584(0178),Elephant's ears - plants-
+584(0179),Orchids
+584(0180),Oryzeae
+584(0181),Oil palm
+584(0182),Palmales
+584(0183),Palms
+584(0184),Palmetto
+584(0185),Popcorn
+584(0186),Panama hat palm
+584(0187),Pandanales
+584(0188),Panic grass
+584(0189),Panicoideae
+584(0190),Papyrus
+584(0191),Pappophoreae
+584(0192),Parianeae
+584(0193),Sudan grass
+584(0194),Pasture grasses
+584(0195),Petermanniaceae
+584(0196),Petrosaviaceae
+584(0197),Phalarideae
+584(0198),Phareae
+584(0199),Phildraceae
+584(0200),Philesiaceae
+584(0201),Beak rush
+584(0202),Spike rush
+584(0203),Pineapple
+584(0204),Pipewort
+584(0205),Zebra plant
+584(0206),Prayer plant
+584(0207),Snake plant
+584(0208),Century plant
+584(0209),Umbrella plant - cyperales-
+584(0210),Lattice plant
+584(0211),Plantain
+584(0212),Bananas
+584(0213),Poaceae
+584(0214),Pondweed
+584(0215),Pontederiaceae
+584(0216),Pooideae
+584(0217),Posidoniaceae
+584(0218),Potamogetonales
+584(0219),Pothos
+584(0220),Proso
+584(0221),Leeks
+584(0222),Fescue
+584(0223),Raffia
+584(0224),Rapateaceae
+584(0225),Box lily
+584(0226),Redtop
+584(0227),Restionaceae
+584(0228),Rattan
+584(0229),Roxburghiaceae
+584(0230),Ruppiaceae
+584(0231),Ruscaceae
+584(0232),Sansevieria
+584(0233),Scheuchzeriaceae
+584(0234),Shallu
+584(0235),Sisal
+584(0236),Skunk cabbage
+584(0237),Smilacaceae
+584(0238),Snowdrop - plant-
+"584(0239),""Sorghum, sorgo""",
+584(0240),Sparganiaceae
+584(0241),Spiderwort
+584(0242),Sporoboleae
+584(0243),Star-of-Bethlehem
+584(0244),Stenomeridaceae
+584(0245),Stipeae
+584(0246),Strelitziaceae
+584(0247),Streptochaeteae
+584(0248),Taccaceae
+584(0249),Taro
+584(0250),Tecophilaeaceae
+584(0251),Tequila - plant-
+584(0252),Thismiaceae
+584(0253),Thumiaceae
+584(0254),Thysanolaeneae
+584(0255),Tigerflower
+584(0256),Timothy - grass-
+584(0257),Trichopodaceae
+584(0258),Wheat
+584(0259),Trilliaceae
+584(0260),Trillium
+584(0261),Triuridales
+584(0262),Tulips
+584(0263),Typhaceae
+584(0264),Typhales
+584(0265),Vanilla
+584(0266),Velloziaceae
+584(0267),Wandering Jew
+584(0268),Watermeal
+584(0269),Widgeon grass
+584(0270),Xanthorrhoeaceae
+584(0271),Xyridales
+584(0272),Yucca
+584(0273),Zanichelliaceae
+584(0274),Lady's slipper
+584(0275),Sarsaparilla
+584(0276),Zingiberales
+584(0277),Zosteraceae
+584(0278),Zoysieae
+585,GYMNOSPERMAE(41)
+585(0001),Fir
+585(0002),Larch
+585(0003),Araucariaceae
+585(0004),Arborvitae
+585(0005),Maidenhair tree
+585(0006),Ginkgo tree
+585(0007),Cedar
+585(0008),Cephalotaxaceae
+585(0009),Cypress
+585(0010),Bald cypress
+585(0011),Coniferales
+585(0012),Conifers
+585(0013),Cupressaceae
+585(0014),Cycad
+585(0015),Cycadales
+585(0016),Juniper
+585(0017),Ephedra
+585(0018),Ephedrales
+585(0019),Gymnosperms
+585(0020),Ginkgoales
+585(0021),Gnetales
+585(0022),Gneticae
+585(0023),Gnetum
+585(0024),Hemlocks
+585(0025),Spruce
+585(0026),Pinaceae
+585(0027),Pine
+585(0028),Pinon
+585(0029),Pinophyta
+585(0030),Tumboa plant
+585(0031),Naked-seed plants
+585(0032),Podocarpaceae
+585(0033),Sago palm
+585(0034),Redwood
+585(0035),Sequoias
+585(0036),Tamarack
+585(0037),Taxales
+585(0038),Taxodiaceae
+585(0039),Mormon tea
+585(0040),Yew
+585(0041),Weltwitschiales
+586,CRYPTOGAMIA(2)
+586(0001),Cryptogamia
+586(0002),Seedless plants
+587,PTERIDOPHYTA(41)
+587(0001),Aspleniaceae
+587(0002),Bracken - fern-
+587(0003),Club moss
+587(0004),Horsetails - plants-
+587(0005),Vascular cryptogams
+587(0006),Maidenhair fern
+587(0007),Cyatheaceae
+587(0008),Equisetales
+587(0009),Filicales
+587(0010),Filicineae
+587(0011),Brake - fern-
+587(0012),Gleicheniaceae
+587(0013),Whisk fern
+587(0014),Staghorn fern
+587(0015),Giant fern
+587(0016),Adder's-tongue fern
+587(0017),Royal fern
+587(0018),Grape fem
+587(0019),Ferns
+587(0020),Eusporangiated ferns
+587(0021),Isoetales
+587(0022),Lycopodiales
+587(0023),Lycopsida
+587(0024),Marattiales
+587(0025),Marsiliales
+587(0026),Moonwort
+587(0027),Ophioglossales
+587(0028),Osmundaceae
+587(0029),Spike moss
+587(0030),Resurrection plant
+587(0031),Polypodiales
+587(0032),Polypodiorsida
+587(0033),Psilopsida
+587(0034),Psilotales
+587(0035),Pteridophyta
+587(0036),Quillwort
+587(0037),Saviniales
+587(0038),Schizaeaceae
+587(0039),Selaginellales
+587(0040),Rattlesnake fern
+587(0041),Sphenopsida
+588,BRYOPHYTE(17)
+588(0001),Andreaeales
+588(0002),Anthocerotae
+588(0003),Bryophyta
+588(0004),Bryales
+588(0005),Scale moss
+588(0006),Hepaticae
+588(0007),Liverworts
+588(0008),Hornworts - anthocerotae-
+588(0009),Jungermanniaceae
+588(0010),Marchantiaceae
+588(0011),Musci
+588(0012),Black moss
+588(0013),Mosses
+588(0014),Bog moss
+588(0015),Ricciaceae
+588(0016),Sphagnales
+588(0017),Peat moss
+589,THALLOPHYTA (307)
+589(0001),Acetabularia
+589(0002),Acetobacteriaceae
+589(0003),Achromatiaceae
+589(0004),Actinomycetales
+589(0005),Agaricales
+589(0006),Kelp
+589(0007),Algae
+589(0008),Golden algae
+589(0009),Seaweeds
+589(0010),Brown algae
+589(0011),Red algae
+589(0012),Red seaweed
+589(0013),Green algae
+589(0014),Blue-green algae
+589(0015),Algin
+589(0016),Algology
+589(0017),Algologists
+589(0018),Phycologists
+589(0019),Amanoris
+589(0020),Archangiaceae
+589(0021),Archaeobacteria
+589(0022),Ascomycetes
+589(0023),Ascoseirales
+589(0024),Aspergillus
+589(0025),Azotobacteraceae
+589(0026),Bacillaceae
+589(0027),Bacillariophyceae
+589(0028),Bacteriaceae
+589(0029),Bacteria
+589(0030),Appendaged bacteria
+589(0031),Cornyform bacteria
+589(0032),Sulfur bacteria
+589(0033),Budding bacteria
+589(0034),Sheathed bacteria
+589(0035),Spiral
+589(0036),Phototrophic bacteria
+589(0037),Methane-producing bacteria
+589(0038),Purple bacteria
+589(0039),Thermophylic bacteria
+589(0040),Green bacteria
+589(0041),Gliding bacteria
+589(0042),Bacteriology
+589(0043),Bacteriologists
+589(0044),Bangiales
+589(0045),Basidiomycetes
+589(0046),Beggiatoaceae
+589(0047),Boletes
+589(0048),Bonnemaisoniales
+589(0049),Borrelia
+589(0050),Brucella
+589(0051),Caulobacter
+589(0052),Centrales
+589(0053),Ceramiales
+589(0054),Chaetophorales
+589(0055),Chamaesiphonales
+589(0056),Charales
+589(0057),Chlamydiales
+589(0058),Chlamydomonas
+589(0059),Chloramoebales
+589(0060),Chlorococcales
+589(0061),Chloromonadophyta
+589(0062),Chlorophyta
+589(0063),Chordariales
+589(0064),Chroococcales
+589(0065),Chrysocapsales
+589(0066),Chrysomonadales
+589(0067),Chrysophyceae
+589(0068),Chrysophyta
+589(0069),Chrysosphaerales
+589(0070),Chrysotrichales
+589(0071),Chytridiomycetes
+589(0072),Cyanobacteria
+589(0073),Cladophorales
+589(0074),Clavicipitales
+589(0075),Clostridium
+589(0076),Club fungi
+589(0077),Codium
+589(0078),Compsopogonales
+589(0079),Conjugates - zygnematales-
+589(0080),Ergot
+589(0081),Cryptococcales
+589(0082),Cryptonemiales
+589(0083),Cryptophyta
+589(0084),Cutleriales
+589(0085),Cyanophyta
+589(0086),Cystobacteriaceae
+589(0087),Dasycladales
+589(0088),Derbesiales
+589(0089),Desmarestiales
+589(0090),Desmids
+589(0091),Deuteromycetes
+589(0092),Diatoms
+589(0093),Dichotomosiphonales
+589(0094),Dictyosiphonales
+589(0095),Dictyotales
+589(0096),Dinocapsales
+589(0097),Dinococcales
+589(0098),Dinoflagellates
+589(0099),Dinophysidales
+589(0100),Dinotrichales
+589(0101),Durvilleales
+589(0102),Ectocarpales
+589(0103),Enterobacteriaceae
+589(0104),Erwinia
+589(0105),Escherichia
+589(0106),Eubacteriales
+589(0107),Eudorina
+589(0108),Euglenales
+589(0109),Euglenamorphales
+589(0110),Euglenoids
+589(0111),Euglenophyta
+589(0112),Eumycetes
+589(0113),Eumycophyta
+589(0114),Eutreptiales
+589(0115),Exobasidiales
+589(0116),Phycology
+589(0117),Water felt
+589(0118),Nitrogen fixation
+589(0119),Phytoplankton
+589(0120),Algal blooms
+589(0121),Frankiaceae
+589(0122),Fucales
+589(0123),Fungi Imperfecti
+589(0124),Gallionella
+589(0125),Gelidiales
+589(0126),Gigartinales
+589(0127),Gill fungi
+589(0128),Gluconobacter
+589(0129),Goniotfichales
+589(0130),Gymnodiniales
+589(0131),Halobacteriaceae
+589(0132),Halosphaerales
+589(0133),Haptophyceae
+589(0134),Helotiales
+589(0135),Heterobasidiomycetidae
+589(0136),Heterogloeales
+589(0137),Heteronematales
+589(0138),Homobasidiomycetidae
+"589(0139),""Fungi, mushrooms""",
+589(0140),Cup fungi
+589(0141),Coral fungi
+589(0142),Leather fungi
+589(0143),Bracket fungi
+589(0144),Saddle fungi
+589(0145),Shelf fungi
+589(0146),Slime molds
+589(0147),Bird's-nest fungi
+589(0148),Spine fungi
+589(0149),Hydnaceae
+589(0150),Hydrodictyon
+589(0151),Hymenogastrales
+589(0152),Hyphomicrobium
+589(0153),Hyphochytridiomycetes
+589(0154),Isochrysidales
+589(0155),Jelly fungi
+589(0156),Klebsiella
+589(0157),Laboulbeniales
+589(0158),Lactobacteriaceae
+589(0159),Lagenidiales
+589(0160),Laminariales
+589(0161),Legionella
+589(0162),Leptomitales
+589(0163),Leptospira
+589(0164),Yeast
+589(0165),Lichen
+589(0166),Listeria
+589(0167),Lycoperdales
+589(0168),Red tide
+589(0169),Mastigomycotina
+589(0170),Melanconiales
+589(0171),Mycelia Sterilia
+589(0172),Mycology
+589(0173),Mycologists
+589(0174),Mycoplasmatales
+589(0175),Mycota
+589(0176),Microascales
+589(0177),Micrococcaceae
+589(0178),Downy mildews
+589(0179),Mischococcales
+589(0180),Mildew
+589(0181),Molds - fungi-
+589(0182),Biflagellate molds
+589(0183),Bread molds - fungi-
+589(0184),Nonflagellate molds
+589(0185),Uniflagellate molds
+589(0186),Mollicutes
+589(0187),Monera
+589(0188),Moniliales
+589(0189),Morel
+589(0190),Mycobacteriaceae
+589(0191),Myxobacterales
+589(0192),Myxococcaceae
+589(0193),Myxomycetes
+589(0194),Myxomycophyta
+589(0195),Neisseriaceae
+589(0196),Nemalionales
+589(0197),Neurospora
+589(0198),Nevskia
+589(0199),Nidulariales
+589(0200),Nitrobacteriaceae
+589(0201),Nocardiaceae
+589(0202),Noris
+589(0203),Nostocales
+589(0204),Oedongoniales
+589(0205),Powdery mildew
+589(0206),Oomycetes
+589(0207),Pasteurella
+589(0208),Pasteuria
+589(0209),Penicillium
+589(0210),Pennales
+589(0211),Peridiniales
+589(0212),Peronosporales
+589(0213),Pezizales
+589(0214),Phaeophyta
+589(0215),Phallales
+589(0216),Phycomycetes
+589(0217),Physarales
+589(0218),Phytoneuston
+589(0219),Plasmodiophoromycetes
+589(0220),Pleosporales
+589(0221),Pleurocapsales
+589(0222),Polyangiaceae
+589(0223),Polyporales
+589(0224),Pore fungi
+589(0225),Porphyridiales
+589(0226),Prokaryotae
+589(0227),Prorocentrales
+589(0228),Proteus
+589(0229),Prothecomicrobia
+589(0230),Prymnesiales
+589(0231),Pseudomonadaceae
+589(0232),Puffballs
+589(0233),Pyramimonadales
+589(0234),Pyrrophyta
+589(0235),Water net
+589(0236),Rhabdomonadales
+589(0237),Rhizobiaceae
+589(0238),Rhizochloridales
+589(0239),Rhizochrysidales
+589(0240),Rhizodiniales
+589(0241),Rhizopus
+589(0242),Rhodochaetales
+589(0243),Rhodophyta
+589(0244),Rhodymeniales
+589(0245),Rockweed
+589(0246),Rust - fungi-
+589(0247),Sac fungi
+589(0248),Saccharomycetaceae
+589(0249),Salmonella
+589(0250),Saprolegniales
+589(0251),Sargassum
+589(0252),Schizomycetes
+589(0253),Schizophyta
+589(0254),Sclerodermatales
+589(0255),Sea lettuce
+589(0256),Serritia
+589(0257),Shigella
+589(0258),Siphonales
+589(0259),Siphonocladales
+589(0260),Smuts
+589(0261),Sphacelariales
+589(0262),Sphaeropsidales
+589(0263),Sphenomonadales
+589(0264),Spirochaetales
+589(0265),Spirogyra
+589(0266),Sporochnales
+589(0267),Stemonitales
+589(0268),Stigonematales
+589(0269),Stinkhom
+589(0270),Stonewort
+589(0271),Streptococcaceae
+589(0272),Streptomycetaceae
+589(0273),Thallobionta
+589(0274),Thallophyta
+589(0275),Thelephoraceae
+589(0276),Thiobacteriales
+589(0277),Tilopteridales
+589(0278),Bunt
+589(0279),Toadstools
+589(0280),Tremellales
+589(0281),Treponema
+589(0282),Tribonematales
+589(0283),Trichiales
+589(0284),Trichomycetes
+589(0285),Truffles
+589(0286),Tuberales
+589(0287),Ulotrichales
+589(0288),Uredinales
+589(0289),Ustilaginales
+589(0290),Vaucheriales
+589(0291),Vibrionaceae
+589(0292),Volvocales
+589(0293),Xanthophyceae
+589(0294),Yellow-green algae
+589(0295),Xylariales
+589(0296),Yersinia
+589(0297),Zoogloea
+589(0298),Zygomycetes
+590,ZOOLOGY (3)
+590(0001),Zoological sciences
+590(0002),Zoological gardens
+590(0003),Zoos
+591,PHYSIOLOGIC ZOOLOGY (294)
+591(0001),Abdomen
+591(0002),Acclimatization
+591(0003),Adaptation
+591(0004),Seasonal adaptations
+591(0005),Wings - animals-
+591(0006),Wings
+591(0007),Pathological anatomy
+591(0008),Anatomy
+591(0009),Regional anatomy
+591(0010),Topographical anatomy
+591(0011),Animals
+591(0012),Baby animals
+591(0013),Beneficial animals
+591(0014),Endangered animals
+591(0015),Extinct animals
+591(0016),Young animals
+591(0017),Deleterious animals
+591(0018),Rare animals
+591(0019),Poisonous animals
+591(0020),Antibodies
+591(0021),Antigens
+591(0022),Female genital system
+591(0023),Male genital system
+591(0024),Atavism
+591(0025),Hearing
+591(0026),Autecology
+591(0027),Animal babies
+591(0028),Bioclimatology
+591(0029),Biophysics
+591(0030),Biogeography
+591(0031),Biogeochemistry
+591(0032),Population biology
+591(0033),Tissue biology
+591(0034),Developmental biology
+591(0035),Molecular biology
+591(0036),Biomechanics
+591(0037),Biochemistry
+591(0038),Burrows
+591(0039),Food chains
+591(0040),Body heat
+591(0041),Camouflage
+591(0042),Cancer
+591(0043),Cathepsins
+591(0044),Cells
+591(0045),Circulation
+591(0046),Collagen
+591(0047),Eating
+591(0048),Animal behavior
+591(0049),Social behavior in animals
+591(0050),Behavior
+591(0051),Animal communication
+591(0052),Communication
+591(0053),Communities
+591(0054),Conjugation
+591(0055),Courtship
+591(0056),Growth
+591(0057),Organ culture
+591(0058),Tissue culture
+591(0059),Degeneration
+591(0060),Predation
+591(0061),Sexual development
+591(0062),Teeth
+591(0063),Sexual differentiation
+591(0064),Digestion
+591(0065),Dopamine
+"591(0066),""Dopamine , in nervous system""",
+591(0067),Ecology
+591(0068),Population ecology
+591(0069),Embryology
+591(0070),Environmental diseases
+591(0071),Animal diseases
+591(0072),Skin
+591(0073),Communicable diseases - animals-
+591(0074),Aging
+"591(0075),""Enzymes , biochemistry""",
+591(0076),Epidermis
+591(0077),Skeletons
+591(0078),Ethology
+591(0079),Evolution
+591(0080),Excretion
+591(0081),Physiology
+591(0082),Nutrition
+591(0083),Regional physiology
+591(0084),Pathological physiology
+591(0085),Photosensitivity
+591(0086),Sensory functions
+591(0087),Gametogenesis
+591(0088),Vegetative generation
+591(0089),Genes
+591(0090),Genetics
+591(0091),Population genetics
+591(0092),Glands
+591(0093),Gustation
+591(0094),Habitations
+591(0095),Hemoglobin
+591(0096),Heredity
+591(0097),Hermaphroditism
+591(0098),Hibernation
+591(0099),Hybrids
+591(0100),Histogenesis
+591(0101),Histology
+591(0102),Eggs
+591(0103),Innervation
+591(0104),Ingestion
+591(0105),Humoral immunity
+591(0106),Immunity
+591(0107),Interferon
+591(0108),Irritability
+591(0109),Larvae
+591(0110),Locomotion
+591(0111),Longevity
+591(0112),Maturation
+591(0113),Control mechanisms
+591(0114),Metabolism
+591(0115),Metagenesis
+591(0116),Metamorphosis
+591(0117),Microphysiology
+591(0118),Migration
+591(0119),Morphology
+591(0120),Movements
+591(0121),Muscles
+591(0122),Mutations
+591(0123),Nests
+591(0124),Ears
+591(0125),Eyes
+591(0126),Olfaction
+591(0127),Smell
+591(0128),Cardiovascular organs
+591(0129),Circulatory organs
+591(0130),Sense organs
+591(0131),Secretory organs
+591(0132),Digestive organs
+591(0133),Skeletal organs
+591(0134),Excretory organs
+591(0135),Gustatory organs
+591(0136),Metabolic organs
+591(0137),Motor organs
+591(0138),Nutritive organs
+591(0139),Olfactory organs
+591(0140),Reproductive organs
+591(0141),Respiratory organs
+591(0142),Parasitism
+591(0143),Parthenogenesis
+591(0144),Legs
+591(0145),Pathology
+591(0146),Peptones
+591(0147),Pests
+591(0148),Animal pests
+591(0149),Animal psychology
+591(0150),Radiogenetics
+591(0151),Immune reactions
+591(0152),Regeneration
+591(0153),Reproduction
+591(0154),Sexual reproduction
+591(0155),Breathing
+"591(0156),""Breathing, respiration""",
+591(0157),Anaerobic respiration
+591(0158),Biological rhythms
+591(0159),Taste
+591(0160),Blood-forming system
+591(0161),Endocrine secretion
+591(0162),Exocrine secretion
+591(0163),Secretion
+591(0164),Chemical senses
+591(0165),Serology
+591(0166),Symbiosis
+591(0167),Synecology
+591(0168),Cardiovascular system
+591(0169),Digestive system
+591(0170),Endocrine system
+591(0171),Skeletal system
+591(0172),Genital system
+591(0173),Motor system
+591(0174),Musculoskeletal system
+591(0175),Nervous system
+591(0176),Central nervous system
+591(0177),Respiratory system
+591(0178),Urinary system
+591(0179),Integument
+591(0180),Connective tissue
+591(0181),Seasons
+591(0182),Teratology
+591(0183),Territoriality
+591(0184),Touch
+591(0185),Vanishing animals
+591(0186),Variation
+591(0187),Animal viruses
+591(0188),Sight
+591(0189),Flying
+591(0190),Flight
+591(0191),Economic zoology
+591(0192),Experimental zoology
+591(0193),500 NATURAL SCIENCES
+592,INVERTEBRATES ZOOLOGY (6)
+592(0001),Invertebrates
+592(0002),Animal neuston
+592(0003),Neuston
+592(0004),Hydrographic zoology
+592(0005),Marine zoology
+592(0006),Zooplankton
+593,PROTOZOA. RADIATES ZOOLOGY (123)
+593(0001),Sea fans
+593(0002),Acrasida
+593(0003),Actinopoda
+593(0004),Adunata
+593(0005),Alcyonaria
+593(0006),Amoebida
+593(0007),Sea anemones
+593(0008),Anthozoa
+593(0009),Apodida
+593(0010),Arcellinida
+593(0011),Articulata
+593(0012),Aspidochirotida
+593(0013),Asteroidea
+593(0014),Balanoglossida
+593(0015),Calcarea
+593(0016),Calcaronea
+593(0017),Calcinea
+593(0018),Calcispongiae
+593(0019),Chloromonadida
+593(0020),Chondrophora
+593(0021),Chrysomonadida
+"593(0022),""Ciliata, ciliates""",
+593(0023),Ciliophora
+593(0024),Cnidaria
+593(0025),Cnidospora
+593(0026),Coccidia
+593(0027),Coelenterata
+593(0028),Corals
+593(0029),Coronatae
+593(0030),Crinoidea
+593(0031),Cryptomonadida
+593(0032),Ctenophora
+593(0033),Cubomedusae
+593(0034),Demospongiae
+593(0035),Dendrochirotida
+593(0036),Dinoflagellida
+593(0037),Sand dollar
+593(0038),Echinodermata
+593(0039),Elasipodida
+593(0040),Enteropneusta
+593(0041),Echinoidea
+593(0042),Sea urchin
+593(0043),Sponges
+593(0044),Glass sponges
+593(0045),Sporozoa
+593(0046),Basket star
+593(0047),Starfish
+593(0048),Euechinoidea
+593(0049),Euglenida
+593(0050),Eumycetozoida
+593(0051),Phytoflagellates
+593(0052),Flagellates
+593(0053),Haplosclerida
+593(0054),Heliozoa
+593(0055),Hemichordata
+593(0056),Hexacorallia
+593(0057),Hexactinellida
+593(0058),Hydroids
+593(0059),Hydrozoa
+593(0060),Holothurioidea
+593(0061),Holotricia
+593(0062),Hyalospongiae
+593(0063),Hydras
+593(0064),Hydroida
+593(0065),Hypermastigida
+593(0066),Linguatula
+593(0067),Sea lily
+593(0068),Lucernariida
+593(0069),Mastigophora
+"593(0070),""Jellyfish , Medusasm""",
+593(0071),Comb jellies
+593(0072),Milleporina
+593(0073),Molpadiida
+593(0074),Mycetozoa
+593(0075),Mycetozoia
+593(0076),Nuda
+593(0077),Sea walnuts
+593(0078),Brittle star
+593(0079),Ophiurida
+593(0080),Ophiuroidea
+593(0081),Parazoa
+593(0082),Pentastomida
+593(0083),Sea cucumber
+593(0084),Perischoechinoidea
+593(0085),Peritricia
+593(0086),Phanerozonida
+593(0087),Phrynophiurida
+593(0088),Phytomastigophorea
+593(0089),Planctosphaeroidea
+593(0090),Plasmodiophorida
+593(0091),Plasmodroma
+593(0092),Sea pens
+593(0093),Porifera
+593(0094),Proteomyxida
+593(0095),Protozoologists
+593(0096),Protozoa
+593(0097),Pteromedusae
+593(0098),Radiolaria
+593(0099),Rhizomastigida
+593(0100),Rhizopodea
+593(0101),Rhizostomeae
+593(0102),Sarcodina
+593(0103),Scyphozoa
+593(0104),Semaeostomeae
+593(0105),Siphonophora
+593(0106),Spinulosida
+593(0107),Spirotrichia
+593(0108),Spongillidae
+593(0109),Stauromedusae
+593(0110),Stylasterina
+593(0111),Suctoria
+593(0112),Tentaculata
+593(0113),Testacea
+593(0114),Toxoplasmea
+593(0115),Trachylina
+593(0116),Trichomonadida
+593(0117),Zoantharia
+593(0118),Zooflagellates
+593(0119),Zoomastigophorea
+594,MOLLUSKS ZOOLOGY (74)
+594(0001),Acoelea - mollusks-
+594(0002),Clams
+594(0003),Amphineura
+594(0004),Aplacophora
+594(0005),Archeogastropoda
+594(0006),Slugs
+594(0007),Sea slugs
+594(0008),Basommatophora
+594(0009),Bivalvia
+594(0010),Whelks
+594(0011),Brachiopoda
+594(0012),Bryozoa
+"594(0013),""Cuttlefish, squid""",
+"594(0014),""Cowries, snails""",
+594(0015),Lamp shells
+594(0016),Cephalopoda
+594(0017),Cheilostomata
+594(0018),Coleoidea
+594(0019),Shells - mollusks-
+594(0020),Ctenostomata
+594(0021),Cyclostomata - bryozoa-
+594(0022),Decapoda - mollusks-
+594(0023),Ectoprocta
+594(0024),Sea mat - bryozoa-
+594(0025),Gastropoda
+594(0026),Shipworms
+594(0027),Gymnolaemata
+594(0028),Lamellibranchia
+594(0029),Limpet
+594(0030),Malacology
+594(0031),Shellfish
+594(0032),Mussels
+594(0033),Mesogastropoda
+594(0034),Mollusca
+594(0035),Molluscoidea
+594(0036),Mollusks
+594(0037),Monoplacophora
+594(0038),Moss animal
+594(0039),Mytiloida
+594(0040),Nautiloidea
+594(0041),Neogastropoda
+594(0042),Notaspidea
+594(0043),Nudibranchia
+594(0044),Octopoda
+594(0045),Opisthobranchia
+594(0046),Oysters
+594(0047),Pelecypoda
+594(0048),Phylactolaemata
+594(0049),Polyzoa
+594(0050),Polyplacophora
+594(0051),Prosobranchia
+594(0052),Pterobranchia
+594(0053),Pteropoda
+594(0054),Pulmonata
+594(0055),Octopus
+594(0056),Chitons
+594(0057),Sacoglossa
+594(0058),Scaphopoda
+594(0059),Sea hare
+594(0060),Seashells
+594(0061),Sepioidea
+594(0062),Stenolaemata
+594(0063),Stylommatophora
+594(0064),Systellommatophora
+594(0065),Tectibranchia
+594(0066),Teuthoidea
+594(0067),Toothshells
+594(0068),Unionidae
+594(0069),Vampyromorpha
+594(0070),Scallops
+595,ARTICULATES ZOOLOGY (450)
+595(0001),Bees
+595(0002),Rose chafers
+595(0003),Acanthobdellida
+595(0004),Acanthocephala
+595(0005),Acariformes
+595(0006),Acarina
+"595(0007),""Acari, mites""",
+595(0008),Acoela - platyhelminthes-
+595(0009),Acrothoracica
+595(0010),Adephaga
+595(0011),Agromyzidae
+595(0012),Wings
+"595(0013),""Wings , insects""",
+595(0014),Aleyrodoidea
+595(0015),Alloeocoela
+595(0016),Amblypygi
+595(0017),Amphipoda
+595(0018),Anaspidacea
+595(0019),Annelida
+595(0020),Anomura
+595(0021),Anopla
+595(0022),Anoplura
+595(0023),Anostraca
+595(0024),Anthuridea
+595(0025),Apocrita
+595(0026),Apoidea
+595(0027),Apterygota
+595(0028),Arachnida
+595(0029),Aradoidea
+595(0030),Araneae
+595(0031),Araneida
+595(0032),Weasel spider
+595(0033),Spiders
+595(0034),Archiacanthocephala
+595(0035),Archiannelida
+595(0036),Arguloida
+595(0037),Arrowworm
+595(0038),Arthropoda
+595(0039),Arthropods
+595(0040),Aschelminthes
+595(0041),Ascothoracica
+595(0042),Asellota
+595(0043),Aspidogastrea
+595(0044),Wasps
+595(0045),Walkingstick - insect-
+595(0046),Bathynellacea
+595(0047),Bee lice
+595(0048),Blattaria
+595(0049),Bombycoidea
+595(0050),Bombyliidae
+595(0051),Brachyura
+595(0052),Branchiopoda
+595(0053),Branchiura
+595(0054),Bristletail
+595(0055),Sow bug
+595(0056),Damselfly
+595(0057),Calanoida
+595(0058),Chalcids
+595(0059),Caligoida
+595(0060),Shrimp
+595(0061),Clam shrimp
+595(0062),Mantis shrimp
+595(0063),Opossum shrimp
+595(0064),Fairy shrimp
+595(0065),Seed shrimp
+595(0066),Horseshoe crab
+"595(0067),""Crawfish, crayfish""",
+595(0068),Hermit crab
+595(0069),Crabs
+595(0070),Blister beetle
+595(0071),Cantharoidea
+595(0072),Caprellidea
+595(0073),Caraboidea
+595(0074),Carrion beetle
+595(0075),Cephalocarida
+595(0076),Cerambycoidea
+595(0077),Cercopoidea
+595(0078),Cestoda
+595(0079),Cestodaria
+595(0080),Chaetognatha
+595(0081),Chalcidoidea
+595(0082),Chelicerata
+595(0083),Leaf hoppers
+595(0084),Chilopoda
+595(0085),Chironomidae
+595(0086),Chrysomeloidea
+595(0087),Chyromyiidae
+595(0088),Centipedes
+595(0089),Cicadas
+595(0090),Cimicoidea
+595(0091),Cirripedia
+595(0092),Cladocera
+595(0093),Cladocopa
+595(0094),Coccinellidae
+595(0095),Coccoidea
+595(0096),Scale insects
+595(0097),Collembola
+595(0098),Coleoptera
+595(0099),Colydioidea
+595(0100),Conchostraca
+595(0101),Copepoda
+595(0102),Coreoidea
+595(0103),Corrodentia
+595(0104),Lacewings
+595(0105),Crustaceans
+595(0106),Cockroaches
+595(0107),Cucujoidea
+595(0108),Cumacea
+595(0109),Curculionoidea
+595(0110),Cyclopoida
+595(0111),Cyclops - zoology-
+595(0112),Cyclorrhapha
+595(0113),Daddy longlegs
+595(0114),Dascilloidea
+595(0115),Decapoda - crustaceans-
+595(0116),Deer flies
+595(0117),Dermaptera
+595(0118),Digenea
+595(0119),Diplopoda
+595(0120),Diplura
+595(0121),Dipsocoroidea
+595(0122),Diptera
+595(0123),Dobsonflies
+595(0124),Dragonfly
+595(0125),Drosophilidae
+595(0126),Dryopoidea
+595(0127),Echinodera
+595(0128),Echiurida
+595(0129),Mayfly
+595(0130),Elateroidea
+595(0131),Embioptera
+595(0132),Enopla
+595(0133),Entomology
+595(0134),Entomologists
+595(0135),Entoprocta
+595(0136),Entotrophi
+595(0137),Eoacanthocephala
+595(0138),Ephemeroptera
+595(0139),Ephydridae
+595(0140),Epidcaridea
+595(0141),Errantia
+595(0142),Bark beetle
+595(0143),Cylindrical bark beetle
+595(0144),Leaf beetle
+595(0145),Water beetle
+595(0146),Dung beetle
+595(0147),June beetle
+595(0148),Stag beetle
+595(0149),Wood-boring beetle
+595(0150),Click beetle
+595(0151),Ground beetle
+595(0152),Burying beetle
+595(0153),Whirligig beetle
+595(0154),Snout beetle
+595(0155),Tiger beetle
+595(0156),Beetles
+595(0157),Tailless whip scorpion
+595(0158),Dung flies
+595(0159),Eucarida
+595(0160),Eucestoda
+595(0161),Eumalacostraca
+595(0162),Euphausiacea
+595(0163),False scorpion
+595(0164),Flabellifera
+595(0165),Flukes - worms-
+595(0166),Formicidea
+595(0167),Fulgoroidea
+595(0168),Prawn
+595(0169),Gammaridea
+595(0170),Ticks
+595(0171),Gastrotricha
+595(0172),Geometroidea
+595(0173),Gephyrea
+595(0174),Gerroidea
+595(0175),Parasitiformes
+595(0176),Glowworms
+595(0177),Gnathidea
+595(0178),Gnathobdellida
+595(0179),Gordioida
+595(0180),Weevils
+595(0181),Grasshoppers
+595(0182),Crickets
+595(0183),Crane flies
+595(0184),Horsehair worm
+595(0185),Spiny-headed worm
+595(0186),Wireworms
+595(0187),Flatworms
+595(0188),Segmented worms
+595(0189),Gyrinoidea
+595(0190),Hairworm
+595(0191),Harpacticoida
+595(0192),Helminthology
+595(0193),Helminthologists
+595(0194),Helotrephoidea
+595(0195),Hemiptera
+595(0196),Hesperioidea
+595(0197),Heteroptera
+595(0198),Hexapoda
+595(0199),Hirudinea
+595(0200),Histeroidea
+595(0201),Leaf insect
+595(0202),Homoptera
+595(0203),Hoplocarida
+595(0204),Ants
+595(0205),Hydrophiloidea
+595(0206),Hymenoptera
+595(0207),Hyperiidea
+595(0208),Ichneumonoidea
+595(0209),Ichneumons
+595(0210),Ingolfiellidea
+595(0211),Insecta
+595(0212),Stick insect
+595(0213),Insects
+595(0214),Apterous insects
+595(0215),Isopoda
+595(0216),Isoptera
+595(0217),Katydids
+595(0218),Kinorhyncha
+595(0219),Locusts
+595(0220),Lobsters
+595(0221),Lemaeopodoida
+595(0222),Ant lions
+595(0223),Lepidoptera
+595(0224),Leptostraca
+595(0225),Worms
+595(0226),Earthworm
+595(0227),Fireflies
+595(0228),Lygaeoidea
+595(0229),Macrura
+595(0230),Malacostraca
+595(0231),Mallophaga
+595(0232),Mantis
+595(0233),Mantodea
+595(0234),Butterflies
+595(0235),Ladybugs
+595(0236),Mecoptera
+595(0237),Megaloptera
+595(0238),Meloidea
+595(0239),Membracoidea
+595(0240),Millipedes
+595(0241),Myriapoda
+595(0242),Monogenea
+595(0243),Monstrilloida
+595(0244),Mordelloidea
+595(0245),Tsetse flies
+595(0246),Blow flies
+595(0247),Flies
+595(0248),Bat flies
+595(0249),Bee flies
+595(0250),Whiteflies
+595(0251),Bot flies
+595(0252),Caddis flies
+595(0253),Dance flies
+595(0254),Fruit flies
+595(0255),Leaf flies
+595(0256),Snake flies
+595(0257),Aphid flies
+595(0258),Horse flies
+595(0259),Stable flies
+595(0260),March flies
+595(0261),Long-legged flies
+595(0262),Stone flies
+595(0263),Sawflies
+595(0264),Vinegar flies
+595(0265),House flies
+595(0266),Scorpion flies
+595(0267),Flesh flies
+595(0268),Bat tick flies
+595(0269),Humpbacked flies
+595(0270),Wood-boring flies
+595(0271),Miner flies
+595(0272),Mydas flies
+595(0273),Black flies
+595(0274),Hairy flies
+595(0275),Moth flies
+595(0276),Robber flies
+595(0277),Rust flies
+595(0278),Seashore flies
+595(0279),Skipper flies
+595(0280),Snipe flies
+595(0281),Soldier flies
+595(0282),Stiletto flies
+595(0283),Warble flies
+595(0284),Wasp flies
+595(0285),Spiny-legged flies
+595(0286),Gnats
+595(0287),Midges
+595(0288),Mosquitoes
+595(0289),Muscidae
+595(0290),Myodocopa
+595(0291),Mysidacea
+595(0292),Mystacocarida
+595(0293),Myzostomida
+595(0294),Natantia
+595(0295),Nebaliacea
+595(0296),Nematoda
+595(0297),Roundworms
+595(0298),Nematomorpha
+595(0299),Nemertea
+595(0300),Neuroptera
+595(0301),Chiggers
+595(0302),Noctuoidea
+595(0303),Notodelphyoida
+595(0304),Notostraca
+595(0305),Odonata
+595(0306),Oligochaeta
+595(0307),Oncopods
+595(0308),Oniscoidea
+595(0309),Onychophora
+595(0310),Opilioacariformes
+595(0311),Opilionea
+595(0312),Opisthogoneata
+595(0313),Opisthopora
+595(0314),Orthorrhapha
+595(0315),Orthoptera
+595(0316),Caterpillars
+595(0317),Water bears
+595(0318),Ostracoda
+595(0319),Palaeacanthocephala
+595(0320),Palpigradi
+595(0321),Pancarida
+595(0322),Papilionoidea
+595(0323),Pararthropoda
+595(0324),Skippers
+595(0325),Pauropoda
+595(0326),Pedipalpi
+595(0327),Peracarida
+595(0328),Barnacles
+595(0329),Phalangida
+595(0330),Pharyngobdellida
+595(0331),Phasmatodea
+595(0332),Phoronidea
+595(0333),Phreatoicidea
+595(0334),Louse flies
+595(0335),Lice
+595(0336),Sucking lice
+595(0337),Whale lice
+595(0338),Bird lice
+595(0339),Book lice
+595(0340),Wood lice
+595(0341),Biting lice
+595(0342),Fish lice
+595(0343),Planaria
+595(0344),Platycopa
+595(0345),Platyhelminthes
+595(0346),Plecoptera
+595(0347),Pleisiopora
+595(0348),Podocopa
+595(0349),Moths
+595(0350),Polychaeta
+595(0351),Polycladida
+595(0352),Polyphaga
+595(0353),Priapulida
+595(0354),Progoneata
+595(0355),Prosopora
+595(0356),Protura
+595(0357),Pseudoscorpiones
+595(0358),Psocoptera
+595(0359),Psychodidae
+595(0360),Pterygota
+"595(0361),""Sand flea, water flea""",
+595(0362),Fleas
+595(0363),Aphids
+595(0364),Pycnogonida
+595(0365),Sea spider
+595(0366),Pyralididoidea
+595(0367),Reduvioidea
+595(0368),Tadpole shrimp
+595(0369),Reptantia
+595(0370),King crab
+595(0371),Rhabdocoela
+595(0372),Rhizocephala
+595(0373),Rhynchocoela
+595(0374),Rhysodoidea
+595(0375),Ricinulei
+595(0376),Rotifera
+595(0377),Leeches
+595(0378),Scarabaeoidea
+595(0379),Sciaridae
+595(0380),Sciomyzidae
+595(0381),Scolioidea
+595(0382),Scorpions
+595(0383),Sedentaria
+595(0384),Harvestman - arachnid-
+595(0385),Shore flies
+595(0386),Siphonaptera
+595(0387),Silverfish - insect-
+595(0388),Simuliidae
+595(0389),Sipunculida
+595(0390),Soldier beetle
+595(0391),Solifugae
+595(0392),Sphecoidea
+595(0393),Springtail
+595(0394),Staphylinoidea
+595(0395),Stomatopoda
+595(0396),Stratiomyidae
+595(0397),Strepsiptera
+595(0398),Stygocaridacea
+595(0399),Sun spider
+595(0400),Sun flies
+595(0401),Symphyla
+595(0402),Symphyta
+595(0403),Syncarida
+595(0404),Tabanidae
+595(0405),Tachina
+595(0406),Tachinidae
+595(0407),Stalk-eyed flies
+595(0408),Tanaidacea
+595(0409),Tardigrada
+595(0410),Tenebrionoidea
+595(0411),Tapeworm
+595(0412),Termites
+595(0413),Thermosbaenacea
+595(0414),Thoracica
+595(0415),Thysanoptera
+595(0416),Thysanura
+595(0417),Earwig
+595(0418),Tineoidea
+595(0419),Tingoidea
+595(0420),Sand hopper
+595(0421),Tortricoidea
+595(0422),Trematoda
+595(0423),Tricladida
+595(0424),Trichoptera
+595(0425),Thrips
+595(0426),Tumbling flower beetle
+595(0427),Turbellaria
+595(0428),Uropygi
+595(0429),Valvifera
+595(0430),True lice
+595(0431),True bugs
+595(0432),Vespoidea
+595(0433),Whip scorpion
+595(0434),Xiphosura
+595(0435),Zoraptera
+596,VERTEBRATES ZOOLOGY (49)
+596(0001),Bile acids
+596(0002),Cholic acids
+596(0003),Adrenalin
+596(0004),Sea squirt
+596(0005),Ascidiacea
+596(0006),B cells
+596(0007),T cells
+596(0008),Cephalochordata
+596(0009),Brain
+596(0010),Chordata
+596(0011),Cortin
+596(0012),Craniata
+596(0013),B-flat horns
+596(0014),Bones
+596(0015),Insulin
+596(0016),Lancelet
+596(0017),Larvacea
+596(0018),Bone marrow
+596(0019),External ear
+596(0020),Internal ear
+596(0021),Lymphatic system
+596(0022),Thaliacea
+596(0023),Tunicata
+596(0024),Vasopressin
+596(0025),Vertebrata
+597,FISHES. BATRACHIANS ZOOLOGY (291)
+597(0001),Acanthopterygii
+597(0002),Acipenseriformes
+597(0003),Actinopterygii
+597(0004),Aquariums
+597(0005),Marine aquariums
+597(0006),Agnatha
+597(0007),Grouper
+"597(0008),""Marlin, needlefish""",
+597(0009),Albacore
+597(0010),Amblystomoidea
+597(0011),Amiiformes
+597(0012),Anchovy
+"597(0013),""Amphibians, Amphibia""",
+597(0014),Angelfish
+597(0015),Electric eel
+597(0016),Anguilliformes
+597(0017),Anura
+597(0018),Apoda - amphibians-
+597(0019),Arapaima
+597(0020),Archerfish
+597(0021),Herring
+597(0022),Menhaden
+597(0023),Atheriniformes
+597(0024),Tuna
+597(0025),Cod
+597(0026),Catfish
+597(0027),Bass
+597(0028),Barbel
+597(0029),Barracuda
+597(0030),Sweep
+597(0031),Batoidea
+597(0032),Batracoidiformes
+597(0033),Birchir
+597(0034),Blenny
+597(0035),Bluefish
+597(0036),Bonito
+597(0037),Bowfins
+597(0038),Brachycephalidae
+597(0039),Bream
+597(0040),Cusk
+597(0041),Bufonoidea
+597(0042),Mackerel
+597(0043),Seahorses
+597(0044),Snakehead
+597(0045),Chub
+597(0046),Mud puppies
+597(0047),Carp
+597(0048),Caudata
+597(0049),Caecilians
+597(0050),Coelacanth
+597(0051),Centrolendae
+597(0052),Ceratodiformes
+597(0053),Channiformes
+597(0054),Milkfish
+597(0055),Characins
+597(0056),Chelonia
+597(0057),Chondrichthyes
+597(0058),Chondrostei
+597(0059),Cichlids
+597(0060),Clingfish
+597(0061),Clupeiformes
+"597(0062),""Crocodiles, crocodilia, alligators""",
+597(0063),Croaker
+597(0064),Crossopterygii
+597(0065),Cryptobranchoidea
+597(0066),Cryptodira
+597(0067),Cyclostomata - jawless fish-
+597(0068),Cypriniformes
+597(0069),Cyprinodontes
+597(0070),Dactylopteriformes
+597(0071),Damselfish
+597(0072),Darter - fish-
+597(0073),Dendrobatidae
+597(0074),Dipnoi
+597(0075),Discoglossoidea
+597(0076),Dragonfish
+597(0077),Drum - fish-
+597(0078),Eels
+597(0079),Haddock
+597(0080),Elasmobranchii
+597(0081),Elopiformes
+597(0082),Elopomorpha
+597(0083),Smelts
+597(0084),Esocoidei
+597(0085),Sprat
+597(0086),Spoonbills - fish-
+597(0087),Stickleback
+597(0088),Sturgeon
+597(0089),Fingerfish
+597(0090),Frogfish
+597(0091),Puffer
+597(0092),Gadiformes
+597(0093),Redfish
+597(0094),Dory
+597(0095),Ganoidei
+597(0096),Bony ganoids
+597(0097),Cartilaginous ganoids
+597(0098),Gars
+597(0099),Gasterosteiformes
+597(0100),Goby
+597(0101),Gonorynchiformes
+597(0102),Gourami
+597(0103),Grayling
+597(0104),Grenadier - fish-
+597(0105),Grunt
+597(0106),Guitarfish
+597(0107),Gurnard
+597(0108),Gymnophiona
+597(0109),Halfbeak
+597(0110),Haplomi
+597(0111),Herpetology
+597(0112),Herpetologists
+597(0113),Halibut
+597(0114),Leaf frog
+597(0115),Holocephali
+597(0116),Holostei
+597(0117),Hylidae
+597(0118),Hyperoliidae
+597(0119),Ichthyology
+597(0120),Ichthyologists
+597(0121),Iniomi
+597(0122),Isospondylii
+597(0123),Jack - fish-
+597(0124),Pomfret
+597(0125),Jawfish
+597(0126),John Dory
+597(0127),Killifish
+597(0128),Lizards
+597(0129),Lamprey
+597(0130),Lampriformes
+597(0131),Sand lance
+597(0132),Sand eel
+597(0133),Leiopelmatidae
+597(0134),Lepidosauria
+597(0135),Lepidosireniformes
+597(0136),Lepisosteidae
+597(0137),Leptodactylidae
+597(0138),Loach
+597(0139),Lophiiformes
+597(0140),Pike
+597(0141),Walleye - fish-
+597(0142),Lungfish
+597(0143),Halfmoon - fish-
+597(0144),Hake
+597(0145),Hagfish
+597(0146),Mooneyes
+597(0147),Moonfish
+597(0148),Morays
+597(0149),Mormyriformes
+597(0150),Mudminnow
+597(0151),Mudskipper
+597(0152),Myctophiformes
+597(0153),Notacanthiformes
+597(0154),Boarfish
+597(0155),Ostariophysi
+597(0156),Osteichthyes
+597(0157),Osteoglossiformes
+597(0158),Paddlefish
+597(0159),Butterfish
+597(0160),Pompano
+597(0161),Paracanthopterygii
+597(0162),Porgy
+597(0163),Minnow
+597(0164),Cartilaginous fishes
+597(0165),Knife fish
+597(0166),Lobe-finned fishes
+597(0167),Fleshy-finned fishes
+597(0168),Ganoid fishes
+597(0169),Lantern fish
+597(0170),Parrot fish
+597(0171),Siamese fighting fish
+597(0172),Marine fishes
+597(0173),Butterfly fish
+597(0174),Bony fishes
+597(0175),Pipefishes
+597(0176),Poisonous fish
+597(0177),Flying fish
+597(0178),Pegasiformes
+597(0179),Silverside
+597(0180),Pelobatoidea
+597(0181),Perch
+597(0182),Pirate perch
+597(0183),Percopsiformes
+597(0184),Whiting
+597(0185),Fish
+597(0186),Whitefish
+597(0187),Leaf fish
+597(0188),Yellowtail fish
+597(0189),Lizard fish
+597(0190),Goldfish
+597(0191),Swordfish
+597(0192),Pilot fish
+597(0193),Toadfish
+597(0194),Sawfish
+597(0195),Sailfish
+597(0196),Pipidae
+597(0197),Pipoidea
+597(0198),Piranha
+597(0199),Pisces
+"597(0200),""Flatfish, flounder""",
+597(0201),Pleurodira
+597(0202),Pleuronectiformes
+597(0203),Pollack
+597(0204),Polymixiformes
+597(0205),Polypteriformes
+597(0206),Protacanthopterygii
+597(0207),Chimera
+597(0208),Rajiformes
+597(0209),Tree frog
+597(0210),Poison frog
+597(0211),Frogs
+597(0212),Ranidae
+597(0213),Ranoidea
+597(0214),Anglerfish
+597(0215),Rays - fish-
+597(0216),Reedfish
+597(0217),Gunnel
+597(0218),Remora
+597(0219),Reptiles
+597(0220),Reptilia
+597(0221),Scorpion fish
+597(0222),Rhacophoridae
+597(0223),Rhynchocephalia
+597(0224),River dogfish
+597(0225),Rockfish
+597(0226),Turbot
+597(0227),Shad
+597(0228),Salamanders
+597(0229),Salamandroidea
+597(0230),Salientia
+597(0231),Salmon
+597(0232),Mullet
+597(0233),Salmoniformes
+597(0234),Toads
+597(0235),Sarcopterygii
+597(0236),Sardines
+597(0237),Sauria
+597(0238),Scad
+597(0239),Scat
+597(0240),Scorpaeniformes
+597(0241),Sculpin
+597(0242),Semionotiformes
+"597(0243),""Serpents, snakes""",
+597(0244),Siluriformes
+597(0245),Sirenoidea
+597(0246),Snapper
+597(0247),Snook
+597(0248),Squaliformes
+597(0249),Squamata
+597(0250),Squirrelfish
+597(0251),Stonefish
+597(0252),Suckers - fish-
+597(0253),Sunfish
+597(0254),Synbranchiformes
+597(0255),Synentognathi
+597(0256),Tarpon
+597(0257),Teleostei
+597(0258),Testudines
+597(0259),Tetraodontiformes
+597(0260),Tetrapoda
+597(0261),Tetras
+597(0262),Thoracostei
+597(0263),Sharks
+597(0264),Crappie
+597(0265),Topminnow
+597(0266),Torpedoes - fish-
+"597(0267),""Tortoises, turtles""",
+597(0268),Triggerfish
+597(0269),Newts
+597(0270),Trout
+597(0271),Tuataras
+597(0272),Sole
+597(0273),True frogs
+597(0274),Cold-blooded vertebrates
+597(0275),Weever

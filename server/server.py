@@ -810,6 +810,7 @@ class ScraperServer:
         self.app.post("/api/start_scraping", status_code=202)(self.start_scraping_job)
         self.app.post("/api/stop_scraping")(self.stop_scraping_job)
         self.app.post("/api/reset")(self.force_reset_state)
+        self.app.post("/api/emergency_reset")(self.emergency_reset)
         self.app.get("/api/detailed_status")(self.get_detailed_status)
         self.app.post("/api/upload_courses")(self.upload_courses)
         self.app.get("/api/get_all_courses")(self.get_all_courses)
@@ -1245,6 +1246,8 @@ class ScraperServer:
         # 4. Limpiar los estados de los workers para la GUI
         if self.worker_states is not None:
             self.worker_states.clear()
+        if self.course_states is not None:
+            self.course_states.clear()
 
         await global_event_log.add(
             EventType.SUCCESS,
@@ -1483,8 +1486,8 @@ class ScraperServer:
                 status_code=500, detail=f"Error interno del servidor: {str(e)}"
             )
 
-    async def download_results(self):
-        """Descarga todos los archivos de la carpeta results como un ZIP."""
+    async def download_results(self, background_tasks: BackgroundTasks):
+        """Descarga todos los archivos de la carpeta results como un ZIP con limpieza automática."""
         results_dir = os.path.join(project_root, "results")
         if not os.path.exists(results_dir):
             raise HTTPException(
@@ -1492,37 +1495,52 @@ class ScraperServer:
                 detail="No hay resultados para descargar (carpeta vacía o inexistente).",
             )
 
-        # Crear un archivo ZIP en memoria o temporal
-        zip_filename = "resultados_europa.zip"
+        # Crear un archivo ZIP con nombre único para evitar colisiones
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        zip_filename = f"resultados_{timestamp}.zip"
         zip_path = os.path.join(project_root, zip_filename)
 
         try:
+            self.logger.info(f"Generando ZIP de resultados en: {zip_path}")
             with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
-                # Recorrer todos los archivos en results
                 files_found = False
                 for root, dirs, files in os.walk(results_dir):
+                    # No incluir el propio archivo zip si se está creando dentro de la ruta (aunque aquí está fuera)
                     for file in files:
+                        if file.endswith(".zip"): continue 
                         files_found = True
                         file_path = os.path.join(root, file)
                         # Agregar al zip con nombre relativo
-                        zipf.write(
-                            file_path,
-                            os.path.relpath(file_path, os.path.join(results_dir, "..")),
-                        )
+                        arcname = os.path.relpath(file_path, results_dir)
+                        zipf.write(file_path, arcname)
 
             if not files_found:
-                self.logger.warning(
-                    "No se encontraron archivos en la carpeta 'results' para descargar."
-                )
+                if os.path.exists(zip_path):
+                    os.remove(zip_path)
                 raise HTTPException(
-                    status_code=404, detail="Carpeta de resultados está vacía."
+                    status_code=404, detail="La carpeta de resultados está vacía."
                 )
+
+            # Tarea de fondo para borrar el ZIP después de enviarlo
+            def remove_file(path: str):
+                try:
+                    if os.path.exists(path):
+                        os.remove(path)
+                        self.logger.info(f"Archivo temporal eliminado: {path}")
+                except Exception as e:
+                    self.logger.error(f"Error borrando temporal {path}: {e}")
+
+            background_tasks.add_task(remove_file, zip_path)
 
             return FileResponse(
-                zip_path, filename="resultados.zip", media_type="application/zip"
+                zip_path, filename="resultados_europa.zip", media_type="application/zip"
             )
 
+        except HTTPException:
+            raise
         except Exception as e:
+            if os.path.exists(zip_path):
+                os.remove(zip_path)
             self.logger.error(f"Error comprimiendo resultados: {e}")
             raise HTTPException(
                 status_code=500, detail=f"Error creando el archivo ZIP: {str(e)}"
@@ -2216,11 +2234,16 @@ class ScraperServer:
         )
 
         # 1. Detener procesos
-        await self.stop_scraping_job()
+        try:
+            await self.stop_scraping_job()
+        except Exception:
+            pass
 
         # 2. Limpiar estados
         if self.worker_states is not None:
             self.worker_states.clear()
+        if self.course_states is not None:
+            self.course_states.clear()
 
         self.is_job_running = False
 

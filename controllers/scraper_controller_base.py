@@ -17,14 +17,13 @@ class ScraperControllerBase:
         """Inicializa el controlador base."""
         self.stop_requested = False
     
-    async def run_scraping(self, params: Dict[str, Any], progress_callback: Optional[Callable] = None, **kwargs) -> List[Dict[str, Any]]:
+    async def run_scraping(self, params: Dict[str, Any], progress_callback: Optional[Callable] = None) -> List[Dict[str, Any]]:
         """
         Ejecuta el proceso de scraping.
         
         Args:
             params: Parámetros de scraping
             progress_callback: Callback para actualizaciones de progreso
-            **kwargs: Otros argumentos opcionales (worker_id, batch, etc.)
             
         Returns:
             Lista de diccionarios de resultados

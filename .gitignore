@@ -38,11 +38,7 @@ courses.db*
 *.spec
 build/
 dist/
-dist.zip
 __pyinstall__/
-
-# Large binary files
-cloudflared.exe
 
 # Downloaded files/external dependencies
 downloads/
@@ -57,3 +53,9 @@ omitidos/
 
 # Gemini files
 .gemini/
+*.zip
+*.exe
+node_modules/
+venv*/
+dist/
+*.log

@@ -12,13 +12,26 @@ class ProgressFrame(ttk.LabelFrame):
     
     def __init__(self, master, **kwargs):
         """Inicializa el marco de progreso."""
-        # ELIMINADO EL TEXTO DEL FRAME ("BORRA DONDE DICE PROGRESO")
-        super().__init__(master, text="", padding=5, **kwargs)
+        super().__init__(master, text="Progreso", padding=10, **kwargs)
         
-        # BARRA DE PROGRESO ELIMINADA ("ELIMINA LA BARRA DE PROGRESO")
+        # Barra de progreso
         self.progress_var = tk.DoubleVar()
-        # self.progress_bar = ... (Removed)
+        self.progress_bar = ttk.Progressbar(
+            self,
+            orient=tk.HORIZONTAL,
+            length=100,
+            mode='determinate',
+            variable=self.progress_var
+        )
+        self.progress_bar.pack(fill=tk.X, padx=5, pady=10)
 
+        # Configurar el estilo de la barra de progreso
+        style = ttk.Style()
+        style.configure("TProgressbar", 
+                    background='green',
+                    troughcolor='#f0f0f0',
+                    thickness=20)
+        self.progress_bar.configure(style="TProgressbar")
         
         # Etiqueta para mostrar el texto de búsqueda de cursos
         self.searching_var = tk.StringVar(value="")
@@ -42,29 +55,35 @@ class ProgressFrame(ttk.LabelFrame):
         )
         self.processing_label.pack(fill=tk.X, padx=5, pady=5)
         
-        # Etiquetas simplificadas debajo de la barra
+        # Crear un frame para las estadísticas
         self.stats_frame = ttk.Frame(self)
-        self.stats_frame.pack(fill=tk.X, padx=5, pady=0)
+        self.stats_frame.pack(fill=tk.X, padx=5, pady=5)
         
-        # Grid para estadísticas
+        # Configurar grid para estadísticas en dos columnas
         self.stats_frame.columnconfigure(0, weight=1)
         self.stats_frame.columnconfigure(1, weight=1)
 
-        # SOLO OMITIDOS Y ERRORES (Tabulados eliminado por solicitud del usuario)
+        # Etiquetas para las estadísticas
+        self.saved_files_label = ttk.Label(
+            self.stats_frame, 
+            text="Archivos Tabulados: 0",
+            style="Stats.TLabel"
+        )
+        self.saved_files_label.grid(row=0, column=0, padx=5, pady=5, sticky=tk.W)
+
         self.not_saved_files_label = ttk.Label(
             self.stats_frame, 
             text="Archivos Omitidos: 0",
             style="Stats.TLabel"
         )
-        self.not_saved_files_label.grid(row=0, column=0, padx=5, sticky=tk.W)
+        self.not_saved_files_label.grid(row=0, column=1, padx=5, pady=5, sticky=tk.W)
 
         self.errors_label = ttk.Label(
             self.stats_frame, 
             text="Errores: 0",
             style="Stats.TLabel"
         )
-        self.errors_label.grid(row=0, column=1, padx=5, sticky=tk.W)
-
+        self.errors_label.grid(row=1, column=0, padx=5, pady=5, sticky=tk.W)
         
         # Añadir etiqueta para la URL
         self.url_label = ttk.Label(
@@ -104,10 +123,9 @@ class ProgressFrame(ttk.LabelFrame):
     
     def update_stats(self, saved, not_saved, errors):
         """Actualiza las estadísticas mostradas."""
-        # saved (Tabulados) ignorado visualmente
+        self.saved_files_label.config(text=f"Archivos Tabulados: {saved}")
         self.not_saved_files_label.config(text=f"Archivos Omitidos: {not_saved}")
         self.errors_label.config(text=f"Errores: {errors}")
-
 
 
 class ResultsFrame(ttk.LabelFrame):

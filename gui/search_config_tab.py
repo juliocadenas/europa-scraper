@@ -34,22 +34,6 @@ class SearchConfigTab:
         """Crea los widgets de la interfaz."""
         
         # --- Panel de Modo de Búsqueda ---
-        # --- Panel de Motor de Búsqueda ---
-        engine_frame = ttk.LabelFrame(self.main_frame, text="Motor de Búsqueda", padding="15")
-        engine_frame.pack(fill=tk.X, padx=15, pady=5)
-        
-        self.search_engine_var = tk.StringVar(value="Cordis Europa API")
-        
-        engine_combo = ttk.Combobox(
-            engine_frame, 
-            textvariable=self.search_engine_var,
-            values=["Cordis Europa API", "Cordis Europa", "Google", "Bing", "DuckDuckGo", "Common Crawl", "Wayback Machine"],
-            state="readonly",
-            font=("Arial", 10)
-        )
-        engine_combo.pack(fill=tk.X, pady=5)
-        
-        # --- Panel de Modo de Búsqueda ---
         mode_frame = ttk.LabelFrame(self.main_frame, text="Modo de Búsqueda", padding="15")
         mode_frame.pack(fill=tk.X, padx=15, pady=15)
         
@@ -111,13 +95,11 @@ class SearchConfigTab:
 
     def _load_current_config(self):
         """Carga valores desde config.json."""
-        self.search_engine_var.set(self.config.get("search_engine", "Google"))
         self.search_mode_var.set(self.config.get("search_mode", "broad"))
         self.require_keywords_var.set(self.config.get("require_keywords", False))
 
     def _save_config(self):
         """Guarda valores en config.json."""
-        self.config.set("search_engine", self.search_engine_var.get())
         self.config.set("search_mode", self.search_mode_var.get())
         self.config.set("require_keywords", self.require_keywords_var.get())
         

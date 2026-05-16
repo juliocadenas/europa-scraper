@@ -1,0 +1,3722 @@
+sic_code,course_name
+700,FINE ARTS (16)
+701,FINE ARTS PHILOSOPHY. ESTHETICS (20)
+701(0001),Art appreciation
+701(0002),Harmony
+701(0003),Chiaroscuro
+701(0004),Color
+701(0005),Composition
+701(0006),Creativity
+701(0007),Criticism
+701(0008),Space
+701(0009),Aesthetics
+701(0010),Style
+701(0011),Form
+701(0012),Light
+701(0013),Audiovisual materials
+701(0014),Movement
+701(0015),Perspective
+701(0016),Symmetry
+701(0017),Shadows
+701(0018),Time
+701(0019),Decorative values
+701(0020),Vision
+702,FINE ARTS COMPENDIUMS (20)
+702(0001),Performance art
+702(0002),Mixed-media arts
+702(0003),Authenticating
+702(0004),Auction catalogs
+702(0005),Collage
+702(0006),Composites
+702(0007),Conservation
+702(0008),Copies
+702(0009),Expertizing
+702(0010),Forgeries
+702(0011),Identification
+702(0012),Artists' books
+702(0013),Artists' marks
+702(0014),Models
+702(0015),Assemblage
+702(0016),Preservation
+702(0017),Alterations
+702(0018),Reproductions
+702(0019),Restoration
+702(0020),Video art
+703,FINE ARTS DICTIONARIES
+704,FINE ARTS ESSAYS (78)
+704(0001),Biblical events
+704(0002),Historical events
+704(0003),Allegory
+704(0004),Amphibians
+704(0005),Angels
+704(0006),Animals
+704(0007),Apostles
+704(0008),Trees
+704(0009),Architecture
+704(0010),Erotic art
+704(0011),Religious art
+704(0012),Birds
+704(0013),Buddha
+704(0014),Buddhism
+704(0015),Hunting
+704(0016),Confucianism
+704(0017),Christianity
+704(0018),Criticism  arts
+704(0019),Nudes
+704(0020),Devil
+704(0021),God
+704(0022),Goddesses
+704(0023),Gods
+704(0024),Buildings
+704(0025),Marine scenes
+704(0026),Votive offerings
+704(0027),Votive offerings  arts
+704(0028),Human figures
+704(0029),Draped figures
+704(0030),Flowers
+704(0031),Fruit
+704(0032),Gautama Buddha
+704(0033),Groups of figures
+704(0034),Hinduism
+704(0035),Men
+704(0036),Iconography
+704(0037),Icons
+704(0038),Icons  arts
+704(0039),Images
+704(0040),Insects
+704(0041),Islam
+704(0042),Jainism
+704(0043),Jesus Christ
+704(0044),Judaism
+704(0045),Legends
+704(0046),Seascapes
+704(0047),Mammals
+704(0048),Mary Blessed Virgin Saint
+704(0049),Mythology
+704(0050),Religious mythology
+704(0051),Women
+704(0052),Nature
+704(0053),Still life
+704(0054),Children
+704(0055),Cityscapes
+704(0056),Landscapes
+704(0057),Biblical characters
+704(0058),Fish
+704(0059),Plants
+704(0060),Pornography
+704(0061),Science projects in schools
+704(0062),Religion
+704(0063),Indie religions
+704(0064),Industry
+704(0065),Representations
+704(0066),Reptiles
+704(0067),Portraits
+704(0068),Holy Family
+704(0069),Saints
+704(0070),Sikhism
+704(0071),Religious symbolism
+704(0072),Symbolism
+704(0073),Shintoism
+704(0074),Taoism
+704(0075),Technology
+704(0076),Trinity
+704(0077),Everyday life
+704(0078),Madonna
+705,FINE ARTS PERIODICALS
+706,FINE ARTS SOCIETIES
+707,FINE ARTS EDUCATION. STUDY (1)
+707(0001),Auction catalogs
+708,FINE ARTS GALLERIES (3)
+708(0001),Art galleries
+708(0002),Art museums
+708(0003),Fine art museums
+709,HISTORY OF FINE ARTS (61)
+709(0001),Abstractionism
+709(0002),Geometric abstractionism
+709(0003),Happenings - art style-
+709(0004),Environments
+709(0005),Art deco
+709(0006),Art nouveau
+709(0007),Baroque art
+709(0008),Byzantine art
+709(0009),Kinetic art
+709(0010),Conceptual art
+709(0011),Mail art
+709(0012),Space art
+709(0013),Renaissance art
+709(0014),Gothic art
+709(0015),Medieval art
+709(0016),Modem art
+709(0017),Multiple art
+709(0018),Optical art
+709(0019),Early Christian art
+709(0020),Pop art
+709(0021),Primitive art
+709(0022),Rococo art
+709(0023),Romanesque art
+709(0024),Rock art
+709(0025),Oriental arts
+709(0026),Trash
+709(0027),Constructivism
+709(0028),Cubism
+709(0029),Dadaism
+709(0030),Geometric desjgn
+709(0031),Divisionism
+709(0032),Schools
+709(0033),Styles
+709(0034),Structuralism
+709(0035),Events
+709(0036),Expressionism
+709(0037),Abstract expressionism
+709(0038),Fauvism
+709(0039),Functionalism
+709(0040),Futurism
+709(0041),Impressionism
+709(0042),Kitsch
+709(0043),Luminism
+709(0044),Composite media
+709(0045),Earthworks
+709(0046),Naturalism
+709(0047),Neoimpressionism
+709(0048),Neoplasticism
+709(0049),Nonobjectivity - art style-
+709(0050),Opart
+709(0051),Paleolithic Age
+709(0052),Pleinairism
+709(0053),Postimpressionism
+709(0054),Pointillism
+709(0055),Realism
+709(0056),Classical revival
+709(0057),Romanticism
+709(0058),Sensations
+709(0059),Symbolism
+709(0060),Synthetism
+709(0061),Surrealism
+710,LANDSCAPE .GARDENING
+711,PUBLIC PARKS (96)
+711(0001),Airports
+711(0002),Parking facilities
+711(0003),Administrative areas
+711(0004),Commercial areas
+711(0005),Educational areas
+711(0006),Metropolitan areas
+711(0007),Recreational areas
+711(0008),Civic art
+711(0009),Slums
+711(0010),Roads
+711(0011),Trailer camps
+711(0012),Athletic fields
+711(0013),Downtown
+711(0014),Civic centers
+711(0015),Shopping centers
+711(0016),Shopping malls
+711(0017),Community centers
+711(0018),Cultural centers
+711(0019),Performing arts centers
+711(0020),Capital cities
+711(0021),Government cities
+711(0022),Industrial cities towns
+711(0023),Residential cities
+711(0024),Colleges
+711(0025),Air rights
+711(0026),Environmental design
+711(0027),Apartment-house districts
+711(0028),Business districts
+711(0029),Library buildings
+711(0030),Government buildings
+711(0031),Religious buildings
+711(0032),Buildings
+711(0033),Structural elements
+711(0034),Electric power
+711(0035),Professional schools
+711(0036),Schools
+711(0037),Fairgrounds
+711(0038),Hotels
+711(0039),Water-supply facilities
+711(0040),Communication facilities
+711(0041),Flood control facilities
+711(0042),Sanitation facilities
+711(0043),Gas supply facilities
+711(0044),Rapid transit facilities
+711(0045),Motorcycle transportation facilities
+711(0046),Ground transportation facilities
+711(0047),Transportation facilities
+711(0048),Pedestrian facilities
+711(0049),Port facilities
+711(0050),Correctional institutions
+711(0051),Markets
+711(0052),Motor vehicle transportation facilities
+711(0053),Museums
+711(0054),New towns
+711(0055),Amusement parks
+711(0056),Trailer parks
+711(0057),Parks
+711(0058),Pedestrian malls
+711(0059),Street patterns
+711(0060),Irregular street patterns
+711(0061),Radial street patterns
+711(0062),Interstate planning
+711(0063),Area planning
+711(0064),County planning
+711(0065),State planning
+711(0066),International planning
+711(0067),Local planning
+711(0068),National planning
+711(0069),Provincial planning
+711(0070),Regional planning
+711(0071),City planning
+711(0072),Beaches
+711(0073),Plazas squares
+711(0074),Villages
+711(0075),Housing renewal
+711(0076),Urban renewal
+711(0077),Restaurants
+711(0078),Bicycle transportation paths
+711(0079),Pedestrian paths
+711(0080),Medical care facilities
+711(0081),Public utilities
+711(0082),Residential land
+711(0083),Theaters
+711(0084),Freight terminals
+711(0085),Railroad terminals
+711(0086),Passenger terminals
+711(0087),Topography
+711(0088),Universities
+711(0089),City planners
+711(0090),Agricultural areas
+711(0091),Blighted areas
+711(0092),Industrial areas
+711(0093),Zoning
+711(0094),Zoning  area planning
+712,PRIVATE GROUNDS. LAWNS (32)
+712(0001),Landscape architects
+712(0002),Landscape architecture
+712(0003),Lawns
+712(0004),Country clubs
+712(0005),Commons
+712(0006),Landscape design
+712(0007),Church buildings
+712(0008),Industrial buildings
+712(0009),Common land
+712(0010),Factories
+712(0011),Hospitals
+712(0012),Hotels
+712(0013),Home gardens
+712(0014),Estates
+712(0015),Gardening
+712(0016),Botanical gardens
+712(0017),Penthouse gardens
+712(0018),Gardens grounds
+712(0019),Institutional grounds
+712(0020),Amusement parks
+712(0021),Private parks
+712(0022),Public parks
+712(0023),Parks
+712(0024),Front yards
+712(0025),Backyards
+712(0026),Fairgrounds
+712(0027),School grounds
+712(0028),Private land
+712(0029),Public lands
+712(0030),Zoos
+713,WALKS. DRIVES (2)
+713(0001),Roads
+713(0002),Railroads
+714,WATER. FOUNTAINS. LAKES (6)
+714(0001),Streams
+714(0002),Water features
+714(0003),Cascades
+714(0004),Fountains
+714(0005),Pools
+714(0006),Beaches
+715,TREES. HEDGES. SHRUBS (5)
+715(0001),Trees
+715(0002),Shrubs
+715(0003),Woody plants
+715(0004),Topiary work
+715(0005),Vines
+716,PLANTS. FLOWERS. CONSERVATORIES (3)
+716(0001),Ground cover
+716(0002),Herbaceous plants
+716(0003),Plants
+717,ARBORS. SEATS. OUTLOOKS (9)
+717(0001),Fences
+717(0002),Buildings
+717(0003),Structures
+717(0004),Gateways
+717(0005),Pedestrian facilities
+717(0006),Street furniture
+717(0007),Pedestrian malls
+717(0008),Steps
+717(0009),Terraces
+718,MONUMENTS. MAUSOLEUMS (2)
+718(0001),National cemeteries
+718(0002),Cemeteries
+719,RESERVES (6)
+719(0001),Reservoirs
+719(0002),Natural monuments
+719(0003),Natural landscapes
+719(0004),Parks  landscape architecture
+719(0005),Wildlife reserves
+719(0006),Forest reserves
+721,ARCHITECTURAL CONSTRUCTION (100)
+721(0001),Openings
+721(0002),Adobe sun-dried blocks
+721(0003),Gables
+721(0004),Aluminum
+721(0005),Arcades
+721(0006),Arches
+721(0007),Groined arches
+721(0008),Elevators
+721(0009),Elevators  buildings
+721(0010),Tiles
+721(0011),Balconies
+721(0012),Balustrades
+721(0013),Hollow blocks
+721(0014),Groined vaults
+721(0015),Tunnel vaults
+721(0016),Rib vaults
+721(0017),Expanding vaults
+721(0018),Fan vaults
+721(0019),Vaults
+721(0020),Dormers
+721(0021),Capitals
+721(0022),Chimneysfireplaces
+721(0023),Foundations
+721(0024),Skylights
+721(0025),Copper
+721(0026),Columns
+721(0027),Colonnades
+721(0028),Colonnettes
+721(0029),Concrete
+721(0030),Pneumatic construction
+721(0031),Cornices
+721(0032),Decks
+721(0033),Cupolas domes
+721(0034),High-rise buildings
+721(0035),Circular buildings
+721(0036),Atrium buildings
+721(0037),Single-story buildings
+721(0038),Multistory buildings
+721(0039),Structural elements
+721(0040),Entablatures
+721(0041),Escalators
+721(0042),Stairs
+721(0043),Architectural schools
+721(0044),Spires
+721(0045),Tin
+721(0046),Architectural structure
+721(0047),Stuccowork
+721(0048),Pediments
+721(0049),Reinforced concrete
+721(0050),Bricks
+721(0051),Lathing
+721(0052),Wood
+721(0053),Masonry materials
+721(0054),Building materials
+721(0055),Nonrigid materials
+721(0056),Prefabricated materials
+721(0057),Ferrous metals
+721(0058),Nonferrous metals
+721(0059),Metals
+721(0060),Piers - columns-
+721(0061),Piers
+721(0062),Retaining walls
+721(0063),Bearing walls
+721(0064),Niches
+721(0065),Architectural orders
+721(0066),Sandwich panels
+721(0067),Walls
+721(0068),Partitions
+721(0069),Patios
+721(0070),Pedestals
+721(0071),Blinds
+721(0072),Artificial stone
+721(0073),Stone
+721(0074),Abutments
+721(0075),Pilasters
+721(0076),Pinnacles
+721(0077),Floors
+721(0078),Plastics
+721(0079),Lead
+721(0080),Porches
+721(0081),Posts
+721(0082),Doors
+721(0083),Ramps
+721(0084),Fasteners
+721(0085),Ceilings
+721(0086),Roofs
+721(0087),Terra-cotta
+721(0088),Towers
+721(0089),Windows  buildings
+721(0090),Glass
+721(0091),Plasterwork
+722,ANCIENT
+722(0001),Ancient architecture
+722(0002),Carthaginian architecture
+722(0003),Cypriot architecture
+722(0004),Classical architecture
+722(0005),Colonial Phoenician architecture
+722(0006),Tyrian architecture
+722(0007),Aegean architecture
+722(0008),Etruscan architecture
+722(0009),Phoenician architecture
+722(0010),Greek architecture
+722(0011),Ancient Jewish architecture
+722(0012),Mesopotamian architecture
+722(0013),Mycenaean architecture
+722(0014),Minoan architecture
+722(0015),Ancient Western architecture
+722(0016),Oriental architecture
+722(0017),Palestinian architecture
+722(0018),Roman architecture
+722(0019),Sidonian architecture
+722(0020),Utican architecture
+722(0021),Ancient architectural schools
+723,MEDIEVAL
+723(0001),Byzantine architecture
+723(0002),Gothic architecture
+723(0003),Medieval architecture
+723(0004),Norman architecture
+723(0005),Early Christian architecture
+723(0006),Romanesque architecture
+723(0007),Saracenic architecture
+724,MODERN ARCHITECTURE (19)
+724(0001),Baroque architecture
+724(0002),Colonial architecture
+724(0003),Classical revival architecture
+724(0004),Greek revival architecture
+724(0005),Roman revival architecture
+724(0006),Georgian architecture
+724(0007),Gothic revival architecture
+724(0008),Neoclassical architecture
+724(0009),Romanesque revival architecture
+724(0010),Renaissance architecture
+724(0011),Rococo architecture
+724(0012),Victorian architecture
+724(0013),Art nouveau
+724(0014),Eclecticism
+724(0015),International style of architecture
+724(0016),Expressionism
+724(0017),Functionalism
+724(0018),Renaissance revival architecture
+724(0019),Italianate revivals
+725,PUBLIC BUILDINGS (136)
+725(0001),Airports
+725(0002),Warehouses
+725(0003),Amphitheaters
+725(0004),Parking facilities
+725(0005),Saudi Arabia  public
+725(0006),Arches
+725(0007),Armories
+725(0008),Communications buildings architecture
+725(0009),Arsenals
+725(0010),Storage elevators
+725(0011),Christian religious associations institutional buildings
+725(0012),Shipyards
+725(0013),Auditoriums
+725(0014),Bars
+725(0015),Bazaars
+725(0016),Taproom buildings
+725(0017),Bowling alleys
+725(0018),Commodity exchanges
+725(0019),Chambers of commerce
+725(0020),Bell towers
+725(0021),Capitols
+725(0022),Field houses
+725(0023),Veterans' homes
+725(0024),Casinos
+725(0025),Civic centers
+725(0026),Shopping centers malls
+725(0027),Cultural centers
+725(0028),Performing arts centers
+725(0029),Convention centers
+725(0030),Indoor recreation centers
+725(0031),Recreation centers
+725(0032),Sports centers
+725(0033),Boathouses
+725(0034),Sports complexes
+725(0035),County government buildings architecture
+725(0036),Crematoriums
+725(0037),Barracks
+725(0038),Mentally deficient persons institutional buildings
+725(0039),Stock exchange buildings
+725(0040),Retail trade buildings
+725(0041),Commercial buildings
+725(0042),Memorial buildings
+725(0043),Exhibition buildings
+725(0044),Storage buildings
+725(0045),Archive buildings
+725(0046),Exchange buildings
+725(0047),Medical office buildings
+725(0048),Park buildings
+725(0049),Record buildings
+725(0050),Consulate buildings
+725(0051),Railroad buildings
+725(0052),City government buildings
+725(0053),Government buildings
+725(0054),Industrial buildings
+725(0055),Legislative buildings
+725(0056),Military buildings
+725(0057),Riding-club buildings
+725(0058),Police buildings
+725(0059),Customs buildings
+725(0060),Office buildings
+725(0061),Embassies
+725(0062),Health care facilities
+725(0063),Fire stations
+725(0064),Railroad freight stations
+725(0065),Railroad passenger stations
+725(0066),Filling stations
+725(0067),Subway stations
+725(0068),Radio stations  facilities
+725(0069),Television stations  facilities
+725(0070),Local rail transit stations
+725(0071),Stadiums
+725(0072),Public structures
+725(0073),Factories
+725(0074),Fortresses
+725(0075),Moats
+725(0076),Forts
+725(0077),Garages
+725(0078),Gymnasiums
+725(0079),Hangars
+725(0080),Almshouses
+725(0081),Psychiatric hospitals
+725(0082),Veterinary hospitals
+725(0083),Hospitals
+725(0084),Recreation facilities
+725(0085),Rapid transit facilities
+725(0086),Transportation facilities
+725(0087),Port facilities
+725(0088),Financial institutions
+725(0089),Correctional institutions  buildings
+725(0090),Board of trade buildings
+725(0091),Legations
+725(0092),Drinking places
+725(0093),Executive mansions
+725(0094),Mills
+725(0095),Monuments
+725(0096),Morgues
+725(0097),Motor vehicle transportation facilities
+725(0098),Post offices
+725(0099),Sports pavilions
+725(0100),Palaces official residences
+725(0101),Walls
+725(0102),Amusement parks
+725(0103),Handicapped persons  institutional buildings
+725(0104),Old persons  institutional buildings
+725(0105),Swimming pools  public
+725(0106),Rinks
+725(0107),Plants
+725(0108),Poverty  social welfare facilities
+725(0109),Poverty  social services
+725(0110),Gateways
+725(0111),Pubs
+725(0112),Bridges
+725(0113),Official residences
+725(0114),Restaurants
+725(0115),Roundhouses
+725(0116),Pool halls
+725(0117),Concert halls
+725(0118),Music halls
+725(0119),Dance halls
+725(0120),Sanitoriums
+725(0121),Opera houses
+725(0122),Theaters
+725(0123),Bus terminals
+725(0124),Railroad terminals
+725(0125),Freight terminals
+725(0126),Passenger terminals
+725(0127),Shops stores
+725(0128),Radio towers
+725(0129),Clock towers
+725(0130),Television towers
+725(0131),Towers
+725(0132),Courthouses
+725(0133),Grandstands
+725(0134),Tunnels
+726,ECCLESIASTICAL
+726(0001),Abbeys
+726(0002),Apses
+726(0003),Baptistries accessory building
+726(0004),Lighting fixtures
+726(0005),Altars
+726(0006),Lecterns
+726(0007),Pews
+726(0008),Altar railings
+726(0009),Railings
+726(0010),Chancel railings
+726(0011),Steeples
+726(0012),Side chapels
+726(0013),Chapels
+726(0014),Parish houses
+726(0015),Parsonages
+726(0016),Organ cases
+726(0017),Cloisters cathedral
+726(0018),Anglican cathedrals
+726(0019),Roman Catholic cathedrals
+726(0020),Eastern Orthodox cathedrals
+726(0021),Cathedrals
+726(0022),Cells
+726(0023),Confessionals
+726(0024),Convents friaries
+726(0025),Choir lofts
+726(0026),Transepts
+726(0027),Baldachins
+726(0028),Sunday school buildings
+726(0029),Church buildings
+726(0030),Christian church buildings
+726(0031),Mission buildings
+726(0032),Religious buildings
+726(0033),Roadside shrines
+726(0034),Clerestories
+726(0035),Mosques
+726(0036),Minarets
+726(0037),Buddhist monasteries
+726(0038),Monasteries
+726(0039),Prayer desks
+726(0040),Sacramental furniture
+726(0041),Baptist sacred music
+726(0042),Naves
+726(0043),Oratories
+726(0044),Episcopal palaces
+726(0045),Altar screens
+726(0046),Screens
+726(0047),Baptismal fonts
+726(0048),Pulpit platforms
+726(0049),Chancels
+726(0050),Priories
+726(0051),Pulpits
+726(0052),Refectories
+726(0053),Classical religion  temples  shrines
+726(0054),Reredoses
+726(0055),Sacristies
+726(0056),Chapter houses
+726(0057),Sanctuaries shrines
+726(0058),Choir stalls
+726(0059),Synagogues
+726(0060),Tabernacles
+726(0061),Buddhist temples
+726(0062),Hindu temples
+726(0063),Islamic temples
+726(0064),Jain temples
+726(0065),Sikh temples
+726(0066),Temples
+726(0067),Judaic temples
+726(0068),Shintoist temples
+726(0069),Canopies
+726(0070),Towers
+726(0071),Bishops' thrones
+726(0072),Tombs
+726(0073),Mortuary chapels
+726(0074),Clogs  monastic
+727,EDUCATIONAL
+727(0001),Special libraries
+727(0002),Branch libraries
+727(0003),Community centers
+727(0004),Dining halls
+727(0005),Dormitories
+727(0006),Elementary school buildings
+727(0007),Secondary school buildings
+727(0008),Library buildings
+727(0009),Research buildings
+727(0010),College buildings
+727(0011),School buildings
+727(0012),Educational buildings
+727(0013),Professional schools
+727(0014),Art galleries
+727(0015),Botanical gardens
+727(0016),Science laboratories
+727(0017),Laboratories
+727(0018),Art museums
+727(0019),Science museums
+727(0020),Museums
+727(0021),Astronomical observatories
+727(0022),Observatories
+727(0023),Student unions
+727(0024),Learned societies buildings
+727(0025),University buildings architecture
+727(0026),Zoos
+728,RESIDENCES ARCHITECTURE (48)
+728(0001),Townhouses
+728(0002),Apartments
+728(0003),Domestic architecture
+728(0004),Bathhouses domestic
+728(0005),Bungalows
+728(0006),Cabins
+728(0007),Plantation houses
+728(0008),Split-level houses
+728(0009),Ranch-style houses
+728(0010),Seasonal houses
+728(0011),Single-story houses
+728(0012),Vacation homes
+728(0013),Multistory houses
+728(0014),Duplex houses
+728(0015),Houseboats
+728(0016),Motorized homes
+728(0017),Mobile homes
+728(0018),Farmhouses
+728(0019),Solar houses
+728(0020),Manor houses
+728(0021),Earth-sheltered houses  and architecture
+728(0022),Houses
+728(0023),Gatehouses
+728(0024),Castles
+728(0025),Row houses
+728(0026),Conservatories
+728(0027),Tenements
+728(0028),Clubhouse buildings
+728(0029),Residential buildings
+728(0030),Agricultural structures
+728(0031),Farm cottages
+728(0032),Cottages
+728(0033),Bams
+728(0034),Hotels
+728(0035),Mansions
+728(0036),Hunting lodges
+728(0037),Pakistanis  residential
+728(0038),Domestic patios
+728(0039),Domestic pools
+728(0040),Flats
+728(0041),Trailers
+728(0042),Saunas domestic
+728(0043),Multiple dwellings
+728(0044),Villas
+728(0045),Conventional housing
+728(0046),Low-cost housing
+728(0047),Apartment houses
+728(0048),Dwellings
+729,ARCHITECTURE DESIGN
+729(0001),Acoustics
+729(0002),Relief
+729(0003),Architectural decoration
+729(0004),Veneers
+729(0005),Composition
+729(0006),Modular coordination
+729(0007),Structural decoration
+729(0008),Architectural design
+729(0009),Interior design
+729(0010),Proportion architectural design
+729(0011),Modular design
+729(0012),Interior arrangement
+729(0013),Architectural schools
+729(0014),Sculpture
+729(0015),Enamels
+729(0016),Facades
+729(0017),Function
+729(0018),Gargoyles
+729(0019),Lighting
+729(0020),Incrustation
+729(0021),Inscriptions
+729(0022),Wood
+729(0023),Metals
+729(0024),Mosaics
+729(0025),Stone
+729(0026),Paint
+729(0027),Plans
+729(0028),Lettering
+729(0029),Carving
+729(0030),Gothic tracery
+729(0031),Ornamental glass
+730,SCULPTURE (7)
+730(0001),Plastic arts
+730(0002),Sculptors
+730(0003),Sculpture
+730(0004),Buddhist sculpture
+730(0005),Hindu sculpture
+730(0006),Jain sculpture
+730(0007),Oriental sculpture
+731,SCULPTURE MATERIALS
+731(0001),Wires
+731(0002),Armatures
+731(0003),Firing artillery
+731(0004),Busts
+731(0005),Waxes
+731(0006),Chiseling
+731(0007),Containers
+731(0008),Ropes
+731(0009),Drawing metals
+731(0010),Bending metals
+731(0011),Beating metals
+731(0012),Glazing sculpture
+731(0013),Bronze sculpture
+731(0014),Casting sculpture
+731(0015),Garden sculpture
+731(0016),Wood sculpturing
+731(0017),Direct metal sculpture
+731(0018),Stone sculpturing
+731(0019),Decorative sculpture
+731(0020),Equestrian sculpture
+731(0021),Stabiles
+731(0022),Stamping metals
+731(0023),Statuary
+731(0024),Fiber glass
+731(0025),Forging
+731(0026),Fountains
+731(0027),Lost-wax casting
+731(0028),Cement casting
+731(0029),Plastics casting
+731(0030),Plaster casting
+731(0031),Sand casting
+731(0032),Kilns
+731(0033),Vases
+731(0034),Hammering metals
+731(0035),Masks
+731(0036),Clay
+731(0037),Paper
+731(0038),Glass
+731(0039),Ceramic materials
+731(0040),Machining metals
+731(0041),Cutting metals
+731(0042),Extruding metals
+731(0043),Joining metals
+731(0044),Casting metals
+731(0045),Rolling metals
+731(0046),Metals
+731(0047),Shaping metals
+731(0048),Modeling
+731(0049),Models
+731(0050),Molding
+731(0051),Monuments
+731(0052),Mobiles
+731(0053),Papier-mache
+731(0054),Stone
+731(0055),Plastics
+731(0056),Portals
+731(0057),Totem poles
+731(0058),Doors
+731(0059),Relief - sculpture
+731(0060),Monumental reliefs
+731(0061),Riveting
+731(0062),Repousse
+731(0063),Potter's wheels
+731(0064),Brazing
+731(0065),Soldering
+731(0066),Carving
+731(0067),Textiles
+731(0068),Women's voices
+732,ANCIENT SCULPTURE (7)
+732(0001),Rock art
+732(0002),Ancient sculpture
+732(0003),Phoenician sculpture
+732(0004),Jewish sculpture
+732(0005),Mesopotamian sculpture
+732(0006),Oriental sculpture
+732(0007),Palestinian sculpture
+733,GREEK
+733(0001),Etruscan sculpture
+733(0002),Greek sculpture
+733(0003),Hellenic sculpture
+733(0004),Roman sculpture
+734,MEDIEVAL SCULPTURE (3)
+734(0001),Gothic sculpture
+734(0002),Medieval sculpture
+734(0003),Early Christian sculpture
+735,MODERN SCULPTURE (28)
+735(0001),Geometric abstractionism
+735(0002),Abstractionism
+735(0003),Art deco
+735(0004),Kinetic art
+735(0005),Conceptual art
+735(0006),Space art
+735(0007),Multiple art
+735(0008),Optical art
+735(0009),Pop art
+735(0010),Constructivism
+735(0011),Cubism
+735(0012),Dadaism
+735(0013),Geometric desjgn
+735(0014),Baroque sculpture
+735(0015),Classical revival sculpture
+735(0016),Renaissance sculpture
+735(0017),Structuralism  arts
+735(0018),Abstract expressionism
+735(0019),Expressionism
+735(0020),Fauvism
+735(0021),Romantic fiction
+735(0022),Functionalism
+735(0023),Real variable functions
+735(0024),Futurism
+735(0025),Neoplasticism
+735(0026),Nonobjectivity
+735(0027),Opart
+735(0028),Surrealism
+736,CARVING. SEALS. DIES. GEMS (43)
+736(0001),Amber
+736(0002),Ornamental woodwork
+736(0003),Cameos
+736(0004),Wax carving
+736(0005),Horn carving
+736(0006),Shells
+736(0007),Diamonds
+736(0008),Scarabs
+736(0009),Ornamental fans
+736(0010),Figurines
+736(0011),Cutting gems
+736(0012),Engraving gems
+736(0013),Gems
+736(0014),Glyptics
+736(0015),Glyptographers
+736(0016),Butter prints
+736(0017),Intaglios
+736(0018),Jade
+736(0019),Insanity
+736(0020),Effigial slabs
+736(0021),Sepulchral slabs
+736(0022),Ivory carving
+736(0023),Obsidian
+736(0024),Origami
+736(0025),Paper folding
+736(0026),Polishing gems
+736(0027),Lettering
+736(0028),Shell carving
+736(0029),Silhouettes
+736(0030),Ice carving
+736(0031),Bone carving
+736(0032),Soap carving
+736(0033),Wood carving
+736(0034),Snow carving
+736(0035),Stone carving
+736(0036),Carving
+736(0037),Whittling
+736(0038),Lapidary work
+736(0039),Tableware  wood
+736(0040),Sapphires
+737,NUMISMATICS. COINS. MEDALS (32)
+737(0001),Pins
+737(0002),Amulets
+737(0003),Campaign buttons
+737(0004),Sports buttons
+737(0005),Political buttons
+737(0006),Buttons
+737(0007),Counters
+737(0008),Decorations
+737(0009),Money
+737(0010),Tokens
+737(0011),Commemorative medals
+737(0012),Military medals
+737(0013),Religious medals
+737(0014),Medals
+737(0015),Medallions
+737(0016),Gold coins
+737(0017),Silver coins
+737(0018),Counterfeit coins
+737(0019),Coins
+737(0020),Numismatics
+737(0021),Numismatists
+737(0022),Campaign pins
+737(0023),Sports pins
+737(0024),Political pins
+737(0025),Orders
+737(0026),Seals signets stamps
+737(0027),Engraved seals
+737(0028),Sigillography
+737(0029),Talismans
+738,POTTERY. PORCELAIN (45)
+738(0001),Lighting fixtures
+738(0002),Glazing pottery
+738(0003),Potters
+738(0004),Clay  pottery
+738(0005),Ceramic arts
+738(0006),Ceramic artists
+738(0007),Tiles
+738(0008),Basse-taille
+738(0009),Braziers
+738(0010),Candlesticks
+738(0011),Casting pottery
+738(0012),Modeling pottery
+738(0013),Pottery
+738(0014),Champleve
+738(0015),Cloisonne
+738(0016),Containers  earthenware
+738(0017),Containers  pottery
+738(0018),Containers  porcelain
+738(0019),Sgrafitto decoration
+738(0020),Firing clays  pottery
+738(0021),Surface-painted enamels
+738(0022),Enamels
+738(0023),Glazes  pottery
+738(0024),Stoves
+738(0025),Figurines
+738(0026),Stoneware
+738(0027),Kilns
+738(0028),Bricks
+738(0029),Lamps
+738(0030),Earthenware
+738(0031),Ceramic materials  pottery
+738(0032),Color materials  pottery
+738(0033),Mosaics
+738(0034),Painting pottery
+738(0035),Transfer painting  pottery
+738(0036),Underglaze painting
+738(0037),Overglaze painting
+738(0038),Porcelain
+738(0039),Ronde bosse
+738(0040),Potter's wheels
+738(0041),Decorative treatment  pottery
+738(0042),Slip tracing
+738(0043),Tableware  pottery
+738(0044),Tableware earthenware
+738(0045),Tableware porcelain
+739,BRONZES. BRIC A BRAC (115)
+739(0001),Door knockers
+739(0002),Aluminum
+739(0003),Finger rings
+739(0004),Harquebuses
+739(0005),Bows
+739(0006),Armor
+739(0007),Edged weapons
+739(0008),Guns
+739(0009),Firearms
+739(0010),Missile-hurling weapons
+739(0011),Spring guns
+739(0012),Offensive arms
+739(0013),Small arms
+739(0014),Primitive weapons
+739(0015),Arms
+739(0016),Riveting
+739(0017),Artillery
+739(0018),Grilling  ironwork
+739(0019),Balustrades
+739(0020),Bayonets
+739(0021),Beating metals
+739(0022),Side arms
+739(0023),Brooches
+739(0024),Bronze
+739(0025),Buckles
+739(0026),Rubbings
+739(0027),Cannons
+739(0028),Carbines
+739(0029),Helmets
+739(0030),Ornamental nails
+739(0031),Nails
+739(0032),Clockcases
+739(0033),Copper
+739(0034),Necklaces
+739(0035),Containers  gold
+739(0036),Containers  ironwork
+739(0037),Containers  silver
+739(0038),Chromium
+739(0039),Silverware
+739(0040),Knives
+739(0041),Daggers
+739(0042),Damascening
+739(0043),Diamonds
+739(0044),Dirks
+739(0045),Axes
+739(0046),Emeralds
+739(0047),Swords
+739(0048),Tin
+739(0049),Ironwork
+739(0050),Forging
+739(0051),Rifles
+739(0052),Gems
+739(0053),Belt buckles
+739(0054),Shoe buckles
+739(0055),Jade
+739(0056),Jewelers
+739(0057),Jewelry
+739(0058),Jewelry  making
+739(0059),Brass
+739(0060),Monumental brasses
+739(0061),Lavalieres
+739(0062),Drawing metals
+739(0063),Extruding metals
+739(0064),Casting metals
+739(0065),Joining metals
+739(0066),Bending metals
+739(0067),Stamping metals
+739(0068),Ferrous metals
+739(0069),Machining metals
+739(0070),Rolling metals
+739(0071),Painting metals
+739(0072),Precious metals
+739(0073),Shaping metals
+739(0074),Metals
+739(0075),Cutting metals
+739(0076),Art metalwork
+739(0077),Art metalworkers
+739(0078),Muskets
+739(0079),Nickel
+739(0080),Goldsmithing
+739(0081),Patinating
+739(0082),Earrings
+739(0083),Pewter
+739(0084),Semiprecious stones
+739(0085),Air guns
+739(0086),Pistols
+739(0087),Platinumwork
+739(0088),Lead
+739(0089),Watches clocks
+739(0090),Repousse
+739(0091),Revolvers
+739(0092),Rubies
+739(0093),Sabers
+739(0094),Shields
+739(0095),Silversmithing
+739(0096),Brazing soldering welding
+739(0097),Spears
+739(0098),Loving cups
+739(0099),Tiaras
+739(0100),Anklets
+739(0101),Decorative treatment
+739(0102),Tableware  ironwork
+739(0103),Tableware  gold
+739(0104),Tableware  silver
+739(0105),Sapphires
+739(0106),Zinc
+740,DRAWING. DECORATION. DESIGN
+741,FREEHAND. CRAYON (64)
+741(0001),Advertisements
+741(0002),Commercial art
+741(0003),Commercial artists
+741(0004),Drawers - artists-
+741(0005),Calendars
+741(0006),Caricatures
+741(0007),Color
+741(0008),Comics
+741(0009),Composition
+741(0010),Match covers
+741(0011),Drawing-delineating
+741(0012),Crayon
+741(0013),Charcoal drawing
+741(0014),Ink drawing
+741(0015),Chalk drawing
+741(0016),Airbrush drawing
+741(0017),Marker drawing
+741(0018),Fashion drawing
+741(0019),Scratchboard drawing
+741(0020),Brush drawing
+741(0021),Silverpoint drawing
+741(0022),Drawing
+741(0023),Animated cartoons
+741(0024),Cartoons
+741(0025),Drawings
+741(0026),Graphic designers
+741(0027),Graphic design
+741(0028),Magazine illustration
+741(0029),Space arts
+741(0030),Style arts
+741(0031),Labels
+741(0032),Cartoon fiction
+741(0033),Form arts
+741(0034),Fotonovelas
+741(0035),Funnies
+741(0036),Sound recordings
+741(0037),Recordings
+741(0038),Book illustration
+741(0039),Sheet music illustration
+741(0040),Newspaper illustration
+741(0041),Illustration
+741(0042),Illustrators
+741(0043),Book jacket illustration
+741(0044),Children's books
+741(0045),Light arts
+741(0046),Movement arts
+741(0047),Graphic novels
+741(0048),Visual novels
+741(0049),Pastel drawing
+741(0050),Pen-and-ink drawing
+741(0051),Postcard illustration
+741(0052),Posters
+741(0053),Advertising
+741(0054),Silhouettes
+741(0055),Trade cards
+741(0056),Trading cards
+741(0057),Greeting cards
+741(0058),Advertising cards
+741(0059),Business cards
+741(0060),Time arts
+741(0061),Decorative values
+742,PERSPECTIVE DRAWING (1)
+742(0001),Shadows
+743,ART ANATOMY. LIFE SCHOOL DRAWING (27)
+743(0001),Animal anatomy
+743(0002),Human anatomy
+743(0003),Amphibians
+743(0004),Animals
+743(0005),Birds
+743(0006),Human bones
+743(0007),Draped figures
+743(0008),Nudes
+743(0009),Human figures
+743(0010),Flowers
+743(0011),Fruit
+743(0012),Men
+743(0013),Animals bones
+743(0014),Iconography
+743(0015),Insects
+743(0016),Seascapes
+743(0017),Mammals
+743(0018),Women
+743(0019),Animals muscles
+743(0020),Human muscles
+743(0021),Children
+743(0022),Cityscapes
+743(0023),Landscapes
+743(0024),Fish
+743(0025),Plants
+743(0026),Reptiles
+743(0027),Portraits
+744,MATHEMATICAL DRAWING
+745,ORNAMENTAL DESIGN. CARPET ETC. (142)
+745(0001),Decorative collections
+745(0002),Christmas decorations
+745(0003),Alphabets
+745(0004),Composite foods
+745(0005),Antiques
+745(0006),Public worship
+745(0007),Artificial flower arrangements
+745(0008),Fruit arrangements
+745(0009),Wedding music
+745(0010),Plant arrangements
+745(0011),Seed arrangements
+745(0012),Driftwood arrangements
+745(0013),Flower arrangements
+745(0014),Chinese flower arrangements
+745(0015),Japanese flower arrangements
+745(0016),Occidental flower arrangements
+745(0017),Oriental flower arrangements
+745(0018),Vegetable arrangements
+745(0019),Art nouveau
+745(0020),Industrial art
+745(0021),Decorative arts
+745(0022),Floral arts
+745(0023),Minor arts
+745(0024),Folk arts
+745(0025),Arts
+745(0026),Craftshandicrafts
+745(0027),Bread-dough handicrafts
+745(0028),Paper airplanes
+745(0029),Bamboo
+745(0030),Ships in bottles
+745(0031),Boutonnieres
+745(0032),Paperboard boxes
+745(0033),Paper boxes
+745(0034),Snuffboxes
+745(0035),Calligraphy
+745(0036),Latin calligraphy
+745(0037),Carolingian calligraphy
+745(0038),Chinese calligraphy
+745(0039),Cyrillic calligraphy
+745(0040),Italic calligraphy
+745(0041),Gothic calligraphy
+745(0042),Greek calligraphy
+745(0043),Western calligraphy
+745(0044),Roman calligraphy
+745(0045),Russian calligraphy
+745(0046),Candlesticks
+745(0047),Ornamental woodwork
+745(0048),Dollhouses
+745(0049),Rubber
+745(0050),Cycloramas
+745(0051),Decorative coloring
+745(0052),Containers
+745(0053),Corsages
+745(0054),Leather
+745(0055),Decalcomania
+745(0056),Baroque decoration
+745(0057),Byzantine decoration
+745(0058),Egg decorating
+745(0059),Gothic decoration
+745(0060),Modem decoration
+745(0061),Early Christian decoration
+745(0062),Renaissance decoration
+745(0063),Classical revival decoration
+745(0064),Rococo decoration
+745(0065),Romanesque decoration
+745(0066),Decoration
+745(0067),Decoupage
+745(0068),Shells
+745(0069),Dioramas
+745(0070),Heraldic design
+745(0071),Industrial design
+745(0072),Design
+745(0073),Gilding
+745(0074),Gift wrappings
+745(0075),Expertizing
+745(0076),Artificial flowers
+745(0077),Funerals
+745(0078),Beads
+745(0079),Handicrafters
+745(0080),Easter eggs
+745(0081),Illumination-decorative arts
+745(0082),Book illumination
+745(0083),Manuscript illumination
+745(0084),Japanning
+745(0085),Costume jewelry
+745(0086),Jewelry making
+745(0087),Soft toys making
+745(0088),Stuffed toys making
+745(0089),Padded toys making
+745(0090),Toys making
+745(0091),Lacquering
+745(0092),Artistic lettering
+745(0093),Decorative lettering
+745(0094),Marionettes making
+745(0095),Marquetry
+745(0096),Precious metals
+745(0097),Metals
+745(0098),Miniatures
+745(0099),Military models
+745(0100),Models
+745(0101),Inlay trim
+745(0102),Doll furniture
+745(0103),Dolls
+745(0104),Black-letter calligraphy
+745(0105),Found objects
+745(0106),Panoramas
+745(0107),Lampshades
+745(0108),Tissue paper
+745(0109),Wallpaper
+745(0110),Paper
+745(0111),Papier-mache
+745(0112),Furs
+745(0113),Painting
+745(0114),Plastics
+745(0115),Potichomania
+745(0116),Quilling
+745(0117),Romanticism
+745(0118),Doll clothing
+745(0119),Rosemaling
+745(0120),Lettering
+745(0121),Scrollwork
+745(0122),Decoys
+745(0123),Church services
+745(0124),Toy soldiers
+745(0125),Lead
+745(0126),Stenciling
+745(0127),Greeting cards
+745(0128),Christmas cards
+745(0129),Puppets  making
+745(0130),Tolecraft
+745(0131),Holidays
+745(0132),Tableware
+745(0133),Candles
+745(0134),Fans
+745(0135),Women's voices
+746,ART NEEDLEWORK (137)
+746(0001),Quilting
+746(0002),Afghans
+746(0003),Bokhara rugs
+746(0004),Pile rugs
+746(0005),Turkmen rugs
+746(0006),Indie rugs
+746(0007),Jacquard-weave rugs
+746(0008),Navajo rugs
+746(0009),Oriental rugs
+746(0010),Persian rugs
+746(0011),Turkish rugs
+746(0012),Carpets
+746(0013),Afghan rugs
+746(0014),Embroidered rugs
+746(0015),Bukhara rugs
+746(0016),Chinese rugs
+746(0017),Knitted rugs
+746(0018),Caucasus rugs
+746(0019),Plain-woven rugs
+746(0020),Twill-woven rugs
+746(0021),Tapestry-woven rugs
+746(0022),Braided rugs
+746(0023),Cotton  textiles
+746(0024),Antimacassars
+746(0025),Knotting textiles
+746(0026),String art
+746(0027),Textile arts
+746(0028),Textile handicrafts
+746(0029),Bargello
+746(0030),Batik
+746(0031),Bedclothing
+746(0032),Block printing
+746(0033),Bead embroidery
+746(0034),Counted thread embroidery
+746(0035),Canvas embroidery
+746(0036),Embroidery
+746(0037),Scarves
+746(0038),Hemp textiles
+746(0039),Carding textiles
+746(0040),Carpetmakers
+746(0041),Basketry
+746(0042),Couching
+746(0043),Bedspreads
+746(0044),Needlepoint laces
+746(0045),Bobbin laces
+746(0046),Knitted laces
+746(0047),Cords
+746(0048),Darned laces
+746(0049),Curtains
+746(0050),Art needlework
+746(0051),Needlework
+746(0052),Crewelwork
+746(0053),Furniture covers
+746(0054),Cutwork
+746(0055),Fiber glass textiles
+746(0056),Drawn work
+746(0057),Fashion designers
+746(0058),Fashion design
+746(0059),Quilts
+746(0060),Hangings
+746(0061),Needlepoint
+746(0062),Crocheted laces
+746(0063),Laces
+746(0064),Hooked rugs arts
+746(0065),Mats
+746(0066),Matting
+746(0067),Animal fibers textiles
+746(0068),Man-made fibers textiles
+746(0069),Fringes
+746(0070),Pictures
+746(0071),Pillowcases
+746(0072),Slipcovers
+746(0073),Crocheting
+746(0074),Textile handicrafters
+746(0075),Printing
+746(0076),Flax  textiles
+746(0077),Macrame
+746(0078),Blankets
+746(0079),Table linens
+746(0080),Machine embroidery
+746(0081),Interior furnishings
+746(0082),Fashion
+746(0083),Fashion modeling
+746(0084),Models - fashion
+746(0085),Smocking
+746(0086),Dyeing yams
+746(0087),Paper  textiles
+746(0088),Passementerie
+746(0089),Patchwork
+746(0090),Combing textiles
+746(0091),Painting
+746(0092),Cross-stitch
+746(0093),Rayon  textiles
+746(0094),Netting
+746(0095),Resist-dyeing
+746(0096),Kneelers
+746(0097),Fair linens
+746(0098),Clothing
+746(0099),Rushwork
+746(0100),Sheets
+746(0101),Silk-screen printing
+746(0102),Serviettes
+746(0103),Spinning textiles
+746(0104),Sprang
+746(0105),Reeling textiles
+746(0106),Crocheted rugs
+746(0107),Doilies
+746(0108),Upholstery
+746(0109),Tapestry makers
+746(0110),Tapestries
+746(0111),Tatting
+746(0112),Knitting
+746(0113),Crocheted fabrics
+746(0114),Silk textiles
+746(0115),Weaving arts
+746(0116),Weavingarts
+746(0117),Dyeing
+746(0118),Sheep's wool textiles
+746(0119),Tie-dyeing
+746(0120),Towels
+746(0121),Twisting textiles
+746(0122),Toweling
+746(0123),Handwork
+746(0124),Raffia work
+746(0125),Braiding textiles
+746(0126),Braids
+746(0127),Twining
+746(0128),Weaving
+746(0129),Jute andtextiles
+748,STAINED
+748(0001),Ornaments glass
+748(0002),Glass artists
+748(0003),Bottles  glass
+748(0004),Sandblasting glass
+748(0005),Containers  glass
+748(0006),Bottle cutting
+748(0007),Jar cutting
+748(0008),Cast glassware
+748(0009),Glassware
+748(0010),Glass beads
+748(0011),Mirrors
+748(0012),Glassblowing
+748(0013),Mosaic glass
+748(0014),Glass painting
+748(0015),Paperweights glass
+748(0016),Glass staining
+748(0017),Decorative treatment
+748(0018),Tableware glass
+748(0019),Drinking glasses
+748(0020),Stained glass
+748(0021),Leaded glass
+748(0022),Enameling glass
+748(0023),Engraving glass
+748(0024),Etching glass
+748(0025),Painted glass
+748(0026),Blown glassware
+748(0027),Cutting glass
+748(0028),Glass
+749,ARTISTIC FURNITURE (30)
+749(0001),Lighting fixtures
+749(0002),Sconces
+749(0003),Cabinets
+749(0004),Lacquering
+749(0005),Shadow boxes
+749(0006),Fireplaces
+749(0007),Mantels
+749(0008),Clockcases
+749(0009),Built-in furniture
+749(0010),Furniture designers
+749(0011),Picture framing
+749(0012),Heating equipment
+749(0013),Desks
+749(0014),Mirrors furniture
+749(0015),Inglenooks furniture arts
+749(0016),Chandeliers
+749(0017),Lamps
+749(0018),Picture frames
+749(0019),Marquetry
+749(0020),Tables
+749(0021),Antique furniture
+749(0022),Period furniture
+749(0023),Outdoor furniture
+749(0024),Furniture
+749(0025),Ornamental woodwork
+749(0026),Screens
+749(0027),Scrollwork
+749(0028),Chairs
+750,PAINTING
+751,PAINTING MATERIALS
+751(0001),Street art-murals
+751(0002),Cycloramas
+751(0003),Copies
+751(0004),Dioramas
+751(0005),Forgeries
+751(0006),Frescoes
+751(0007),Gouache
+751(0008),Graffiti
+751(0009),Surfaced lumber painting material
+751(0010),Fixatives painting material
+751(0011),Water-soluble mediums
+751(0012),Panoramas
+751(0013),Pigments painting material
+751(0014),Finger painting
+751(0015),Acrylic painting
+751(0016),Fresco painting
+751(0017),Oil painting
+751(0018),Tempera painting
+751(0019),Brayer painting
+751(0020),Ink painting
+751(0021),Sand painting
+751(0022),Casein painting
+751(0023),Wax painting
+751(0024),Airbrush painting
+751(0025),Collage painting
+751(0026),Roller painting
+751(0027),Chinese ink painting
+751(0028),Encaustic painting
+751(0029),Japanese ink painting
+751(0030),Polymer painting
+751(0031),Scene paintings
+751(0032),Miniature paintings
+751(0033),Mural paintings
+751(0034),Reproductions
+751(0035),Sumie
+751(0036),Glass underpainting
+751(0037),Waterberg
+752,COLOR PAINTING (1)
+752(0001),Color
+753,EPIC. MYTHIC. IDEALISTIC PAINTING (5)
+753(0001),Allegheny spurge
+753(0002),Iconography
+753(0003),Legends
+753(0004),Mythology
+753(0005),Symbolic theory of folklore
+754,GENRE. STILL LIFE PAINTING (1)
+754(0001),Genre paintings
+755,RELIGIOUS. ECCLESIASTIC PAINTING (2)
+755(0001),Religion
+755(0002),Religious symbolism
+756,HISTORICAL. BATTLES ETC. PAINTING
+757,PORTRAIT PAINTING (11)
+757(0001),Draped figures
+757(0002),Nudes
+757(0003),Human figures
+757(0004),Groups of figures
+757(0005),Men
+757(0006),Women
+757(0007),Children
+757(0008),Erotic painting
+757(0009),Pornography
+757(0010),Miniature portraits
+757(0011),Portraits
+758,LANDSCAPE. MARINE PAINTING (16)
+758(0001),Animals
+758(0002),Architecture
+758(0003),Geographical subjects
+758(0004),Hunting
+758(0005),Civilization
+758(0006),Marine scenes
+758(0007),Historical school
+758(0008),Flowers
+758(0009),Industry
+758(0010),Seascapes
+758(0011),Nature
+758(0012),Cityscapes
+758(0013),Landscapes
+758(0014),Plants
+758(0015),Technology
+758(0016),Still life
+759,VARIOUS SCHOOLS PAINTING (46)
+759(0001),Geometric abstractionism
+759(0002),Abstractionism
+759(0003),Conceptual art
+759(0004),Optical art
+759(0005),Pop art
+759(0006),Rock art
+759(0007),Constructivism
+759(0008),Cubism
+759(0009),Dadaism
+759(0010),Geometric desjgn
+759(0011),Divisionism
+759(0012),Abstract expressionism
+759(0013),Expressionism
+759(0014),Fauvism
+759(0015),Romantic fiction
+759(0016),Functionalism
+759(0017),Real variable functions
+759(0018),Futurism
+759(0019),Impressionism
+759(0020),Luminism
+759(0021),Composite media
+759(0022),Naturalism
+759(0023),Neoclassicism
+759(0024),Neo-impressionism
+759(0025),Neoimpressionism
+759(0026),Neoplasticism
+759(0027),Nonobjectivity
+759(0028),Opart
+759(0029),Paleolithic Age
+759(0030),Painters
+759(0031),Baroque painting
+759(0032),Byzantine painting
+759(0033),Renaissance painting
+759(0034),Gothic painting
+759(0035),Medieval painting
+759(0036),Modem painting
+759(0037),Early Christian painting
+759(0038),Classical revival painting
+759(0039),Rococo painting
+759(0040),Romanesque painting
+759(0041),Pleinairism
+759(0042),Postimpressionism
+759(0043),Pointillism
+759(0044),Symbolism
+759(0045),Synthetism
+759(0046),Surrealism
+760,ENGRAVING (11)
+760(0002),Mixed-media arts
+760(0003),Graphic arts
+760(0004),Pictorial arts
+760(0005),Graphic artists
+760(0006),Rubbings
+760(0007),Composites
+760(0008),Typographical designs
+760(0009),Pictures
+760(0010),Engraving
+760(0011),Print making
+761,WOOD ENGRAVING (7)
+761(0001),Block printing
+761(0002),Wood engraving
+761(0003),Metal relief engraving
+761(0004),Potato printing
+761(0005),Rubber-stamp printing
+761(0006),Relief printing
+761(0007),Linoleum-block printing
+762,COPPER. STEEL ENGRAVING
+763,LITHOGRAPHY (5)
+763(0001),Planographic printing
+763(0002),Aluminum lithography
+763(0003),Stone lithography
+763(0004),Lithography
+763(0005),Zinc lithography
+764,CHROMOLITHOGRAPHY (3)
+764(0001),Chromolithography
+764(0002),Serigraphy
+764(0003),Silk-screen printing
+765,LINE STIPPLE ENGRAVING (5)
+765(0001),Crible engraving
+765(0002),Metal engraving
+765(0003),Stipple engraving
+765(0004),Intaglio printing
+765(0005),Line engraving
+766,MEZZOTINT. AQUATINT ENGRAVING (2)
+766(0001),Aquatinting
+766(0002),Mezzotinting
+767,ETCHING. DRY POINT ENGRAVING (2)
+767(0001),Etching
+767(0002),Drypoint
+768,BANKNOTE. MACHINE ENGRAVING
+769,COLLECTIONS OF ENGRAVINGS (31)
+769(0001),Cancellations - philately-
+769(0002),Counterfeit cancellations
+769(0003),Counterfeit covers
+769(0004),Covers - philately-
+769(0005),Ration coupons
+769(0006),Diplomas
+769(0007),United Nations philatelic issues
+769(0008),Postal stationery
+769(0009),Bookplates
+769(0010),Counterfeit paper money
+769(0011),Philately
+769(0012),Engravers
+769(0013),Printmakers
+769(0014),Prints
+769(0015),Labelle stamps
+769(0016),Insanity
+769(0017),Postmarks
+769(0018),Paper dolls
+769(0019),Name cards
+769(0020),Paper money
+769(0021),Lettering
+769(0022),Cachets - philately-
+769(0023),Commemorative stamps
+769(0024),Savings stamps
+769(0025),Christmas seals - prints-
+769(0026),Revenue stamps
+769(0027),Counterfeit postage stamps
+769(0028),Postage stamps
+769(0029),Postage-due stamps
+769(0030),Postal savings stamps
+769(0031),Postcards
+770,PHOTOGRAPHY (3)
+770(0001),Instant photography
+770(0002),Photography
+770(0003),Photographers
+771,PHOTOGRAPHIC CHEMISTRY (45)
+771(0001),Storage
+771(0002),Enlargers
+771(0003),Focusing apparatus
+771(0004),Printing apparatus
+771(0005),Cameras
+771(0006),Automatic cameras
+771(0007),Instant cameras
+771(0008),Miniature cameras
+771(0009),Single-lens reflex cameras
+771(0010),Developing - photography-
+771(0011),Developing apparatus
+771(0012),Developing solutions
+771(0013),Photographic equipment
+771(0014),Carrying cases
+771(0015),Studios
+771(0016),Exposure meters
+771(0017),Photography
+771(0018),Printing
+771(0019),Lenses
+771(0020),Plateaus  photosensitive surfaces
+771(0021),Paper
+771(0022),Films - photographic material-
+771(0023),Films
+771(0024),Shutters - cameras-
+771(0025),Positives - photography-
+771(0026),Preservation
+771(0027),Photographic chemicals
+771(0028),Chemicals
+771(0029),Reducing solutions
+771(0030),Intensifying solutions photography
+771(0031),Fixing solutions
+771(0032),Printing solutions
+771(0033),Toning solutions
+771(0034),Photosensitive surfaces
+771(0035),Darkroom techniques
+771(0036),Range finders
+771(0037),Tripods - cameras-
+771(0038),Viewfinders
+772,SILVER PROCESSES ETC. (10)
+772(0001),Daguerreotype process
+772(0002),Platinum printing-out process
+772(0003),Ferrotype process
+772(0004),Wet-collodion process
+772(0005),Tintype process
+772(0006),Kallitype processes
+772(0007),Silver processes
+772(0008),Metallic salt processes
+772(0009),Direct positive processes
+772(0010),Platinotype processes
+773,GELATINE
+773(0001),Bromoil process
+773(0002),Carbro process
+773(0003),Mariotype process
+773(0004),Ozobrome process
+773(0005),Ozotype process
+773(0006),Carbon processes
+773(0007),Imbibition processes
+773(0008),Pigment processes
+773(0009),Oil processes
+773(0010),Diazotype processes
+773(0011),Powder processes
+773(0012),Photoceramic processes
+773(0013),Peppertype processes
+773(0014),Photoenamel processes
+773(0015),Gum-bichromate processes
+773(0016),Dusting-on processes
+774,GELATINE
+774(0001),Holography
+776,PHOTOLITHOGRAPHY ETC.
+777,PHOTOENGRAVING. PHOTO ELECTROS
+778,SPECIAL APPLICATIONS (78)
+778(0001),Aerospace photography
+778(0002),High contrast photography
+778(0003),Artificial-light photography
+778(0004),Binocular-vision photography
+778(0005),Amateur motion pictures
+778(0006),Cinematography
+778(0007),Time-lapse cinematography
+778(0008),Cold-weather photography
+778(0009),Color photography
+778(0010),Slides - photography-
+778(0011),Animated cartoons
+778(0012),Editing films
+778(0013),Special effects
+778(0014),Special effects  photography
+778(0015),Space photography
+778(0016),Stereoscopic motion-picture
+778(0017),Dry weather photography
+778(0018),Filmstrips
+778(0019),Flashbulb photography
+778(0020),Aerial photography
+778(0021),Outdoor photography
+778(0022),Electronic flash photography
+778(0023),Available light photography
+778(0024),High speed photography
+778(0025),Indoor photography
+778(0026),Close-up photography
+778(0027),Sound
+778(0028),Stereoscopic photography
+778(0029),Infrared photography
+778(0030),Kirlian photography
+778(0031),Monochromatic photography
+778(0032),Night photography
+778(0033),Orthochromatic photography
+778(0034),Panchromatic photography
+778(0035),Panoramic photography
+778(0036),Underwater photography
+778(0037),Color photography  motion pictures
+778(0038),Photomicrography
+778(0039),Photomontage
+778(0040),Television recording
+778(0041),Video recordings
+778(0042),Television recorders
+778(0043),Video recorders
+778(0044),Hot weather photography
+778(0045),Lighting
+778(0046),Photomacrography
+778(0047),Motion-picture photography
+778(0048),Newsreel photography
+778(0049),Microscopic objects
+778(0050),Amateur motion pictures  photography
+778(0051),Motion-picture
+778(0052),Composite photography
+778(0053),Photopsychography
+778(0054),Lippmann process
+778(0055),Additive processes
+778(0056),Direct processes
+778(0057),Subtractive processes
+778(0058),Motion-picture projection
+778(0059),Photographic projection
+778(0060),Sound synchronization
+778(0061),Stereophonic sound systems
+778(0062),Tabletop photography
+778(0063),Sound  motion-picture photography
+778(0064),Telephotography
+778(0065),Television photography
+778(0066),Titling
+778(0067),Trick photography
+778(0068),Ultrahigh-speed photography
+778(0069),Wet-weather photography
+779,COLLECTIONS OF PHOTOGRAPHS (1)
+779(0001),Photographs
+780,MUSIC (76)
+780(0001),Performances
+780(0002),Ars antiqua
+780(0003),Ars nova
+780(0004),Thematic catalogs
+780(0005),Composers
+780(0006),Concerts
+780(0007),Sketch books
+780(0008),Scores
+780(0009),Synonym dictionaries
+780(0010),Editing music
+780(0011),Scenarios
+780(0012),Ethnomusicology
+780(0013),Romantic fiction
+780(0014),Sound recordings
+780(0015),Recordings
+780(0016),Analytical guides
+780(0017),Screenplays
+780(0018),Impressionism
+780(0019),Lyrics
+780(0020),Librettos
+780(0021),Manuscripts
+780(0022),Music
+780(0023),Baroque music
+780(0024),Avant-garde music
+780(0025),Renaissance music
+780(0026),Gothic music
+780(0027),Printed music
+780(0028),Medieval music
+780(0029),Modem music
+780(0030),Rococo music
+780(0031),Musicians
+780(0032),Neoclassicism
+780(0033),Neumes
+780(0034),Musical notation
+780(0035),Program notes
+780(0036),Nuove musiche
+780(0037),Autograph scores
+780(0038),Study scores
+780(0039),Piano-vocal scores
+780(0040),Poems
+780(0041),Preclassicism
+780(0042),Pocket scores
+780(0043),Performance scores
+780(0044),Miniature scores
+780(0045),Conducting scores
+780(0046),Recitals
+780(0047),National unions
+780(0048),Tablature
+780(0049),Texts
+780(0050),Classical typology
+780(0051),Tonic sol-fa
+780(0052),Word usage
+780(0053),Video recordings
+781,MUSIC THEORY (272)
+781(0001),Acid Rock
+781(0002),Accompaniment
+781(0003),Chords - music-
+781(0004),Embellishments
+781(0005),Customs
+781(0006),Advent
+781(0007),Court settings
+781(0008),Domestic settings
+781(0009),Formal analysis
+781(0010),Church year
+781(0011),Appreciation
+781(0012),Music appreciation
+781(0013),Harmony
+781(0014),Arpeggios
+781(0015),Arrangement - music-
+781(0016),Art music
+781(0017),Atonality
+781(0018),Aleatory composition
+781(0019),Thorough bass
+781(0020),Bar mitzvah
+781(0021),Infant baptism
+781(0022),Baptism
+781(0023),Christening
+781(0024),Bebop
+781(0025),Bop
+781(0026),Blues
+781(0027),Cadences
+781(0028),Fall
+781(0029),Life cycle
+781(0030),Circumcision
+781(0031),Color
+781(0032),Tone color
+781(0033),Composition y music
+781(0034),Indeterminacy composition
+781(0035),Computer composition - music-
+781(0036),Confinement
+781(0037),Consonance
+781(0038),Continuo
+781(0039),Counterpoint
+781(0040),Countersubjects
+781(0041),Courtship
+781(0042),Cremation
+781(0043),Debuts
+781(0044),Decay
+781(0045),Rests
+781(0046),Days
+781(0047),Diatonicism
+781(0048),Dissonance
+781(0049),Dodecaphony
+781(0050),Trinity Sunday
+781(0051),Palm Sunday
+781(0052),Sunday
+781(0053),Mourning
+781(0054),Sound
+781(0055),Musical elements
+781(0056),Rehearsal
+781(0057),Ear training
+781(0058),Entertainments
+781(0059),Epiphany
+781(0060),Scales - music-
+781(0061),Public entertainment
+781(0062),Betrothal
+781(0063),Aesthetics
+781(0064),Folk rock
+781(0065),Binary form
+781(0066),Chaconne form
+781(0067),Da capo form
+781(0068),Strophic form
+781(0069),Passacaglia form
+781(0070),Sonata-rondo form
+781(0071),Theme
+781(0072),Ternary form
+781(0073),Scalic
+781(0074),Cantus firmus forms
+781(0075),Forms of music
+781(0076),Musical forms
+781(0077),Ostinato forms
+781(0078),Rondo forms
+781(0079),Recording
+781(0080),Taste
+781(0081),Hard bop
+781(0082),Hard rock
+781(0083),Harlem jazz
+781(0084),Heterophony
+781(0085),Homophony
+781(0086),Idee fixe
+781(0087),Improvisation - music-
+781(0088),Inaugurations
+781(0089),Incidental dramatic music
+781(0090),Indo jazz
+781(0091),Infancy
+781(0092),Interpretation
+781(0093),Intervals
+781(0094),Winter
+781(0095),Jazz
+781(0096),Afiro-Cuban jazz
+781(0097),New Orleans jazz
+781(0098),Avant-garde jazz
+781(0099),Dixieland jazz
+781(0100),Mainstream jazz
+781(0101),Progressive jazz
+781(0102),Maundy Thursday
+781(0103),Sight reading
+781(0104),Leitmotif
+781(0105),Macrotonality
+781(0106),Marriage
+781(0107),Majority
+781(0108),Melody
+781(0109),Meter - music-
+781(0110),Memorizing
+781(0111),Microtonality
+781(0112),Bath mitzvah
+781(0113),Modem jazz
+781(0114),Modes - music-
+781(0115),Western folk music modes
+781(0116),Medieval church modes
+781(0117),Greek modes
+781(0118),Monody
+781(0119),Death
+781(0120),Dead  disposal
+781(0121),Television music
+781(0122),Outdoor music
+781(0123),Ballet music
+781(0124),Bluegrass music
+781(0125),Classical music
+781(0126),Harvest music
+781(0127),Country music
+781(0128),Indoor music
+781(0129),Wedding music
+781(0130),Morning music
+781(0131),Evening music
+781(0132),Non-Western art music
+781(0133),Dance music
+781(0134),Film music
+781(0135),Lenten music
+781(0136),Church music
+781(0137),Christmas music
+781(0138),Protest music
+781(0139),Sports music
+781(0140),Dramatic music
+781(0141),Street music
+781(0142),Seasonal music
+781(0143),Folk music
+781(0144),Funeral music
+781(0145),Mass media music
+781(0146),Military music
+781(0147),Noon music
+781(0148),Western art music
+781(0149),Easter music
+781(0150),Patriotic music
+781(0151),Political music
+781(0152),Popular music
+781(0153),Western popular music
+781(0154),Radio music
+781(0155),Recreational music
+781(0156),Sacred music
+781(0157),Anglican sacred music
+781(0158),Baptist sacred music
+781(0159),Roman Catholic sacred music
+781(0160),Confucianist sacred music
+781(0161),Christian sacred music
+781(0162),Lutheran sacred music
+781(0163),Methodist sacred music
+781(0164),Presbyterian sacred music
+781(0165),Taoist sacred music
+781(0166),Buddhist sacred music
+781(0167),Hindu sacred music
+781(0168),Islamic sacred music
+781(0169),Judaic sacred music
+781(0170),Afternoon music
+781(0171),Work music
+781(0172),Jazz musicians
+781(0173),Rock musicians
+781(0174),Folk musicians
+781(0175),Night music
+781(0176),Note rows
+781(0177),New York jazz
+781(0178),Harmonic organization
+781(0179),Orchestration
+781(0180),Eastern Orthodox sacred music
+781(0181),Autumn
+781(0182),Paraphrase
+781(0183),Parody
+781(0184),Childbirth
+781(0185),Eastertide
+781(0186),Passiontide
+781(0187),Pentatonicism
+781(0188),Pentecost
+781(0189),Pitch
+781(0190),Polyphony
+781(0191),Practice
+781(0192),Spring
+781(0193),Scientific principles
+781(0194),Program music
+781(0195),Puberty
+781(0196),Pulse
+781(0197),Score reading
+781(0198),Ragas
+781(0199),Ragtime
+781(0200),Conducting
+781(0201),Timber resources
+781(0202),Reggae
+781(0203),Key relationships in music
+781(0204),Resonance
+781(0205),Breathing
+781(0206),Rhythm
+781(0207),Harmonic rhythm
+781(0208),Initiation rites
+781(0209),Rock - music-
+781(0210),Rock 'n' roll
+781(0211),Rubato
+781(0212),Saturday
+781(0213),Concert halls
+781(0214),Holy Week
+781(0215),Serialism
+781(0216),Silence
+781(0217),Twelve-tone system
+781(0218),Tonal systems in music-
+781(0219),Skiffle
+781(0220),Soft rock
+781(0221),Musical sound
+781(0222),Soul music
+781(0223),Southwest jazz
+781(0224),Swing in music
+781(0225),Theaters
+781(0226),Ensemble technique
+781(0227),Aural techniques
+781(0228),Performance techniques
+781(0229),Visual techniques
+781(0230),Themes
+781(0231),Seasons
+781(0232),Music theory
+781(0233),Third stream jazz
+781(0234),Texture in music
+781(0235),Playing time
+781(0236),Timbre
+781(0237),Whole tonality
+781(0238),Tonality
+781(0239),Musical traditions
+781(0240),Transcription
+781(0241),Transposition - music-
+781(0242),Trills
+781(0243),Variations
+781(0244),Summer
+781(0245),Vibrato
+781(0246),Sea life
+781(0247),Good Friday
+781(0248),Volume
+781(0249),Wake
+781(0250),Time zones
+782,DRAMATIC MUSIC (197)
+782(0001),Public worship with choral
+782(0002),Agnus Dei
+782(0003),Amens
+782(0004),Ballad in operas
+782(0005),Ballade
+782(0006),Balletts
+782(0007),Benedictus
+782(0008),Bible
+782(0009),Bible in choral of mixed voices
+782(0010),Songs
+782(0011),Songs in choral of mixed voices
+782(0012),Singers
+782(0013),Opera singers
+782(0014),Canticles
+782(0015),Cantatas
+782(0016),Anglican chant
+782(0017),Plainsong
+782(0018),Gregorian chants
+782(0019),Chants
+782(0020),Chansons
+782(0021),Song cycles
+782(0022),Song cycles para chorals
+782(0023),Compline
+782(0024),Common of the mass
+782(0025),Communion
+782(0026),Credo
+782(0027),Public worship
+782(0028),Synonym dictionaries  vocal music
+782(0029),Divine office
+782(0030),Liturgical drama
+782(0031),Scenarios
+782(0032),Forms of vocal music
+782(0033),Musical forms
+782(0034),Vocal forms
+782(0035),Dramatic vocal forms
+782(0036),Nondramatic vocal forms
+782(0037),Frottole
+782(0038),Gloria
+782(0039),Gradual
+782(0040),Anthems
+782(0041),Anthems hymnsand chorals
+782(0042),Office hours
+782(0043),Introit
+782(0044),Kyrie
+782(0045),Lauds
+782(0046),Litanies
+782(0047),Liturgy
+782(0048),Madrigals
+782(0049),Matins
+782(0050),Masques
+782(0051),Requiem mass
+782(0052),Mass
+782(0053),Motets
+782(0054),Choral music
+782(0055),Liturgical music
+782(0056),Liturgical music  vocal forms
+782(0057),Anglican sacred music
+782(0058),Baptist sacred music
+782(0059),Roman Catholic sacred music
+782(0060),Confucianist sacred music
+782(0061),Confucianist sacred music  public worship
+782(0062),Christian sacred music
+782(0063),Lutheran sacred music
+782(0064),Methodist sacred music
+782(0065),Presbyterian sacred music
+782(0066),Taoist sacred music
+782(0067),Sacred music
+782(0068),Sacred music  vocal forms
+782(0069),Buddhist sacred music
+782(0070),Hindu sacred music
+782(0071),Islamic sacred music
+782(0072),Judaic sacred music
+782(0073),Sacred music  songs
+782(0074),Vocal music
+782(0075),Secular vocal music
+782(0076),Musicals
+782(0077),Children
+782(0078),Children  operas for
+782(0079),Musical plays
+782(0080),Offertory
+782(0081),Operas
+782(0082),Operettas
+782(0083),Morning prayer
+782(0084),Evening prayer
+782(0085),Lord's Prayer
+782(0086),Oratorios
+782(0087),Ordinary of the mass
+782(0088),Eastern Orthodox sacred music
+782(0089),Passion of Jesus Christ
+782(0090),Prime
+782(0091),Proper of the mass
+782(0092),Responses
+782(0093),Revues
+782(0094),Rites
+782(0095),Psalms
+782(0096),Sanctus
+782(0097),Sequence
+782(0098),Communion service
+782(0099),Church services
+782(0100),Sext
+782(0101),Whistle - voices-
+782(0102),Whistle
+782(0103),Singspiels
+782(0104),Plots
+782(0105),Spirituals
+782(0106),Sprechgesang
+782(0107),Suffrages
+782(0108),Terce
+782(0109),Tract - music-
+782(0110),Tropes
+782(0111),Christmas carols
+782(0112),Carols
+782(0113),Treble viols
+782(0114),Evensong vespers
+782(0115),Vocalists
+782(0116),Alto voices
+782(0117),Alto voices  children's
+782(0118),Treble voices
+782(0119),Castrato voices
+782(0120),Common voices of choral
+782(0121),Countertenor voices
+782(0122),Children's voices
+782(0123),Bass voices
+782(0124),Contralto voices
+782(0125),Contralto voices  women's
+782(0126),Contralto voices  children's
+782(0127),Contralto voices  general works
+782(0128),Men's voices
+782(0129),Women's voices
+782(0130),Soprano voices
+782(0131),Soprano voices  women's
+782(0132),Soprano voices  children's
+782(0133),Soprano voices  general works
+782(0134),Tenor voices
+782(0135),Baritone voices
+782(0136),Falsetto voices
+782(0137),Mezzo-soprano voices
+782(0138),Mezzo-soprano voices  women's
+782(0139),Mezzo-soprano voices  children's
+782(0140),Mezzo-soprano voices  general works
+782(0141),Mixed voices
+782(0142),Speaking voices
+782(0143),Unison voices
+783,SACRED MUSIC (73)
+783(0001),Public worship
+783(0002),High voices
+783(0003),Bass
+783(0004),Bible
+783(0005),Changing voices
+783(0006),Songs
+783(0007),Cantatas
+783(0008),Chants
+783(0009),Song cycles
+783(0010),Common of the mass
+783(0011),Quartets
+783(0012),Liturgical drama
+783(0013),Duets
+783(0014),Anthems
+783(0015),Hymns
+783(0016),Voice instruments
+783(0017),Kazoo
+783(0018),Madrigals
+783(0019),Mirliton
+783(0020),Requiem mas music
+783(0021),Mass music
+783(0022),Motets
+783(0023),Liturgical music
+783(0024),Christian sacred music  public worship
+783(0025),Sacred music  vocal forms
+783(0026),Sacred music  songs
+783(0027),Secular vocal music
+783(0028),Nonets
+783(0029),Octets
+783(0030),Divine office
+783(0031),Morning prayer
+783(0032),Evening prayer
+783(0033),Part songs
+783(0034),Proper of the mass
+783(0035),Quintets
+783(0036),Roarers - musical instruments-
+783(0037),Psalms
+783(0038),Septets
+783(0039),Sextets
+783(0040),Whistle
+783(0041),Spirituals
+783(0042),Sprechgesang
+783(0043),Trios
+783(0044),Tropes
+783(0045),Carols
+783(0046),Alto voices  children's
+783(0047),Treble voices  men's
+783(0048),Castrato voices
+783(0049),Countertenor voices
+783(0050),Children's voices
+783(0051),Bass voices
+783(0052),Contralto voices  children's
+783(0053),Contralto voices  women's
+783(0054),Contralto voices  general works
+783(0055),Men's voices
+783(0056),Women's voices
+783(0057),Soprano voices  women's
+783(0058),Soprano voices  children's
+783(0059),Soprano voices  general works
+783(0060),Tenor voices
+783(0061),Baritone voices
+783(0062),Falsetto voices
+783(0063),Mezzo-soprano voices  children's
+783(0064),Mezzo-soprano voices  women's
+783(0065),Mezzo-soprano voices  general works
+783(0066),Speaking voices
+783(0067),Solo voices
+783(0068),Middle voice
+783(0069),Voice
+784,VOCAL
+784(0002),Ballades
+784(0003),Bands
+784(0004),Brass bands
+784(0005),Marching bands
+784(0006),Percussion bands
+784(0007),Rhythm bands
+784(0008),Keyboard bands
+784(0009),Wind bands
+784(0010),Woodwind bands
+784(0011),Electronic bands
+784(0012),Mechanical bands
+784(0013),Military bands
+784(0014),Bowing techniques
+784(0015),Concerti grossi
+784(0016),Concertos
+784(0017),Horn concertos
+784(0018),Clarinet concertos
+784(0019),Flute concertos
+784(0020),Guitar concertos
+784(0021),Oboe concertos
+784(0022),Organ concertos
+784(0023),Violin concertos
+784(0024),Cello concertos
+784(0025),Viola concertos
+784(0026),Instrumental ensembles
+784(0027),Dances of the suite form
+784(0028),Fingering - music-
+784(0029),Orchestra conductors
+784(0030),Electrophones
+784(0031),Embouchure
+784(0032),Arabesque form
+784(0033),Binary form
+784(0034),Cadenza form
+784(0035),Cakewalk form
+784(0036),Canon form
+784(0037),Canzona form
+784(0038),Cassation form
+784(0039),Chaconne form
+784(0040),Concertante form
+784(0041),Concertino form
+784(0042),Chorale form
+784(0043),Da capo form
+784(0044),Symphonic poem form
+784(0045),Divertimento form
+784(0046),Elegy form
+784(0047),Strophic form
+784(0048),Etude form
+784(0049),Artistic etude form
+784(0050),Fanfare form
+784(0051),Fugue form
+784(0052),Galliard form
+784(0053),Galop form
+784(0054),Gavotte form
+784(0055),Hoedown form
+784(0056),Impromptu form
+784(0057),Innomine form
+784(0058),Interlude form
+784(0059),Intermezzo form
+784(0060),Invention form
+784(0061),Mazurka form
+784(0062),Minuet form
+784(0063),Nocturne form
+784(0064),Overture form
+784(0065),Partita form
+784(0066),Passacaglia form
+784(0067),Pavane form
+784(0068),Polka form
+784(0069),Polonaise form
+784(0070),Postlude form
+784(0071),Prelude form
+784(0072),Chorale prelude form
+784(0073),Rhapsody form
+784(0074),Romance form
+784(0075),Rumba form
+784(0076),Saltarello form
+784(0077),Samba form
+784(0078),Serenade form
+784(0079),Siciliano form
+784(0080),Sinfonia concertante form
+784(0081),Sinfonietta form
+784(0082),Sonata-rondo form
+784(0083),Sonatina form
+784(0084),Tango form
+784(0085),Ternary form
+784(0086),Tiento form
+784(0087),Toccata form
+784(0088),Waltz form
+784(0089),Concerto forms
+784(0090),Contrapuntal forms
+784(0091),Dance forms
+784(0092),Fancy forms - music-
+784(0093),Improvisatory forms
+784(0094),Meditation forms
+784(0095),Descriptive forms
+784(0096),Instrumental forms
+784(0097),Intermediate forms
+784(0098),Introductory forms
+784(0099),Musical forms
+784(0100),Ostinato forms
+784(0101),Ricercar forms
+784(0102),Romantic forms
+784(0103),Sonata forms
+784(0104),Symphony forms
+784(0105),Brass instruments
+784(0106),Percussion instruments
+784(0107),Keyboard instruments
+784(0108),Woodwind instruments
+784(0109),Wind instruments
+784(0110),Musical instruments
+784(0111),Stringed instruments in bands
+784(0112),Solo instruments in bands
+784(0113),Aeolian instruments in bands
+784(0114),Mechanical musical instruments in bands
+784(0115),Instruments
+784(0116),Band leaders
+784(0117),Liturgical music
+784(0118),Sacred music  vocal
+784(0119),Musical instrument makers
+784(0120),Orchestras
+784(0121),Orchestras with toy instruments
+784(0122),Orchestras with solo instruments
+784(0123),Orchestras with vocal parts
+784(0124),Dance bands
+784(0125),Chamber orchestras
+784(0126),String orchestras
+784(0127),Toy instrument orchestras
+784(0128),Light orchestras
+784(0129),Salon orchestras
+784(0130),School orchestras
+784(0131),Symphony orchestras
+784(0132),Paraphrase  musical forms
+784(0133),Parody  musical form
+784(0134),Pedaling
+784(0135),Piano concertos
+784(0136),Resonance  musical technique
+784(0137),Breathing  musical technique
+784(0138),Rondo forms
+784(0139),Tuning
+784(0140),Song-without-words form
+784(0141),Suite form
+784(0142),Right-hand techniques
+784(0143),Left-hand techniques
+784(0144),Arm techniques
+784(0145),Hand techniques
+784(0146),Wrist techniques
+784(0147),Leg techniques
+784(0148),Finger techniques
+784(0149),Touch techniques
+784(0150),Theme
+784(0151),Temperament - musical instruments-
+784(0152),Tonguing - music-
+784(0153),Variations
+784(0154),Verification
+784(0155),Vibrato
+784(0156),Voluntary form
+785,ORCHESTRAL MUSIC (32)
+785(0001),Wind ensembles
+785(0002),Quartets
+785(0003),Duets
+785(0004),Electrophones
+785(0005),Stringed instruments  chamber ensembles
+785(0006),Brass instruments
+785(0007),Brass instruments  chamber ensembles
+785(0008),Percussion instruments
+785(0009),Percussion instruments  chamber ensembles
+785(0010),Keyboard instruments
+785(0011),Keyboard instruments  chamber ensembles
+785(0012),Woodwind instruments
+785(0013),Woodwind instruments  chamber ensembles
+785(0014),Stringed instruments
+785(0015),Mechanical musical instruments
+785(0016),Mechanical musical instruments chamber ensembles
+785(0017),Nonets
+785(0018),Octets
+785(0019),Quintets
+785(0020),Septets
+785(0021),Sextets
+785(0022),Trios
+786,MUSICAL INSTRUMENTS (178)
+786(0001),Hand bells
+786(0002),Harmonicas - musical glasses-
+786(0003),Glass harmonicas
+786(0004),Harmoniums
+786(0005),Jew's harps
+786(0006),Bass drums
+786(0007),Bongos
+786(0008),Music boxes
+786(0009),Bells
+786(0010),Wind chimes
+786(0011),Mechanized bells
+786(0012),Carillons
+786(0013),Sleigh bells
+786(0014),Castanets
+786(0015),Celestas
+786(0016),Cowbells
+786(0017),Chimes
+786(0018),Magnetic tapes
+786(0019),Harpsichordists
+786(0020),Clavichords
+786(0021),Computers
+786(0022),Motor horns
+786(0023),Drummers - musicians-
+786(0024),Drums - music-
+786(0025),Monophonic electrophones
+786(0026),Keyboard electrophones
+786(0027),Electrophones
+786(0028),Spinets
+786(0029),Musical glasses
+786(0030),Glockenspiels
+786(0031),Gongs
+786(0032),Guiros
+786(0033),Harpsichords
+786(0034),Idiophones
+786(0035),Plucked idiophones
+786(0036),Friction idiophones
+786(0037),Single idiophones
+786(0038),Percussed idiophones
+786(0039),Scraped idiophones
+786(0040),Rattled idiophones
+786(0041),Keyboard idiophones
+786(0042),Percussion instruments
+786(0043),Keyboard stringed instruments
+786(0044),Keyboard instruments
+786(0045),Keyboard wind instruments
+786(0046),Electronic musical instruments
+786(0047),Mechanical musical instruments
+786(0048),Solo instruments
+786(0049),Maracas
+786(0050),Marimbas
+786(0051),Membranophones
+786(0052),Concrete music
+786(0053),Electronic music
+786(0054),Organists
+786(0055),Organs - musical instruments-
+786(0056),Electronic organs
+786(0057),Fair organs
+786(0058),Sticks
+786(0059),Tambourines
+786(0060),Pianists
+786(0061),Pianolas
+786(0062),Pianos
+786(0063),Thumb pianos
+786(0064),Prepared pianos
+786(0065),Plates - musical instrument-
+786(0066),Cymbals
+786(0067),Musical saws
+786(0068),Synthesizers
+786(0069),Sirens
+786(0070),Sistrums
+786(0071),Rattles
+786(0072),Symphonions
+786(0073),Tablas
+786(0074),Snare drums
+786(0075),Steel drums
+786(0076),West Indian steel drums
+786(0077),Plucked drums
+786(0078),Friction drums
+786(0079),Kettle-shaped drums
+786(0080),Frame-shaped drums
+786(0081),Side drums
+786(0082),Rattle drums
+786(0083),Struck drums
+786(0084),Tubular drums
+786(0085),Theremins
+786(0086),Kettledrums
+786(0087),Timpani
+786(0088),Triangles - music-
+786(0089),Ratchets
+786(0090),Tubes
+786(0091),Rods
+786(0092),Rodsand music by concussion
+786(0093),Rodsand music by percussiÃÂ³n
+786(0094),Vessels
+786(0095),Vibraphones
+786(0096),Virginals
+786(0097),Xylophones
+786(0098),Anvils
+787,STRINGED INSTRUMENTS MUSIC (121)
+787(0001),Musical bows
+787(0002),Compound musical bows
+787(0003),Harp lutes
+787(0004),Angle harps
+787(0005),Arched harps
+787(0006),Bridge harps
+787(0007),Celtic harps
+787(0008),Frame harps
+787(0009),Irish harps
+787(0010),Orchestral harps
+787(0011),Arpeggiones
+787(0012),Harpists
+787(0013),Autoharps
+787(0014),Basses - stringed instruments-
+787(0015),Balalaikas
+787(0016),Banjoists
+787(0017),Banjos
+787(0018),Barytons
+787(0019),Beganas
+787(0020),Biwas
+787(0021),Bodongos
+787(0022),Bouzoukis
+787(0023),Bow harps
+787(0024),Chitarrones
+787(0025),Cimbaloms
+787(0026),Zithers
+787(0027),Harp zithers
+787(0028),Concert zithers
+787(0029),Frame zithers
+787(0030),Board zithers
+787(0031),Plucked board zithers
+787(0032),Struck board zithers
+787(0033),Stick zithers
+787(0034),Raft zithers
+787(0035),Ground zithers
+787(0036),Tyrolean zithers
+787(0037),Trough zithers
+787(0038),Tube zithers
+787(0039),Citterns
+787(0040),Double basses
+787(0041),Chordophones
+787(0042),Dombras
+787(0043),Dulcimers
+787(0044),Appalachian dulcimers
+787(0045),Lute family
+787(0046),Violin family
+787(0047),Gadulkas
+787(0048),Guitarists
+787(0049),Guitars
+787(0050),Gurumis
+787(0051),Harps
+787(0052),Plectral instruments
+787(0053),Kalangus
+787(0054),Lutes
+787(0055),Short-necked lutes
+787(0056),Long-necked lutes
+787(0057),Flat-backed lutes
+787(0058),Plectral lutes
+787(0059),Round-backed lutes
+787(0060),Lyres
+787(0061),Mandolins
+787(0062),Psalteries
+787(0063),Sitars
+787(0064),Tamburas
+787(0065),Ukuleles
+787(0066),Vihuelas
+787(0067),Viola d'amores
+787(0068),Viola da gambas
+787(0069),Viola
+787(0070),Treble viols
+787(0071),Tenor viols
+787(0072),Descant viols
+787(0073),Violins
+787(0074),Hardanger fiddles
+787(0075),Violinists
+787(0076),Cellists
+787(0077),Violoncellos
+787(0078),Cellos
+787(0079),Violoncellists
+787(0080),Hurdy gurdies
+788,WIND MUSICAL INSTRUMENTS (124)
+788(0001),Accordions
+788(0002),Button accordions
+788(0003),Piano accordions
+788(0004),Aerophones
+788(0005),Free aerophones
+788(0006),Albokas
+788(0007),Alpenhoms
+788(0008),Alphorns
+788(0009),Harmonicas - mouth organs-
+788(0010),Bandoneons
+788(0011),Bansuris
+788(0012),Euphoniums
+788(0013),Bullroarers
+788(0014),Flageolets
+788(0015),Clarinets
+788(0016),Bass clarinets
+788(0017),Clarinetists
+788(0018),Cometists
+788(0019),Concertinas
+788(0020),Contrabassoons
+788(0021),Cornemuses
+788(0022),Bugles
+788(0023),Cornetts
+788(0024),Crumhorns
+788(0025),Cornets
+788(0026),Alto horns
+788(0027),Tenor horns
+788(0028),E-flat horns
+788(0029),English horn
+788(0030),Horns
+788(0031),Dulcians
+788(0032),Bassoons
+788(0033),Double bassoons
+788(0034),Flute family
+788(0035),Pan pipes
+788(0036),Flutes
+788(0037),Bass flutes
+788(0038),Vessel flutes
+788(0039),Duct flutes
+788(0040),End blown flutes
+788(0041),Notched flutes
+788(0042),Nose flutes
+788(0043),Side-blown flutes
+788(0044),Transverse flutes
+788(0045),Flutists
+788(0046),Flugelhorns
+788(0047),Bagpipes
+788(0048),Double reed instruments
+788(0049),Reed instruments
+788(0050),Brass instruments
+788(0051),Single-reed instruments
+788(0052),Woodwind instruments
+788(0053),Lip-reed instruments
+788(0054),Melodeons
+788(0055),Multiple flutes
+788(0056),Oboes
+788(0057),Ocarinas
+788(0058),Mouth organs
+788(0059),Panpipes
+788(0060),Fifes
+788(0061),Quenas
+788(0062),Racketts
+788(0063),Saxhorns
+788(0064),Saxophones
+788(0065),Alto saxophones
+788(0066),Bass saxophones
+788(0067),Tenor saxophones
+788(0068),Soprano saxophones
+788(0069),Saxophonists
+788(0070),Single-reed bagpipes
+788(0071),Sousaphones
+788(0072),Trombones
+788(0073),French horns
+788(0074),Trumpets
+788(0075),Horn players
+788(0076),Tubas
+788(0077),Northumbrian pipes
+788(0078),Uillean pipes
+788(0079),Union pipes
+788(0080),Tulums
+788(0081),Wagner tubas
+788(0082),Bull-roarers
+789,PERCUSSION
+790,AMUSEMENTS (46)
+790(0001),Spectator activities
+790(0002),Sedentary activities
+790(0003),Young adults
+790(0004),Adults
+790(0005),Hobbies
+790(0006),Refereeing - recreation-
+790(0007),Umpiring - recreation-
+790(0008),Performing arts
+790(0009),Recreational arts
+790(0010),Community centers
+790(0011),Outdoor recreation centers
+790(0012),Indoor recreation centers
+790(0013),Recreation centers
+790(0014),Neighborhood centers
+790(0015),Racing cars
+790(0016),Matching numbers contests
+790(0017),Competitions
+790(0018),Amusements
+790(0019),Entertainments - performances-
+790(0020),Families
+790(0021),Men
+790(0022),Play
+790(0023),Scientific toys
+790(0024),Electrical toys
+790(0025),Electronic toys
+790(0026),Mechanical toys
+790(0027),Toys
+790(0028),Recreational reading
+790(0029),Reading
+790(0030),Recreation leaders
+790(0031),Women
+790(0032),Girls
+790(0033),Boys
+790(0034),Children
+790(0035),Leisure
+790(0036),Parks
+790(0037),Handicapped persons
+790(0038),Sick persons
+790(0039),Old persons
+790(0040),Racing cars  toys
+790(0041),Collecting
+790(0042),Recreation
+790(0043),Passive recreation
+790(0044),Electric trains
+790(0045),Electric trains  toys
+791,PUBLIC ENTERTAINMENT (160)
+791(0001),Acrobatics
+791(0002),Acrobats
+791(0003),Actors
+791(0004),Acting
+791(0005),Setting
+791(0006),Entertainers
+791(0007),Circus animals
+791(0008),Radio performances
+791(0009),Television performances
+791(0010),Circus performers
+791(0011),Equestrian performers
+791(0012),Carnivals
+791(0013),Floats
+791(0014),Cheerleading
+791(0015),Science fiction
+791(0016),Circuses
+791(0017),Amateur circuses
+791(0018),Comedies
+791(0019),Reviews
+791(0020),Bullfighting
+791(0021),Film reviews
+791(0022),Animal combat sports
+791(0023),Patriotic pageants
+791(0024),Religious pageants
+791(0025),Pageants
+791(0026),Parades
+791(0027),Animated cartoons
+791(0028),Direction
+791(0029),Motion-picture directors
+791(0030),Directors
+791(0031),Costumes  dramatic performances
+791(0032),Broadcast drama
+791(0033),Special effects  dramatic performances
+791(0034),Scenery  dramatic performances
+791(0035),Traveling shows
+791(0036),Medicine shows
+791(0037),Minstrel shows
+791(0038),Public performances
+791(0039),Shows
+791(0040),Expression  drama
+791(0041),Festivals
+791(0042),Gestures  drama
+791(0043),Screenplays
+791(0044),Historical pageants
+791(0045),Lighting
+791(0046),Illuminations - performing arts-
+791(0047),Motion pictures
+791(0048),Motion pictures  drama
+791(0049),Improvisation
+791(0050),Performers - entertainers-
+791(0051),Programming languages  television broadcasting
+791(0052),Programming languages  radiobroadcasting
+791(0053),Makeup  dramatic performances
+791(0054),Marionettes
+791(0055),Stage fright
+791(0056),Wild West shows
+791(0057),Puppet plays
+791(0058),Amusement parks
+791(0059),Clowns
+791(0060),Cockfighting
+791(0061),Home movies
+791(0062),Amateur motion pictures
+791(0063),Detective films
+791(0064),Genre films
+791(0065),Puppet films
+791(0066),Mystery films
+791(0067),Puppets
+791(0068),Pageantry
+791(0069),Processions
+791(0070),Production  dramatic performances
+791(0071),Programming  dramatic performances
+791(0072),Detective programs
+791(0073),Mystery programs
+791(0074),Audience participation programs
+791(0075),Radio programs
+791(0076),Horror
+791(0077),Network programs
+791(0078),Television programs
+791(0079),Dramatic programs
+791(0080),Filmed programs
+791(0081),Recorded programs
+791(0082),Live programs
+791(0083),Sideshows
+791(0084),Radio
+791(0085),Television broadcasting
+791(0086),Animal performances
+791(0087),Rodeos
+791(0088),Scripts
+791(0089),Shadow puppets
+791(0090),Supervision  dramatic performances
+791(0091),Impersonation
+791(0092),Toy theaters
+791(0093),Shadow theaters
+791(0094),Television photography
+791(0095),Television
+791(0096),Puppetry
+791(0097),Puppet masters
+791(0098),Trapeze work
+791(0099),Stunts
+791(0100),Videorecords
+791(0101),Westerns
+792,THEATER.OPERA (101)
+792(0001),Theatrical performers
+792(0002),Actors
+792(0003),Acting
+792(0004),Setting
+792(0005),Dancers
+792(0006),Ballet dancers
+792(0007),Dancing
+792(0008),Interpretive dancing
+792(0009),Ballet
+792(0010),Choreology
+792(0011),Comedies - drama-
+792(0012),Comedies
+792(0013),Reviews
+792(0014),Choreography
+792(0015),Choreographers
+792(0016),Dance
+792(0017),Modern dance
+792(0018),Direction - drama-
+792(0019),Direction
+792(0020),Directors - drama-
+792(0021),Directors
+792(0022),Costumes
+792(0023),Costumes  dramatic performances
+792(0024),Drama - theater-
+792(0025),Suspense drama
+792(0026),Historical drama
+792(0027),Special effects
+792(0028),Special effects  dramatic performances
+792(0029),Sound effects
+792(0030),Visual effects
+792(0031),Modem dance performers
+792(0032),Scenery  dramatic performances
+792(0033),Cabaret shows
+792(0034),Variety shows
+792(0035),Expression
+792(0036),Expression  drama
+792(0037),Dramatic vocal forms
+792(0038),Gestures
+792(0039),Gestures  drama
+792(0040),Scripts
+792(0041),Lighting
+792(0042),Improvisation - drama-
+792(0043),Improvisation
+792(0044),Playing cards
+792(0045),Labanotation
+792(0046),Makeup
+792(0047),Makeup  dramatic performances
+792(0048),Masques
+792(0049),Melodrama
+792(0050),Stage fright
+792(0051),Mirabel
+792(0052),Morality
+792(0053),Musicals
+792(0054),Children  operas for
+792(0055),No theater
+792(0056),Musical plays
+792(0057),Ballad operas
+792(0058),Operas
+792(0059),Operettas
+792(0060),Opera reviews
+792(0061),Religious organizations
+792(0062),Scenery
+792(0063),Pantomime
+792(0064),Passion of Jesus Christ
+792(0065),Little theater
+792(0066),Music hall presentations
+792(0067),Stage presentations
+792(0068),Nightclub presentations
+792(0069),Production
+792(0070),Production  dramatic performances
+792(0071),Programming
+792(0072),Programming  dramatic performances
+792(0073),Revues
+792(0074),Setting - performances-
+792(0075),Showboats
+792(0076),Burlesque shows
+792(0077),Singspiels
+792(0078),Supervision
+792(0079),Supervision  dramatic performances
+792(0080),Impersonation
+792(0081),Amateur theater
+792(0082),Arena theater
+792(0083),Street theater
+792(0084),Summer theater
+792(0085),Kabuki theater
+792(0086),Municipal theater
+792(0087),Noh theater
+792(0088),Children's theater
+792(0089),Theater
+792(0090),Theater-in-the-round
+792(0091),Tap dancing
+792(0092),Tragedies - drama-
+792(0093),Tragedies
+792(0094),Theatrical costumes
+792(0095),Vaudeville
+793,INDOOR AMUSEMENTS (78)
+793(0001),Acrostics
+793(0002),Riddles
+793(0003),Young adults  recreation
+793(0004),Adults  recreation
+793(0005),Germans - dances-
+793(0006),Anagrams
+793(0007),Jitterbug
+793(0008),Folk dancers
+793(0009),Clog dancing
+793(0010),Ballroom dancing
+793(0011),Disco dancing
+793(0012),Folk dancing
+793(0013),Jazz dancing
+793(0014),Social dancing
+793(0015),National dances
+793(0016),Square dances
+793(0017),Battle games
+793(0018),Balls - dances-
+793(0019),Break dancing
+793(0020),Charades
+793(0021),Boys  recreation
+793(0022),Cotillions
+793(0023),Cryptography
+793(0024),Crossword puzzles
+793(0025),Quadrilles
+793(0026),Cat's cradles
+793(0027),Belly dancing
+793(0028),Round dances
+793(0029),Sword dances
+793(0030),Indoor amusements
+793(0031),Entertaining
+793(0032),Tricks
+793(0033),Enigmas
+793(0034),Entertainments - parties-
+793(0035),Entertainments
+793(0036),Families  recreation
+793(0037),Children's parties
+793(0038),Fox trot
+793(0039),Blind man's buff
+793(0040),Men  recreation
+793(0041),Conjuring
+793(0042),Action games
+793(0043),Adventure games
+793(0044),String games
+793(0045),Fantasy games
+793(0046),War games
+793(0047),Indoor games
+793(0048),Mystery games
+793(0049),Word games
+793(0050),Role-playing games
+793(0051),Trick games
+793(0052),Forfeit games
+793(0053),Literary games
+793(0054),Mathematical games
+793(0055),Games
+793(0056),Magic
+793(0057),Magicians - performers-
+793(0058),Juggling
+793(0059),Women  recreation
+793(0060),Girls  recreation
+793(0061),Children  recreation
+793(0062),Parties
+793(0063),Seasonal parties
+793(0064),Handicapped persons  recreation
+793(0065),Sick persons  recreation
+793(0066),Old persons  recreation
+793(0067),Quizzes
+793(0068),Scientific recreations
+793(0069),Mathematical recreations
+793(0070),Reels - dances-
+793(0071),Jigsaw puzzles
+793(0072),Musical chairs - recreation-
+793(0073),Tableaux
+793(0074),Waltzes
+793(0075),Ventriloquism
+794,GAMES OF SKILL. CHESS (50)
+794(0001),Openings - chess-
+794(0002),Chinese chess
+794(0003),Fairy chess
+794(0004),Hexagonal chess
+794(0005),Japanese chess
+794(0006),Three-dimensional chess
+794(0007),Living chess
+794(0008),Arcade games
+794(0009),Association football
+794(0010),Basketball
+794(0011),Baseball
+794(0012),Billiards
+794(0013),Pocket billiards
+794(0014),Bowling alleys
+794(0015),Bowling - game-
+794(0016),Knights - chessmen-
+794(0017),Automobile racing
+794(0018),Horse racing
+794(0019),Castles - chessmen-
+794(0020),Chong-kie
+794(0021),Checkers Draughts
+794(0022),Darts
+794(0023),Soccer
+794(0024),Go-moku
+794(0025),Ice hockey
+794(0026),Go - game-
+794(0027),Blind play - chess-
+794(0028),Simultaneous play
+794(0029),Games of skill
+794(0030),Board games
+794(0031),Computer games
+794(0032),Ball games
+794(0033),Pinball games
+794(0034),Electronic games
+794(0035),End games
+794(0036),Middle games
+794(0037),Pool players
+794(0038),Mechanical chess players
+794(0039),Billiard players
+794(0040),Bowlers
+794(0041),Pawns - chess-
+794(0042),Pool - game-
+794(0043),Queens - chessmen-
+794(0044),Kings - chessmen-
+794(0045),Snooker
+794(0046),Tennis
+796,OUTDOOR SPORTS (396)
+796(0001),Acrobatics
+796(0002),Ski acrobatics
+796(0003),Acrobats
+796(0004),Beach activities
+796(0005),Forward play sports
+796(0006),Young adults  recreation
+796(0007),Adults  recreation
+796(0008),Aikido
+796(0009),Mountain climbing
+796(0010),Amphitheaters
+796(0011),Umpiring
+796(0012),Refereeing
+796(0013),Goalkeeping
+796(0014),Martial arts
+796(0015),Astrodomes
+796(0016),Athletes
+796(0017),Athletic sports
+796(0018),Sports cars  driving
+796(0019),Automobiles
+796(0020),Badminton
+796(0021),Ice dancing
+796(0022),Basketball
+796(0023),Women's basketball
+796(0024),Wheelchair basketball
+796(0025),Handball
+796(0026),Horizontal bars
+796(0027),Parallel bars
+796(0028),Batting
+796(0029),Baseball
+796(0030),Indoor baseball
+796(0031),Women's baseball
+796(0032),Biathlon
+796(0033),Blocking
+796(0034),Bobsledding
+796(0035),Bojutsu
+796(0036),Balls - recreational equipment-
+796(0037),Hot rods
+796(0038),Lawn bowling
+796(0039),Boomerangs
+796(0040),Bowling - cricket-
+796(0041),Boxing
+796(0042),Boxers - pugilists-
+796(0043),British Open - golf-
+796(0044),Wire walking
+796(0045),Walking
+796(0046),Camping
+796(0047),Boy Scout camps
+796(0048),Day camps
+796(0049),Girl Scout camps
+796(0050),Church camps
+796(0051),Athletic fields
+796(0052),Tennis courts
+796(0053),Catching
+796(0054),Racing
+796(0055),Races - sports-
+796(0056),Automobile racing
+796(0057),Bicycle racing
+796(0058),Distance races
+796(0059),Cross-country races
+796(0060),Marathon races
+796(0061),Middle-distance races
+796(0062),Motorcycle racing
+796(0063),Steeplechase races
+796(0064),Relay races
+796(0065),Soapbox racing
+796(0066),Field houses
+796(0067),Mobile homes
+796(0068),Motorized homes
+796(0069),Catch-as-catch-can wrestling
+796(0070),Boys  recreation
+796(0071),Chipping
+796(0072),Cycling
+796(0073),Cyclists
+796(0074),Bicycle touring
+796(0075),Racing cars
+796(0076),Family cars  driving
+796(0077),Hill climbing
+796(0078),Unarmed combat
+796(0079),Nordic combination - skiing-
+796(0080),Kites
+796(0081),Driving family cars
+796(0082),Driving sports cars
+796(0083),Driving motor vehicles
+796(0084),Contortions
+796(0085),World Cup competition
+796(0086),Stanley Cup
+796(0087),Automobile racers
+796(0088),Motorcycle racers
+796(0089),Running
+796(0090),Running  human
+796(0091),Cricket - game-
+796(0092),Young Men's Christian
+796(0093),Forty Hours devotion  Roman Catholic liturgy
+796(0094),Rope climbing
+796(0095),Caves
+796(0096),Curling - sport-
+796(0097),Professional sports
+796(0098),Sports
+796(0099),Outdoor sports
+796(0100),Combat sports
+796(0101),Snow sports
+796(0102),Ice sports
+796(0103),Sportsmen
+796(0104),Remote-control devices
+796(0105),Doubles - tennis-
+796(0106),Physical education
+796(0107),Base running
+796(0108),Floor exercise sports
+796(0109),Tackling
+796(0110),Coaches sports
+796(0111),Coaching
+796(0112),Rock climbing
+796(0113),Hide and seek-game
+796(0114),School camps
+796(0115),Fencing swordplay
+796(0116),Fencers
+796(0117),Sword fighting
+796(0118),Spelunking
+796(0119),Skiing
+796(0120),Freestyle skiing
+796(0121),Alpine skiing
+796(0122),Ballet skiing
+796(0123),Cross-country skiing
+796(0124),Downhill skiing
+796(0125),Giant slalom skiing
+796(0126),Grass skiing
+796(0127),Nordic skiing
+796(0128),Slalom skiing
+796(0129),Trick skiing
+796(0130),Skiers
+796(0131),Field athletics
+796(0132),Stadiums
+796(0133),Hiking
+796(0134),Hikers
+796(0135),Explorations
+796(0136),Families  recreation
+796(0137),Fielding
+796(0138),Campfires
+796(0139),Forehand
+796(0140),Spread formation
+796(0141),Split T formation
+796(0142),Single wingback formation
+796(0143),T formation
+796(0144),Formations sports
+796(0145),Formaldehyde  toxicology
+796(0146),Frisbees®
+796(0147),Association football
+796(0148),Soccer
+796(0149),American football
+796(0150),Australian football
+796(0151),Canadian football
+796(0152),Women's football
+796(0153),Dude ranching
+796(0154),Gymnastics
+796(0155),Sports gymnastics
+796(0156),Rhythmic gymnastics
+796(0157),Gymnasiums - sports-
+796(0158),Gymnasiums
+796(0159),Gymnasts
+796(0160),Golf
+796(0161),Miniature golf
+796(0162),Grey Cup
+796(0163),Single-wicket cricket
+796(0164),Horseshoes - game-
+796(0165),Sandlot baseball
+796(0166),Indoor hockey
+796(0167),Field hockey
+796(0168),Ice hockey
+796(0169),Men  recreation
+796(0170),Hop step
+796(0171),Hurdlers
+796(0172),Iceboating
+796(0173),Coasting
+796(0174),Irons - golf equipment-
+796(0175),Javelin hurling
+796(0176),Judo
+796(0177),Croquet
+796(0178),Shuffleboard
+796(0179),Halfback play
+796(0180),Infield play
+796(0181),Outdoor games
+796(0182),Athletic games
+796(0183),Bat games
+796(0184),Club games
+796(0185),Cup games
+796(0186),Dancing games
+796(0187),Singing games
+796(0188),All-star games - baseball-
+796(0189),Ice games
+796(0190),Ball games
+796(0191),Racket games
+796(0192),Bowl games - football-
+796(0193),Mallet games
+796(0194),Winter Olympic Games
+796(0195),Olympic Games
+796(0196),Paralympics
+796(0197),Pitching games
+796(0198),Games
+796(0199),Croquet players
+796(0200),Badminton players
+796(0201),Basketball players
+796(0202),Baseball players
+796(0203),Cricket players
+796(0204),Soccer players
+796(0205),Golf players
+796(0206),Field hockey players
+796(0207),Ice hockey players
+796(0208),Lacrosse players
+796(0209),Polo players
+796(0210),Rugby players
+796(0211),Squash players
+796(0212),Tennis players
+796(0213),Table tennis players
+796(0214),Volleyball players
+796(0215),Rackets players
+796(0216),Jujitsus
+796(0217),Jumpers - athletes-
+796(0218),Jumpers  human
+796(0219),Karate
+796(0220),Karting
+796(0221),Karts - racing cars-
+796(0222),Karts
+796(0223),Kempo
+796(0224),Kendo
+796(0225),Kung fu
+796(0226),Lacrosse - game-
+796(0227),Shot-putting
+796(0228),Throwing
+796(0229),Lawn tennis
+796(0230),Leapfrog - game-
+796(0231),Weight lifters
+796(0232),Weight lifting
+796(0233),League rugby
+796(0234),Line play
+796(0235),Line-outs
+796(0236),Wrestling
+796(0237),Continental wrestling
+796(0238),Arm wrestling
+796(0239),Stick fighting
+796(0240),Greco-Roman wrestling
+796(0241),Freestyle wrestling
+796(0242),Wrestlers
+796(0243),Lugeing
+796(0244),Woods - golf equipment-
+796(0245),Race walking
+796(0246),Marbles - game-
+796(0247),Prisoner's base
+796(0248),Masters Golf Tournament
+796(0249),Midget car racing
+796(0250),Backpacking
+796(0251),Model airplanes
+796(0252),Mogul skiing
+796(0253),Mountains
+796(0254),Mountaineers
+796(0255),Mountaineering
+796(0256),Motorcycles
+796(0257),Motocross
+796(0258),Motor scooter racing
+796(0259),Motor vehicle racing
+796(0260),Snowmobiles
+796(0261),Women  recreation
+796(0262),Bats - baseball-
+796(0263),Land sailing
+796(0264),Punting
+796(0265),Girls  recreation
+796(0266),Children  recreation
+796(0267),Night football
+796(0268),Special Olympics
+796(0269),Oriente
+796(0270),Outfield play
+796(0271),Paddle tennis
+796(0272),Pair skating
+796(0273),Playgrounds
+796(0274),Gridirons American football
+796(0275),Passing
+796(0276),Kicking
+796(0277),Ice skaters
+796(0278),Skating - roller-
+796(0279),Skating - ice-
+796(0280),Figure skating
+796(0281),Speed skating
+796(0282),Ice skating
+796(0283),Roller skating
+796(0284),Skating
+796(0285),Skateboards
+796(0286),Handicapped persons  recreation
+796(0287),Sick persons  recreation
+796(0288),Old persons  recreation
+796(0289),Track - sports-
+796(0290),Court tennis
+796(0291),Track
+796(0292),Pitching - baseball-
+796(0293),Pitching - golf-
+796(0294),Little league - baseball-
+796(0295),Polo
+796(0296),Goal posts
+796(0297),Athletic garments
+796(0298),Camp programs
+796(0299),Jumpers
+796(0300),Putting
+796(0301),Pushball
+796(0302),Puss in comer
+796(0303),Putters - golf equipment-
+796(0304),Rallies - automobile sport-
+796(0305),Automobile rallies
+796(0306),Rackets - game-
+796(0307),Snowshoeing
+796(0308),Heel-and-toe races
+796(0309),Race relations
+796(0310),Trailers
+796(0311),Backhand
+796(0312),Royal tennis
+796(0313),Rugby
+796(0314),Runners - athletes-
+796(0315),Vaulting - gymnastics-
+796(0316),Broad jump
+796(0317),Pole vaulting
+796(0318),High jump
+796(0319),Long jump
+796(0320),Scrummaging
+796(0321),Six-man football
+796(0322),World series - baseball-
+796(0323),Service - tennis-
+796(0324),Singles - tennis-
+796(0325),Skateboarding
+796(0326),Skis
+796(0327),Supergiant slalom
+796(0328),Snow camping
+796(0329),Softball
+796(0330),Speedways
+796(0331),Spelunkers
+796(0332),Sprints
+796(0333),Squash - game-
+796(0334),Stickhandling
+796(0335),Sumo
+796(0336),Super Bowl - football-
+796(0337),Tai chi
+796(0338),T'ai chi ch'üan
+796(0339),Quoits
+796(0340),Tennis
+796(0341),Table tennis
+796(0342),Touch football
+796(0343),Trapeze work
+796(0344),Trampolining
+796(0345),Three-quarter play
+796(0346),Sledding
+796(0347),Tobogganing
+796(0348),Triple jump
+796(0349),Tumbling
+796(0350),One old cat
+796(0351),Union rugby
+796(0352),Hurdles
+796(0353),Automotive vehicles
+796(0354),Recreational vehicles
+796(0355),Sailing on ice
+796(0356),Sailing on land
+796(0357),Sprinters
+796(0358),Travel by bicycle
+796(0359),Outdoor life
+796(0360),Flying discs - game-
+796(0361),Volleyball
+796(0362),Wicketkeeping
+796(0363),Woodcraft
+796(0364),Yo-Yos®
+797,BOATING
+797(0001),Aerobatics
+797(0002),Aircraft
+797(0003),Hang gliding
+797(0004),Boatmen
+797(0005),Boardsailing
+797(0006),Water pageantry
+797(0007),Precision diving
+797(0008),Springboard diving
+797(0009),Diving
+797(0010),Skin diving
+797(0011),Scuba diving
+797(0012),Divers
+797(0013),Boating
+797(0014),Aircraft racing
+797(0015),Boat racing
+797(0016),Canoe racing
+797(0017),Rowboat racing
+797(0018),Yacht racing
+797(0019),Racing
+797(0020),Rowboating
+797(0021),Yachting
+797(0022),Air sports
+797(0023),Water sports
+797(0024),Navigation
+797(0025),Reservoirs
+797(0026),Water skiing
+797(0027),Water skiers
+797(0028),Stunt flyers
+797(0029),Balloons
+797(0030),Houseboating
+797(0031),Jet skiing
+797(0032),Water games
+797(0033),Lakes
+797(0034),Motorboat racing
+797(0035),Lighterair aircraft
+797(0036),Sailors
+797(0037),Motorboating
+797(0038),Swimmers
+797(0039),Underwater swimming
+797(0040),Swimming
+797(0041),Synchronized swimming
+797(0042),Submarine swimming
+797(0043),Punting - boating-
+797(0044),Skydiving
+797(0045),Parachuting
+797(0046),Skydivers
+797(0047),Canoeing
+797(0048),Swimming pools
+797(0049),Rivers
+797(0050),Sail yachting
+797(0051),Sailboarding
+797(0052),Sailboating
+797(0053),Soaring
+797(0054),Surfing
+797(0055),Surf riding
+797(0056),Surfers
+797(0057),Sailboat racing
+797(0058),Flying techniques
+797(0059),Gliding
+797(0060),Stunt flying
+797(0061),Aquatic sports
+797(0062),Water polo
+797(0063),Windsurfing
+797(0064),Motor yachting
+798,HORSEMANSHIP. RACING (26)
+798(0001),Pari-mutuel betting
+798(0002),Driving horses - recreation-
+798(0003),Coaching horses
+798(0004),Animal racing
+798(0005),Horse racing
+798(0006),Steeplechase races
+798(0007),Dog racing
+798(0008),Harness racing
+798(0009),Flat racing
+798(0010),Racing  animals
+798(0011),Race tracks animals
+798(0012),Coaching
+798(0013),Eventing - horsemanship-
+798(0014),Show jumping
+798(0015),Horse racers
+798(0016),Equestrian sports
+798(0017),Equestrian sportsmen
+798(0018),Dressage
+798(0019),Horsemanship
+798(0020),Jockeys
+798(0021),Gambling
+798(0022),Riding horses - recreation-
+798(0023),Dog sled racing
+798(0024),Racing
+798(0025),Jumping
