@@ -291,7 +291,11 @@ class ScraperController(ScraperControllerBase):
           logger.info(f"TOTAL DE CURSOS EN RANGO: {len(courses_in_range)}")
           
           # Log detallado de todos los cursos en el rango
-          for i, (sic, course_name, status, server) in enumerate(courses_in_range):
+          for i, course_item in enumerate(courses_in_range):
+              sic = course_item[0]
+              course_name = course_item[1]
+              status = course_item[2] if len(course_item) > 2 else "PENDING"
+              server = course_item[3] if len(course_item) > 3 else "UNKNOWN"
               logger.info(f"  Curso {i+1}: {sic} - {course_name} (Estado: {status}, Servidor: {server})")
           
           return courses_in_range
@@ -349,7 +353,11 @@ class ScraperController(ScraperControllerBase):
       logger.info(f"=== FASE 1: BÚSQUEDA DE RESULTADOS con {search_engine} ====")
       logger.info(f"Total de cursos a procesar en búsqueda: {total_courses}")
       
-      for sic_code, course_name, status, server in courses_in_range:
+      for course_item in courses_in_range:
+          sic_code = course_item[0]
+          course_name = course_item[1]
+          status = course_item[2] if len(course_item) > 2 else "PENDING"
+          server = course_item[3] if len(course_item) > 3 else "UNKNOWN"
           if self.stop_requested:
               logger.info("Scraping detenido por el usuario durante la fase de búsqueda")
               break
@@ -444,7 +452,11 @@ class ScraperController(ScraperControllerBase):
 
       from utils.comcrawl_local import IndexClient
 
-      for sic_code, course_name, status, server in courses_in_range:
+      for course_item in courses_in_range:
+          sic_code = course_item[0]
+          course_name = course_item[1]
+          status = course_item[2] if len(course_item) > 2 else "PENDING"
+          server = course_item[3] if len(course_item) > 3 else "UNKNOWN"
           if self.stop_requested:
               logger.info("Scraping detenido por el usuario durante la fase de búsqueda")
               break
@@ -537,7 +549,11 @@ class ScraperController(ScraperControllerBase):
       from utils.scraper.search_engine import SearchEngine
       search_engine = SearchEngine(self.browser_manager, self.text_processor, self.config)
 
-      for sic_code, course_name, status, server in courses_in_range:
+      for course_item in courses_in_range:
+          sic_code = course_item[0]
+          course_name = course_item[1]
+          status = course_item[2] if len(course_item) > 2 else "PENDING"
+          server = course_item[3] if len(course_item) > 3 else "UNKNOWN"
           if self.stop_requested:
               logger.info("Scraping detenido por el usuario durante la fase de búsqueda")
               break
@@ -606,7 +622,11 @@ class ScraperController(ScraperControllerBase):
       logger.info(f"=== FASE 1: BÚSQUEDA DE RESULTADOS con CORDIS EUROPA API ====")
       logger.info(f"Total de cursos a procesar en búsqueda: {total_courses}")
       
-      for sic_code, course_name, status, server in courses_in_range:
+      for course_item in courses_in_range:
+          sic_code = course_item[0]
+          course_name = course_item[1]
+          status = course_item[2] if len(course_item) > 2 else "PENDING"
+          server = course_item[3] if len(course_item) > 3 else "UNKNOWN"
           if self.stop_requested:
               logger.info("Scraping detenido por el usuario durante la fase de búsqueda")
               break
