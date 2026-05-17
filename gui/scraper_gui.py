@@ -264,10 +264,10 @@ class ScraperGUI(ttk.Frame):
         )
         self.stat_failed.pack(side=tk.LEFT, padx=15)
 
-        # Etiqueta de total de líneas de resultados
+        # Etiqueta de total de contenidos
         self.stat_lines = ttk.Label(
             self.monitor_stats_frame,
-            text="📄 Resultados: --",
+            text="📊 Contenidos: --",
             font=("Arial", 9),
             foreground="blue",
         )
@@ -917,14 +917,14 @@ class ScraperGUI(ttk.Frame):
         if hasattr(self, "is_closing") and self.is_closing:
             return
 
-        # Actualizar etiqueta de total de líneas
+        # Actualizar etiqueta de total de contenidos
         total = line_count_manager.get_total_lines()
         if hasattr(self, "stat_lines"):
-            self.stat_lines.config(text=f"📄 Resultados: {total:,} líneas")
+            self.stat_lines.config(text=f"📊 Contenidos: {total:,}")
 
         # Actualizar etiqueta de la pestaña expandida
         if hasattr(self, "exp_stat_lines"):
-            self.exp_stat_lines.config(text=f"📄 Resultados: {total:,} líneas")
+            self.exp_stat_lines.config(text=f"📊 Contenidos: {total:,}")
 
         # Forzar actualización de la vista de cursos para mostrar los nuevos conteos
         if hasattr(self, "_last_courses_data"):
@@ -2528,12 +2528,22 @@ class ScraperGUI(ttk.Frame):
                 acc_time = data.get("accumulated_time", 0)
                 is_running = data.get("is_running", False)
 
+                # Actualizar el indicador de estado en el monitor según el servidor
+                if is_running:
+                    self.master.after(0, lambda: self.status_indicator_label.config(
+                        text="● ACTIVO", foreground="#00cc44"
+                    ) if hasattr(self, 'status_indicator_label') else None)
+                    self.was_running = True
+
                 # Detectar la transición de corriendo a detenido
                 was_running = getattr(self, 'was_running', False)
                 if was_running and not is_running:
                     self.was_running = False
                     self.master.after(0, self.control_frame.set_scraping_stopped)
                     self.master.after(0, self.handle_scraping_finished)
+                    self.master.after(0, lambda: self.status_indicator_label.config(
+                        text="● INACTIVO", foreground="gray"
+                    ) if hasattr(self, 'status_indicator_label') else None)
 
                 # Sincronizar el TimerManager con los datos del servidor
                 if hasattr(self, 'timer_manager'):

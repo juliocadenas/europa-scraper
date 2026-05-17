@@ -52,3 +52,9 @@
 2026-05-16 23:00:40.962721: URL Servidor: https://scraper.docuplay.com
 2026-05-16 23:00:40.963752: Lanzando thread de scraping...
 2026-05-16 23:00:40.966829: Thread lanzado OK
+2026-05-17 17:07:58.245331: Botón Iniciar Scraping presionado
+2026-05-17 17:07:58.245331: Selección: From=(1,), To=(7745,)
+2026-05-17 17:07:58.245331: Params preparados: {'from_sic': '580', 'to_sic': '597(0275)', 'search_engine': 'Cordis Europa API', 'search_mode': 'broad', 'require_keywords': False, 'is_headless': False, 'min_words': 1, 'num_workers': 48}
+2026-05-17 17:07:58.247850: URL Servidor: https://scraper.docuplay.com
+2026-05-17 17:07:58.279457: Lanzando thread de scraping...
+2026-05-17 17:07:58.279457: Thread lanzado OK
