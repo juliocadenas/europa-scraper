@@ -11,7 +11,7 @@
     "proxy_rotation": true,
     "proxy_timeout": "30",
     "proxy_list": "",
-    "min_words": "3",
+    "min_words": "1",
     "request_delay": "3.0",
     "page_timeout": "60",
     "user_agent": "",
@@ -43,5 +43,5 @@
         "port": 443,
         "auto_detect_wsl": false
     },
-    "num_workers": "2"
+    "num_workers": "48"
 }

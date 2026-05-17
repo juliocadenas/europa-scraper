@@ -418,33 +418,33 @@ def worker_process(
                 status_dict[worker_id] = current_status
 
                 # Actualizar estado del curso
-                if batch and len(batch) > 0:
-                    course_sic = batch[0][0]
+                if batch:
+                    for course_sic, _ in batch:
+                        if course_sic in course_states:
+                            try:
+                                c_state = course_states[course_sic]
+                                c_state.update(
+                                    {
+                                        "progress": percentage,
+                                        "status": "Procesando"
+                                        if percentage < 100
+                                        else "Completado",
+                                    }
+                                )
+                                course_states[course_sic] = c_state
+                            except Exception:
+                                pass
+
+            # Marcar inicio del curso
+            if batch:
+                for course_sic, _ in batch:
                     if course_sic in course_states:
                         try:
                             c_state = course_states[course_sic]
-                            c_state.update(
-                                {
-                                    "progress": percentage,
-                                    "status": "Procesando"
-                                    if percentage < 100
-                                    else "Completado",
-                                }
-                            )
+                            c_state["status"] = "Procesando"
                             course_states[course_sic] = c_state
                         except Exception:
                             pass
-
-            # Marcar inicio del curso
-            if batch and len(batch) > 0:
-                course_sic = batch[0][0]
-                if course_sic in course_states:
-                    try:
-                        c_state = course_states[course_sic]
-                        c_state["status"] = "Procesando"
-                        course_states[course_sic] = c_state
-                    except Exception:
-                        pass
 
             # run_scraping es una corutina, la ejecutamos en el bucle de eventos del worker.
             worker_params = dict(job_params)
@@ -459,16 +459,16 @@ def worker_process(
             )
 
             # Marcar fin explícito si fue éxito (el error se manda en `except`)
-            if batch and len(batch) > 0:
-                course_sic = batch[0][0]
-                if course_sic in course_states:
-                    try:
-                        c_state = course_states[course_sic]
-                        c_state["status"] = "Completado"
-                        c_state["progress"] = 100
-                        course_states[course_sic] = c_state
-                    except Exception:
-                        pass
+            if batch:
+                for course_sic, _ in batch:
+                    if course_sic in course_states:
+                        try:
+                            c_state = course_states[course_sic]
+                            c_state["status"] = "Completado"
+                            c_state["progress"] = 100
+                            course_states[course_sic] = c_state
+                        except Exception:
+                            pass
 
             logger.info(f"Worker {worker_id} completó el lote {batch_id}.")
             log_event_sync(EventType.SUCCESS, f"Lote {batch_id} completado.")
@@ -514,6 +514,15 @@ def worker_process(
                 "progress": 0,
                 "current_task": f"CRASHED: {str(e)[:40]}...",
             }
+            if 'batch' in locals() and batch:
+                for course_sic, _ in batch:
+                    if course_sic in course_states:
+                        try:
+                            c_state = course_states[course_sic]
+                            c_state["status"] = "Error"
+                            course_states[course_sic] = c_state
+                        except Exception:
+                            pass
             # Marcar la tarea como hecha para no bloquear la cola si hay un error
             if "work_queue" in locals() and isinstance(
                 work_queue, multiprocessing.queues.JoinableQueue
@@ -1229,6 +1238,23 @@ class ScraperServer:
             except Empty:
                 break
 
+        # Forzar estado de workers a inactivo
+        if self.worker_states is not None:
+            for w_id in self.worker_states.keys():
+                w_state = self.worker_states[w_id]
+                w_state["status"] = "Detenido"
+                w_state["current_task"] = "Trabajo detenido por el usuario."
+                self.worker_states[w_id] = w_state
+
+        # Limpiar cursos atascados en 'Procesando'
+        if self.course_states is not None:
+            for course_sic in self.course_states.keys():
+                c_state = self.course_states[course_sic]
+                if c_state["status"] == "Procesando":
+                    c_state["status"] = "Detenido"
+                    c_state["progress"] = 0
+                    self.course_states[course_sic] = c_state
+
         self.is_job_running = False
         self.start_time = None
         await global_event_log.add(
@@ -1256,6 +1282,23 @@ class ScraperServer:
             pass
 
         # 3. Resetear banderas
+        # Forzar estado de workers a inactivo
+        if self.worker_states is not None:
+            for w_id in self.worker_states.keys():
+                w_state = self.worker_states[w_id]
+                w_state["status"] = "Detenido"
+                w_state["current_task"] = "Trabajo detenido por el usuario."
+                self.worker_states[w_id] = w_state
+
+        # Limpiar cursos atascados en 'Procesando'
+        if self.course_states is not None:
+            for course_sic in self.course_states.keys():
+                c_state = self.course_states[course_sic]
+                if c_state["status"] == "Procesando":
+                    c_state["status"] = "Detenido"
+                    c_state["progress"] = 0
+                    self.course_states[course_sic] = c_state
+
         self.is_job_running = False
         self.start_time = None
 
@@ -1294,6 +1337,7 @@ class ScraperServer:
 
         # RESTAURACIÓN OPTIMIZADA Y EXACTA: Conteo de líneas real cacheado por mtime
         csv_total = 0
+        csv_counts = {}
         try:
             # Buscar archivos en ambas posibles ubicaciones para ser infalible
             results_dirs = [
@@ -1315,6 +1359,7 @@ class ScraperServer:
                                 
                                 if mtime == cached_mtime:
                                     csv_total += cached_count
+                                    csv_counts[fname.lower()] = cached_count
                                 else:
                                     # Archivo modificado o nuevo, contamos líneas reales (super rápido en chunks)
                                     count = 0
@@ -1329,11 +1374,11 @@ class ScraperServer:
                                         
                                     self._file_line_cache[fpath] = (mtime, count)
                                     csv_total += count
+                                    csv_counts[fname.lower()] = count
                             except Exception:
                                 pass
         except Exception:
             pass
-
 
                 
         return {
@@ -1342,7 +1387,8 @@ class ScraperServer:
             "is_running": self.is_job_running,
             "start_time": getattr(self, "start_time", None),
             "accumulated_time": accumulated_time,
-            "csv_total": csv_total
+            "csv_total": csv_total,
+            "csv_counts": csv_counts
         }
 
     async def get_all_courses(self):

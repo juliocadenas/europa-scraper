@@ -239,8 +239,8 @@ class ClientApp:
 
     def _on_closing(self):
         self.stop_polling.set()
-        if self.is_scraping:
-            self.stop_scraping() # Intentar detener el scraping si se está ejecutando
+        # if self.is_scraping:
+        #     self.stop_scraping() # Intentar detener el scraping si se está ejecutando
         self.root.destroy()
 
 if __name__ == "__main__":

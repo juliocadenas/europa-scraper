@@ -2507,6 +2507,8 @@ class ScraperGUI(ttk.Frame):
             return
         # Si estamos en medio de un reset, NO reponer la UI con datos viejos
         if getattr(self, 'is_resetting', False):
+            # CRITICO: Volver a programar el polling para que no muera el hilo
+            self.master.after(2000, self._schedule_status_poll)
             return
         try:
             scraper = _get_scraper()
@@ -2563,6 +2565,9 @@ class ScraperGUI(ttk.Frame):
 
                 # Actualizar CONTENIDOS (total lineas CSV) en ambas pestañas
                 csv_total = data.get("csv_total", 0)
+                if "csv_counts" in data:
+                    self._line_counts_map = data["csv_counts"]
+                    
                 contenidos_str = f"📊 Contenidos: {csv_total:,}"
                 self.master.after(0, lambda s=contenidos_str: self.stat_lines.config(text=s))
                 if hasattr(self, "exp_stat_lines"):

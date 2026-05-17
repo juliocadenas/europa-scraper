@@ -1,6 +1,6 @@
 {
     "server": {
-        "host": "scraper.docuplay.com",
-        "port": 443
+        "host": "100.83.253.87",
+        "port": 8001
     }
 }
