@@ -400,6 +400,7 @@ def worker_process(
             status_dict[worker_id] = {
                 "id": worker_id,
                 "status": "working",
+                "active": True,
                 "progress": 0,
                 "current_task": f"Procesando: {course_name_display}",
             }
@@ -482,6 +483,7 @@ def worker_process(
                 status_dict[worker_id] = {
                     "id": worker_id,
                     "status": "finished",
+                    "active": False,
                     "progress": 100,
                     "current_task": msg_finished,
                     "total_urls_found": cumulative_stats["total_urls_found"],
@@ -511,6 +513,7 @@ def worker_process(
             status_dict[worker_id] = {
                 "id": worker_id,
                 "status": "Error",
+                "active": False,
                 "progress": 0,
                 "current_task": f"CRASHED: {str(e)[:40]}...",
             }
