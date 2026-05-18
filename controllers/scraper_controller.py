@@ -690,7 +690,10 @@ class ScraperController(ScraperControllerBase):
       if self.stop_requested:
           logger.info("Scraping detenido por el usuario antes de iniciar la fase de tabulación")
           # Final cleanup check to ensure no empty files are left behind
-          self.result_manager.cleanup_if_empty()
+          try:
+              self.result_manager.cleanup_if_empty()
+          except Exception as e:
+              logger.warning(f"Error en cleanup_if_empty: {e}")
 
           return processed_results
 
@@ -992,7 +995,10 @@ class ScraperController(ScraperControllerBase):
           if total_courses == 0:
               logger.warning("No se encontraron cursos en el rango especificado")
               # Cleanup empty file if exists (Auto-fix)
-              self.result_manager.cleanup_if_empty()
+              try:
+                  self.result_manager.cleanup_if_empty()
+              except Exception as e:
+                  logger.warning(f"Error en cleanup_if_empty: {e}")
               return []
 
           server_id = self.config.get('server_id', 'UNKNOWN_SERVER')
@@ -1014,7 +1020,10 @@ class ScraperController(ScraperControllerBase):
           if not all_search_results:
               logger.warning("No se encontraron resultados para procesar")
               # Cleanup empty file if exists (Auto-fix)
-              self.result_manager.cleanup_if_empty()
+              try:
+                  self.result_manager.cleanup_if_empty()
+              except Exception as e:
+                  logger.warning(f"Error en cleanup_if_empty: {e}")
               if progress_callback:
                   progress_callback(100, "No se encontraron resultados para procesar")
               return []

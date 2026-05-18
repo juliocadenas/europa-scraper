@@ -1,0 +1,10 @@
+from curl_cffi import requests as cf
+s = cf.Session(impersonate="chrome120")
+r = s.get("http://100.83.253.87:8001/api/detailed_status", timeout=10)
+print(f"Status: {r.status_code}")
+d = r.json()
+w = d.get("workers", {})
+c = d.get("courses", {})
+print(f"workers: {len(w)}")
+print(f"courses: {len(c)}")
+print(f"is_running: {d.get('is_running')}")

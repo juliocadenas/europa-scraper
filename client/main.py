@@ -158,7 +158,33 @@ class ClientApp:
             logger.info(f"📦 Parámetros: {json.dumps(params, indent=2)}")
             
             response = requests.post(url, json=params, timeout=10)
-            response.raise_for_status()  
+            
+            # Manejar error 409 (trabajo anterior fantasma) - auto-reset y reintento
+            if response.status_code == 409:
+                logger.warning("⚠️ Error 409: Trabajo anterior detectado. Auto-reseteando servidor...")
+                self.queue.put(('log', "⚠️ Trabajo anterior detectado en el servidor. Reseteando automáticamente..."))
+                
+                try:
+                    # Enviar reset al servidor
+                    reset_resp = requests.post(f"{self.server_base_url}/reset", timeout=10)
+                    logger.info(f"Reset response: {reset_resp.status_code}")
+                    time.sleep(2)  # Dar tiempo al servidor para limpiar
+                except Exception as reset_err:
+                    logger.warning(f"Error en auto-reset: {reset_err}")
+                    # Intentar reset de emergencia
+                    try:
+                        requests.post(f"{self.server_base_url}/emergency_reset", timeout=10)
+                        time.sleep(2)
+                    except Exception:
+                        pass
+                
+                # Reintentar el inicio de scraping
+                logger.info("🔄 Reintentando inicio de scraping después de reset...")
+                self.queue.put(('log', "🔄 Reintentando inicio de scraping..."))
+                response = requests.post(url, json=params, timeout=15)
+                response.raise_for_status()
+            else:
+                response.raise_for_status()
             
             data = response.json()
             task_id = data.get('task_id', 'N/A')
@@ -169,7 +195,7 @@ class ClientApp:
             self.queue.put(('log', f"✅ {message}"))
             self.queue.put(('log', f"🆔 Tarea iniciada. ID: {task_id}"))
             
-            # Ya no iniciamos el sondeo redundante aquí. La GUI (scraper_gui.py) 
+            # Ya no iniciamos el sondeo redundante aquí. La GUI (scraper_gui.py)
             # tiene su propio mecanismo superior de polling de estado.
             self.stop_polling.clear()
 

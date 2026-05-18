@@ -1171,18 +1171,47 @@ class ScraperServer:
             )
 
     def _monitor_job_completion(self):
-        """Espera en un hilo separado a que la cola se vacíe y luego detiene el pool."""
-        self.work_queue.join()  # Bloquea hasta que todas las tareas en la cola estén hechas (task_done)
-        self.logger.info(
-            "Toda la carga de trabajo de la cola ha sido completada. Los workers están ahora inactivos (idle)."
-        )
-        asyncio.run(
-            global_event_log.add(
-                EventType.SUCCESS,
-                "Server",
-                "Toda la carga de trabajo de la cola ha sido completada.",
+        """Espera en un hilo separado a que la cola se vacíe, con timeout anti-bloqueo."""
+        timeout_seconds = 7200  # 2 horas máximo por trabajo
+        completed = threading.Event()
+
+        def do_join():
+            try:
+                self.work_queue.join()  # Bloquea hasta que todas las tareas estén hechas
+            except Exception as e:
+                self.logger.error(f"Error en work_queue.join(): {e}")
+            finally:
+                completed.set()
+
+        join_thread = threading.Thread(target=do_join, daemon=True)
+        join_thread.start()
+
+        # Esperar con timeout
+        finished = completed.wait(timeout=timeout_seconds)
+
+        if not finished:
+            self.logger.warning(
+                f"⚠️ TIMEOUT de {timeout_seconds}s en _monitor_job_completion. "
+                f"Forzando finalización del trabajo."
             )
-        )
+            asyncio.run(
+                global_event_log.add(
+                    EventType.ERROR,
+                    "Server",
+                    f"Timeout de {timeout_seconds}s alcanzado. Trabajo forzado a completado.",
+                )
+            )
+        else:
+            self.logger.info(
+                "Toda la carga de trabajo de la cola ha sido completada. Los workers están ahora inactivos (idle)."
+            )
+            asyncio.run(
+                global_event_log.add(
+                    EventType.SUCCESS,
+                    "Server",
+                    "Toda la carga de trabajo de la cola ha sido completada.",
+                )
+            )
         self.is_job_running = False  # Permitir nuevos trabajos
         self.start_time = None
         # self._stop_worker_pool() # Desactivado para que el estado final persista en la GUI

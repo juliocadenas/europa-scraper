@@ -90,6 +90,7 @@ class ScraperGUI(ttk.Frame):
         self.is_closing = (
             False  # Fix: inicializar bandera de cierre para _update_status_loop
         )
+        self._polling_loop_active = False  # Track si el loop de polling está activo
         print("ScraperGUI inicializado")
 
         # Iniciar el gestor de conteo de líneas en background (sin bloquear UI)
@@ -126,6 +127,10 @@ class ScraperGUI(ttk.Frame):
         # para que la ventana se pinte ANTES de hacer la petición de red
         self.master.after(1500, self._connect_and_load_initial_data)
 
+        # INICIAR POLLING INCONDICIONALMENTE después de 4 segundos
+        # No depende de que la conexión inicial tenga éxito
+        self.master.after(4000, self._ensure_polling_running)
+
         global_log_handler = get_global_log_handler()
         global_log_handler.set_callback(self._log_callback)
 
@@ -150,7 +155,7 @@ class ScraperGUI(ttk.Frame):
         import socket
 
         computer_name = socket.gethostname()
-        self.master.title(f"Europa Scraper v3 (CON MONITOR) - {computer_name}")
+        self.master.title(f"Europa Scraper v3.1-LIVE 🔴 - {computer_name}")
         self.master.geometry("1450x900")  # Tamaño inicial generoso
         self.master.minsize(1100, 750)
         self.master.configure(background="#f0f0f0")
@@ -1109,8 +1114,7 @@ class ScraperGUI(ttk.Frame):
 
     def _update_status_monitor(self, workers, courses):
         """Actualiza el Monitor de Estado en AMBAS pestañas (Principal y Expandida)."""
-        if getattr(self, "is_resetting", False):
-            return
+        # NUNCA bloquear actualización del monitor - siempre mostrar datos del servidor
         # Calcular estadísticas
         total_courses = len(courses)
         completed = sum(1 for c in courses if c.get("status") == "Completado")
@@ -1238,8 +1242,34 @@ class ScraperGUI(ttk.Frame):
 
     def _render_status(self, workers, courses):
         """Renderiza el estado dinámico de los cursos en el Monitor Principal."""
-        if getattr(self, "is_resetting", False):
-            return
+        try:
+            n_w = len(workers) if isinstance(workers, dict) else 0
+            n_c = len(courses) if courses else 0
+            self._render_status_inner(workers, courses)
+            # Confirmar renderizado exitoso en el log
+            if not hasattr(self, '_render_count'):
+                self._render_count = 0
+            self._render_count += 1
+            if self._render_count <= 3 or self._render_count % 15 == 0:
+                self._add_to_detailed_log(
+                    f"✅ Renderizado #{self._render_count}: {n_w} workers, {n_c} cursos", "SUCCESS"
+                )
+        except Exception as e:
+            import traceback
+            err_msg = f"❌ ERROR en _render_status: {e}"
+            err_detail = traceback.format_exc()[:500]
+            print(err_msg)
+            print(err_detail)
+            logger.error(f"{err_msg}\n{err_detail}")
+            # Mostrar error VISIBLE en la GUI (log detallado + status)
+            self._add_to_detailed_log(f"{err_msg}\n{err_detail[:300]}", "ERROR")
+            if hasattr(self, 'status_msg_label'):
+                self.status_msg_label.config(text=f"⚠️ ERROR RENDER: {str(e)[:60]}")
+
+    def _render_status_inner(self, workers, courses):
+        """Implementación real del renderizado."""
+        # NUNCA bloquear el renderizado por is_resetting si hay datos del servidor
+        # El polling ya filtra is_resetting apropiadamente antes de llamar aquí
 
         # Guardar datos para actualización asíncrona
         self._last_workers_data = workers
@@ -1439,8 +1469,7 @@ class ScraperGUI(ttk.Frame):
 
     def update_audit_log(self, events):
         """Actualiza el historial de auditoría con estructura jerárquica por Worker."""
-        if getattr(self, "is_resetting", False):
-            return
+        # NUNCA bloquear auditoría por is_resetting - los eventos siempre deben mostrarse
         if not hasattr(self, "audit_details_map"):
             self.audit_details_map = {}
         if not hasattr(self, "audit_worker_nodes"):
@@ -1635,8 +1664,6 @@ class ScraperGUI(ttk.Frame):
 
     def _refresh_courses_from_server(self, event=None):
         """Consulta la lista de cursos desde el servidor."""
-        if getattr(self, "is_resetting", False):
-            return
         try:
             url = f"{self.server_url.get()}/api/get_all_courses"
             self.master.after(0, self.results_frame.add_log, f"Refrescando cursos desde el servidor...")
@@ -1653,8 +1680,6 @@ class ScraperGUI(ttk.Frame):
             # No mostrar messagebox aquí para no interrumpir el flujo si falla el inicio
 
     def _update_ui_with_loaded_courses(self, data):
-        if getattr(self, "is_resetting", False):
-            return
         try:
             self.detailed_sic_codes_with_courses = []
             for i in data:
@@ -1747,6 +1772,9 @@ class ScraperGUI(ttk.Frame):
                     text=f"DESCONECTADO: {err}", foreground="red"
                 ),
             )
+            # INICIAR POLLING incluso si la conexión falló
+            # El polling seguirá intentando reconectar automáticamente
+            self.master.after(1000, self._ensure_polling_running)
             if show_popups:
                 logger.error(f"Error de conexión: {e}")
                 self.master.after(0, lambda err=str(e): messagebox.showerror(
@@ -1835,8 +1863,28 @@ class ScraperGUI(ttk.Frame):
                             self._log_debug("Lanzando thread de scraping...")
                             self.controller.start_scraping_on_server(full_url, params)
                             self._log_debug("Thread lanzado OK")
+                            # Confirmar al usuario que el servidor aceptó la solicitud
+                            self.master.after(0, lambda: self.status_indicator_label.config(
+                                text="● ACTIVO", foreground="#00cc44"
+                            ) if hasattr(self, 'status_indicator_label') else None)
+                            self.master.after(0, lambda: self.status_msg_label.config(
+                                text="Scraping iniciado en el servidor. Recibiendo datos..."
+                            ))
+                            self.master.after(0, lambda: self._add_to_detailed_log(
+                                "✅ Servidor aceptó la solicitud. Workers iniciándose...", "SUCCESS"
+                            ))
                         except Exception as e:
                             self._log_debug(f"ERROR en thread: {e}")
+                            # Revertir indicador de estado a error
+                            self.master.after(0, lambda: self.status_indicator_label.config(
+                                text="● ERROR DE CONEXIÓN", foreground="#ff4444"
+                            ) if hasattr(self, 'status_indicator_label') else None)
+                            self.master.after(0, lambda: self.status_msg_label.config(
+                                text=f"Error: {str(e)[:80]}"
+                            ))
+                            self.master.after(0, lambda: self._add_to_detailed_log(
+                                f"❌ Error al iniciar scraping: {e}", "ERROR"
+                            ))
                             self.master.after(
                                 0,
                                 lambda: messagebox.showerror(
@@ -1849,11 +1897,49 @@ class ScraperGUI(ttk.Frame):
                                     f"❌ Error lanzando scraping: {e}"
                                 ),
                             )
+                            # Restaurar botones
+                            self.master.after(0, lambda: self.control_frame.set_scraping_stopped())
 
                     threading.Thread(target=_launch, daemon=True).start()
                     # BLOQUEAR BOTONES y registrar estado interno
                     self.control_frame.set_scraping_started()
                     self.was_running = True
+
+                    # ═══════════════════════════════════════════════════════════
+                    # FEEDBACK INMEDIATO: El frontend reacciona al instante
+                    # ═══════════════════════════════════════════════════════════
+                    # 1. Indicador de estado → INICIANDO (naranja)
+                    self.status_indicator_label.config(
+                        text="● INICIANDO...", foreground="#ffaa00"
+                    )
+                    self.status_msg_label.config(
+                        text="Conectando al servidor y encolando cursos..."
+                    )
+                    self.main_progress_var.set(0)
+
+                    # 2. Iniciar timer inmediatamente
+                    if hasattr(self, 'timer_manager') and not self.timer_manager.timer_running:
+                        self.timer_manager.start()
+
+                    # 3. Auto-mostrar panel de log detallado
+                    if not self.log_visible.get():
+                        self.log_visible.set(True)
+                        self._toggle_log_panel()
+
+                    # 4. Agregar entradas visibles al log
+                    self._add_to_detailed_log(
+                        "🚀 Scraping iniciado. Enviando solicitud al servidor...", "INFO"
+                    )
+                    self._add_to_detailed_log(
+                        f"📋 Motor: {params.get('search_engine')} | "
+                        f"Modo: {params.get('search_mode')} | "
+                        f"Workers: {params.get('num_workers')} | "
+                        f"Rango: {params.get('from_sic')} → {params.get('to_sic')}",
+                        "INFO",
+                    )
+
+                    # 5. Asegurar que el polling de estado esté activo
+                    self._ensure_polling_running()
 
                 except Exception as e:
                     self._log_debug(f"ERROR preparando solicitud: {e}")
@@ -1877,6 +1963,11 @@ class ScraperGUI(ttk.Frame):
             messagebox.showerror("Error Crítico", f"Error inesperado en GUI:\n{e}")
 
     def _on_stop_scraping(self):
+        # Feedback inmediato de detención
+        self.status_indicator_label.config(text="● DETENIENDO...", foreground="#ffaa00")
+        self.status_msg_label.config(text="Enviando señal de detención al servidor...")
+        self._add_to_detailed_log("⏹️ Deteniendo scraping...", "WARNING")
+
         if hasattr(self, "controller") and self.controller:
             self.controller.stop_scraping()
         else:
@@ -2098,6 +2189,14 @@ class ScraperGUI(ttk.Frame):
         # ─── BLOQUEO DE SEGURIDAD ───
         self.is_resetting = True
         logger.info("Iniciando Reset Atómico del GUI...")
+        
+        # SAFETY: Auto-limpiar is_resetting después de 30 segundos
+        # para evitar que se quede bloqueado para siempre
+        def _safety_clear_reset():
+            if getattr(self, 'is_resetting', False):
+                logger.warning("Safety timeout: auto-limpiando is_resetting después de 30s")
+                self.is_resetting = False
+        self.master.after(30000, _safety_clear_reset)
 
         # ─── CRÍTICO: Resetear el flag is_scraping del controlador ───
         # Sin esto, el botón "Iniciar Scraping" queda bloqueado silenciosamente
@@ -2266,6 +2365,19 @@ class ScraperGUI(ttk.Frame):
         # ─── RESETEAR ESTADO INTERNO ──────────────────────────────────────────────
         if hasattr(self, "controller") and hasattr(self.controller, "last_event_id"):
             self.controller.last_event_id = 0
+        
+        # Resetear contadores de contenidos para que no muestren valores viejos
+        self._real_content_count = 0
+        self._real_content_files = 0
+        self._poll_count = 0
+        
+        # Resetear was_running para que el polling NO auto-limpie is_resetting
+        # y así evitar que se repueble el worker_tree con datos viejos del servidor
+        self.was_running = False
+        
+        # Resetear el label de contenidos inmediatamente
+        if hasattr(self, 'stat_contenidos'):
+            self.stat_contenidos.config(text="Contenidos: 0")
 
         # Confirmar inmediatamente al usuario (sin modal bloqueante)
         if hasattr(self, 'results_frame'):
@@ -2493,26 +2605,98 @@ class ScraperGUI(ttk.Frame):
             self.master.after(200, self.process_queue)
 
     def _schedule_status_poll(self):
-        """Programa el polling de estado en un hilo de fondo (no bloquea la GUI)."""
+        """Programa el polling de estado en un hilo de fondo (no bloquea la GUI).
+        Previene hilos duplicados con un flag atómico.
+        """
         if self.is_closing:
             return
-        threading.Thread(target=self._do_status_poll, daemon=True).start()
+        # Prevenir múltiples hilos de polling simultáneos
+        if getattr(self, '_poll_thread_running', False):
+            return
+        self._polling_loop_active = True
+        self._poll_thread_running = True
+        threading.Thread(target=self._do_status_poll, daemon=True, name="StatusPoll").start()
+
+    def _ensure_polling_running(self):
+        """Garantiza que el polling de estado esté activo. Lo inicia si no lo está.
+        Seguro llamar desde cualquier hilo - programa el inicio via master.after.
+        """
+        if self.is_closing:
+            return
+        if not getattr(self, '_polling_loop_active', False):
+            logger.info("[POLL] Activando monitor de estado en tiempo real...")
+            self.master.after(100, self._schedule_status_poll)
 
     def _do_status_poll(self):
         """Hace las llamadas HTTP de polling en un hilo de fondo.
-        MEJORADO: Sincroniza timer con servidor, detecta workers estancados/muertos.
+        HEARTBEAT en tiempo real + métricas visibles + renderizado de treeviews.
         """
         url = self.server_url.get()
-        if not url or self.is_closing:
-            return
-        # Si estamos en medio de un reset, NO reponer la UI con datos viejos
-        if getattr(self, 'is_resetting', False):
-            # CRITICO: Volver a programar el polling para que no muera el hilo
-            self.master.after(2000, self._schedule_status_poll)
-            return
+        
+        # Contador de ciclos (único incremento, sin duplicados)
+        if not hasattr(self, '_poll_count'):
+            self._poll_count = 0
+        self._poll_count += 1
+        pc = self._poll_count
+
+        # DIAGNÓSTICO: Escribir a archivo para verificar que el polling corre
         try:
-            scraper = _get_scraper()
-            r = scraper.get(f"{url}/api/detailed_status", timeout=10)
+            if pc <= 5 or pc % 30 == 0:
+                with open("_poll_diag.log", "a") as f:
+                    import datetime as _dt
+                    f.write(f"[{_dt.datetime.now()}] POLL #{pc} url={url} closing={self.is_closing}\n")
+        except Exception:
+            pass
+
+        # Si no hay URL, reintentar más tarde (no matar el loop)
+        if not url:
+            if pc <= 3:
+                print(f"[POLL #{pc}] Sin URL configurada, reintentando en 3s...")
+            self.master.after(3000, self._schedule_status_poll)
+            self._poll_thread_running = False
+            return
+
+        if self.is_closing:
+            self._poll_thread_running = False
+            self._polling_loop_active = False
+            return
+
+        # Auto-limpiar is_resetting si está atascado (seguridad)
+        if getattr(self, 'is_resetting', False):
+            if getattr(self, 'was_running', False):
+                logger.info("[POLL] Auto-limpiando is_resetting (servidor activo)")
+                self.is_resetting = False
+            else:
+                # Reintentar sin procesar datos durante reset
+                self.master.after(2000, self._schedule_status_poll)
+                self._poll_thread_running = False
+                return
+
+        try:
+            # Intentar con curl_cffi primero, fallback a requests estándar
+            try:
+                scraper = _get_scraper()
+                r = scraper.get(f"{url}/api/detailed_status", timeout=10)
+            except Exception as scraper_err:
+                logger.warning(f"curl_cffi falló en polling ({scraper_err}), usando requests estándar")
+                import requests as _std_req
+                r = _std_req.get(
+                    f"{url}/api/detailed_status",
+                    headers=_BYPASS_HEADERS,
+                    timeout=10,
+                    verify=False,
+                )
+
+            # DIAGNÓSTICO: Status code
+            if pc <= 3 or pc % 10 == 0:
+                print(f"[POLL #{pc}] HTTP {r.status_code} from {url}")
+            try:
+                if pc <= 5:
+                    with open("_poll_diag.log", "a") as _pf:
+                        _pf.write(f"[HTTP] POLL #{pc}: status={r.status_code}\n")
+            except Exception:
+                pass
+
             if r.status_code == 200:
                 data = r.json()
                 workers = data.get("workers", {})
@@ -2521,21 +2705,178 @@ class ScraperGUI(ttk.Frame):
                 if isinstance(courses_raw, dict):
                     courses = list(courses_raw.values())
                 else:
-                    courses = courses_raw
+                    courses = courses_raw if courses_raw else []
 
-                # === TIMER SINCRONIZADO CON EL SERVIDOR (persiste entre reinicios del cliente) ===
+                # === TIMER SINCRONIZADO CON EL SERVIDOR ===
                 start_time_iso = data.get("start_time")
                 acc_time = data.get("accumulated_time", 0)
                 is_running = data.get("is_running", False)
 
-                # Actualizar el indicador de estado en el monitor según el servidor
+                # DIAGNÓSTICO: Qué datos llegan
+                n_w = len(workers) if isinstance(workers, dict) else 0
+                n_c = len(courses) if courses else 0
+                if pc <= 5:
+                    try:
+                        with open("_poll_diag.log", "a") as _pf:
+                            _pf.write(f"[DATA] POLL #{pc}: is_running={is_running}, workers={n_w}, courses={n_c}\n")
+                    except Exception:
+                        pass
+
+                # === HEARTBEAT: Métricas en tiempo real ===
+                n_workers = n_w
+                n_courses = n_c
+                n_completed = sum(1 for c in (courses or []) if c.get("status") == "Completado") if courses else 0
+                n_processing = sum(1 for c in (courses or []) if c.get("status") == "Procesando") if courses else 0
+                n_pending = sum(1 for c in (courses or []) if c.get("status") == "Pendiente") if courses else 0
+                n_failed = sum(1 for c in (courses or []) if c.get("status") in ["Error", "Fallido"]) if courses else 0
+                csv_total = data.get("csv_total", 0)
+
+                # Progreso promedio
+                avg_prog = sum(c.get("progress", 0) for c in courses) / n_courses if n_courses > 0 else 0
+
+                # Actualizar indicador de estado
                 if is_running:
                     self.master.after(0, lambda: self.status_indicator_label.config(
                         text="● ACTIVO", foreground="#00cc44"
                     ) if hasattr(self, 'status_indicator_label') else None)
-                    self.was_running = True
 
-                # Detectar la transición de corriendo a detenido
+                    # Heartbeat message
+                    hours_h, remainder_h = divmod(int(acc_time), 3600)
+                    mins_h, secs_h = divmod(remainder_h, 60)
+                    heartbeat_msg = (
+                        f"⏱ {hours_h:02}:{mins_h:02}:{secs_h:02} | "
+                        f"👥 {n_workers} workers | "
+                        f"📚 {n_courses} cursos "
+                        f"(✅{n_completed} 🔄{n_processing} ⏳{n_pending} ❌{n_failed}) | "
+                        f"📊 {getattr(self, '_real_content_count', csv_total) or csv_total:,} contenidos | "
+                        f"📈 {avg_prog:.0f}%"
+                    )
+                    self.master.after(0, lambda m=heartbeat_msg: self.status_msg_label.config(
+                        text=m
+                    ) if hasattr(self, 'status_msg_label') else None)
+
+                    # Barra de progreso
+                    self.master.after(0, lambda p=avg_prog: self.main_progress_var.set(p))
+                    self.master.after(0, lambda p=avg_prog: self.main_progress_label.config(
+                        text=f"{p:.0f}%"
+                    ))
+
+                    # Estadísticas
+                    self.master.after(0, lambda c=n_completed: self.stat_completed.config(
+                        text=f"✅ Completados: {c}"
+                    ))
+                    self.master.after(0, lambda p=n_pending: self.stat_pending.config(
+                        text=f"⏳ Pendientes: {p}"
+                    ))
+                    self.master.after(0, lambda f=n_failed: self.stat_failed.config(
+                        text=f"❌ Fallidos: {f}"
+                    ))
+
+                    # === LOG DETALLADO DEL PROCESO cada 5 ciclos (10 segundos) ===
+                    if pc % 5 == 0:
+                        # Heartbeat resumen
+                        self.master.after(0, lambda m=heartbeat_msg: self._add_to_detailed_log(
+                            f"📡 {m}", "INFO"
+                        ))
+                        
+                        # DETALLE PROFESO: Workers activos y qué están haciendo
+                        active_worker_details = []
+                        idle_workers = 0
+                        if isinstance(workers, dict):
+                            for wid, wstate in workers.items():
+                                if not isinstance(wstate, dict):
+                                    continue
+                                w_status = wstate.get("status", "?")
+                                w_task = wstate.get("current_task", "")
+                                w_prog = wstate.get("progress", 0)
+                                w_urls = wstate.get("urls_scraped", 0)
+                                w_saved = wstate.get("contents_saved", 0)
+                                
+                                if w_status == "Idle":
+                                    idle_workers += 1
+                                else:
+                                    active_worker_details.append(
+                                        f"  👤 {wid}: {w_status} | {w_task} | Progreso:{w_prog}% | URLs:{w_urls} | Guardados:{w_saved}"
+                                    )
+                        
+                        # Escribir detalles de workers al log
+                        if active_worker_details:
+                            detail_lines = "\n".join(active_worker_details[:10])  # Máximo 10 workers
+                            self.master.after(0, lambda d=detail_lines: self._add_to_detailed_log(
+                                f"🔧 WORKERS ACTIVOS ({len(active_worker_details)} activos, {idle_workers} idle):\n{d}", "INFO"
+                            ))
+                        
+                        # DETALLE PROCESO: Cursos en procesamiento activo
+                        processing_courses = []
+                        if courses:
+                            for c in courses:
+                                st = c.get("status", "")
+                                if st == "Procesando":
+                                    sic = c.get("sic", "?")
+                                    name = c.get("name", "?")[:40]
+                                    prog = c.get("progress", 0)
+                                    worker = c.get("worker_id", "?")
+                                    urls = c.get("urls_found", 0)
+                                    saved = c.get("contents_saved", 0)
+                                    processing_courses.append(
+                                        f"  📖 SIC:{sic} | {name} | Worker:{worker} | {prog}% | URLs:{urls} | Guardados:{saved}"
+                                    )
+                        
+                        if processing_courses:
+                            course_lines = "\n".join(processing_courses[:8])  # Máximo 8 cursos
+                            self.master.after(0, lambda d=course_lines: self._add_to_detailed_log(
+                                f"📚 CURSOS EN PROCESO ({len(processing_courses)}):\n{d}", "SUCCESS"
+                            ))
+                        
+                        # DETALLE PROCESO: Últimos cursos completados
+                        recent_completed = []
+                        if courses:
+                            for c in courses:
+                                st = c.get("status", "")
+                                if st == "Completado":
+                                    recent_completed.append(c)
+                        recent_completed = recent_completed[-3:]  # Últimos 3
+                        if recent_completed:
+                            comp_lines = []
+                            for c in recent_completed:
+                                sic = c.get("sic", "?")
+                                name = c.get("name", "?")[:35]
+                                prog = c.get("progress", 0)
+                                saved = c.get("contents_saved", 0)
+                                comp_lines.append(f"  ✅ SIC:{sic} | {name} | {prog}% | {saved} contenidos")
+                            self.master.after(0, lambda d="\n".join(comp_lines): self._add_to_detailed_log(
+                                f"✅ COMPLETADOS RECIENTES:\n{d}", "SUCCESS"
+                            ))
+                        
+                        # DETALLE PROCESO: Cursos con error
+                        error_courses = []
+                        if courses:
+                            for c in courses:
+                                st = c.get("status", "")
+                                if st in ["Error", "Fallido"]:
+                                    sic = c.get("sic", "?")
+                                    name = c.get("name", "?")[:35]
+                                    err = c.get("error", c.get("last_error", "N/A"))[:60]
+                                    error_courses.append(f"  ❌ SIC:{sic} | {name} | Error: {err}")
+                        if error_courses:
+                            err_lines = "\n".join(error_courses[-5:])  # Últimos 5 errores
+                            self.master.after(0, lambda d=err_lines: self._add_to_detailed_log(
+                                f"❌ CURSOS CON ERROR ({len(error_courses)} total):\n{d}", "ERROR"
+                            ))
+
+                    self.was_running = True
+                else:
+                    if n_courses > 0:
+                        heartbeat_msg = (
+                            f"INACTIVO | 📚 {n_courses} cursos "
+                            f"(✅{n_completed} ❌{n_failed}) | "
+                            f"📊 {csv_total:,} contenidos"
+                        )
+                        self.master.after(0, lambda m=heartbeat_msg: self.status_msg_label.config(
+                            text=m
+                        ) if hasattr(self, 'status_msg_label') else None)
+
+                # Detectar transición corriendo → detenido
                 was_running = getattr(self, 'was_running', False)
                 if was_running and not is_running:
                     self.was_running = False
@@ -2545,18 +2886,23 @@ class ScraperGUI(ttk.Frame):
                         text="● INACTIVO", foreground="gray"
                     ) if hasattr(self, 'status_indicator_label') else None)
 
-                # Sincronizar el TimerManager con los datos del servidor
+                # Sincronizar TimerManager (solo si tiene el método sync_from_server)
                 if hasattr(self, 'timer_manager'):
-                    if is_running and acc_time > 0:
-                        self.timer_manager.sync_from_server(acc_time, start_time_iso)
-                        # Auto-arrancar el timer local si no está corriendo
-                        if not self.timer_manager.timer_running:
-                            self.timer_manager.start()
-                    elif not is_running and self.timer_manager.timer_running:
-                        # Job terminó — detener timer pero mantener el último valor
-                        self.timer_manager.stop()
+                    try:
+                        if is_running and acc_time > 0:
+                            if hasattr(self.timer_manager, 'sync_from_server'):
+                                self.timer_manager.sync_from_server(acc_time, start_time_iso)
+                            else:
+                                # TimerManager básico: solo iniciar si no está corriendo
+                                pass
+                            if not self.timer_manager.timer_running:
+                                self.timer_manager.start()
+                        elif not is_running and self.timer_manager.timer_running:
+                            self.timer_manager.stop()
+                    except Exception as timer_err:
+                        logger.debug(f"Timer sync error (no crítico): {timer_err}")
 
-                # Fallback directo al label por si el TimerManager no está activo
+                # Timer display
                 if start_time_iso:
                     try:
                         dt = datetime.fromisoformat(start_time_iso)
@@ -2569,82 +2915,115 @@ class ScraperGUI(ttk.Frame):
                 hours, remainder = divmod(int(acc_time), 3600)
                 minutes, seconds = divmod(remainder, 60)
                 timer_str = f"⏱ {hours:02}:{minutes:02}:{seconds:02} | {start_str}"
-                
-                # Actualizar el timer en el hilo de UI
                 self.master.after(0, lambda t=timer_str: self.timer_label.config(text=t))
 
-                # Actualizar CONTENIDOS (total lineas CSV) en ambas pestañas
-                csv_total = data.get("csv_total", 0)
+                # Contenidos CSV - usar csv_total como base
                 if "csv_counts" in data:
                     self._line_counts_map = data["csv_counts"]
-                    
-                contenidos_str = f"📊 Contenidos: {csv_total:,}"
+                
+                # Cada 10 ciclos (20s), obtener el conteo REAL desde /api/results_line_count
+                # porque csv_total de get_detailed_status puede ser inexacto
+                if pc % 10 == 1:
+                    try:
+                        r_count = _get_scraper().get(f"{url}/api/results_line_count", timeout=5)
+                        if r_count.status_code == 200:
+                            count_data = r_count.json()
+                            real_total = count_data.get("total_lines", 0)
+                            real_files = count_data.get("total_files", 0)
+                            if real_total > 0:
+                                self._real_content_count = real_total
+                                self._real_content_files = real_files
+                    except Exception:
+                        pass
+                
+                # Usar el conteo real si está disponible, sino csv_total
+                display_count = getattr(self, '_real_content_count', 0)
+                if display_count <= 0:
+                    display_count = csv_total
+                display_files = getattr(self, '_real_content_files', 0)
+                
+                if display_files > 0:
+                    contenidos_str = f"📊 Contenidos: {display_count:,} ({display_files:,} archivos)"
+                else:
+                    contenidos_str = f"📊 Contenidos: {display_count:,}"
                 self.master.after(0, lambda s=contenidos_str: self.stat_lines.config(text=s))
                 if hasattr(self, "exp_stat_lines"):
                     self.master.after(0, lambda s=contenidos_str: self.exp_stat_lines.config(text=s))
 
-                # === DETECCIÓN DE WORKERS ESTANCADOS ===
+                # Detección de workers estancados
                 stalled = data.get("stalled_workers", [])
                 dead = data.get("dead_workers", [])
-
                 if stalled or dead:
-                    # Construir mensaje de alerta
                     alert_parts = []
                     for sw in stalled:
                         secs = sw.get("seconds_since_heartbeat", 0)
                         wid = sw.get("worker_id", "?")
                         task = sw.get("last_task", "?")
-                        mins = secs // 60
-                        alert_parts.append(
-                            f"⚠️ Worker {wid} sin respuesta hace {mins}min ({task})"
-                        )
+                        alert_parts.append(f"⚠️ Worker {wid} sin respuesta hace {secs // 60}min ({task})")
                     for dw in dead:
-                        alert_parts.append(
-                            f"💀 Proceso PID {dw.get('pid')} muerto (código: {dw.get('exitcode')})"
-                        )
-
-                    # Mostrar en el log y en el indicador de estado
+                        alert_parts.append(f"💀 Proceso PID {dw.get('pid')} muerto (código: {dw.get('exitcode')})")
                     for msg in alert_parts:
-                        self.master.after(
-                            0,
-                            lambda m=msg: self._add_to_detailed_log(m, "WARNING")
-                        )
-
-                    # Cambiar indicador de estado a amarillo de alerta
+                        self.master.after(0, lambda m=msg: self._add_to_detailed_log(m, "WARNING"))
                     if dead:
-                        self.master.after(
-                            0,
-                            lambda: self.status_indicator_label.config(
-                                text="● WORKER MUERTO", foreground="#ff4444"
-                            )
-                        )
+                        self.master.after(0, lambda: self.status_indicator_label.config(
+                            text="● WORKER MUERTO", foreground="#ff4444"
+                        ))
                     elif stalled:
-                        self.master.after(
-                            0,
-                            lambda: self.status_indicator_label.config(
-                                text="● POSIBLE BLOQUEO", foreground="#ffaa00"
-                            )
-                        )
+                        self.master.after(0, lambda: self.status_indicator_label.config(
+                            text="● POSIBLE BLOQUEO", foreground="#ffaa00"
+                        ))
 
+                # === RENDERIZAR DATOS EN TREEVIEWS ===
+                # SIEMPRE renderizar si hay datos, sin importar is_resetting
+                if pc <= 5:
+                    try:
+                        with open("_poll_diag.log", "a") as _pf:
+                            _pf.write(f"[RENDER] POLL #{pc}: {n_w} workers, {n_c} courses -> _render_status\n")
+                    except Exception:
+                        pass
+                
                 if courses or workers:
                     self.master.after(
                         0, lambda w=workers, c=courses: self._render_status(w, c)
                     )
 
-            r_logs = _get_scraper().get(
-                f"{url}/api/events?min_id={getattr(self, 'last_event_id', 0)}",
-                timeout=3,
-            )
+            # Events polling (auditoría) con fallback
+            try:
+                r_logs = _get_scraper().get(
+                    f"{url}/api/events?min_id={getattr(self, 'last_event_id', 0)}",
+                    timeout=3,
+                )
+            except Exception:
+                import requests as _std_req
+                r_logs = _std_req.get(
+                    f"{url}/api/events?min_id={getattr(self, 'last_event_id', 0)}",
+                    headers=_BYPASS_HEADERS,
+                    timeout=3,
+                    verify=False,
+                )
             if r_logs.status_code == 200:
                 evs = r_logs.json().get("events", [])
                 if evs:
                     self.master.after(0, lambda e=evs: self.update_audit_log(e))
                     self.last_event_id = evs[-1]["id"]
-        except:
-            pass
+        except Exception as e:
+            import traceback as _tb
+            err_detail = f"POLL #{pc} ERROR: {type(e).__name__}: {e}\n{_tb.format_exc()[:500]}"
+            logger.warning(err_detail)
+            print(err_detail)
+            try:
+                with open("_poll_diag.log", "a") as _pf:
+                    _pf.write(f"[ERROR] {err_detail}\n")
+            except Exception:
+                pass
+            err_ui_msg = f"⚠️ Polling error: {type(e).__name__}: {str(e)[:80]}"
+            self.master.after(0, lambda m=err_ui_msg: self._add_to_detailed_log(m, "ERROR"))
         finally:
+            self._poll_thread_running = False
             if not self.is_closing:
                 self.master.after(2000, self._schedule_status_poll)
+            else:
+                self._polling_loop_active = False
 
     def _update_status_loop(self):
         """Compatibilidad: redirige al nuevo sistema de polling en hilo de fondo."""

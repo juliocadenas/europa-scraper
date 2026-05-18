@@ -58,3 +58,33 @@
 2026-05-17 17:07:58.247850: URL Servidor: https://scraper.docuplay.com
 2026-05-17 17:07:58.279457: Lanzando thread de scraping...
 2026-05-17 17:07:58.279457: Thread lanzado OK
+2026-05-17 18:35:41.723241: Botón Iniciar Scraping presionado
+2026-05-17 18:35:41.728150: Selección: From=(2,), To=(7745,)
+2026-05-17 18:35:41.730262: Params preparados: {'from_sic': '590', 'to_sic': '597(0275)', 'search_engine': 'Cordis Europa API', 'search_mode': 'broad', 'require_keywords': False, 'is_headless': False, 'min_words': 1, 'num_workers': 48}
+2026-05-17 18:35:41.731860: URL Servidor: http://100.83.253.87:8001
+2026-05-17 18:35:41.737266: Lanzando thread de scraping...
+2026-05-17 18:35:41.742357: Thread lanzado OK
+2026-05-17 19:37:37.348182: Botón Iniciar Scraping presionado
+2026-05-17 19:37:37.348807: Selección: From=(1,), To=(7745,)
+2026-05-17 19:37:37.351899: Params preparados: {'from_sic': '580', 'to_sic': '597(0275)', 'search_engine': 'Cordis Europa API', 'search_mode': 'broad', 'require_keywords': False, 'is_headless': False, 'min_words': 1, 'num_workers': 48}
+2026-05-17 19:37:37.351899: URL Servidor: http://100.83.253.87:8001
+2026-05-17 19:37:37.414310: Lanzando thread de scraping...
+2026-05-17 19:37:37.417362: Thread lanzado OK
+2026-05-17 19:42:48.628334: Botón Iniciar Scraping presionado
+2026-05-17 19:42:48.631073: Selección: From=(2,), To=(7745,)
+2026-05-17 19:42:48.631073: Params preparados: {'from_sic': '590', 'to_sic': '597(0275)', 'search_engine': 'Cordis Europa API', 'search_mode': 'broad', 'require_keywords': False, 'is_headless': False, 'min_words': 1, 'num_workers': 48}
+2026-05-17 19:42:48.631073: URL Servidor: http://100.83.253.87:8001
+2026-05-17 19:42:48.697798: Lanzando thread de scraping...
+2026-05-17 19:42:48.699319: Thread lanzado OK
+2026-05-17 21:13:53.084521: Botón Iniciar Scraping presionado
+2026-05-17 21:13:53.084521: Selección: From=(1,), To=(7745,)
+2026-05-17 21:13:53.084521: Params preparados: {'from_sic': '580', 'to_sic': '597(0275)', 'search_engine': 'Cordis Europa API', 'search_mode': 'broad', 'require_keywords': False, 'is_headless': False, 'min_words': 1, 'num_workers': 48}
+2026-05-17 21:13:53.084521: URL Servidor: http://100.83.253.87:8001
+2026-05-17 21:13:53.118711: Lanzando thread de scraping...
+2026-05-17 21:13:53.118711: Thread lanzado OK
+2026-05-18 07:38:57.219304: Botón Iniciar Scraping presionado
+2026-05-18 07:38:57.219304: Selección: From=(1,), To=(1,)
+2026-05-18 07:38:57.219304: Params preparados: {'from_sic': '580', 'to_sic': '580', 'search_engine': 'Cordis Europa API', 'search_mode': 'broad', 'require_keywords': False, 'is_headless': False, 'min_words': 1, 'num_workers': 48}
+2026-05-18 07:38:57.219304: URL Servidor: http://100.83.253.87:8001
+2026-05-18 07:38:57.374243: Lanzando thread de scraping...
+2026-05-18 07:38:57.376661: Thread lanzado OK

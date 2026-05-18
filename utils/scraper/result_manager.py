@@ -311,3 +311,54 @@ class ResultManager:
             Omitted file path
         """
         return self.omitted_file
+    
+    def cleanup_if_empty(self) -> bool:
+        """
+        Elimina archivos de salida si solo contienen cabeceras - sin datos reales.
+        Esto evita dejar archivos CSV vacíos en results/ cuando un curso no produce resultados.
+        
+        Returns:
+            True si se eliminó algún archivo, False si no
+        """
+        deleted_any = False
+        
+        # 1. Limpiar archivo CSV principal
+        if self.output_file and os.path.exists(self.output_file):
+            try:
+                with open(self.output_file, 'r', encoding='utf-8') as f:
+                    lines = f.readlines()
+                if len(lines) <= 1:  # Solo cabecera o vacío
+                    os.remove(self.output_file)
+                    logger.info(f"Eliminado archivo vacío: {self.output_file}")
+                    deleted_any = True
+            except Exception as e:
+                logger.error(f"Error limpiando output_file: {e}")
+        
+        # 2. Limpiar archivos por idioma (ES, FR, DE, etc.)
+        if hasattr(self, 'lang_files') and self.lang_files:
+            for lang in list(self.lang_files.keys()):
+                filepath = self.lang_files[lang]
+                if os.path.exists(filepath):
+                    try:
+                        with open(filepath, 'r', encoding='utf-8') as f:
+                            lines = f.readlines()
+                        if len(lines) <= 1:
+                            os.remove(filepath)
+                            del self.lang_files[lang]
+                            logger.info(f"Eliminado archivo de idioma vacío: {filepath}")
+                            deleted_any = True
+                    except Exception as e:
+                        logger.error(f"Error limpiando lang_file {filepath}: {e}")
+        
+        # 3. Limpiar archivo omitidos (xlsx)
+        if self.omitted_file and os.path.exists(self.omitted_file):
+            try:
+                file_size = os.path.getsize(self.omitted_file)
+                if file_size < 200:  # Archivo xlsx vacío es muy pequeño
+                    os.remove(self.omitted_file)
+                    logger.info(f"Eliminado archivo omitidos vacío: {self.omitted_file}")
+                    deleted_any = True
+            except Exception as e:
+                logger.error(f"Error limpiando omitted_file: {e}")
+        
+        return deleted_any

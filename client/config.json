@@ -20,6 +20,7 @@
     "log_level": "DEBUG",
     "save_logs": true,
     "headless_mode": false,
+    "server_url": "http://100.83.253.87:8001",
     "scraping": {
         "minimum_words_per_page": 3
     },
@@ -39,8 +40,8 @@
         "max_connections": 5
     },
     "server": {
-        "host": "usr-brief-essex-moss.trycloudflare.com",
-        "port": 443,
+        "host": "100.83.253.87",
+        "port": 8001,
         "auto_detect_wsl": false
     },
     "num_workers": "48"
