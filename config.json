@@ -17,5 +17,15 @@
         "temperature": 0.1,
         "max_results": 50,
         "site_domain": "usa.gov"
+    },
+    "searxng": {
+        "enabled": true,
+        "url": "http://localhost:8080",
+        "engines": "duckduckgo,brave,mojeek"
+    },
+    "serper": {
+        "enabled": true,
+        "api_key": "",
+        "_note": "Obtén tu API key gratis (2,500 consultas/mes) en https://serper.dev"
     }
 }

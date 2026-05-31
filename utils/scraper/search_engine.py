@@ -3,7 +3,6 @@ import logging
 import random
 import os
 import time
-from typing import List, Dict, Any, Tuple, Optional, Set
 from playwright.async_api import Page
 from functools import lru_cache
 import aiohttp
@@ -46,6 +45,12 @@ class SearchEngine:
             temperature=ai_config.get("temperature", 0.1),
         )
         self._ai_site_domain = ai_config.get("site_domain", "usa.gov")
+        
+        # Configuración SearXNG (meta-buscador self-hosted)
+        self._searxng_url = ai_config.get("searxng_url", "http://localhost:8080")
+        
+        # Configuración Serper.dev (API de Google Search)
+        self._serper_api_key = ai_config.get("serper_api_key", "")
 
     # ... (existing methods) ...
 
@@ -65,6 +70,10 @@ class SearchEngine:
              return await self.cordis_api_client.search_projects_and_publications(search_term)
         elif search_engine == 'Wayback Machine':
             return await self.search_wayback(search_term, site_domain)
+        elif search_engine == 'SearXNG':
+            return await self.search_searxng(search_term, site_domain)
+        elif search_engine == 'Serper.dev':
+            return await self.search_serper(search_term, site_domain)
         else:
             logger.warning(f"Motor de búsqueda no soportado: {search_engine}")
             return []
@@ -670,6 +679,10 @@ class SearchEngine:
             return await self.search_cordis_europa(search_term)
         elif search_engine == 'Wayback Machine':
             return await self.search_wayback(search_term, site_domain)
+        elif search_engine == 'SearXNG':
+            return await self.search_searxng(search_term, site_domain)
+        elif search_engine == 'Serper.dev':
+            return await self.search_serper(search_term, site_domain)
         else:
             logger.warning(f"Motor de búsqueda no soportado: {search_engine}")
             return []
@@ -1070,3 +1083,222 @@ class SearchEngine:
         except Exception as e:
             logger.error(f"Error general en búsqueda DuckDuckGo: {str(e)}")
             return []
+
+    # =========================================================================
+    # SearXNG - Meta-buscador self-hosted (DuckDuckGo + Brave + Mojeek + ...)
+    # =========================================================================
+    async def search_searxng(
+        self, query: str, site_domain: Optional[str] = None, max_results: int = 50
+    ) -> List[Dict[str, Any]]:
+        """
+        Realiza búsqueda vía SearXNG (meta-buscador self-hosted).
+        
+        Consulta múltiples engines simultáneamente (DuckDuckGo, Brave, Mojeek,
+        opcionalmente Google) y agrega resultados en JSON limpio.
+        
+        No requiere navegador Playwright — es 100% API (aiohttp).
+        
+        Args:
+            query: Término de búsqueda (nombre del curso)
+            site_domain: Dominio para filtrar (ej: usa.gov, europa.eu)
+            max_results: Máximo de resultados a retornar
+            
+        Returns:
+            Lista de dicts con keys: url, title, description, mediatype, format, engine
+        """
+        # Construir query con site: si se especifica dominio
+        search_query = f"{query} site:{site_domain}" if site_domain else query
+        
+        # Verificar caché
+        cache_key = f"searxng:{search_query.lower()}"
+        if cache_key in self._search_cache:
+            logger.info(f"[SearXNG] Usando caché para: '{search_query}'")
+            return self._search_cache[cache_key]
+        
+        logger.info(f"[SearXNG] Buscando '{search_query}' via {self._searxng_url}")
+        
+        results = []
+        try:
+            params = {
+                "q": search_query,
+                "format": "json",
+                "categories": "general",
+                "language": "en",
+                "engines": "duckduckgo,brave,mojeek",  # Engines que no bloquean
+                "results": max_results,
+            }
+            
+            async with aiohttp.ClientSession() as session:
+                timeout = aiohttp.ClientTimeout(total=20)
+                async with session.get(
+                    f"{self._searxng_url}/search",
+                    params=params,
+                    timeout=timeout,
+                ) as resp:
+                    if resp.status != 200:
+                        logger.warning(
+                            f"[SearXNG] Error: status {resp.status} desde "
+                            f"{self._searxng_url}. ¿Está corriendo SearXNG?"
+                        )
+                        return []
+                    
+                    data = await resp.json()
+                    
+                    for item in data.get("results", []):
+                        url = item.get("url", "")
+                        if not url:
+                            continue
+                        
+                        # Filtrar URLs internas de buscadores
+                        if any(skip in url for skip in [
+                            "google.com/search", "duckduckgo.com", 
+                            "search.brave.com", "mojeek.com",
+                        ]):
+                            continue
+                        
+                        results.append({
+                            "url": url,
+                            "title": item.get("title", ""),
+                            "description": item.get("content", ""),
+                            "mediatype": "web",
+                            "format": None,
+                            "engine": item.get("engine", "searxng"),
+                        })
+                        
+                        if len(results) >= max_results:
+                            break
+            
+            # Cachear resultados
+            self._search_cache[cache_key] = results
+            logger.info(
+                f"[SearXNG] Búsqueda completada. {len(results)} resultados "
+                f"para '{search_query}'"
+            )
+            
+        except aiohttp.ClientConnectorError:
+            logger.error(
+                f"[SearXNG] No se pudo conectar a {self._searxng_url}. "
+                "Asegúrate de que SearXNG esté corriendo. "
+                "Instalación: docker run -d -p 8080:8080 searxng/searxng"
+            )
+        except asyncio.TimeoutError:
+            logger.error(f"[SearXNG] Timeout consultando {self._searxng_url}")
+        except Exception as e:
+            logger.error(f"[SearXNG] Error en búsqueda: {e}")
+        
+        return results
+
+    # =========================================================================
+    # Serper.dev - API de Google Search (resultados oficiales en JSON)
+    # =========================================================================
+    async def search_serper(
+        self, query: str, site_domain: Optional[str] = None, max_results: int = 50
+    ) -> List[Dict[str, Any]]:
+        """
+        Realiza búsqueda vía Serper.dev (API de Google Search).
+        
+        Retorna resultados oficiales de Google en JSON limpio.
+        Requiere API key (plan gratis: 2,500 consultas/mes).
+        
+        No requiere navegador Playwright — es 100% API (aiohttp).
+        
+        Args:
+            query: Término de búsqueda (nombre del curso)
+            site_domain: Dominio para filtrar (ej: usa.gov, europa.eu)
+            max_results: Máximo de resultados a retornar
+            
+        Returns:
+            Lista de dicts con keys: url, title, description, mediatype, format
+        """
+        if not self._serper_api_key:
+            logger.error(
+                "[Serper] API key no configurada. "
+                "Agrega 'serper_api_key' en config.json → ai_scraper. "
+                "Obtén tu key en: https://serper.dev (plan gratis: 2,500/mes)"
+            )
+            return []
+        
+        # Construir query con site: si se especifica dominio
+        search_query = f"{query} site:{site_domain}" if site_domain else query
+        
+        # Verificar caché
+        cache_key = f"serper:{search_query.lower()}"
+        if cache_key in self._search_cache:
+            logger.info(f"[Serper] Usando caché para: '{search_query}'")
+            return self._search_cache[cache_key]
+        
+        logger.info(f"[Serper] Buscando '{search_query}' via Serper.dev API")
+        
+        results = []
+        try:
+            headers = {
+                "X-API-KEY": self._serper_api_key,
+                "Content-Type": "application/json",
+            }
+            data = {
+                "q": search_query,
+                "num": min(max_results, 100),
+            }
+            
+            async with aiohttp.ClientSession() as session:
+                timeout = aiohttp.ClientTimeout(total=15)
+                async with session.post(
+                    "https://google.serper.dev/search",
+                    json=data,
+                    headers=headers,
+                    timeout=timeout,
+                ) as resp:
+                    if resp.status == 401:
+                        logger.error("[Serper] API key inválida o expirada")
+                        return []
+                    elif resp.status == 429:
+                        logger.warning(
+                            "[Serper] Rate limit alcanzado. "
+                            "Considera upgrading tu plan en serper.dev"
+                        )
+                        return []
+                    elif resp.status != 200:
+                        logger.error(f"[Serper] Error: status {resp.status}")
+                        return []
+                    
+                    resp_data = await resp.json()
+                    
+                    # Resultados orgánicos
+                    for item in resp_data.get("organic", []):
+                        url = item.get("link", "")
+                        if not url:
+                            continue
+                        results.append({
+                            "url": url,
+                            "title": item.get("title", ""),
+                            "description": item.get("snippet", ""),
+                            "mediatype": "web",
+                            "format": None,
+                        })
+                        if len(results) >= max_results:
+                            break
+                    
+                    # Knowledge graph (si existe y hay sitio)
+                    kg = resp_data.get("knowledgeGraph")
+                    if kg and kg.get("website"):
+                        results.insert(0, {
+                            "url": kg["website"],
+                            "title": kg.get("title", ""),
+                            "description": kg.get("description", ""),
+                            "mediatype": "web",
+                            "format": None,
+                        })
+            
+            # Cachear resultados
+            self._search_cache[cache_key] = results
+            logger.info(
+                f"[Serper] Búsqueda completada. {len(results)} resultados "
+                f"para '{search_query}'"
+            )
+            
+        except asyncio.TimeoutError:
+            logger.error("[Serper] Timeout consultando Serper.dev API")
+        except Exception as e:
+            logger.error(f"[Serper] Error en búsqueda: {e}")
+        
+        return results
