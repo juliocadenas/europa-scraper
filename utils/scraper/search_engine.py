@@ -1,4 +1,3 @@
-import logging
 import asyncio
 import random
 import os
@@ -15,6 +14,7 @@ from utils.scraper.text_processor import TextProcessor
 from utils.scraper.url_utils import URLUtils
 from utils.captcha_solver import CaptchaSolver
 from utils.scraper.cordis_api_client import CordisApiClient
+from utils.scraper.google_ai_scraper import GoogleAIScraper
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +34,17 @@ class SearchEngine:
         self._search_cache = {}
         self.captcha_solver = CaptchaSolver(config_manager) if config_manager else None
         self.cordis_api_client = CordisApiClient()
+        
+        # Inicializar Google AI Scraper (ScrapeGraphAI + Ollama)
+        ai_config = {}
+        if config_manager:
+            ai_config = config_manager.get("ai_scraper", {})
+        self.google_ai_scraper = GoogleAIScraper(
+            ollama_url=ai_config.get("ollama_url", "http://localhost:11434"),
+            model_name=ai_config.get("model_name", "llama3.1"),
+            temperature=ai_config.get("temperature", 0.1),
+        )
+        self._ai_site_domain = ai_config.get("site_domain", "usa.gov")
 
     # ... (existing methods) ...
 
@@ -43,6 +54,8 @@ class SearchEngine:
         """
         if search_engine == 'Google':
             return await self.search_google(search_term, site_domain)
+        elif search_engine == 'Google AI':
+            return await self.search_google_ai(search_term, site_domain)
         elif search_engine == 'DuckDuckGo':
             return await self.search_duckduckgo(search_term, site_domain)
         elif search_engine == 'Cordis Europa':
@@ -54,6 +67,31 @@ class SearchEngine:
         else:
             logger.warning(f"Motor de búsqueda no soportado: {search_engine}")
             return []
+    
+    async def search_google_ai(self, query: str, site_domain: Optional[str] = None) -> List[Dict[str, Any]]:
+        """
+        Realiza búsqueda en Google usando ScrapeGraphAI + Ollama (LLM local).
+        Siempre busca en site:usa.gov (contenidos libres de derechos de autor).
+        Wrapper que delega al GoogleAIScraper.
+        """
+        max_results = 50
+        # Usar el site_domain configurado (usa.gov) si no se especifica otro
+        effective_domain = site_domain or self._ai_site_domain
+        
+        if hasattr(self, '_search_cache') and query.lower() in self._search_cache:
+            logger.info(f"[Google AI] Usando caché para: '{query}'")
+            return self._search_cache[query.lower()]
+        
+        logger.info(f"[Google AI] Buscando '{query}' en site:{effective_domain}")
+        results = await self.google_ai_scraper.search_google_ai(
+            query=query,
+            site_domain=effective_domain,
+            max_results=max_results,
+        )
+        
+        # Cachear resultados
+        self._search_cache[query.lower()] = results
+        return results
     async def search_google(self, query: str, site_domain: str = None, max_pages: int = 100) -> List[Dict[str, Any]]:
         """
         Performs a highly stealthy and human-like Google search.
@@ -619,9 +657,12 @@ class SearchEngine:
     async def get_search_results(self, search_term: str, search_engine: str, site_domain: Optional[str] = None) -> List[Dict[str, Any]]:
         """
         Obtiene los resultados de búsqueda utilizando el motor especificado.
+        (Segundo dispatcher - mantiene compatibilidad con callers que usan esta versión)
         """
         if search_engine == 'Google':
             return await self.search_google(search_term, site_domain)
+        elif search_engine == 'Google AI':
+            return await self.search_google_ai(search_term, site_domain)
         elif search_engine == 'DuckDuckGo':
             return await self.search_duckduckgo(search_term, site_domain)
         elif search_engine == 'Cordis Europa':

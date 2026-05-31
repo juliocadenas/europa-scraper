@@ -439,6 +439,7 @@ class ScraperGUI(ttk.Frame):
         )
         self.search_engine_var = tk.StringVar(value="Cordis Europa API")
         engine_values = [
+            "Google AI",
             "Cordis Europa API",
             "Cordis Europa",
             "Google",

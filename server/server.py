@@ -523,6 +523,8 @@ def worker_process(
                         try:
                             c_state = course_states[course_sic]
                             c_state["status"] = "Error"
+                            c_state["error"] = str(e)[:200]
+                            c_state["last_error"] = str(e)[:200]
                             course_states[course_sic] = c_state
                         except Exception:
                             pass
@@ -2395,13 +2397,14 @@ class ScraperServer:
                     if status in ["Error", "CRASHED", "Failed"] or "CRASHED" in str(
                         status
                     ):
+                        error_reason = course_data.get("error", course_data.get("last_error", "Error durante el procesamiento"))
                         failed_courses.append(
                             {
                                 "sic_code": sic_code,
                                 "course_name": course_data.get("name", "Desconocido"),
                                 "status": status,
                                 "progress": course_data.get("progress", 0),
-                                "reason": "Error durante el procesamiento",
+                                "reason": error_reason,
                             }
                         )
 
