@@ -20,7 +20,7 @@
     },
     "searxng": {
         "enabled": true,
-        "url": "http://localhost:8080",
+        "url": "http://localhost:8888",
         "engines": "duckduckgo,brave,mojeek"
     },
     "serper": {
