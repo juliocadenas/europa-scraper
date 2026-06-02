@@ -3,6 +3,7 @@ import logging
 import random
 import os
 import time
+from typing import List, Dict, Any, Tuple, Optional, Set
 from playwright.async_api import Page
 from functools import lru_cache
 import aiohttp
